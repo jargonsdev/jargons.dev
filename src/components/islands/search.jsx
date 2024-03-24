@@ -80,6 +80,18 @@ function SearchDialog() {
   useLockBody();
   const $isSearchOpen = useStore(isSearchOpen);
 
+  // Escape - keybind
+  useEffect(() => {
+    document.addEventListener("keydown", handleCloseSearch);
+    function handleCloseSearch(e) {
+      if (e.key === "Escape") {
+        e.preventDefault();
+        isSearchOpen.set(!$isSearchOpen);
+      }
+    }
+    return () => document.removeEventListener("keydown", handleCloseSearch);
+  }, []);
+
   return (
     <div className="fixed left-0 top-0 z-auto p-5 w-full h-full flex justify-center bg-gray-100/30">
       {/* Blur */}

@@ -39,7 +39,7 @@ function SearchTrigger({ size = "md" }) {
 
   if (size === "sm") return (
     <div onClick={() => isSearchOpen.set(!$isSearchOpen)}>
-      <div className="relative w-56 text-sm hidden md:flex items-center border pl-2.5 p-1 space-x-2 border-gray-400 rounded-lg cursor-text" role="button">
+      <div className="relative w-56 text-sm hidden md:flex items-center border pl-2.5 p-1 space-x-2 border-gray-400 rounded-lg cursor-text">
         <div className="text-gray-400">
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" className="w-5 h-5">
             <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
@@ -58,7 +58,7 @@ function SearchTrigger({ size = "md" }) {
 
   return (
     <div onClick={() => isSearchOpen.set(!$isSearchOpen)}
-      className="relative flex items-center mt-2 border pl-3 p-1 md:pl-5 md:pr-2 md:py-2 space-x-3 border-gray-400 rounded-lg hover:shadow"
+      className="relative flex items-center mt-2 border pl-3 p-1 md:pl-5 md:pr-2 md:py-2 space-x-3 border-gray-400 rounded-lg hover:shadow cursor-text"
     >
       <div className="text-gray-400">
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" className="h-4 w-4 md:w-6 md:h-6">
@@ -114,8 +114,7 @@ function SearchDialog() {
           />
           <kbd 
             onClick={() => isSearchOpen.set(!$isSearchOpen)}
-            role="button" 
-            className="text-gray-600 rounded-md px-2 py-1 md:px-4 md:py-2 text-sm sm:text-base border bg-gray-400/10"
+            className="text-gray-600 rounded-md px-2 py-1 md:px-4 md:py-2 text-sm sm:text-base border bg-gray-400/10 cursor-pointer"
           >
             ESC
           </kbd>

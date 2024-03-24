@@ -1,5 +1,6 @@
 ---
 import BaseLayout from "../layouts/base.astro";
+import Search from "../components/islands/search.jsx";
 ---
 
 <BaseLayout pageTitle="Dictionry">
@@ -14,23 +15,8 @@ import BaseLayout from "../layouts/base.astro";
 			</h1>
 		</div>
 		
-		<!-- Search Form Trigger -->
-		<div class="relative flex items-center mt-2 border pl-3 p-1 md:pl-5 md:pr-2 md:py-2 space-x-3 border-gray-400 rounded-lg hover:shadow">
-			<div class="text-gray-400">
-				<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-4 w-4 md:w-6 md:h-6">
-					<path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
-				</svg>
-			</div>	
-			<span class="w-full text-gray-400 focus:outline-none text-sm sm:text-base md:text-lg truncate">
-				Search words
-			</span>			
-			<!-- <input 
-				type="text" 
-				placeholder="Search words"
-				class="block w-full text-gray-600 focus:outline-none text-base md:text-lg"
-			/> -->
-			<kbd class="text-gray-600 rounded-md p-1 md:px-4 md:py-2 text-sm sm:text-base border bg-gray-400/10">CTRL+K</kbd>
-		</div>
+		<!-- Search -->
+		<Search triggerSize="md" client:load />
 
 		<!-- Recent Word Look Up -->
 		<div class="space-y-2">

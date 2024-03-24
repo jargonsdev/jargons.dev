@@ -1,5 +1,6 @@
 ---
 import BaseLayout from "./base.astro";
+import Search from "../components/islands/search.jsx";
 
 const { frontmatter } = Astro.props;
 ---
@@ -15,23 +16,8 @@ const { frontmatter } = Astro.props;
       </span>       
     </a>
 
-    <!-- Search Form Trigger -->
-    <div>
-      <div class="relative w-56 text-sm hidden md:flex items-center border pl-2.5 p-1 space-x-2 border-gray-400 rounded-lg cursor-text" role="button">
-        <div class="text-gray-400">
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
-            <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
-          </svg>
-        </div>	
-        <span class="w-full text-gray-600 focus:outline-none truncate">Search word</span>			
-        <kbd class="text-gray-600 py-1 px-2 rounded-md border ml-auto bg-gray-400/10">CTRL+K</kbd>
-      </div>
-      <button class="flex md:hidden font-bold">
-				<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
-					<path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
-				</svg>
-			</button>
-    </div>
+    <!-- Search -->
+    <Search triggerSize="sm" client:load />
   </nav>
 
 	<main class="max-w-screen-lg p-5 mt-10 mx-auto min-h-screen space-y-6">

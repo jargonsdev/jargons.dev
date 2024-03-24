@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { useStore } from "@nanostores/react";
 import { isSearchOpen } from "../../stores/search.js";
 import useLockBody from "../../hooks/use-lock-body.js";
@@ -23,6 +24,18 @@ export default function Search({ triggerSize }) {
  */
 function SearchTrigger({ size = "md" }) {
   const $isSearchOpen = useStore(isSearchOpen);
+
+  // Ctrl+K - keybind
+  useEffect(() => {
+    document.addEventListener("keydown", handleOpenSearch);
+    function handleOpenSearch(e) {
+      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "k") {
+        e.preventDefault();
+        isSearchOpen.set(!$isSearchOpen);
+      }
+    }
+    return () => document.removeEventListener("keydown", handleOpenSearch);
+  }, []);
 
   if (size === "sm") return (
     <div onClick={() => isSearchOpen.set(!$isSearchOpen)}>

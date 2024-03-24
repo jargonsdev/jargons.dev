@@ -1,3 +1,3 @@
 import { atom } from "nanostores";
 
-export const isSearchOpen = atom(false);
+export const $isSearchOpen = atom(false);

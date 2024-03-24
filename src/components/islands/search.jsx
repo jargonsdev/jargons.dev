@@ -1,19 +1,29 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useStore } from "@nanostores/react";
 import { isSearchOpen } from "../../stores/search.js";
 import useLockBody from "../../hooks/use-lock-body.js";
+import Document from "../../../node_modules/flexsearch/dist/module/document";
+
+const index = new Document({
+  cache: 100,
+  document: { 
+    index: "title",
+    store: ["title", "url"] 
+  },
+  tokenize: "full"
+});
 
 /**
  * Search Component Island
- * @param {{ triggerSize: "sm" | "md" }} props 
+ * @param {{ triggerSize: "sm" | "md", dictionary: MarkdownInstance<Record<string, any>>[] }} props 
  */
-export default function Search({ triggerSize }) {
+export default function Search({ triggerSize, dictionary }) {
   const $isSearchOpen = useStore(isSearchOpen);
 
   return (
     <>
       <SearchTrigger size={triggerSize} />
-      { $isSearchOpen && <SearchDialog /> }
+      { $isSearchOpen && <SearchDialog dictionary={dictionary} /> }
     </>
   )
 }
@@ -75,10 +85,29 @@ function SearchTrigger({ size = "md" }) {
 
 /**
  * Search Dialog
+ * @param {{ dictionary: import("astro").AstroBuiltinProps }} props
  */
-function SearchDialog() {
+function SearchDialog({ dictionary }) {
   useLockBody();
   const $isSearchOpen = useStore(isSearchOpen);
+  const [searchTerm, setSearchTerm] = useState("");
+
+  let idx = 0;
+  // indexing dictionary in search engine
+  for (const word of dictionary) {
+    index.add({
+      id: idx,
+      title: word.frontmatter.title,
+      url: word.url
+    });
+    idx++;
+  }
+
+  useEffect(() => {
+    const [ search ] = index.search(searchTerm, { enrich: true });
+    // console.log(search?.result);
+    setSearchResult(search?.result);
+  }, [searchTerm])
 
   // Escape - keybind
   useEffect(() => {
@@ -109,7 +138,9 @@ function SearchDialog() {
             {/* <div className="flex-none h-4 w-4 md:w-6 md:h-6 rounded-full border-2 border-gray-400 border-b-gray-200 border-r-gray-200 animate-spin" /> */}
           </div>		
           <input 
-            type="text" 
+            type="text"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
             className="block w-full bg-transparent text-gray-600 focus:outline-none text-base md:text-lg"
           />
           <kbd 

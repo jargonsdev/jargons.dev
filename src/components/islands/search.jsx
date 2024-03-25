@@ -5,6 +5,7 @@ import { $isSearchOpen } from "../../stores/search.js";
 import useRouter from "../../hooks/use-router.js";
 import useIsMacOS from "../../hooks/use-is-mac-os.js";
 import useLockBody from "../../hooks/use-lock-body.js";
+import { $addToRecentSearchesFn } from "../../stores/search.js";
 
 // Create Search Index
 const searchIndex = new Flexsearch.Document({
@@ -65,6 +66,10 @@ function SearchTrigger({ size = "md" }) {
     return () => document.removeEventListener("keydown", handleOpenSearch);
   }, []);
 
+  /**
+   * @todo fix localstorage `recentSearches` getting overwitten on `SearchResult` click or select
+   * specific to this `sm` search trigger
+   */
   if (size === "sm") return (
     <div onClick={() => $isSearchOpen.set(!isSearchOpen)}>
       <div className="relative w-56 text-sm hidden md:flex items-center justify-between border pl-2.5 p-1 space-x-2 border-gray-400 rounded-lg cursor-text">
@@ -157,6 +162,10 @@ function SearchDialog() {
       e.preventDefault();
       if (document.querySelector("._cursor")) {
         const word = document.querySelector("._cursor");
+        $addToRecentSearchesFn({
+          word: word.textContent,
+          url: word.href
+        });
         router.push(word.href);
       }
     }
@@ -223,27 +232,39 @@ const SearchInfo = () => (
  * Search result
  * @param {{ result: Array<{ id: number, doc: { title: string, url: string }, searchTerm: string }> }} props
  */
-const SearchResult = ({ result = [], cursor, searchTerm }) => (
-  <div className="block w-full text-sm md:text-base">
-    {result.length < 1 && searchTerm.length >= 1 ? (
-      /**
-       * @todo add message suggesting adding/contributing the word to dictionary
-       */
-      <p className="p-2 md:p-4">No Result found</p>
-    ) : ( 
-      result.map(({ doc }, i) => (
-        <a key={i}
-          href={doc.url}  
-          className={`${cursor === i && "bg-gray-100 _cursor"} flex items-center justify-between no-underline w-full p-2 md:p-4 hover:bg-gray-100`}
-        >
-          <span>{ doc.title }</span>
-          <span>
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-2.5 h-2.5 md:w-4 md:h-4">
-              <path strokeLinecap="round" strokeLinejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
-            </svg>
-          </span>
-        </a>
-      ))
-    )}
-  </div>
-);
+function SearchResult({ result = [], cursor, searchTerm }) { 
+  const router = useRouter();
+
+  return (
+    <div className="block w-full text-sm md:text-base">
+      {result.length < 1 && searchTerm.length >= 1 ? (
+        /**
+         * @todo add message suggesting adding/contributing the word to dictionary
+         */
+        <p className="p-2 md:p-4">No Result found</p>
+      ) : ( 
+        result.map(({ doc }, i) => (
+          <a key={i}
+            href={doc.url}  
+            onClick={(e) => {
+              e.preventDefault();
+              $addToRecentSearchesFn({
+                word: e.currentTarget.textContent,
+                url: e.currentTarget.href
+              });
+              router.push(e.currentTarget.href);
+            }}
+            className={`${cursor === i && "bg-gray-100 _cursor"} flex items-center justify-between no-underline w-full p-2 md:p-4 hover:bg-gray-100`}
+          >
+            <span>{ doc.title }</span>
+            <span>
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-2.5 h-2.5 md:w-4 md:h-4">
+                <path strokeLinecap="round" strokeLinejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
+              </svg>
+            </span>
+          </a>
+        ))
+      )}
+    </div>
+  );
+}

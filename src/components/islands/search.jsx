@@ -120,7 +120,8 @@ function SearchTrigger({ size = "md" }) {
 
 /**
  * Search Dialog
- * @todo implement search term deboucing
+ * @todo implement search term debouncing
+ * @todo implement visual que buttons (↑ ↓ ↵) for keyboard navigation on search dialog component
  */
 function SearchDialog() {
   useLockBody();

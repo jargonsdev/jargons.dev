@@ -10,7 +10,7 @@ export default function RecenctSearches() {
   const recentSearches = useStore($recentSearches);
 
   useEffect(() => {
-    $recentSearches.set({...JSON.parse(localStorage.getItem("devJargonsRecentSearches"))} ?? {})
+    $recentSearches.set({...JSON.parse(localStorage.getItem("devJargonsRecentSearches"))})
   }, []);
 
   return Object.values(recentSearches).length ? (

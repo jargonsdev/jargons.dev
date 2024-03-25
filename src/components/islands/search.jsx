@@ -1,11 +1,11 @@
+import Flexsearch from "flexsearch";
 import { useEffect, useState } from "react";
 import { useStore } from "@nanostores/react";
 import { $isSearchOpen } from "../../stores/search.js";
 import useIsMacOS from "../../hooks/use-is-mac-os.js";
 import useLockBody from "../../hooks/use-lock-body.js";
-import Document from "../../../node_modules/flexsearch/dist/module/document";
 
-const index = new Document({
+const index = new Flexsearch.Document({
   cache: 100,
   document: { 
     index: "title",
@@ -53,18 +53,18 @@ function SearchTrigger({ size = "md" }) {
     <div onClick={() => $isSearchOpen.set(!isSearchOpen)}>
       <div className="relative w-56 text-sm hidden md:flex items-center border pl-2.5 p-1 space-x-2 border-gray-400 rounded-lg cursor-text">
         <div className="text-gray-400">
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" className="w-5 h-5">
-            <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-5 h-5">
+            <path strokeLinecap="round" strokeLinejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
           </svg>
         </div>	
         <span className="w-full text-gray-600 focus:outline-none truncate">Search word</span>			
-        <kbd className="text-gray-600 py-1 px-2 rounded-md border ml-auto bg-gray-400/10">
+        <kbd className="text-gray-600 py-1 px-2 rounded-md border border-gray-400 ml-auto bg-gray-100">
           { isMac ? "⌘K" : "CTRL+K" }
         </kbd>
       </div>
       <button className="flex md:hidden font-bold">
-				<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" className="w-5 h-5">
-					<path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
+				<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-5 h-5">
+					<path strokeLinecap="round" strokeLinejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
 				</svg>
 			</button>
     </div>
@@ -75,14 +75,14 @@ function SearchTrigger({ size = "md" }) {
       className="relative flex items-center mt-2 border pl-3 p-1 md:pl-5 md:pr-2 md:py-2 space-x-3 border-gray-400 rounded-lg hover:shadow cursor-text"
     >
       <div className="text-gray-400">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" className="h-4 w-4 md:w-6 md:h-6">
-          <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="h-4 w-4 md:w-6 md:h-6">
+          <path strokeLinecap="round" strokeLinejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
         </svg>
       </div>	
       <span className="w-full text-gray-400 focus:outline-none text-sm sm:text-base md:text-lg truncate">
         Search words
       </span>			
-      <kbd className="text-gray-600 rounded-md p-1 md:px-4 md:py-2 text-sm sm:text-base border bg-gray-400/10">
+      <kbd className="text-gray-600 rounded-md p-1 md:px-4 md:py-2 text-sm sm:text-base border border-gray-400 bg-gray-100">
         { isMac ? "⌘K" : "CTRL+K" }
       </kbd>
     </div>
@@ -91,6 +91,7 @@ function SearchTrigger({ size = "md" }) {
 
 /**
  * Search Dialog
+ * @todo fix `param` type
  * @param {{ dictionary: import("astro").AstroBuiltinProps }} props
  */
 function SearchDialog({ dictionary }) {
@@ -112,7 +113,7 @@ function SearchDialog({ dictionary }) {
 
   useEffect(() => {
     const [ search ] = index.search(searchTerm, { enrich: true });
-    // console.log(search?.result);
+    console.log(search?.result);
     setSearchResult(search?.result);
   }, [searchTerm])
 
@@ -139,8 +140,8 @@ function SearchDialog({ dictionary }) {
         {/* Form Field */}
         <div className="relative z-50 flex items-center space-x-3 border-b pl-2 p-1 md:pl-4 md:pr-2 md:py-2 ">
           <div className="text-gray-400">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" className="h-4 w-4 md:w-6 md:h-6">
-              <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="h-4 w-4 md:w-6 md:h-6">
+              <path strokeLinecap="round" strokeLinejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
             </svg>
             {/* <div className="flex-none h-4 w-4 md:w-6 md:h-6 rounded-full border-2 border-gray-400 border-b-gray-200 border-r-gray-200 animate-spin" /> */}
           </div>		
@@ -152,7 +153,7 @@ function SearchDialog({ dictionary }) {
           />
           <kbd 
             onClick={() => $isSearchOpen.set(!isSearchOpen)}
-            className="text-gray-600 rounded-md px-2 py-1 md:px-4 md:py-2 text-sm sm:text-base border bg-gray-400/10 cursor-pointer"
+            className="text-gray-600 rounded-md px-2 py-1 md:px-4 md:py-2 text-sm sm:text-base border bg-gray-100 cursor-pointer"
           >
             ESC
           </kbd>
@@ -160,7 +161,11 @@ function SearchDialog({ dictionary }) {
 
         {/* Suggestions */}
         <div className="">
-          <SearchInfo />
+          {searchTerm.length < 1 ? (
+            <SearchInfo />
+          ) : (
+            <SearchResult result={searchResult} searchTerm={searchTerm} />
+          )}
         </div>
       </div>
     </div>
@@ -174,4 +179,33 @@ const SearchInfo = () => (
   <p className="block w-full text-sm md:text-base px-2 py-1 md:px-4 md:py-2 text-slate-500 font-normal leading-6">
     Type a word to search
   </p>
+);
+
+/**
+ * Search result
+ * @param {{ result: Array<{ id: number, doc: { title: string, url: string }, searchTerm: string }> }} props
+ */
+const SearchResult = ({ result = [], searchTerm }) => (
+  <div className="block w-full text-sm md:text-base">
+    {!!!result.length && searchTerm.length >= 1 ? (
+      /**
+       * @todo add message suggesting addition/contributing the word to dictionary
+       */
+      <p className="p-2 md:p-4">No Result found</p>
+    ) : ( 
+      result.map(({ id, doc }) => (
+        <a key={id}
+          href={doc.url}  
+          className="flex items-center justify-between no-underline w-full p-2 md:p-4 hover:bg-gray-100"
+        >
+          <span>{ doc.title }</span>
+          <span>
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-2.5 h-2.5 md:w-4 md:h-4">
+              <path strokeLinecap="round" strokeLinejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
+            </svg>
+          </span>
+        </a>
+      ))
+    )}
+  </div>
 );

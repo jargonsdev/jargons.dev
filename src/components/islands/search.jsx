@@ -2,6 +2,7 @@ import Flexsearch from "flexsearch";
 import { useEffect, useState } from "react";
 import { useStore } from "@nanostores/react";
 import { $isSearchOpen } from "../../stores/search.js";
+import useRouter from "../../hooks/use-router.js";
 import useIsMacOS from "../../hooks/use-is-mac-os.js";
 import useLockBody from "../../hooks/use-lock-body.js";
 
@@ -103,7 +104,9 @@ function SearchTrigger({ size = "md" }) {
  */
 function SearchDialog({ dictionary }) {
   useLockBody();
+  const router = useRouter();
   const isSearchOpen = useStore($isSearchOpen);
+  const [cursor, setCursor] = useState(-1);
   const [searchTerm, setSearchTerm] = useState("");
   const [searchResult, setSearchResult] = useState([]);
 
@@ -136,6 +139,26 @@ function SearchDialog({ dictionary }) {
     return () => document.removeEventListener("keydown", handleCloseSearch);
   }, []);
 
+  // Arrow Up/Down & Enter - keybind
+  function handleKeyboardCtrl(e) {
+    const resultsCount = searchResult?.length || 0;
+    if (resultsCount && e.key === "ArrowUp") {
+      e.preventDefault();
+      setCursor(cursor === 0 ? Math.min(resultsCount - 1, 9) : cursor - 1);
+    }
+    if (resultsCount && e.key === "ArrowDown") {
+      e.preventDefault();
+      setCursor(cursor === Math.min(resultsCount - 1, 9) ? 0 : cursor + 1);
+    }
+    if (resultsCount && e.key === "Enter") {
+      e.preventDefault();
+      if (document.querySelector("._cursor")) {
+        const word = document.querySelector("._cursor");
+        router.push(word.href);
+      }
+    }
+  };
+
   return (
     <div className="fixed left-0 top-0 z-auto p-5 w-full h-full flex justify-center bg-gray-100/30">
       {/* Blur */}
@@ -143,7 +166,9 @@ function SearchDialog({ dictionary }) {
         className="absolute w-full h-full left-0 top-0 z-50 backdrop-blur-sm"
       />
 
-      <div className="flex flex-col bg-white h-fit max-w-5xl w-full shadow-xl z-50 border rounded-lg overflow-hidden">
+      <div className="flex flex-col bg-white h-fit max-w-5xl w-full shadow-xl z-50 border rounded-lg overflow-hidden"
+        onMouseMove={() => cursor !== -1 && setCursor(-1)}
+      >
         {/* Form Field */}
         <div className="relative z-50 flex items-center space-x-3 border-b pl-2 p-1 md:pl-4 md:pr-2 md:py-2 ">
           <div className="text-gray-400">
@@ -155,6 +180,7 @@ function SearchDialog({ dictionary }) {
           <input 
             type="text"
             value={searchTerm}
+            onKeyDown={handleKeyboardCtrl}
             onChange={(e) => setSearchTerm(e.target.value)}
             className="block w-full bg-transparent text-gray-600 focus:outline-none text-base md:text-lg"
           />
@@ -167,13 +193,13 @@ function SearchDialog({ dictionary }) {
         </div>
 
         {/* Suggestions */}
-        <div className="">
+        <>
           {searchTerm.length < 1 ? (
             <SearchInfo />
           ) : (
-            <SearchResult result={searchResult} searchTerm={searchTerm} />
+            <SearchResult result={searchResult} cursor={cursor} searchTerm={searchTerm} />
           )}
-        </div>
+        </>
       </div>
     </div>
   );
@@ -192,7 +218,7 @@ const SearchInfo = () => (
  * Search result
  * @param {{ result: Array<{ id: number, doc: { title: string, url: string }, searchTerm: string }> }} props
  */
-const SearchResult = ({ result = [], searchTerm }) => (
+const SearchResult = ({ result = [], cursor, searchTerm }) => (
   <div className="block w-full text-sm md:text-base">
     {result.length < 1 && searchTerm.length >= 1 ? (
       /**
@@ -200,10 +226,10 @@ const SearchResult = ({ result = [], searchTerm }) => (
        */
       <p className="p-2 md:p-4">No Result found</p>
     ) : ( 
-      result.map(({ id, doc }) => (
-        <a key={id}
+      result.map(({ doc }, i) => (
+        <a key={i}
           href={doc.url}  
-          className="flex items-center justify-between no-underline w-full p-2 md:p-4 hover:bg-gray-100"
+          className={`${cursor === i && "bg-gray-100 _cursor"} flex items-center justify-between no-underline w-full p-2 md:p-4 hover:bg-gray-100`}
         >
           <span>{ doc.title }</span>
           <span>

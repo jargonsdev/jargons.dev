@@ -178,6 +178,7 @@ function SearchDialog({ dictionary }) {
             {/* <div className="flex-none h-4 w-4 md:w-6 md:h-6 rounded-full border-2 border-gray-400 border-b-gray-200 border-r-gray-200 animate-spin" /> */}
           </div>		
           <input 
+            autoFocus
             type="text"
             value={searchTerm}
             onKeyDown={handleKeyboardCtrl}

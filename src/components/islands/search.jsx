@@ -6,6 +6,7 @@ import useRouter from "../../hooks/use-router.js";
 import useIsMacOS from "../../hooks/use-is-mac-os.js";
 import useLockBody from "../../hooks/use-lock-body.js";
 
+// Create Search Index
 const index = new Flexsearch.Document({
   cache: 100,
   document: { 
@@ -21,6 +22,20 @@ const index = new Flexsearch.Document({
  */
 export default function Search({ triggerSize, dictionary }) {
   const isSearchOpen = useStore($isSearchOpen);
+
+  let idx = 0;
+  /**
+   * indexing dictionary in search engine
+   * @todo indexing happens on island load; try earlier if possible hahahaha, maybe in `index.astro` i.e. on page load
+   */
+  for (const word of dictionary) {
+    index.add({
+      id: idx,
+      title: word.frontmatter.title,
+      url: word.url
+    });
+    idx++;
+  }
 
   return (
     <>
@@ -100,26 +115,14 @@ function SearchTrigger({ size = "md" }) {
 
 /**
  * Search Dialog
- * @param {{ dictionary: Array<MarkdownInstance<Record<string, any>>> }} props
  */
-function SearchDialog({ dictionary }) {
+function SearchDialog() {
   useLockBody();
   const router = useRouter();
   const isSearchOpen = useStore($isSearchOpen);
   const [cursor, setCursor] = useState(-1);
   const [searchTerm, setSearchTerm] = useState("");
   const [searchResult, setSearchResult] = useState([]);
-
-  let idx = 0;
-  // indexing dictionary in search engine
-  for (const word of dictionary) {
-    index.add({
-      id: idx,
-      title: word.frontmatter.title,
-      url: word.url
-    });
-    idx++;
-  }
 
   useEffect(() => {
     const [ search ] = index.search(searchTerm, { enrich: true });

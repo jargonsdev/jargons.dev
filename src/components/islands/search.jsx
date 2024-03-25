@@ -7,7 +7,7 @@ import useIsMacOS from "../../hooks/use-is-mac-os.js";
 import useLockBody from "../../hooks/use-lock-body.js";
 
 // Create Search Index
-const index = new Flexsearch.Document({
+const searchIndex = new Flexsearch.Document({
   cache: 100,
   document: { 
     index: "title",
@@ -29,7 +29,7 @@ export default function Search({ triggerSize, dictionary }) {
    * @todo indexing happens on island load; try earlier if possible hahahaha, maybe in `index.astro` i.e. on page load
    */
   for (const word of dictionary) {
-    index.add({
+    searchIndex.add({
       id: idx,
       title: word.frontmatter.title,
       url: word.url
@@ -40,9 +40,9 @@ export default function Search({ triggerSize, dictionary }) {
   return (
     <>
       <SearchTrigger size={triggerSize} />
-      { isSearchOpen && <SearchDialog dictionary={dictionary} /> }
+      { isSearchOpen && <SearchDialog /> }
     </>
-  )
+  );
 }
 
 /**
@@ -115,6 +115,7 @@ function SearchTrigger({ size = "md" }) {
 
 /**
  * Search Dialog
+ * @todo implement search term deboucing
  */
 function SearchDialog() {
   useLockBody();
@@ -125,8 +126,7 @@ function SearchDialog() {
   const [searchResult, setSearchResult] = useState([]);
 
   useEffect(() => {
-    const [ search ] = index.search(searchTerm, { enrich: true });
-    console.log(search?.result);
+    const [ search ] = searchIndex.search(searchTerm, { enrich: true });
     setSearchResult(search?.result);
   }, [searchTerm])
 
@@ -196,7 +196,7 @@ function SearchDialog() {
           </kbd>
         </div>
 
-        {/* Suggestions */}
+        {/* Suggestions/Results/Recent etc. */}
         <>
           {searchTerm.length < 1 ? (
             <SearchInfo />
@@ -211,6 +211,7 @@ function SearchDialog() {
 
 /**
  * Default Search Text Placeholder
+ * @todo implement recent search term list
  */
 const SearchInfo = () => (
   <p className="block w-full text-sm md:text-base px-2 py-1 md:px-4 md:py-2 text-slate-500 font-normal leading-6">

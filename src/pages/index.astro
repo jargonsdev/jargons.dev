@@ -1,9 +1,7 @@
 ---
 import BaseLayout from "../layouts/base.astro";
 import Search from "../components/islands/search.jsx";
-
-const dictionary = await Astro.glob("./word/*.mdx");
-console.log(dictionary);
+import { $dictionary } from "../stores/dictionary.js";
 ---
 
 <BaseLayout pageTitle="Dictionry">
@@ -19,7 +17,7 @@ console.log(dictionary);
 		</div>
 		
 		<!-- Search -->
-		<Search triggerSize="md" dictionary={dictionary} client:load />
+		<Search triggerSize="md" dictionary={$dictionary.value} client:load />
 
 		<!-- Recent Word Look Up -->
 		<div class="space-y-3 mt-4 md:mt-6">

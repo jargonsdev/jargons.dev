@@ -1,9 +1,9 @@
 ---
 import BaseLayout from "./base.astro";
 import Search from "../components/islands/search.jsx";
+import { $dictionary } from "../stores/dictionary.js";
 
 const { frontmatter } = Astro.props;
-const dictionary = await Astro.glob("../pages/word/*.mdx");
 ---
 
 <BaseLayout pageTitle={ frontmatter.title }>
@@ -18,7 +18,7 @@ const dictionary = await Astro.glob("../pages/word/*.mdx");
     </a>
 
     <!-- Search -->
-    <Search triggerSize="sm" dictionary={dictionary} client:load />
+    <Search triggerSize="sm" dictionary={$dictionary.value} client:load />
   </nav>
 
 	<main class="max-w-screen-lg p-5 md:mt-10 mx-auto min-h-screen space-y-6">

@@ -35,7 +35,7 @@ export default function Search({ triggerSize, dictionary }) {
  */
 function SearchTrigger({ size = "md" }) {
   const isSearchOpen = useStore($isSearchOpen);
-  const isMac = useIsMacOS();
+  const isMacOS = useIsMacOS();
 
   // Ctrl+K - keybind
   useEffect(() => {
@@ -51,15 +51,19 @@ function SearchTrigger({ size = "md" }) {
 
   if (size === "sm") return (
     <div onClick={() => $isSearchOpen.set(!isSearchOpen)}>
-      <div className="relative w-56 text-sm hidden md:flex items-center border pl-2.5 p-1 space-x-2 border-gray-400 rounded-lg cursor-text">
-        <div className="text-gray-400">
+      <div className="relative w-56 text-sm hidden md:flex items-center justify-between border pl-2.5 p-1 space-x-2 border-gray-400 rounded-lg cursor-text">
+        <div className="flex items-center text-gray-400 space-x-2">
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-5 h-5">
             <path strokeLinecap="round" strokeLinejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
           </svg>
+          <span className="focus:outline-none truncate">Search word</span>			
         </div>	
-        <span className="w-full text-gray-600 focus:outline-none truncate">Search word</span>			
         <kbd className="text-gray-600 py-1 px-2 rounded-md border border-gray-400 ml-auto bg-gray-100">
-          { isMac ? "⌘K" : "CTRL+K" }
+          {isMacOS ? (
+            <><span className="text-sm mr-0.5">⌘</span>K</>
+          ) : (
+            <>CTRL+K</>
+          )}
         </kbd>
       </div>
       <button className="flex md:hidden font-bold">
@@ -72,18 +76,22 @@ function SearchTrigger({ size = "md" }) {
 
   return (
     <div onClick={() => $isSearchOpen.set(!isSearchOpen)}
-      className="relative flex items-center mt-2 border pl-3 p-1 md:pl-5 md:pr-2 md:py-2 space-x-3 border-gray-400 rounded-lg hover:shadow cursor-text"
+      className="relative flex items-center justify-between mt-2 border pl-3 p-1 md:pl-5 md:pr-2 md:py-2 space-x-3 border-gray-400 rounded-lg hover:shadow cursor-text"
     >
-      <div className="text-gray-400">
+      <div className="flex items-center text-gray-400 space-x-3">
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="h-4 w-4 md:w-6 md:h-6">
           <path strokeLinecap="round" strokeLinejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
         </svg>
+        <span className="focus:outline-none text-sm sm:text-base md:text-lg truncate">
+          Search words
+        </span>			
       </div>	
-      <span className="w-full text-gray-400 focus:outline-none text-sm sm:text-base md:text-lg truncate">
-        Search words
-      </span>			
       <kbd className="text-gray-600 rounded-md p-1 md:px-4 md:py-2 text-sm sm:text-base border border-gray-400 bg-gray-100">
-        { isMac ? "⌘K" : "CTRL+K" }
+        {isMacOS ? (
+          <><span className="text-sm mr-0.5">⌘</span>K</>
+        ) : (
+          <>CTRL+K</>
+        )}
       </kbd>
     </div>
   );
@@ -91,8 +99,7 @@ function SearchTrigger({ size = "md" }) {
 
 /**
  * Search Dialog
- * @todo fix `param` type
- * @param {{ dictionary: import("astro").AstroBuiltinProps }} props
+ * @param {{ dictionary: Array<MarkdownInstance<Record<string, any>>> }} props
  */
 function SearchDialog({ dictionary }) {
   useLockBody();
@@ -187,9 +194,9 @@ const SearchInfo = () => (
  */
 const SearchResult = ({ result = [], searchTerm }) => (
   <div className="block w-full text-sm md:text-base">
-    {!!!result.length && searchTerm.length >= 1 ? (
+    {result.length < 1 && searchTerm.length >= 1 ? (
       /**
-       * @todo add message suggesting addition/contributing the word to dictionary
+       * @todo add message suggesting adding/contributing the word to dictionary
        */
       <p className="p-2 md:p-4">No Result found</p>
     ) : ( 

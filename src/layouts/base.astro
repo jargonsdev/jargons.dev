@@ -2,8 +2,12 @@
 import "@fontsource/inter";
 import "@fontsource/ibm-plex-mono";
 import "../base.css";
+import { $dictionary } from "../stores/dictionary.js";
 
 const { pageTitle } = Astro.props;
+const dictionary = await Astro.glob("../pages/word/*.mdx");
+
+$dictionary.set(dictionary);
 ---
 
 <html lang="en">

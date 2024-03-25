@@ -1,8 +1,12 @@
 import { useEffect } from "react";
 import { useStore } from "@nanostores/react";
-import { $recentSearches } from "../../stores/search";
+import { $recentSearches } from "../../stores/search.js";
 
-export default function RecenctSearches({}) {
+/**
+ * @todo implement a default list instead of `null` when no `$recentSearch` is found 
+ * @todo implement loading component to avoid flickering UI
+ */
+export default function RecenctSearches() {
   const recentSearches = useStore($recentSearches);
 
   useEffect(() => {

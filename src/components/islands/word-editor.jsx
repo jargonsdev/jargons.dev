@@ -67,33 +67,35 @@ function Preview({ className, ...props }) {
 }
 
 const DummyPreviewNavbar = () => (
-  <nav className="flex items-center justify-between px-5 md:px-6 py-4">
-    <span className="flex items-center underline">
-      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" className="w-4 h-4">
-        <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
-      </svg> 
-      <span>
-        Back
-      </span>       
-    </span>
+  <div className="@container">
+    <nav className="flex items-center justify-between px-5 @md:px-6 py-4">
+      <span className="flex items-center underline">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" className="w-4 h-4">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
+        </svg> 
+        <span>
+          Back
+        </span>       
+      </span>
 
-    <div>
-      <div className="relative w-56 text-sm hidden md:flex items-center justify-between border pl-2.5 p-1 space-x-2 border-gray-400 rounded-lg cursor-text">
-        <div className="flex items-center text-gray-400 space-x-2">
+      <div>
+        <div className="relative w-56 text-sm hidden @md:flex items-center justify-between border pl-2.5 p-1 space-x-2 border-gray-400 rounded-lg cursor-text">
+          <div className="flex items-center text-gray-400 space-x-2">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-5 h-5">
+              <path strokeLinecap="round" strokeLinejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
+            </svg>
+            <span className="focus:outline-none truncate">Search word</span>			
+          </div>	
+          <kbd className="text-gray-600 py-1 px-2 rounded-md border border-gray-400 ml-auto bg-gray-100">
+            <><span className="text-sm mr-0.5">⌘</span>K</>
+          </kbd>
+        </div>
+        <button className="flex @md:hidden font-bold">
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-5 h-5">
             <path strokeLinecap="round" strokeLinejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
           </svg>
-          <span className="focus:outline-none truncate">Search word</span>			
-        </div>	
-        <kbd className="text-gray-600 py-1 px-2 rounded-md border border-gray-400 ml-auto bg-gray-100">
-          <><span className="text-sm mr-0.5">⌘</span>K</>
-        </kbd>
+        </button>
       </div>
-      <button className="flex md:hidden font-bold">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-5 h-5">
-          <path strokeLinecap="round" strokeLinejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
-        </svg>
-      </button>
-    </div>
-  </nav>
+    </nav>
+  </div>
 );

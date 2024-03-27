@@ -3,7 +3,10 @@ import BaseLayout from "../../layouts/base.astro";
 import WordEditor from "../../components/islands/word-editor.jsx";
 ---
 
-<BaseLayout pageTitle="Dictionry">
+<BaseLayout 
+  pageTitle="Dictionry"
+  class="flex flex-col w-full min-h-screen overflow-hidden"
+>
   <nav class="flex items-center justify-between px-5 md:px-6 py-4">
     <a href="../" class="flex items-center">
       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
@@ -14,6 +17,8 @@ import WordEditor from "../../components/islands/word-editor.jsx";
       </span>       
     </a>
   </nav>
-  
-  <WordEditor client:load />
+
+  <main class="flex grow px-5 md:px-6 pb-4">
+    <WordEditor title={""} content={""} client:load />
+  </main>
 </BaseLayout>

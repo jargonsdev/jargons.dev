@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import Markdown from "react-markdown";
 import useDictionaryEditor from "../../hooks/use-dictionary-editor.js";
 
 export default function WordEditor({ title, content }) {
@@ -9,7 +10,7 @@ export default function WordEditor({ title, content }) {
         eContent={"# Markdown \n content"} 
         className="w-full h-full flex flex-col p-5 border-r"
       />
-      <Preview />
+      <Preview className="w-full h-full flex flex-col p-5" />
     </div>
   );
 }
@@ -36,8 +37,29 @@ function Editor({ eTitle, eContent, className, ...props }) {
   );
 }
 
-function Preview() {
+function Preview({ className, ...props }) {
+  const { title, content } = useDictionaryEditor();
+
   return (
-    <></>
+    <div 
+      className={`${className}`}
+      {...props}  
+    >
+      <div className="grow overflow-auto space-y-6 rounded-lg border p-5 shadow-lg">
+        <div className="max-w-5xl mx-auto">
+          <div className="w-full">
+            <h1 className="text-4xl font-black">
+              { title }
+            </h1>
+          </div>
+
+          <article className="w-full max-w-screen-lg prose">
+            <Markdown>
+              { content }
+            </Markdown>
+          </article>
+        </div>
+      </div>
+    </div>
   );
 }

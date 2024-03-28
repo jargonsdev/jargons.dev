@@ -2,12 +2,12 @@ import { useEffect } from "react";
 import Markdown from "react-markdown";
 import useDictionaryEditor from "../../hooks/use-dictionary-editor.js";
 
-export default function WordEditor({ title, content }) {
+export default function WordEditor({ title = "", content = "" }) {
   return (
     <div className="w-full flex border rounded-lg">
       <Editor 
-        eTitle={"Hello"} 
-        eContent={"# Markdown \n content"} 
+        eTitle={title} 
+        eContent={content} 
         className="w-full h-full flex flex-col p-5 border-r"
       />
       <Preview className="w-full h-full flex flex-col p-5" />

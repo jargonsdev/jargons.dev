@@ -28,6 +28,13 @@ function Editor({ eTitle, eContent, className, ...props }) {
       className={`${className} relative`}
       {...props}
     >
+      <input 
+        className="block w-full pb-2 mb-3 text-gray-900 border-b text-lg font-bold focus:outline-none"
+        type="text"
+        placeholder="New Word"
+        value={title}
+        onChange={(e) => setTitle(e.target.value)}
+      />
       <textarea 
         className="w-full grow resize-none appearance-none border-none focus:outline-none scrollbar"
         value={content}

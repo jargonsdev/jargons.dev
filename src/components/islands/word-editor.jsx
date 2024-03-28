@@ -48,7 +48,7 @@ function Preview({ className, ...props }) {
       <div className="grow overflow-auto space-y-6 rounded-lg border p-5 shadow-lg">
         <DummyPreviewNavbar />
 
-        <div className="max-w-5xl space-y-8 mx-auto">
+        <div className="max-w-4xl space-y-8 mx-auto">
           <div className="w-full">
             <h1 className="text-4xl font-black">
               { title }
@@ -68,10 +68,10 @@ function Preview({ className, ...props }) {
 
 const DummyPreviewNavbar = () => (
   <div className="@container">
-    <nav className="flex items-center justify-between px-5 @md:px-6 py-4">
+    <nav className="flex items-center justify-between pb-4">
       <span className="flex items-center underline">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" className="w-4 h-4">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-4 h-4">
+          <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
         </svg> 
         <span>
           Back

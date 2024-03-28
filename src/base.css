@@ -10,3 +10,20 @@ a {
 a:hover {
   text-decoration: none;
 }
+.scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: #ebebeb transparent;
+}
+.scrollbar::-webkit-scrollbar {
+  width: 5px;
+}
+.scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+.scrollbar::-webkit-scrollbar-thumb {
+  background: #ebebeb;
+  border-radius: 3px;
+}
+.scrollbar::-webkit-scrollbar {
+  width: 5px;
+}

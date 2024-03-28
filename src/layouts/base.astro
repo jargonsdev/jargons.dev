@@ -4,7 +4,7 @@ import "@fontsource/ibm-plex-mono";
 import "../base.css";
 import { $dictionary } from "../stores/dictionary.js";
 
-const { pageTitle } = Astro.props;
+const { pageTitle, class:list } = Astro.props;
 const dictionary = await Astro.glob("../pages/word/*.mdx");
 
 $dictionary.set(dictionary);
@@ -18,7 +18,7 @@ $dictionary.set(dictionary);
 		<meta name="generator" content={Astro.generator} />
 		<title>{ pageTitle } - Developer Jargons</title>
 	</head>
-	<body>
+	<body class={list}>
     <slot />
 	</body>
 </html>

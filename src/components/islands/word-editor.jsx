@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import Markdown from "react-markdown";
-import useDictionaryEditor from "../../hooks/use-dictionary-editor.js";
+import useWordEditor from "../../hooks/use-word-editor.js";
 
 export default function WordEditor({ title = "", content = "" }) {
   return (
@@ -16,7 +16,7 @@ export default function WordEditor({ title = "", content = "" }) {
 }
 
 function Editor({ eTitle, eContent, className, ...props }) {
-  const { title, setTitle, content, setContent } = useDictionaryEditor();
+  const { title, setTitle, content, setContent } = useWordEditor();
   
   useEffect(() => {
     setTitle(eTitle);
@@ -38,7 +38,7 @@ function Editor({ eTitle, eContent, className, ...props }) {
 }
 
 function Preview({ className, ...props }) {
-  const { title, content } = useDictionaryEditor();
+  const { title, content } = useWordEditor();
 
   return (
     <div 

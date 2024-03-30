@@ -20,7 +20,7 @@ export async function forkRepository(userOctokit, repoDetails) {
 
     if (isRepoForked) {
       console.log("Repo is already forked!")
-      if (!isForkUpdated(userOctokit, fork)) {
+      if (!isRepositoryForkUpdated(userOctokit, repoDetails, fork)) {
         await updateFork(userOctokit, fork);
         console.log("Repo was also outdated and immeidately updated")
       }
@@ -62,13 +62,14 @@ async function updateFork(userOctokit, fork) {
   }
 }
 
-async function isForkUpdated(userOctokit, fork) {
-  const forkBranch = await getBranch(userOctokit, fork, "heads/beta");
-  // SHOULD BE: Dictionry Repo
-  // TODO: replace hardcoded dictionryRepo in "repo" args 
-  const dictionryBranch = await getBranch(userOctokit, "babblebey/insights", "heads/beta");
+async function isRepositoryForkUpdated(userOctokit, repoDetails, fork) {
+  const { repoFullname, repoMainBranchRef } = repoDetails;
 
-  return forkBranch.object.sha === dictionryBranch.object.sha;
+  const userForkedBranch = await getBranch(userOctokit, fork, repoMainBranchRef);
+
+  const projectBranch = await getBranch(userOctokit, repoFullname, repoMainBranchRef);
+
+  return userForkedBranch.object.sha === projectBranch.object.sha;
 }
 
 async function getBranch(userOctokit, repo, branch) {

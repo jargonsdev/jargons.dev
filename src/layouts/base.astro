@@ -1,0 +1,24 @@
+---
+import "@fontsource/inter";
+import "@fontsource/ibm-plex-mono";
+import "../base.css";
+import { $dictionary } from "../stores/dictionary.js";
+
+const { pageTitle, class:list } = Astro.props;
+const dictionary = await Astro.glob("../pages/word/*.mdx");
+
+$dictionary.set(dictionary);
+---
+
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<meta name="viewport" content="width=device-width" />
+		<meta name="generator" content={Astro.generator} />
+		<title>{ pageTitle } - Developer Jargons</title>
+	</head>
+	<body class={list}>
+    <slot />
+	</body>
+</html>

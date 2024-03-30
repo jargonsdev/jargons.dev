@@ -1,0 +1,28 @@
+---
+import BaseLayout from "./base.astro";
+import Navbar from "../components/navbar.astro";
+import Search from "../components/islands/search.jsx";
+import { $dictionary } from "../stores/dictionary.js";
+
+const { frontmatter } = Astro.props;
+---
+
+<BaseLayout pageTitle={ frontmatter.title }>
+  <Navbar>
+    <Search triggerSize="sm" dictionary={$dictionary.value} client:load />
+  </Navbar>
+
+	<main class="max-w-screen-lg p-5 md:mt-10 mx-auto min-h-screen space-y-6">
+    <div class="w-full">
+      <h1 class="text-3xl md:text-7xl font-black">
+        { frontmatter.title }
+      </h1>
+      <!-- Other metadata here -->
+    </div>
+
+    <!-- Meaning -->
+    <article class="w-full max-w-screen-lg prose">
+      <slot /> 
+    </article>
+  </main>
+</BaseLayout>

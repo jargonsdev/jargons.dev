@@ -1,0 +1,26 @@
+---
+import BaseLayout from "../layouts/base.astro";
+import Search from "../components/islands/search.jsx";
+import RecentSearches from "../components/islands/recent-searches.jsx";
+import { $dictionary } from "../stores/dictionary.js";
+---
+
+<BaseLayout pageTitle="Dictionary">
+	<main class="flex flex-col max-w-screen-lg p-5 justify-center mx-auto min-h-screen">
+		<!-- Title -->
+		<div class="mb-4 md:mb-6">
+			<h1 class="relative text-5xl md:text-7xl lg:text-8xl font-black w-fit">
+				<a href="/" class="absolute font-normal text-[0.6rem] md:text-xs right-0 md:top-1.5 lg:top-3">
+					jargons.dev
+				</a>
+				Dictionary
+			</h1>
+		</div>
+		
+		<!-- Search -->
+		<Search triggerSize="md" dictionary={$dictionary.value} client:load />
+
+		<!-- Recent Word Look Up -->
+		<RecentSearches client:load />
+	</main>
+</BaseLayout>

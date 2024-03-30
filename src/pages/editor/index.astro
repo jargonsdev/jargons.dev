@@ -1,0 +1,28 @@
+---
+import doAuth from "../../lib/actions/do-auth";
+import { $userData } from "../../stores/user.js";
+import BaseLayout from "../../layouts/base.astro";
+import Navbar from "../../components/navbar.astro";
+import WordEditor from "../../components/islands/word-editor.jsx";
+
+const { url: { pathname }, redirect } = Astro;
+const { isAuthed, authedData: userData } = await doAuth(Astro);
+if (!isAuthed) return redirect(`/login?redirect=${pathname}`);
+// @ts-expect-error
+$userData.set(userData);
+---
+
+<BaseLayout 
+  pageTitle="Dictionry"
+  class="flex flex-col w-full min-h-screen overflow-hidden"
+>
+  <Navbar>
+    <a class="no-underline text-white bg-gray-900 hover:bg-gray-700 focus:ring-4 focus:ring-gray-600 font-medium rounded-lg text-base px-5 py-2.5 text-center ml-1 sm:ml-3">
+      Publish
+    </a>
+  </Navbar>
+
+  <main class="flex grow px-5 md:px-6 pb-4">
+    <WordEditor client:load />
+  </main>
+</BaseLayout>

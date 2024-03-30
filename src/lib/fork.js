@@ -2,28 +2,25 @@ import { getRepoParts } from "./utils/index.js";
 
 /**
  * Fork the dictionry Repo to user account
- * @param {import("octokit").Octokit} octokit 
+ * @param {import("octokit").Octokit} userOctokit 
  * @param {string} repo 
  */
-export async function forkRepository(octokit, repo = "babblebey/dictionry") {
+export async function forkRepository(userOctokit, repo = "babblebey/dictionry") {
   const { repoOwner, repoName } = getRepoParts(repo);
 
   try {
-    // TODO: Replace this Call with Details from Authentication
-    const { data: user } = await octokit.request("GET /user");
+    const { data: user } = await userOctokit.request("GET /user");
     console.log(user);
 
-    const { repo: fork, isForked: isDictionryForked } = isForked(octokit, user.login); 
-    if (isDictionryForked) {
-      // Update - If not upto date
-      // TODO: Get fork name programmatically in cases 
-      if (!isForkUpdated(octokit, fork)) {
-        await updateFork(octokit, fork);
+    const { repo: fork, isForked: isRepoForked } = isForked(userOctokit, user.login); 
+    if (isRepoForked) {
+      if (!isForkUpdated(userOctokit, fork)) {
+        await updateFork(userOctokit, fork);
       }
       return;
     }
 
-    const response = await octokit.repos.createFork({
+    const response = await userOctokit.repos.createFork({
       owner: repoOwner,
       repo: repoName,
     });
@@ -38,11 +35,11 @@ export async function forkRepository(octokit, repo = "babblebey/dictionry") {
   }
 }
 
-async function updateFork(octokit, fork) {
+async function updateFork(userOctokit, fork) {
   const { repoOwner, repoName } = getRepoParts(fork);
 
   try {
-    const updatedFork = await octokit.request('PATCH /repos/{owner}/{repo}/git/refs/{ref}', {
+    const updatedFork = await userOctokit.request('PATCH /repos/{owner}/{repo}/git/refs/{ref}', {
       owner: 'OWNER',
       repo: 'REPO',
       // SHOULD BE: `heads/${branchToSync}`
@@ -58,20 +55,20 @@ async function updateFork(octokit, fork) {
   }
 }
 
-async function isForkUpdated(octokit, fork) {
-  const forkBranch = await getBranch(octokit, fork, "heads/beta");
+async function isForkUpdated(userOctokit, fork) {
+  const forkBranch = await getBranch(userOctokit, fork, "heads/beta");
   // SHOULD BE: Dictionry Repo
   // TODO: replace hardcoded dictionryRepo in "repo" args 
-  const dictionryBranch = await getBranch(octokit, "babblebey/insights", "heads/beta");
+  const dictionryBranch = await getBranch(userOctokit, "babblebey/insights", "heads/beta");
 
   return forkBranch.object.sha === dictionryBranch.object.sha;
 }
 
-async function getBranch(octokit, repo, branch) {
+async function getBranch(userOctokit, repo, branch) {
   const parts = repo.split("/");
   const [ repoOwner, repoName ] = [ parts[0], parts[1] ];
 
-  const response = await octokit.request("GET /repos/{owner}/{repo}/git/ref/{ref}", {
+  const response = await userOctokit.request("GET /repos/{owner}/{repo}/git/ref/{ref}", {
     owner: repoOwner,
     repo: repoName,
     ref: branch,
@@ -101,10 +98,10 @@ const getForksQuery = `#graphql
   }
 `;
 
-async function isForked(octokit, login) {
+async function isForked(userOctokit, login) {
   try {
     // TODO: paginate response to get a list of all forks in one call
-    const response = await octokit.graphql(getForksQuery, { login });
+    const response = await userOctokit.graphql(getForksQuery, { login });
 
     // SHOULD BE: Dictionry Repo
     // TODO: Setup correct Dictionry Repo for fork Parent comparison

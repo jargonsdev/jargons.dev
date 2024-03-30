@@ -14,6 +14,7 @@ export default async function doAuth(astroGlobal) {
   /**
    * Generate OAuth Url to start authorization flow
    * @todo make the `parsedState` data more predictable (order by path, redirect)
+   * @todo improvement: store `state` in cookie for later retrieval in `github/oauth/callback` handler for cleaner url
    * @param {{ path?: string, redirect?: boolean }} state 
    */
   function getAuthUrl(state) {

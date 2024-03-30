@@ -57,9 +57,11 @@ function Preview({ className, ...props }) {
 
         <div className="max-w-4xl space-y-8 mx-auto">
           <div className="w-full">
-            <h1 className="text-4xl font-black">
-              { title }
-            </h1>
+            {title && (
+              <h1 className="text-4xl font-black">
+                { title }
+              </h1>
+            )}
           </div>
 
           <article className="w-full max-w-screen-lg prose">

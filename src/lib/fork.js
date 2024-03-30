@@ -11,12 +11,13 @@ export async function forkRepository(userOctokit, repoDetails) {
 
   try {
     const { data: user } = await userOctokit.request("GET /user");
-    console.log(user);
+    // console.log(user);
 
-    const { repo: fork, isForked: isRepoForked } = isForked(userOctokit, { 
+    const { repo: fork, isForked: isRepoForked } = isRepositoryForked(userOctokit, { 
       repoFullname, 
       user: user.login 
     }); 
+
     if (isRepoForked) {
       console.log("Repo is already forked!")
       if (!isForkUpdated(userOctokit, fork)) {
@@ -104,7 +105,7 @@ const getForksQuery = `#graphql
   }
 `;
 
-async function isForked(userOctokit, { repoFullname, user: login }) {
+async function isRepositoryForked(userOctokit, { repoFullname, user: login }) {
   try {
     // TODO: paginate response to get a list of all forks in one call
     const response = await userOctokit.graphql(getForksQuery, { login });
@@ -124,7 +125,7 @@ async function isForked(userOctokit, { repoFullname, user: login }) {
 
 export {
   isForkUpdated,
-  isForked,
+  isRepositoryForked,
   updateFork,
   getBranch
 }

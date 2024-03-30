@@ -3,24 +3,30 @@ import { getRepoParts } from "./utils/index.js";
 /**
  * Fork the dictionry Repo to user account
  * @param {import("octokit").Octokit} userOctokit 
- * @param {string} repo 
+ * @param {{ repoFullname: string, repoMainBranchRef: string }} repo 
  */
-export async function forkRepository(userOctokit, repo = "babblebey/dictionry") {
-  const { repoOwner, repoName } = getRepoParts(repo);
+export async function forkRepository(userOctokit, repoDetails) {
+  const { repoFullname, repoMainBranchRef } = repoDetails;
+  const { repoOwner, repoName } = getRepoParts(repoFullname);
 
   try {
     const { data: user } = await userOctokit.request("GET /user");
     console.log(user);
 
-    const { repo: fork, isForked: isRepoForked } = isForked(userOctokit, user.login); 
+    const { repo: fork, isForked: isRepoForked } = isForked(userOctokit, { 
+      repoFullname, 
+      user: user.login 
+    }); 
     if (isRepoForked) {
+      console.log("Repo is already forked!")
       if (!isForkUpdated(userOctokit, fork)) {
         await updateFork(userOctokit, fork);
+        console.log("Repo was also outdated and immeidately updated")
       }
       return;
     }
 
-    const response = await userOctokit.repos.createFork({
+    const response = await userOctokit.request("POST /repos/{owner}/{repo}/forks", {
       owner: repoOwner,
       repo: repoName,
     });
@@ -98,15 +104,12 @@ const getForksQuery = `#graphql
   }
 `;
 
-async function isForked(userOctokit, login) {
+async function isForked(userOctokit, { repoFullname, user: login }) {
   try {
     // TODO: paginate response to get a list of all forks in one call
     const response = await userOctokit.graphql(getForksQuery, { login });
 
-    // SHOULD BE: Dictionry Repo
-    // TODO: Setup correct Dictionry Repo for fork Parent comparison
-    const repo = "open-sauced/app";
-    const { repoOwner, repoName } = getRepoParts(repo);
+    const { repoOwner, repoName } = getRepoParts(repoFullname);
 
     const matchingFork = response.user.repositories.nodes.find((fork) => fork.parent && fork.parent.owner.login === repoOwner && fork.parent.name === repoName);
 

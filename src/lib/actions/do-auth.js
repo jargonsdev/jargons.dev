@@ -1,4 +1,5 @@
 import app from "../../lib/octokit/app.js";
+import { decrypt, encrypt } from "../utils/crypto.js";
 import { GET } from "../../pages/api/github/oauth/authorize.js";
 import { resolveCookieExpiryDate } from "../../lib/utils/index.js";
 
@@ -9,7 +10,9 @@ import { resolveCookieExpiryDate } from "../../lib/utils/index.js";
 export default async function doAuth(astroGlobal) {
   const { url: { searchParams }, cookies } = astroGlobal;
   const code = searchParams.get("code");
-  const accessToken = cookies.get("jargons.dev:token");
+  const accessToken = cookies.get("jargons.dev:token", {
+    decode: value => decrypt(value)
+  });
 
   /**
    * Generate OAuth Url to start authorization flow
@@ -32,10 +35,12 @@ export default async function doAuth(astroGlobal) {
   
       if (responseData.accessToken && responseData.refreshToken) {
         cookies.set("jargons.dev:token", responseData.accessToken, {
-          expires: resolveCookieExpiryDate(responseData.expiresIn)
+          expires: resolveCookieExpiryDate(responseData.expiresIn),
+          encode: value => encrypt(value)
         });
         cookies.set("jargons.dev:refresh-token", responseData.refreshToken, {
-          expires: resolveCookieExpiryDate(responseData.refreshTokenExpiresIn)
+          expires: resolveCookieExpiryDate(responseData.refreshTokenExpiresIn),
+          encode: value => encrypt(value)
         });
       }
     }

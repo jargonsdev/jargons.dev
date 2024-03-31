@@ -21,7 +21,7 @@ export async function forkRepository(userOctokit, repoDetails) {
     if (isRepoForked) {
       console.log("Repo is already forked!")
       if (!isRepositoryForkUpdated(userOctokit, repoDetails, fork)) {
-        await updateFork(userOctokit, fork);
+        await updateRepositoryFork(userOctokit, repoMainBranchRef, fork);
         console.log("Repo was also outdated and immeidately updated")
       }
       return;
@@ -42,22 +42,20 @@ export async function forkRepository(userOctokit, repoDetails) {
   }
 }
 
-async function updateFork(userOctokit, fork) {
+async function updateRepositoryFork(userOctokit, headBranchRef, fork) {
   const { repoOwner, repoName } = getRepoParts(fork);
 
   try {
-    const updatedFork = await userOctokit.request('PATCH /repos/{owner}/{repo}/git/refs/{ref}', {
-      owner: 'OWNER',
-      repo: 'REPO',
-      // SHOULD BE: `heads/${branchToSync}`
-      ref: "heads/beta",
-      // SHOULD BE: `refs/remotes/origin/${branchToSync}`
-      sha: "refs/remotes/origin/head",
+    const updatedFork = await userOctokit.request("PATCH /repos/{owner}/{repo}/git/refs/{ref}", {
+      owner: repoOwner,
+      repo: repoName,
+      ref: headBranchRef, //-> `heads/${branchToSync}`
+      sha: "refs/remotes/origin/head", //-> `refs/remotes/origin/${branchToSync}`
     })
 
     console.log("Fork is now updated and in-sync with upstream");
   } catch (error) {
-    console.error('Error syncing with upstream:', error.message);
+    console.error("Error syncing with upstream:", error.message);
     throw error;
   }
 }

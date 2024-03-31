@@ -10,7 +10,6 @@
     "preview": "astro preview",
     "astro": "astro"
   },
-  "type": "module",
   "keywords": [],
   "author": "",
   "license": "ISC",

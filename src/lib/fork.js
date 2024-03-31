@@ -19,10 +19,13 @@ export async function forkRepository(userOctokit, repoDetails) {
     }); 
 
     if (!!fork) {
-      console.log("Repo is already forked!")
-      if (!isRepositoryForkUpdated(userOctokit, repoDetails, fork)) {
+      console.log("Repo is already forked!");
+
+      const { isUpdated, updateSHA } = await isRepositoryForkUpdated(userOctokit, repoDetails, fork)
+      console.log(updateSHA);
+      if (!isUpdated) {
+        console.log("Repo is outdated!");
         await updateRepositoryFork(userOctokit, repoMainBranchRef, fork);
-        console.log("Repo was also outdated and immeidately updated")
       }
       return;
     }
@@ -45,13 +48,17 @@ export async function forkRepository(userOctokit, repoDetails) {
 async function updateRepositoryFork(userOctokit, headBranchRef, fork) {
   const { repoOwner, repoName } = getRepoParts(fork);
 
+  console.log("updateRepositoryFork() executed!")
+
   try {
     const updatedFork = await userOctokit.request("PATCH /repos/{owner}/{repo}/git/refs/{ref}", {
       owner: repoOwner,
       repo: repoName,
       ref: headBranchRef, //-> `heads/${branchToSync}`
       sha: "refs/remotes/origin/head", //-> `refs/remotes/origin/${branchToSync}`
-    })
+    });
+
+    console.log(updatedFork);
 
     console.log("Fork is now updated and in-sync with upstream");
   } catch (error) {
@@ -66,7 +73,10 @@ async function isRepositoryForkUpdated(userOctokit, repoDetails, fork) {
   const userForkedBranch = await getBranch(userOctokit, fork, repoMainBranchRef);
   const projectBranch = await getBranch(userOctokit, repoFullname, repoMainBranchRef);
 
-  return userForkedBranch.object.sha === projectBranch.object.sha;
+  return {
+    isUpdated: userForkedBranch.object.sha === projectBranch.object.sha,
+    updateSHA: projectBranch.object.sha
+  };
 }
 
 async function getBranch(userOctokit, repo, ref) {

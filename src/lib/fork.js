@@ -13,12 +13,12 @@ export async function forkRepository(userOctokit, repoDetails) {
     const { data: user } = await userOctokit.request("GET /user");
     // console.log(user);
 
-    const { repo: fork, isForked: isRepoForked } = isRepositoryForked(userOctokit, { 
+    const { repo: fork } = await isRepositoryForked(userOctokit, { 
       repoFullname, 
       user: user.login 
     }); 
 
-    if (isRepoForked) {
+    if (!!fork) {
       console.log("Repo is already forked!")
       if (!isRepositoryForkUpdated(userOctokit, repoDetails, fork)) {
         await updateRepositoryFork(userOctokit, repoMainBranchRef, fork);
@@ -64,7 +64,6 @@ async function isRepositoryForkUpdated(userOctokit, repoDetails, fork) {
   const { repoFullname, repoMainBranchRef } = repoDetails;
 
   const userForkedBranch = await getBranch(userOctokit, fork, repoMainBranchRef);
-
   const projectBranch = await getBranch(userOctokit, repoFullname, repoMainBranchRef);
 
   return userForkedBranch.object.sha === projectBranch.object.sha;
@@ -107,14 +106,12 @@ async function isRepositoryForked(userOctokit, { repoFullname, user: login }) {
   try {
     // TODO: paginate response to get a list of all forks in one call
     const response = await userOctokit.graphql(getForksQuery, { login });
-
     const { repoOwner, repoName } = getRepoParts(repoFullname);
-
-    const matchingFork = response.user.repositories.nodes.find((fork) => fork.parent && fork.parent.owner.login === repoOwner && fork.parent.name === repoName);
-
+    const matchingFork = response.user.repositories.nodes.find((fork) => fork.parent && fork.parent.owner.login === repoOwner && fork.parent.name === repoName) 
+      ?? null;
+    
     return {
-      repo: matchingFork.owner.login + "/" + matchingFork.name,
-      isForked: matchingFork !== undefined
+      repo: matchingFork ? matchingFork.owner.login + "/" + matchingFork.name : null
     };
   } catch (error) {
     console.log("Error occurred while checking repo fork: ", error);
@@ -122,8 +119,8 @@ async function isRepositoryForked(userOctokit, { repoFullname, user: login }) {
 }
 
 export {
-  isForkUpdated,
+  isRepositoryForkUpdated,
   isRepositoryForked,
-  updateFork,
+  updateRepositoryFork,
   getBranch
 }

@@ -11,11 +11,10 @@ export async function forkRepository(userOctokit, repoDetails) {
 
   try {
     const { data: user } = await userOctokit.request("GET /user");
-    // console.log(user);
 
     const { repo: fork } = await isRepositoryForked(userOctokit, { 
       repoFullname, 
-      user: user.login 
+      userLogin: user.login 
     }); 
 
     if (!!fork) {
@@ -25,11 +24,13 @@ export async function forkRepository(userOctokit, repoDetails) {
 
       if (!isUpdated) {
         console.log("Repo is outdated!");
+
         await updateRepositoryFork(userOctokit, fork, { 
           ref: repoMainBranchRef, 
           sha: updateSHA 
         });
       }
+
       return;
     }
 
@@ -52,17 +53,13 @@ async function updateRepositoryFork(userOctokit, fork, headRepoRef) {
   const { repoOwner, repoName } = getRepoParts(fork);
   const { ref, sha } = headRepoRef;
 
-  console.log("updateRepositoryFork() executed!")
-
   try {
-    const updatedFork = await userOctokit.request("PATCH /repos/{owner}/{repo}/git/refs/{ref}", {
+    await userOctokit.request("PATCH /repos/{owner}/{repo}/git/refs/{ref}", {
       owner: repoOwner,
       repo: repoName,
       ref, //-> `heads/${branchToSync}`
       sha
     });
-
-    console.log(updatedFork);
 
     console.log("Fork is now updated and in-sync with upstream");
   } catch (error) {
@@ -116,7 +113,7 @@ const getForksQuery = `#graphql
   }
 `;
 
-async function isRepositoryForked(userOctokit, { repoFullname, user: login }) {
+async function isRepositoryForked(userOctokit, { repoFullname, userLogin }) {
   try {
     // TODO: paginate response to get a list of all forks in one call
     const response = await userOctokit.graphql(getForksQuery, { login });

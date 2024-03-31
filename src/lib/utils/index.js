@@ -10,10 +10,10 @@ export function resolveCookieExpiryDate(expireIn) {
 
 /**
  * Get repository Owner and Name from fullname
- * @param {string} repoFullName
+ * @param {string} repoFullname
  * @returns an object with `repoOwner` and `repoName`
  */
-export function getRepoParts(repoFullName) {
+export function getRepoParts(repoFullname) {
   const parts = repoFullname.split("/");
   const [ repoOwner, repoName ] = [ parts[0], parts[1] ];
 

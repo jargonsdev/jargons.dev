@@ -1,4 +1,3 @@
-import { getBranch } from "./fork.js";
 import { getRepoParts } from "./utils/index.js";
 
 /**
@@ -20,4 +19,23 @@ export async function createBranch(userOctokit, repoDetails, branchName) {
   });
 
   return response.data
+}
+
+/**
+ * Get a Branch/Ref details
+ * @param {import("octokit").Octokit} userOctokit 
+ * @param {string} repo 
+ * @param {string} ref 
+ * @returns Branch/Ref details
+ */
+export async function getBranch(userOctokit, repo, ref) {
+  const { repoOwner, repoName } = getRepoParts(repo);
+
+  const response = await userOctokit.request("GET /repos/{owner}/{repo}/git/ref/{ref}", {
+    owner: repoOwner,
+    repo: repoName,
+    ref: ref,
+  });
+
+  return response.data;
 }

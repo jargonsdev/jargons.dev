@@ -1,3 +1,4 @@
+import { getBranch } from "./branch.js";
 import { getRepoParts } from "./utils/index.js";
 
 /**
@@ -88,25 +89,6 @@ async function isRepositoryForkUpdated(userOctokit, repoDetails, fork) {
     isUpdated: userForkedBranch.object.sha === projectBranch.object.sha,
     updateSHA: projectBranch.object.sha
   };
-}
-
-/**
- * Get a Branch/Ref details
- * @param {import("octokit").Octokit} userOctokit 
- * @param {string} repo 
- * @param {string} ref 
- * @returns Branch/Ref details
- */
-async function getBranch(userOctokit, repo, ref) {
-  const { repoOwner, repoName } = getRepoParts(repo);
-
-  const response = await userOctokit.request("GET /repos/{owner}/{repo}/git/ref/{ref}", {
-    owner: repoOwner,
-    repo: repoName,
-    ref: ref,
-  });
-
-  return response.data;
 }
 
 /**

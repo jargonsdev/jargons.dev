@@ -14,14 +14,18 @@ export async function createBranch(userOctokit, repoDetails, newBranchName) {
   const { repoName, repoOwner } = getRepoParts(repoFullname);
   const { object: { sha } } = await getBranch(userOctokit, repoFullname, repoMainBranchRef);
 
-  const response = await userOctokit.request("POST /repos/{owner}/{repo}/git/refs", {
-    owner: repoOwner,
-    repo: repoName,
-    ref: `refs/heads/${newBranchName}`,
-    sha,
-  });
-
-  return response.data
+  try {
+    const response = await userOctokit.request("POST /repos/{owner}/{repo}/git/refs", {
+      owner: repoOwner,
+      repo: repoName,
+      ref: `refs/heads/${newBranchName}`,
+      sha,
+    });
+  
+    return response.data
+  } catch (error) {
+    throw new Error("error creating a new branch", error)
+  }
 }
 
 /**

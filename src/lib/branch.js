@@ -24,7 +24,9 @@ export async function createBranch(userOctokit, repoDetails, newBranchName) {
   
     return response.data
   } catch (error) {
-    throw new Error("error creating a new branch", error)
+    throw new Error("error creating a new branch", { 
+      cause: error.message 
+    })
   }
 }
 

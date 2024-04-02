@@ -1,14 +1,26 @@
+import { getRepoParts } from "./utils/index.js";
+
 /**
  * Write and add a new word to user's forked dictionary
- * @param {*} userOctokit 
+ * @param {import("octokit").Octokit} userOctokit 
  * @param {{ repoFullname: string, repoBranchRef: string }} forkedRepoDetails 
  * @param {{ title: string, content: string }} word 
  */
-export function writeNewWord(userOctokit, forkedRepoDetails, { title, content }) {
-  // word - title, content
-  // filepath - compute from word.title
-  // commitMessage - compute from action
-  // 
+export async function writeNewWord(userOctokit, forkedRepoDetails, { title, content }) {
+  const { repoFullname, repoBranchRef } = forkedRepoDetails;
+  const { repoOwner, repoName } = getRepoParts(repoFullname);
+  const branch = repoBranchRef.split("/").slice(2).join("/");
+
+  const response = await userOctokit.request("PUT /repos/{owner}/{repo}/contents/{path}", {
+    owner: repoOwner,
+    repo: repoName,
+    branch,
+    path: `src/pages/browse/${title.toLowerCase()}.mdx`,
+    content: Buffer.from(content).toString("base64"),
+    message: `word: commit to "${title}"`
+  });
+
+  return response.data
 }
 
 /**

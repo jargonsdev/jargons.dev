@@ -1,4 +1,5 @@
 import { getRepoParts } from "./utils/index.js";
+import wordFileTemplate from "./template/word.md.js";
 
 /**
  * Write and add a new word to user's forked dictionary
@@ -10,13 +11,14 @@ export async function writeNewWord(userOctokit, forkedRepoDetails, { title, cont
   const { repoFullname, repoBranchRef } = forkedRepoDetails;
   const { repoOwner, repoName } = getRepoParts(repoFullname);
   const branch = repoBranchRef.split("/").slice(2).join("/");
+  const wordFileContent = writeFileContent(title, content);
 
   const response = await userOctokit.request("PUT /repos/{owner}/{repo}/contents/{path}", {
     owner: repoOwner,
     repo: repoName,
     branch,
     path: `src/pages/browse/${title.toLowerCase()}.mdx`,
-    content: Buffer.from(content).toString("base64"),
+    content: Buffer.from(wordFileContent).toString("base64"),
     message: `word: commit to "${title}"`
   });
 
@@ -65,4 +67,15 @@ export async function getExistingWord(userOctokit, forkedRepoDetails, wordTitle)
   });
 
   return response.data;
+}
+
+/**
+ * Write word file content using pre-defined template
+ * @param {string} title 
+ * @param {string} content 
+ * @returns {string}
+ */
+function writeFileContent(title, content) {
+  const file = wordFileTemplate;
+  return file.replace("$title", title).replace("$content", content);
 }

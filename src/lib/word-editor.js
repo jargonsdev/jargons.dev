@@ -1,4 +1,4 @@
-import { getRepoParts } from "./utils/index.js";
+import { getRepoParts, normalizeAsUrl } from "./utils/index.js";
 import wordFileTemplate from "./template/word.md.js";
 
 /**
@@ -18,7 +18,7 @@ export async function writeNewWord(userOctokit, forkedRepoDetails, { title, cont
       owner: repoOwner,
       repo: repoName,
       branch,
-      path: `src/pages/browse/${title.toLowerCase()}.mdx`,
+      path: `src/pages/browse/${normalizeAsUrl(title)}.mdx`,
       content: Buffer.from(wordFileContent).toString("base64"),
       message: `word: commit to "${title}"`
     });
@@ -73,7 +73,7 @@ export async function getExistingWord(userOctokit, forkedRepoDetails, wordTitle)
       owner: repoOwner,
       repo: repoName,
       ref: repoBranchRef,
-      path: `src/pages/browse/${wordTitle.toLowerCase()}.mdx`,
+      path: `src/pages/browse/${normalizeAsUrl(wordTitle)}.mdx`,
     });
   
     return {

@@ -35,10 +35,20 @@ export function editExistingWord(userOctokit, forkedRepoDetails, { title, conten
 
 /**
  * Retrieve data for already existing word
- * @param {*} userOctokit 
+ * @param {import("octokit").Octokit} userOctokit 
  * @param {{ repoFullname: string, repoBranchRef: string }} forkedRepoDetails 
  * @param {string} wordTitle 
  */
-export function getExistingWord(userOctokit, forkedRepoDetails, wordTitle) {
+export async function getExistingWord(userOctokit, forkedRepoDetails, wordTitle) {
+  const { repoFullname, repoBranchRef } = forkedRepoDetails;
+  const { repoOwner, repoName } = getRepoParts(repoFullname);
 
+  const response = await userOctokit.request("GET /repos/{owner}/{repo}/contents/{path}", {
+    owner: repoOwner,
+    repo: repoName,
+    ref: repoBranchRef,
+    path: `src/pages/browse/${wordTitle.toLowerCase()}.mdx`,
+  });
+
+  return response.data;
 }

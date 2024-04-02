@@ -13,16 +13,20 @@ export async function writeNewWord(userOctokit, forkedRepoDetails, { title, cont
   const branch = repoBranchRef.split("/").slice(2).join("/");
   const wordFileContent = writeFileContent(title, content);
 
-  const response = await userOctokit.request("PUT /repos/{owner}/{repo}/contents/{path}", {
-    owner: repoOwner,
-    repo: repoName,
-    branch,
-    path: `src/pages/browse/${title.toLowerCase()}.mdx`,
-    content: Buffer.from(wordFileContent).toString("base64"),
-    message: `word: commit to "${title}"`
-  });
-
-  return response.data
+  try {
+    const response = await userOctokit.request("PUT /repos/{owner}/{repo}/contents/{path}", {
+      owner: repoOwner,
+      repo: repoName,
+      branch,
+      path: `src/pages/browse/${title.toLowerCase()}.mdx`,
+      content: Buffer.from(wordFileContent).toString("base64"),
+      message: `word: commit to "${title}"`
+    });
+  
+    return response.data
+  } catch (error) {
+    throw new Error(`error committing new word ${title} to dictionary`, { cause: error.message })
+  }
 }
 
 /**
@@ -37,17 +41,21 @@ export async function editExistingWord(userOctokit, forkedRepoDetails, { path, s
   const branch = repoBranchRef.split("/").slice(2).join("/");
   const wordFileContent = writeFileContent(title, content);
 
-  const response = await userOctokit.request("PUT /repos/{owner}/{repo}/contents/{path}", {
-    owner: repoOwner,
-    repo: repoName,
-    branch,
-    path,
-    content: Buffer.from(wordFileContent).toString("base64"),
-    message: `word: edit commit to "${title}"`,
-    sha
-  });
-
-  return response.data;
+  try {
+    const response = await userOctokit.request("PUT /repos/{owner}/{repo}/contents/{path}", {
+      owner: repoOwner,
+      repo: repoName,
+      branch,
+      path,
+      content: Buffer.from(wordFileContent).toString("base64"),
+      message: `word: edit commit to "${title}"`,
+      sha
+    });
+  
+    return response.data;
+  } catch (error) {
+    throw new Error(`error committing edit to "${title}"`, { cause: error.message })
+  }
 }
 
 /**
@@ -60,17 +68,21 @@ export async function getExistingWord(userOctokit, forkedRepoDetails, wordTitle)
   const { repoFullname, repoBranchRef } = forkedRepoDetails;
   const { repoOwner, repoName } = getRepoParts(repoFullname);
 
-  const response = await userOctokit.request("GET /repos/{owner}/{repo}/contents/{path}", {
-    owner: repoOwner,
-    repo: repoName,
-    ref: repoBranchRef,
-    path: `src/pages/browse/${wordTitle.toLowerCase()}.mdx`,
-  });
-
-  return {
-    title: wordTitle,
-    ...response.data
-  };
+  try {
+    const response = await userOctokit.request("GET /repos/{owner}/{repo}/contents/{path}", {
+      owner: repoOwner,
+      repo: repoName,
+      ref: repoBranchRef,
+      path: `src/pages/browse/${wordTitle.toLowerCase()}.mdx`,
+    });
+  
+    return {
+      title: wordTitle,
+      ...response.data
+    };
+  } catch (error) {
+    throw new Error(`error getting "${wordTitle}" from dictionary`, { cause: error.message })
+  }
 }
 
 /**

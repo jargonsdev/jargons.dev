@@ -66,7 +66,10 @@ export async function getExistingWord(userOctokit, forkedRepoDetails, wordTitle)
     path: `src/pages/browse/${wordTitle.toLowerCase()}.mdx`,
   });
 
-  return response.data;
+  return {
+    title: wordTitle,
+    ...response.data
+  };
 }
 
 /**

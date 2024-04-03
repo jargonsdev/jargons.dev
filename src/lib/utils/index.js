@@ -22,3 +22,12 @@ export function getRepoParts(repoFullname) {
     repoName
   }
 }
+
+/**
+ * Normalize a string to something usable in url
+ * @param {string} string 
+ * @returns {string}
+ */
+export function normalizeAsUrl(string) {
+  return string.toLowerCase().replace(/\s+/g, "-");
+}

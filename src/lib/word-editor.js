@@ -75,10 +75,14 @@ export async function getExistingWord(userOctokit, forkedRepoDetails, wordTitle)
       ref: repoBranchRef,
       path: `src/pages/browse/${normalizeAsUrl(wordTitle)}.mdx`,
     });
-  
+
+    const { content, ...responseData } = response.data;
+
     return {
       title: wordTitle,
-      ...response.data
+      content,
+      content_decoded: Buffer.from(content, "base64").toString("utf-8"),
+      ...responseData
     };
   } catch (error) {
     throw new Error(`error getting "${wordTitle}" from dictionary`, { cause: error.message })

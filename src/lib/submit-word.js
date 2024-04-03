@@ -16,13 +16,12 @@ export async function submitWord(userOctokit, action, mainRepoDetails, forkedRep
   const headBranch = forkedRepoDetails.repoChangeBranchRef.split("/").slice(2).join("/");
 
   const response = await userOctokit.request("POST /repos/{owner}/{repo}/pulls", {
-    owner: "babblebey",
-    repo: "test",
-    title: "title test",
-    body: "body content \n text",
-    head: "sbabblebey:word/new/tuple", //`${headBranch}`, //forkedRepoDetails.repoChangeBranchRef.split("/").slice(2).join("/"),
-    // head_repo: "sbabblebey/test-mm",
-    base: "main"
+    owner: repoOwner,
+    repo: repoName,
+    head: `${forkedRepoOwner}:${headBranch}`,
+    base: baseBranch,
+    title: "title test", // word.title
+    body: "body content \ntext", // word.content
   });
 
   return response.data;

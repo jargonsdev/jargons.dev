@@ -11,7 +11,7 @@ export async function writeNewWord(userOctokit, forkedRepoDetails, { title, cont
   const { repoFullname, repoBranchRef } = forkedRepoDetails;
   const { repoOwner, repoName } = getRepoParts(repoFullname);
   const branch = repoBranchRef.split("/").slice(2).join("/");
-  const wordFileContent = writeFileContent(title, content);
+  const wordFileContent = writeWordFileContent(title, content);
 
   try {
     const response = await userOctokit.request("PUT /repos/{owner}/{repo}/contents/{path}", {
@@ -39,7 +39,7 @@ export async function editExistingWord(userOctokit, forkedRepoDetails, { path, s
   const { repoFullname, repoBranchRef } = forkedRepoDetails;
   const { repoOwner, repoName } = getRepoParts(repoFullname);
   const branch = repoBranchRef.split("/").slice(2).join("/");
-  const wordFileContent = writeFileContent(title, content);
+  const wordFileContent = writeWordFileContent(title, content);
 
   try {
     const response = await userOctokit.request("PUT /repos/{owner}/{repo}/contents/{path}", {
@@ -95,7 +95,7 @@ export async function getExistingWord(userOctokit, forkedRepoDetails, wordTitle)
  * @param {string} content 
  * @returns {string}
  */
-function writeFileContent(title, content) {
+function writeWordFileContent(title, content) {
   const file = wordFileTemplate;
   return file.replace("$title", title).replace("$content", content);
 }

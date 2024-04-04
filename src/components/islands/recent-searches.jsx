@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useStore } from "@nanostores/react";
-import { $recentSearches } from "../../stores/search.js";
+import { $recentSearches } from "../../lib/stores/search.js";
 
 /**
  * @todo implement a default list instead of `null` when no `$recentSearch` is found 

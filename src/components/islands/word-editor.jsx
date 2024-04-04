@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import Markdown from "react-markdown";
-import useWordEditor from "../../hooks/use-word-editor.js";
+import useWordEditor from "../../lib/hooks/use-word-editor.js";
 
 export default function WordEditor({ title = "", content = "" }) {
   return (

@@ -1,7 +1,7 @@
-import app from "../../lib/octokit/app.js";
+import app from "../octokit/app.js";
 import { decrypt, encrypt } from "../utils/crypto.js";
 import { GET } from "../../pages/api/github/oauth/authorize.js";
-import { resolveCookieExpiryDate } from "../../lib/utils/index.js";
+import { resolveCookieExpiryDate } from "../utils/index.js";
 
 /**
  * Authentication action with GitHub OAuth

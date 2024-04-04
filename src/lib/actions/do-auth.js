@@ -1,7 +1,7 @@
 import app from "../octokit/app.js";
 import { decrypt, encrypt } from "../utils/crypto.js";
 import { GET } from "../../pages/api/github/oauth/authorize.js";
-import { resolveCookieExpiryDate } from "../utils/index.js";
+import { isObjectEmpty, resolveCookieExpiryDate } from "../utils/index.js";
 
 /**
  * Authentication action with GitHub OAuth
@@ -16,15 +16,25 @@ export default async function doAuth(astroGlobal) {
 
   /**
    * Generate OAuth Url to start authorization flow
-   * @todo make the `parsedState` data more predictable (order by path, redirect)
    * @todo improvement: store `state` in cookie for later retrieval in `github/oauth/callback` handler for cleaner url
    * @param {{ path?: string, redirect?: boolean }} state 
    */
   function getAuthUrl(state) {
-    const parsedState = String(Object.keys(state).map(key => key + ":" + state[key]).join("|"));
+    let parsedState = "";
+
+    if (!isObjectEmpty(state)){
+      if (state.path) parsedState += `path:${state.path}`;
+      if (state.redirect) parsedState += `|redirect:${state.redirect}`;
+      const otherStates = String(Object.keys(state)
+        .filter(key => key !== "path" && key !== "redirect")
+        .map(key => key + ":" + state[key]).join("|"));
+      if (otherStates.length > 0) parsedState += `|${otherStates}`;
+    }
+
     const { url } = app.oauth.getWebFlowAuthorizationUrl({
       state: parsedState
     });
+
     return url;
   }
 

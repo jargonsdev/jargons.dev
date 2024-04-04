@@ -1,11 +1,11 @@
 import Flexsearch from "flexsearch";
 import { useEffect, useState } from "react";
 import { useStore } from "@nanostores/react";
-import { $isSearchOpen } from "../../stores/search.js";
-import useRouter from "../../hooks/use-router.js";
-import useIsMacOS from "../../hooks/use-is-mac-os.js";
-import useLockBody from "../../hooks/use-lock-body.js";
-import { $addToRecentSearchesFn } from "../../stores/search.js";
+import { $isSearchOpen } from "../../lib/stores/search.js";
+import useRouter from "../../lib/hooks/use-router.js";
+import useIsMacOS from "../../lib/hooks/use-is-mac-os.js";
+import useLockBody from "../../lib/hooks/use-lock-body.js";
+import { $addToRecentSearchesFn } from "../../lib/stores/search.js";
 
 // Create Search Index
 const searchIndex = new Flexsearch.Document({

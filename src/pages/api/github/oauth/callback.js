@@ -11,11 +11,9 @@ export async function GET({ url: { searchParams }, redirect }) {
   }
 
   const path = state.includes("path") && state.split("|")[0].split(":")[1];
-  const isRedirect = state.includes("redirect") ? state.split("|")[1].split(":")[1] : false;
 
-  if (!isRedirect) {
-    return redirect(`${path}?code=${code}&redirect=${true}`);
-  }
+  if (path) return redirect(`${path}?code=${code}`);
 
-  return redirect(`${path}?code=${code}`);
+  // Lifeline/Last resort for when the return `path` is NOT specified/found in state
+  return redirect(`/login?return_to=${encodeURIComponent("/")}`)
 }

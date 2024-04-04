@@ -3,14 +3,10 @@ import BaseLayout from "../layouts/base.astro";
 import doAuth from "../lib/actions/do-auth.js";
 
 const { url: { searchParams }, redirect } = Astro;
+
 const { getAuthUrl, isAuthed } = await doAuth(Astro);
-
 if (isAuthed) return redirect(searchParams.get("return_to"));
-
-const authUrl = getAuthUrl({
-  path: searchParams.get("return_to"),
-  redirect: true
-});
+const authUrl = getAuthUrl({ path: searchParams.get("return_to") });
 ---
 
 <BaseLayout pageTitle="Dictionary">

@@ -17,14 +17,13 @@ export default async function doAuth(astroGlobal) {
   /**
    * Generate OAuth Url to start authorization flow
    * @todo improvement: store `state` in cookie for later retrieval in `github/oauth/callback` handler for cleaner url
-   * @param {{ path?: string, redirect?: boolean }} state 
+   * @param {{ path: string }} state 
    */
   function getAuthUrl(state) {
     let parsedState = "";
 
     if (!isObjectEmpty(state)){
       if (state.path) parsedState += `path:${state.path}`;
-      if (state.redirect) parsedState += `|redirect:${state.redirect}`;
       const otherStates = String(Object.keys(state)
         .filter(key => key !== "path" && key !== "redirect")
         .map(key => key + ":" + state[key]).join("|"));

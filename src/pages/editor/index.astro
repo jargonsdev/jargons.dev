@@ -6,6 +6,7 @@ import Navbar from "../../components/navbar.astro";
 import WordEditor from "../../components/islands/word-editor.jsx";
 
 const { url: { pathname }, redirect } = Astro;
+
 const { isAuthed, authedData: userData } = await doAuth(Astro);
 if (!isAuthed) return redirect(`/login?return_to=${encodeURIComponent(pathname)}`);
 // @ts-expect-error

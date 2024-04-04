@@ -1,7 +1,7 @@
 import app from "../octokit/app.js";
 import { decrypt, encrypt } from "../utils/crypto.js";
-import { GET } from "../../pages/api/github/oauth/authorize.js";
-import { isObjectEmpty, resolveCookieExpiryDate } from "../utils/index.js";
+import { GET as getAuthorization } from "../../pages/api/github/oauth/authorize.js";
+import { isObjectEmpty as isStateEmpty, resolveCookieExpiryDate } from "../utils/index.js";
 
 /**
  * Authentication action with GitHub OAuth
@@ -22,7 +22,7 @@ export default async function doAuth(astroGlobal) {
   function getAuthUrl(state) {
     let parsedState = "";
 
-    if (!isObjectEmpty(state)){
+    if (!isStateEmpty(state)){
       if (state.path) parsedState += `path:${state.path}`;
       const otherStates = String(Object.keys(state)
         .filter(key => key !== "path" && key !== "redirect")
@@ -39,7 +39,7 @@ export default async function doAuth(astroGlobal) {
 
   try {
     if (!accessToken && code) {
-      const response = await GET(astroGlobal);
+      const response = await getAuthorization(astroGlobal);
       const responseData = await response.json();
   
       if (responseData.accessToken && responseData.refreshToken) {

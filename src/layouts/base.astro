@@ -5,7 +5,7 @@ import "../base.css";
 import { $dictionary } from "../stores/dictionary.js";
 
 const { pageTitle, class:list } = Astro.props;
-const dictionary = await Astro.glob("../pages/word/*.mdx");
+const dictionary = await Astro.glob("../pages/browse/*.mdx");
 
 $dictionary.set(dictionary);
 ---

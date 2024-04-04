@@ -40,15 +40,15 @@ export default async function doAuth(astroGlobal) {
   try {
     if (!accessToken && code) {
       const response = await getAuthorization(astroGlobal);
-      const responseData = await response.json();
+      const auth = await response.json();
   
-      if (responseData.accessToken && responseData.refreshToken) {
-        cookies.set("jargons.dev:token", responseData.accessToken, {
-          expires: resolveCookieExpiryDate(responseData.expiresIn),
+      if (auth.accessToken && auth.refreshToken) {
+        cookies.set("jargons.dev:token", auth.accessToken, {
+          expires: resolveCookieExpiryDate(auth.expiresIn),
           encode: value => encrypt(value)
         });
-        cookies.set("jargons.dev:refresh-token", responseData.refreshToken, {
-          expires: resolveCookieExpiryDate(responseData.refreshTokenExpiresIn),
+        cookies.set("jargons.dev:refresh-token", auth.refreshToken, {
+          expires: resolveCookieExpiryDate(auth.refreshTokenExpiresIn),
           encode: value => encrypt(value)
         });
       }

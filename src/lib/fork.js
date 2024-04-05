@@ -15,7 +15,7 @@ export async function forkRepository(userOctokit, repoDetails) {
 
     const fork = await isRepositoryForked(userOctokit, repoFullname, user.login ); 
 
-    if (!!fork) {
+    if (fork) {
       console.log("Repo is already forked!");
 
       const { isUpdated, updateSHA } = await isRepositoryForkUpdated(userOctokit, repoDetails, fork)
@@ -29,7 +29,7 @@ export async function forkRepository(userOctokit, repoDetails) {
         });
       }
 
-      return;
+      return fork;
     }
 
     const response = await userOctokit.request("POST /repos/{owner}/{repo}/forks", {
@@ -37,11 +37,7 @@ export async function forkRepository(userOctokit, repoDetails) {
       repo: repoName,
     });
 
-    if (response.status === 202) {
-      console.log("Forking process initiated successfully!");
-    } else {
-      console.log("Error occurred while forking repository.");
-    }
+    return response.data.full_name;
   } catch (error) {
     console.log("Error occurred while forking repository:", error);
   }

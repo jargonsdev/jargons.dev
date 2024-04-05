@@ -31,3 +31,12 @@ export function getRepoParts(repoFullname) {
 export function normalizeAsUrl(string) {
   return string.toLowerCase().replace(/\s+/g, "-");
 }
+
+/**
+ * Checks if a given object is empty
+ * @param {object} object 
+ * @returns {boolean}
+ */
+export function isObjectEmpty(object) {
+  return JSON.stringify(object) === "{}"
+}

@@ -1,13 +1,14 @@
 ---
 import doAuth from "../../lib/actions/do-auth";
-import { $userData } from "../../stores/user.js";
+import { $userData } from "../../lib/stores/user.js";
 import BaseLayout from "../../layouts/base.astro";
 import Navbar from "../../components/navbar.astro";
 import WordEditor from "../../components/islands/word-editor.jsx";
 
 const { url: { pathname }, redirect } = Astro;
+
 const { isAuthed, authedData: userData } = await doAuth(Astro);
-if (!isAuthed) return redirect(`/login?redirect=${pathname}`);
+if (!isAuthed) return redirect(`/login?return_to=${encodeURIComponent(pathname)}`);
 // @ts-expect-error
 $userData.set(userData);
 ---

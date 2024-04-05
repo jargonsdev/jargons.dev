@@ -1,7 +1,7 @@
-import app from "../../lib/octokit/app.js";
+import app from "../octokit/app.js";
 import { decrypt, encrypt } from "../utils/crypto.js";
-import { GET } from "../../pages/api/github/oauth/authorize.js";
-import { resolveCookieExpiryDate } from "../../lib/utils/index.js";
+import { GET as getAuthorization } from "../../pages/api/github/oauth/authorize.js";
+import { isObjectEmpty as isStateEmpty, resolveCookieExpiryDate } from "../utils/index.js";
 
 /**
  * Authentication action with GitHub OAuth
@@ -16,30 +16,39 @@ export default async function doAuth(astroGlobal) {
 
   /**
    * Generate OAuth Url to start authorization flow
-   * @todo make the `parsedState` data more predictable (order by path, redirect)
-   * @todo improvement: store `state` in cookie for later retrieval in `github/oauth/callback` handler for cleaner url
-   * @param {{ path?: string, redirect?: boolean }} state 
+   * @todo improvement: store `state` in cookie for later retrieval/comparison with auth `state` in `github/oauth/callback`
+   * @param {{ path: string }} state 
    */
   function getAuthUrl(state) {
-    const parsedState = String(Object.keys(state).map(key => key + ":" + state[key]).join("|"));
+    let parsedState = "";
+
+    if (!isStateEmpty(state)){
+      if (state.path) parsedState += `path:${state.path}`;
+      const otherStates = String(Object.keys(state)
+        .filter(key => key !== "path" && key !== "redirect")
+        .map(key => key + ":" + state[key]).join("|"));
+      if (otherStates.length > 0) parsedState += `|${otherStates}`;
+    }
+
     const { url } = app.oauth.getWebFlowAuthorizationUrl({
       state: parsedState
     });
+
     return url;
   }
 
   try {
     if (!accessToken && code) {
-      const response = await GET(astroGlobal);
-      const responseData = await response.json();
+      const response = await getAuthorization(astroGlobal);
+      const auth = await response.json();
   
-      if (responseData.accessToken && responseData.refreshToken) {
-        cookies.set("jargons.dev:token", responseData.accessToken, {
-          expires: resolveCookieExpiryDate(responseData.expiresIn),
+      if (auth.accessToken && auth.refreshToken) {
+        cookies.set("jargons.dev:token", auth.accessToken, {
+          expires: resolveCookieExpiryDate(auth.expiresIn),
           encode: value => encrypt(value)
         });
-        cookies.set("jargons.dev:refresh-token", responseData.refreshToken, {
-          expires: resolveCookieExpiryDate(responseData.refreshTokenExpiresIn),
+        cookies.set("jargons.dev:refresh-token", auth.refreshToken, {
+          expires: resolveCookieExpiryDate(auth.refreshTokenExpiresIn),
           encode: value => encrypt(value)
         });
       }

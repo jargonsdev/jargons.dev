@@ -2,10 +2,11 @@ import { useEffect } from "react";
 import Markdown from "react-markdown";
 import useWordEditor from "../../lib/hooks/use-word-editor.js";
 
-export default function WordEditor({ title = "", content = "" }) {
+export default function WordEditor({ title = "", content = "", isEdit = false }) {
   return (
     <div className="w-full flex border rounded-lg">
       <Editor 
+        isEdit={isEdit}
         eTitle={title} 
         eContent={content} 
         className="w-full h-full flex flex-col p-5 border-r"
@@ -15,7 +16,7 @@ export default function WordEditor({ title = "", content = "" }) {
   );
 }
 
-function Editor({ eTitle, eContent, className, ...props }) {
+function Editor({ isEdit, eTitle, eContent, className, ...props }) {
   const { title, setTitle, content, setContent } = useWordEditor();
   
   useEffect(() => {
@@ -29,10 +30,11 @@ function Editor({ eTitle, eContent, className, ...props }) {
       {...props}
     >
       <input 
-        className="block w-full pb-2 mb-3 text-gray-900 border-b text-lg font-bold focus:outline-none"
+        className={`${isEdit && "cursor-not-allowed"} block w-full pb-2 mb-3 text-gray-900 border-b text-lg font-bold focus:outline-none`}
         type="text"
         placeholder="New Word"
         value={title}
+        readOnly={isEdit}
         onChange={(e) => setTitle(e.target.value)}
       />
       <textarea 

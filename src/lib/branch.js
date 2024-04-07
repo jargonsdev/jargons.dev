@@ -33,12 +33,12 @@ export async function createBranch(userOctokit, repoDetails, newBranchName) {
 /**
  * Get a Branch/Ref details
  * @param {import("octokit").Octokit} userOctokit 
- * @param {string} repo 
+ * @param {string} repoFullname
  * @param {string} ref 
  * @returns Branch/Ref details
  */
-export async function getBranch(userOctokit, repo, ref) {
-  const { repoOwner, repoName } = getRepoParts(repo);
+export async function getBranch(userOctokit, repoFullname, ref) {
+  const { repoOwner, repoName } = getRepoParts(repoFullname);
   const formattedRef = ref.split("/")[0] === "refs" 
     ? ref.split("/").slice(1).join("/")
     : ref;

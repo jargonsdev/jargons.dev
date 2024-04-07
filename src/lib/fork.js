@@ -82,12 +82,13 @@ async function updateRepositoryFork(userOctokit, forkedRepoFullname, headRepoRef
 async function isRepositoryForkUpdated(userOctokit, projectRepoDetails, forkedRepoFullname) {
   const { repoFullname, repoMainBranchRef } = projectRepoDetails;
 
-  const userForkedBranch = await getBranch(userOctokit, forkedRepoFullname, repoMainBranchRef);
-  const projectBranch = await getBranch(userOctokit, repoFullname, repoMainBranchRef);
+  // `repoMainBranchRef` because the forked repo's main should be compared again project's same main repo
+  const forkedRepoMainBranch = await getBranch(userOctokit, forkedRepoFullname, repoMainBranchRef);
+  const projectRepoMainBranch = await getBranch(userOctokit, repoFullname, repoMainBranchRef);
 
   return {
-    isUpdated: userForkedBranch.object.sha === projectBranch.object.sha,
-    updateSHA: projectBranch.object.sha
+    isUpdated: forkedRepoMainBranch.object.sha === projectRepoMainBranch.object.sha,
+    updateSHA: projectRepoMainBranch.object.sha
   };
 }
 

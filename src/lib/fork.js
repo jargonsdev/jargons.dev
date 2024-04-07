@@ -52,12 +52,15 @@ export async function forkRepository(userOctokit, repoDetails) {
 async function updateRepositoryFork(userOctokit, fork, headRepoRef) {
   const { repoOwner, repoName } = getRepoParts(fork);
   const { ref, sha } = headRepoRef;
+  const formattedRef = ref.split("/")[0] === "refs" 
+    ? ref.split("/").slice(1).join("/")
+    : ref;
 
   try {
     await userOctokit.request("PATCH /repos/{owner}/{repo}/git/refs/{ref}", {
       owner: repoOwner,
       repo: repoName,
-      ref, //-> `heads/${branchToSync}`
+      ref: formattedRef, //-> `heads/${branchToSync}`
       sha
     });
 

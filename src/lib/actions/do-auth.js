@@ -51,7 +51,7 @@ export default async function doAuth(astroGlobal) {
       }
     }
   
-    const userOctokit = await app.oauth.getUserOctokit({ token: accessToken.value });
+    const userOctokit = app.getUserOctokit({ token: accessToken.value });
     const { data } = await userOctokit.request("GET /user");
   
     return {

@@ -48,10 +48,23 @@ async function exchangeWebFlowCode(code) {
   return responseData;
 }
 
+/**
+ * Get a user's octokit instance
+ * @param {Omit<OctokitOptions, "auth"> & { token: string }} options
+ * @returns {Octokit}
+ */
+function getUserOctokit({ token, ...options }) {
+  return new Octokit({
+    auth: token,
+    ...options
+  });
+};
+
 export default { 
   octokit,
   oauth: {
     getWebFlowAuthorizationUrl, 
     exchangeWebFlowCode,
-  }
+  },
+  getUserOctokit
 }

@@ -42,13 +42,10 @@ export default async function doAuth(astroGlobal) {
       const response = await getAuthorization(astroGlobal);
       const auth = await response.json();
   
-      if (auth.accessToken && auth.refreshToken) {
+      if (auth.accessToken) {
         cookies.set("jargons.dev:token", auth.accessToken, {
-          expires: resolveCookieExpiryDate(auth.expiresIn),
-          encode: value => encrypt(value)
-        });
-        cookies.set("jargons.dev:refresh-token", auth.refreshToken, {
-          expires: resolveCookieExpiryDate(auth.refreshTokenExpiresIn),
+          expires: resolveCookieExpiryDate(28800),
+          path: "/",
           encode: value => encrypt(value)
         });
       }

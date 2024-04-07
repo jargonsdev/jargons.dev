@@ -4,10 +4,10 @@ import { getRepoParts } from "./utils/index.js";
 /**
  * Fork the project (specified) Repo to user account
  * @param {import("octokit").Octokit} userOctokit 
- * @param {{ repoFullname: string, repoMainBranchRef: string }} repo 
+ * @param {{ repoFullname: string, repoMainBranchRef: string }} projectRepoDetails 
  */
-export async function forkRepository(userOctokit, repoDetails) {
-  const { repoFullname, repoMainBranchRef } = repoDetails;
+export async function forkRepository(userOctokit, projectRepoDetails) {
+  const { repoFullname, repoMainBranchRef } = projectRepoDetails;
   const { repoOwner, repoName } = getRepoParts(repoFullname);
 
   try {
@@ -18,7 +18,7 @@ export async function forkRepository(userOctokit, repoDetails) {
     if (fork) {
       console.log("Repo is already forked!");
 
-      const { isUpdated, updateSHA } = await isRepositoryForkUpdated(userOctokit, repoDetails, fork)
+      const { isUpdated, updateSHA } = await isRepositoryForkUpdated(userOctokit, projectRepoDetails, fork)
 
       if (!isUpdated) {
         console.log("Repo is outdated!");
@@ -74,12 +74,12 @@ async function updateRepositoryFork(userOctokit, fork, headRepoRef) {
 /**
  * Check whether a fork is (in Sync with head repo) up-to-date with main repo  
  * @param {import("octokit").Octokit} userOctokit 
- * @param {{ repoFullname: string, repoMainBranchRef: string }} repoDetails 
+ * @param {{ repoFullname: string, repoMainBranchRef: string }} projectRepoDetails 
  * @param {string} fork 
- * @returns {{ isUpdated: boolean, updateSHA: string }}
+ * @returns {Promise<{ isUpdated: boolean, updateSHA: string }>}
  */
-async function isRepositoryForkUpdated(userOctokit, repoDetails, fork) {
-  const { repoFullname, repoMainBranchRef } = repoDetails;
+async function isRepositoryForkUpdated(userOctokit, projectRepoDetails, fork) {
+  const { repoFullname, repoMainBranchRef } = projectRepoDetails;
 
   const userForkedBranch = await getBranch(userOctokit, fork, repoMainBranchRef);
   const projectBranch = await getBranch(userOctokit, repoFullname, repoMainBranchRef);

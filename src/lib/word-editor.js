@@ -30,12 +30,12 @@ export async function writeNewWord(userOctokit, forkedRepoDetails, { title, cont
 }
 
 /**
- * Edit and update an existing word in user's forked dictionary
+ * Update an existing word in user's forked dictionary
  * @param {import("octokit").Octokit} userOctokit 
  * @param {{ repoFullname: string, repoChangeBranchRef: string }} forkedRepoDetails 
  * @param {{ path: string, sha: string, title: string, content: string }} word  enter new content as value to `content` property
  */
-export async function editExistingWord(userOctokit, forkedRepoDetails, { path, sha, title, content }) {
+export async function updateExistingWord(userOctokit, forkedRepoDetails, { path, sha, title, content }) {
   const { repoFullname, repoChangeBranchRef } = forkedRepoDetails;
   const { repoOwner, repoName } = getRepoParts(repoFullname);
   const branch = repoChangeBranchRef.split("/").slice(2).join("/");

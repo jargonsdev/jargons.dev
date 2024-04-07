@@ -61,18 +61,18 @@ export async function updateExistingWord(userOctokit, forkedRepoDetails, { path,
 /**
  * Retrieve data for already existing word
  * @param {import("octokit").Octokit} userOctokit 
- * @param {{ repoFullname: string, repoChangeBranchRef: string }} forkedRepoDetails 
+ * @param {{ repoFullname: string, repoBranchRef: string }} repoDetails 
  * @param {string} wordTitle 
  */
-export async function getExistingWord(userOctokit, forkedRepoDetails, wordTitle) {
-  const { repoFullname, repoChangeBranchRef } = forkedRepoDetails;
+export async function getExistingWord(userOctokit, repoDetails, wordTitle) {
+  const { repoFullname, repoBranchRef } = repoDetails;
   const { repoOwner, repoName } = getRepoParts(repoFullname);
 
   try {
     const response = await userOctokit.request("GET /repos/{owner}/{repo}/contents/{path}", {
       owner: repoOwner,
       repo: repoName,
-      ref: repoChangeBranchRef,
+      ref: repoBranchRef,
       path: `src/pages/browse/${normalizeAsUrl(wordTitle)}.mdx`,
     });
 

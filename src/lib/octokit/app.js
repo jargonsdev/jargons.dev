@@ -3,7 +3,7 @@ import { createOAuthAppAuth } from "@octokit/auth-oauth-app";
 import { oauthAuthorizationUrl } from "@octokit/oauth-authorization-url";
 
 /**
- * OAuth App Octokit instance
+ * OAuth App's Octokit instance
  */
 const octokit = new Octokit({
   authStrategy: createOAuthAppAuth,
@@ -14,7 +14,7 @@ const octokit = new Octokit({
 });
 
 /**
- * Generate an Web (OAuth) Flow url to start an OAuth flow
+ * Generate a Web Flow/OAuth authorization url to start an OAuth flow
  * @param {import("@octokit/oauth-authorization-url").OAuthAppOptions} options
  * @returns 
  */
@@ -49,7 +49,7 @@ async function exchangeWebFlowCode(code) {
 }
 
 /**
- * Get a user's octokit instance
+ * Get a User's Octokit instance
  * @param {Omit<OctokitOptions, "auth"> & { token: string }} options
  * @returns {Octokit}
  */

@@ -9,11 +9,11 @@ export default async function doEditWord(astroGlobal) {
   const { cookies, params: { word } } = astroGlobal;
 
   const accessToken = cookies.get("jargons.dev:token", { decode: value => decrypt(value) });
-  const userOctokit = await app.oauth.getUserOctokit({ token: accessToken.value });
+  const userOctokit = app.getUserOctokit({ token: accessToken.value });
 
   const projectRepoDetails = {
     repoFullname: import.meta.env.PROJECT_REPO,
-    repoBranchRef: import.meta.env.PROJECT_REPO_BRANCH_REF
+    repoMainBranchRef: import.meta.env.PROJECT_REPO_BRANCH_REF
   }
 
   const response = await getExistingWord(userOctokit, projectRepoDetails, word);

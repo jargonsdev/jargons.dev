@@ -1,5 +1,5 @@
+import wordFileTemplate from "./templates/word.md.js";
 import { getRepoParts, normalizeAsUrl } from "./utils/index.js";
-import wordFileTemplate from "./template/word.md.js";
 
 /**
  * Write and add a new word to user's forked dictionary

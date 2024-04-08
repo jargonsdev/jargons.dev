@@ -1,6 +1,7 @@
 import app from "./octokit/app.js";
 import { getRepoParts } from "./utils/index.js";
 import newWordPRTemp from "./templates/new-word-pr.md.js";
+import editWordPRTemp from "./templates/edit-word-pr.md.js";
 
 /**
  * 
@@ -17,13 +18,21 @@ export async function submitWord(userOctokit, action, projectRepoDetails, forked
   const baseBranch = repoMainBranchRef.split("/").slice(2).join("/");
   const headBranch = forkedRepoDetails.repoChangeBranchRef.split("/").slice(2).join("/");
 
+  const title = action === "new" 
+    ? newWordPRTemp.title.replace("$word_title", word.title)
+    : editWordPRTemp.title.replace("$word_title", word.title);
+
+  const body = action === "new"
+    ? newWordPRTemp.content.replace("$word_title", word.title).replace("$word_content", word.content)
+    : editWordPRTemp.content.replace("$word_title", word.title).replace("$word_content", word.content);
+
   const response = await userOctokit.request("POST /repos/{owner}/{repo}/pulls", {
     owner: repoOwner,
     repo: repoName,
     head: `${forkedRepoOwner}:${headBranch}`,
     base: baseBranch,
-    title: newWordPRTemp.title.replace("$word_title", word.title),
-    body: newWordPRTemp.content.replace("$word_title", word.title).replace("$word_content", word.content)
+    title,
+    body
   });
 
   // DevJargons (bot) App adds related labels to PR

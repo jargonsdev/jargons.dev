@@ -3,11 +3,11 @@ import Markdown from "react-markdown";
 import useWordEditor from "../../lib/hooks/use-word-editor.js";
 import handleSubmitWord from "../../lib/handlers/handle-submit-word.js";
 
-export default function WordEditor({ title = "", content = "", isEdit = false, submitHandler }) {
+export default function WordEditor({ title = "", content = "", action }) {
   return (
     <div className="w-full flex border rounded-lg">
-      <Editor 
-        isEdit={isEdit}
+      <Editor
+        action={action}
         eTitle={title} 
         eContent={content} 
         className="w-full h-full flex flex-col p-5 border-r"
@@ -25,9 +25,9 @@ export const SubmitWordButton = ({ children = "Submit" }) => (
   >
     { children }
   </button>
-)
+);
 
-function Editor({ isEdit, eTitle, eContent, className, submitHandler, ...props }) {
+function Editor({ eTitle, eContent, className, submitHandler, action, ...props }) {
   const { title, setTitle, content, setContent } = useWordEditor();
   
   useEffect(() => {
@@ -46,11 +46,11 @@ function Editor({ isEdit, eTitle, eContent, className, submitHandler, ...props }
       {...props}
     >
       <input 
-        className={`${isEdit && "cursor-not-allowed"} block w-full pb-2 mb-3 text-gray-900 border-b text-lg font-bold focus:outline-none`}
+        className={`${action === "edit" && "cursor-not-allowed"} block w-full pb-2 mb-3 text-gray-900 border-b text-lg font-bold focus:outline-none`}
         type="text"
         placeholder="New Word"
         value={title}
-        readOnly={isEdit}
+        readOnly={action === "edit"}
         onChange={(e) => setTitle(e.target.value)}
       />
       <textarea 

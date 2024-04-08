@@ -4,8 +4,8 @@ import BaseLayout from "../../../layouts/base.astro";
 import Navbar from "../../../components/navbar.astro";
 import doAuth from "../../../lib/actions/do-auth.js";
 import doEditWord from "../../../lib/actions/do-edit-word.js";
+import { resolveEditorActionFromPathname } from "../../../lib/utils/index.js"
 import WordEditor, { SubmitWordButton } from "../../../components/islands/word-editor.jsx";
-import handleSubmitWord from "../../../lib/handlers/handle-submit-word.js";
 
 const { url: { pathname }, redirect } = Astro;
 
@@ -14,6 +14,7 @@ if (!isAuthed) return redirect(`/login?return_to=${encodeURIComponent(pathname)}
 
 const response = await doEditWord(Astro);
 const word = matter(response.content_decoded);
+const action = resolveEditorActionFromPathname(pathname);
 ---
 
 <BaseLayout 
@@ -25,13 +26,11 @@ const word = matter(response.content_decoded);
   </Navbar>
 
   <main class="flex grow px-5 md:px-6 pb-4">
-    <WordEditor 
-      isEdit 
+    <WordEditor
+      action={action}
       title={word.data.title} 
       content={word.content} 
-      client:load 
+      client:load
     />
   </main>
-
-  <!-- <script src="../../../lib/handlers/handle-submit-word.js"></script> -->
 </BaseLayout>

@@ -3,7 +3,7 @@ import app from "../../../../lib/octokit/app.js";
 /**
  * GitHub oauth code authorization
  * @param {import("astro").APIContext} context
- * @returns {Response}
+ * @returns {Promise<Response>}
  */
 export async function GET({ url: { searchParams } }) {
   const code = searchParams.get("code");

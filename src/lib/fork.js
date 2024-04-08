@@ -4,21 +4,22 @@ import { getRepoParts } from "./utils/index.js";
 /**
  * Fork the project (specified) Repo to user account
  * @param {import("octokit").Octokit} userOctokit 
- * @param {{ repoFullname: string, repoMainBranchRef: string }} repo 
+ * @param {{ repoFullname: string, repoMainBranchRef: string }} projectRepoDetails 
+ * @returns {string} fullname of forked repo - [userlogin]/jargons.dev
  */
-export async function forkRepository(userOctokit, repoDetails) {
-  const { repoFullname, repoMainBranchRef } = repoDetails;
+export async function forkRepository(userOctokit, projectRepoDetails) {
+  const { repoFullname, repoMainBranchRef } = projectRepoDetails;
   const { repoOwner, repoName } = getRepoParts(repoFullname);
 
   try {
     const { data: user } = await userOctokit.request("GET /user");
 
-    const fork = await isRepositoryForked(userOctokit, repoFullname, user.login ); 
+    const fork = await isRepositoryForked(userOctokit, repoFullname, user.login); 
 
     if (fork) {
       console.log("Repo is already forked!");
 
-      const { isUpdated, updateSHA } = await isRepositoryForkUpdated(userOctokit, repoDetails, fork)
+      const { isUpdated, updateSHA } = await isRepositoryForkUpdated(userOctokit, projectRepoDetails, fork)
 
       if (!isUpdated) {
         console.log("Repo is outdated!");
@@ -46,18 +47,21 @@ export async function forkRepository(userOctokit, repoDetails) {
 /**
  * Update (Sync) repository to state of main (head) repository
  * @param {import("octokit").Octokit} userOctokit 
- * @param {string} fork 
+ * @param {string} forkedRepoFullname
  * @param {{ ref: string, sha: string }} headRepoRef 
  */
-async function updateRepositoryFork(userOctokit, fork, headRepoRef) {
-  const { repoOwner, repoName } = getRepoParts(fork);
+async function updateRepositoryFork(userOctokit, forkedRepoFullname, headRepoRef) {
+  const { repoOwner, repoName } = getRepoParts(forkedRepoFullname);
   const { ref, sha } = headRepoRef;
+  const formattedRef = ref.split("/")[0] === "refs" 
+    ? ref.split("/").slice(1).join("/")
+    : ref;
 
   try {
     await userOctokit.request("PATCH /repos/{owner}/{repo}/git/refs/{ref}", {
       owner: repoOwner,
       repo: repoName,
-      ref, //-> `heads/${branchToSync}`
+      ref: formattedRef, //-> `heads/${branchToSync}`
       sha
     });
 
@@ -71,19 +75,20 @@ async function updateRepositoryFork(userOctokit, fork, headRepoRef) {
 /**
  * Check whether a fork is (in Sync with head repo) up-to-date with main repo  
  * @param {import("octokit").Octokit} userOctokit 
- * @param {{ repoFullname: string, repoMainBranchRef: string }} repoDetails 
- * @param {string} fork 
- * @returns {{ isUpdated: boolean, updateSHA: string }}
+ * @param {{ repoFullname: string, repoMainBranchRef: string }} projectRepoDetails 
+ * @param {string} forkedRepoFullname 
+ * @returns {Promise<{ isUpdated: boolean, updateSHA: string }>}
  */
-async function isRepositoryForkUpdated(userOctokit, repoDetails, fork) {
-  const { repoFullname, repoMainBranchRef } = repoDetails;
+async function isRepositoryForkUpdated(userOctokit, projectRepoDetails, forkedRepoFullname) {
+  const { repoFullname, repoMainBranchRef } = projectRepoDetails;
 
-  const userForkedBranch = await getBranch(userOctokit, fork, repoMainBranchRef);
-  const projectBranch = await getBranch(userOctokit, repoFullname, repoMainBranchRef);
+  // `repoMainBranchRef` because the forked repo's main should be compared again project's same main repo
+  const forkedRepoMainBranch = await getBranch(userOctokit, forkedRepoFullname, repoMainBranchRef);
+  const projectRepoMainBranch = await getBranch(userOctokit, repoFullname, repoMainBranchRef);
 
   return {
-    isUpdated: userForkedBranch.object.sha === projectBranch.object.sha,
-    updateSHA: projectBranch.object.sha
+    isUpdated: forkedRepoMainBranch.object.sha === projectRepoMainBranch.object.sha,
+    updateSHA: projectRepoMainBranch.object.sha
   };
 }
 
@@ -92,7 +97,7 @@ async function isRepositoryForkUpdated(userOctokit, repoDetails, fork) {
  * @param {import("octokit").Octokit} userOctokit 
  * @param {string} repoFullname 
  * @param {string} userLogin 
- * @returns { string | null }
+ * @returns {Promsise<string | null>}
  * 
  * @todo paginate response to get a list of all forks in one call
  */

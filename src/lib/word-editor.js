@@ -4,13 +4,13 @@ import wordFileTemplate from "./template/word.md.js";
 /**
  * Write and add a new word to user's forked dictionary
  * @param {import("octokit").Octokit} userOctokit 
- * @param {{ repoFullname: string, repoBranchRef: string }} forkedRepoDetails 
+ * @param {{ repoFullname: string, repoChangeBranchRef: string }} forkedRepoDetails 
  * @param {{ title: string, content: string }} word 
  */
 export async function writeNewWord(userOctokit, forkedRepoDetails, { title, content }) {
-  const { repoFullname, repoBranchRef } = forkedRepoDetails;
+  const { repoFullname, repoChangeBranchRef } = forkedRepoDetails;
   const { repoOwner, repoName } = getRepoParts(repoFullname);
-  const branch = repoBranchRef.split("/").slice(2).join("/");
+  const branch = repoChangeBranchRef.split("/").slice(2).join("/");
   const wordFileContent = writeWordFileContent(title, content);
 
   try {
@@ -30,15 +30,15 @@ export async function writeNewWord(userOctokit, forkedRepoDetails, { title, cont
 }
 
 /**
- * Edit and update an existing word in user's forked dictionary
+ * Update an existing word in user's forked dictionary
  * @param {import("octokit").Octokit} userOctokit 
- * @param {{ repoFullname: string, repoBranchRef: string }} forkedRepoDetails 
+ * @param {{ repoFullname: string, repoChangeBranchRef: string }} forkedRepoDetails 
  * @param {{ path: string, sha: string, title: string, content: string }} word  enter new content as value to `content` property
  */
-export async function editExistingWord(userOctokit, forkedRepoDetails, { path, sha, title, content }) {
-  const { repoFullname, repoBranchRef } = forkedRepoDetails;
+export async function updateExistingWord(userOctokit, forkedRepoDetails, { path, sha, title, content }) {
+  const { repoFullname, repoChangeBranchRef } = forkedRepoDetails;
   const { repoOwner, repoName } = getRepoParts(repoFullname);
-  const branch = repoBranchRef.split("/").slice(2).join("/");
+  const branch = repoChangeBranchRef.split("/").slice(2).join("/");
   const wordFileContent = writeWordFileContent(title, content);
 
   try {
@@ -61,11 +61,11 @@ export async function editExistingWord(userOctokit, forkedRepoDetails, { path, s
 /**
  * Retrieve data for already existing word
  * @param {import("octokit").Octokit} userOctokit 
- * @param {{ repoFullname: string, repoBranchRef: string }} forkedRepoDetails 
+ * @param {{ repoFullname: string, repoBranchRef: string }} repoDetails 
  * @param {string} wordTitle 
  */
-export async function getExistingWord(userOctokit, forkedRepoDetails, wordTitle) {
-  const { repoFullname, repoBranchRef } = forkedRepoDetails;
+export async function getExistingWord(userOctokit, repoDetails, wordTitle) {
+  const { repoFullname, repoBranchRef } = repoDetails;
   const { repoOwner, repoName } = getRepoParts(repoFullname);
 
   try {

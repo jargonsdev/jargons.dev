@@ -1,8 +1,9 @@
 import { useEffect } from "react";
 import Markdown from "react-markdown";
 import useWordEditor from "../../lib/hooks/use-word-editor.js";
+import handleSubmitWord from "../../lib/handlers/handle-submit-word.js";
 
-export default function WordEditor({ title = "", content = "", isEdit = false }) {
+export default function WordEditor({ title = "", content = "", isEdit = false, submitHandler }) {
   return (
     <div className="w-full flex border rounded-lg">
       <Editor 
@@ -10,13 +11,23 @@ export default function WordEditor({ title = "", content = "", isEdit = false })
         eTitle={title} 
         eContent={content} 
         className="w-full h-full flex flex-col p-5 border-r"
+        submitHandler={handleSubmitWord}
       />
       <Preview className="w-full h-full flex flex-col p-5" />
     </div>
   );
 }
 
-function Editor({ isEdit, eTitle, eContent, className, ...props }) {
+export const SubmitWordButton = ({ children = "Submit" }) => (
+  <button className="no-underline text-white bg-gray-900 hover:bg-gray-700 focus:ring-4 focus:ring-gray-600 font-medium rounded-lg text-base px-5 py-2.5 text-center ml-1 sm:ml-3"
+    type="submit"
+    form="devJargons_word_editor"
+  >
+    { children }
+  </button>
+)
+
+function Editor({ isEdit, eTitle, eContent, className, submitHandler, ...props }) {
   const { title, setTitle, content, setContent } = useWordEditor();
   
   useEffect(() => {
@@ -25,8 +36,13 @@ function Editor({ isEdit, eTitle, eContent, className, ...props }) {
   }, []);
 
   return (
-    <div 
+    <form 
       className={`${className} relative`}
+      onSubmit={(e) => {
+        e.preventDefault();
+        submitHandler();
+      }}
+      id="devJargons_word_editor"
       {...props}
     >
       <input 
@@ -42,7 +58,7 @@ function Editor({ isEdit, eTitle, eContent, className, ...props }) {
         value={content}
         onChange={(e) => setContent(e.target.value)}
       />
-    </div>
+    </form>
   );
 }
 

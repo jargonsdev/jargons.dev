@@ -1,6 +1,17 @@
-import { Octokit } from "octokit";
+import { Octokit, App } from "octokit";
 import { createOAuthAppAuth } from "@octokit/auth-oauth-app";
 import { oauthAuthorizationUrl } from "@octokit/oauth-authorization-url";
+
+const app = new App({
+  appId: import.meta.env.GITHUB_APP_ID,
+  privateKey: import.meta.env.GITHUB_APP_PRIVATE_KEY,
+});
+const { data: { id } } = await app.octokit.request(`GET /repos/${import.meta.env.PROJECT_REPO}/installation`);
+
+/**
+ * DevJargons Helper App's Octokit instance
+ */
+const devJargonsOctokit = await app.getInstallationOctokit(id);
 
 /**
  * OAuth App's Octokit instance
@@ -62,6 +73,7 @@ function getUserOctokit({ token, ...options }) {
 
 export default { 
   octokit,
+  devJargonsOctokit,
   oauth: {
     getWebFlowAuthorizationUrl, 
     exchangeWebFlowCode,

@@ -4,12 +4,15 @@ import newWordPRTemp from "./templates/new-word-pr.md.js";
 import editWordPRTemp from "./templates/edit-word-pr.md.js";
 
 /**
- * 
+ * Submit word - create a Pull Request to add word to project repository
  * @param {import("octokit").Octokit} userOctokit 
  * @param {"new" | "edit"} action 
  * @param {{ repoFullname: string, repoMainBranchRef: string }} projectRepoDetails 
  * @param {{ repoFullname: string, repoChangeBranchRef: string }} forkedRepoDetails 
  * @param {{ title: string, content: string }} word 
+ * 
+ * @todo implement (submit as) `draft` feature - [idea]
+ * @todo implement `maintainer_can_modify` toggle - [idea]
  */
 export async function submitWord(userOctokit, action, projectRepoDetails, forkedRepoDetails, word) {
   const { repoFullname, repoMainBranchRef } = projectRepoDetails;

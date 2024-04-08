@@ -1,3 +1,4 @@
+import app from "./octokit/app.js";
 import { getRepoParts } from "./utils/index.js";
 import newWordPRTemp from "./templates/new-word-pr.md.js";
 
@@ -23,6 +24,17 @@ export async function submitWord(userOctokit, action, projectRepoDetails, forked
     base: baseBranch,
     title: newWordPRTemp.title.replace("$word_title", word.title),
     body: newWordPRTemp.content.replace("$word_title", word.title).replace("$word_content", word.content)
+  });
+
+  // DevJargons (bot) App adds related labels to PR
+  app.devJargonsOctokit.request("POST /repos/{owner}/{repo}/issues/{issue_number}/labels", {
+    owner: repoOwner,
+    repo: repoName,
+    issue_number: response.data.number,
+    labels: [
+      `:book: ${action} word`,
+      ":computer: via word-editor"
+    ]
   });
 
   return response.data;

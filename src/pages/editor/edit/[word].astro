@@ -5,7 +5,7 @@ import Navbar from "../../../components/navbar.astro";
 import doAuth from "../../../lib/actions/do-auth.js";
 import doEditWord from "../../../lib/actions/do-edit-word.js";
 import { resolveEditorActionFromPathname } from "../../../lib/utils/index.js"
-import WordEditor, { SubmitWordButton } from "../../../components/islands/word-editor.jsx";
+import WordEditor, { SubmitButton as WordEditorSubmitButton } from "../../../components/islands/word-editor.jsx";
 
 const { url: { pathname }, redirect } = Astro;
 
@@ -22,12 +22,16 @@ const action = resolveEditorActionFromPathname(pathname);
   class="flex flex-col w-full min-h-screen overflow-hidden"
 >
   <Navbar>
-    <SubmitWordButton />
+    <WordEditorSubmitButton />
   </Navbar>
-
+  
   <main class="flex grow px-5 md:px-6 pb-4">
+    <!-- 
+      hahahaha `action` could have easily been "edit" instead of 
+      computing with `resolveEditorActionFromPathname`
+    -->
     <WordEditor
-      action={action}
+      action={action} 
       title={word.data.title} 
       content={word.content} 
       client:load

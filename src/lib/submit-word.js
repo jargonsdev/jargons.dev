@@ -39,7 +39,7 @@ export async function submitWord(devJargonsOctokit, userOctokit, action, project
   });
 
   // DevJargons (bot) App adds related labels to PR
-  devJargonsOctokit.request("POST /repos/{owner}/{repo}/issues/{issue_number}/labels", {
+  await devJargonsOctokit.request("POST /repos/{owner}/{repo}/issues/{issue_number}/labels", {
     owner: repoOwner,
     repo: repoName,
     issue_number: response.data.number,

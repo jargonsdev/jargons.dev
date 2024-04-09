@@ -6,6 +6,7 @@ import doAuth from "../../../lib/actions/do-auth.js";
 import doEditWord from "../../../lib/actions/do-edit-word.js";
 import doOctokitAuth from "../../../lib/actions/do-octokit-auth.js";
 import { resolveEditorActionFromPathname } from "../../../lib/utils/index.js"
+import { PROJECT_REPO_DETAILS } from "../../../../constants.js";
 import WordEditor, { SubmitButton as WordEditorSubmitButton } from "../../../components/islands/word-editor.jsx";
 
 const { url: { pathname }, redirect } = Astro;
@@ -38,6 +39,7 @@ const action = resolveEditorActionFromPathname(pathname);
       title={word.data.title} 
       content={word.content} 
       octokitAuths={octokitAuths}
+      projectRepoDetails={PROJECT_REPO_DETAILS}
       client:load
     />
   </main>

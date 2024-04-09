@@ -21,6 +21,7 @@
     "@fontsource/ibm-plex-mono": "^5.0.12",
     "@fontsource/inter": "^5.0.17",
     "@nanostores/react": "^0.7.2",
+    "@octokit-next/core": "^2.8.0",
     "@octokit/auth-oauth-app": "^8.1.0",
     "@octokit/oauth-authorization-url": "^7.1.0",
     "@types/react": "^18.2.69",

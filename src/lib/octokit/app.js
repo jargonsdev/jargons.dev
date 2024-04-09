@@ -10,8 +10,18 @@ const { data: { id } } = await app.octokit.request(`GET /repos/${import.meta.env
 
 /**
  * DevJargons Helper App's Octokit instance
- */
+*/
 const devJargonsOctokit = await app.getInstallationOctokit(id);
+
+/**
+ * DevJargons Helper App's Auth Token 
+ */
+const devJargonsAppAuth = await (
+  async () => {
+    const { data: { token } } = await devJargonsOctokit.request(`POST /app/installations/${id}/access_tokens`);
+    return token;
+  }
+)();
 
 /**
  * OAuth App's Octokit instance
@@ -73,6 +83,7 @@ function getUserOctokit({ token, ...options }) {
 
 export default { 
   octokit,
+  devJargonsAppAuth,
   devJargonsOctokit,
   oauth: {
     getWebFlowAuthorizationUrl, 

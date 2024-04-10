@@ -5,7 +5,7 @@ import { getRepoParts } from "./utils/index.js";
  * Fork the project (specified) Repo to user account
  * @param {import("octokit").Octokit} userOctokit 
  * @param {{ repoFullname: string, repoMainBranchRef: string }} projectRepoDetails 
- * @returns {string} fullname of forked repo - [userlogin]/jargons.dev
+ * @returns {Promise<string>} fullname of forked repo - [userlogin]/jargons.dev
  */
 export async function forkRepository(userOctokit, projectRepoDetails) {
   const { repoFullname, repoMainBranchRef } = projectRepoDetails;

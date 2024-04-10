@@ -16,8 +16,8 @@ if (!isAuthed) return redirect(`/login?return_to=${encodeURIComponent(pathname)}
 
 const octokitAuths = doOctokitAuth(Astro);
 
-const response = await doEditWord(Astro);
-const word = matter(response.content_decoded);
+const {content_decoded, ...otherWordData} = await doEditWord(Astro);
+const word = matter(content_decoded);
 const action = resolveEditorActionFromPathname(pathname);
 ---
 
@@ -38,6 +38,7 @@ const action = resolveEditorActionFromPathname(pathname);
       action={action} 
       title={word.data.title} 
       content={word.content} 
+      metadata={otherWordData}
       octokitAuths={octokitAuths}
       projectRepoDetails={PROJECT_REPO_DETAILS}
       client:load

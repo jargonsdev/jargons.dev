@@ -14,6 +14,7 @@ import { PROJECT_REPO_DETAILS } from "../../../constants.js";
  * 
  * @todo add error handling
  * @todo BUG: address `octokitAuths.devJargons` turns a bad credential after seom time
+ * @todo add a logic that checks whether there's a change existing word - if not? Don't do any submit
  */
 export default async function handleSubmitWord(octokitAuths, action, { title, content, metadata }) {
   const userOctokit = new Octokit({ auth: octokitAuths.user });

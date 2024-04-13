@@ -1,7 +1,9 @@
 import { useEffect } from "react";
 import Markdown from "react-markdown";
+import { useStore } from "@nanostores/react";
 import useRouter from "../../lib/hooks/use-router.js";
 import useWordEditor from "../../lib/hooks/use-word-editor.js";
+import { $isWordSubmitLoading } from "../../lib/stores/dictionary.js";
 import handleSubmitWord from "../../lib/handlers/handle-submit-word.js";
 
 export default function WordEditor({ title = "", content = "", metadata = {}, action, octokitAuths }) {
@@ -21,14 +23,23 @@ export default function WordEditor({ title = "", content = "", metadata = {}, ac
   );
 }
 
-export const SubmitButton = ({ children = "Submit" }) => (
-  <button className="flex items-center justify-center no-underline text-white bg-gray-900 hover:bg-gray-700 focus:ring-4 focus:ring-gray-600 font-medium rounded-lg text-base px-5 py-2.5 text-center ml-1 sm:ml-3"
-    type="submit"
-    form="jargons.dev:word_editor"
-  >
-    { children }
-  </button>
-);
+export function SubmitButton({ children = "Submit" }) {
+  const isSubmitLoading = useStore($isWordSubmitLoading);
+  
+  return (
+    <button className="flex items-center justify-center no-underline text-white bg-gray-900 hover:bg-gray-700 focus:ring-4 focus:ring-gray-600 font-medium rounded-lg text-base px-5 py-2.5 text-center ml-1 sm:ml-3"
+      type="submit"
+      form="jargons.dev:word_editor"
+      disabled={isSubmitLoading}
+    >
+      { isSubmitLoading ? (
+        <div className="flex-none h-4 w-4 md:w-6 md:h-6 rounded-full border-2 border-gray-400 border-b-gray-200 border-r-gray-200 animate-spin" />
+      ) : (
+        children
+      ) }
+    </button>
+  );
+}
 
 function Editor({ eTitle, eContent, eMetadata, className, submitHandler, action, octokitAuths, ...props }) {
   const router = useRouter();
@@ -40,6 +51,7 @@ function Editor({ eTitle, eContent, eMetadata, className, submitHandler, action,
   }, []);
 
   async function handleOnSubmit() {
+    $isWordSubmitLoading.set(true);
     await submitHandler(octokitAuths, action, { 
       title, 
       content, 

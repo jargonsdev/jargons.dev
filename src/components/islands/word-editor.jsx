@@ -5,6 +5,7 @@ import useRouter from "../../lib/hooks/use-router.js";
 import useWordEditor from "../../lib/hooks/use-word-editor.js";
 import { $isWordSubmitLoading } from "../../lib/stores/dictionary.js";
 import handleSubmitWord from "../../lib/handlers/handle-submit-word.js";
+import { capitalizeText } from "../../lib/utils/index.js";
 
 export default function WordEditor({ title = "", content = "", metadata = {}, action, octokitAuths }) {
   return (
@@ -53,7 +54,7 @@ function Editor({ eTitle, eContent, eMetadata, className, submitHandler, action,
   async function handleOnSubmit() {
     $isWordSubmitLoading.set(true);
     await submitHandler(octokitAuths, action, { 
-      title, 
+      title: capitalizeText(title.trim()), 
       content, 
       metadata: eMetadata 
     });
@@ -102,7 +103,7 @@ function Preview({ className, ...props }) {
           <div className="w-full">
             {title && (
               <h1 className="text-4xl font-black">
-                { title }
+                { capitalizeText(title.trim()) }
               </h1>
             )}
           </div>

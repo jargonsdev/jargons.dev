@@ -6,7 +6,7 @@ const app = new App({
   appId: import.meta.env.GITHUB_APP_ID,
   privateKey: import.meta.env.GITHUB_APP_PRIVATE_KEY,
 });
-const { data: { id } } = await app.octokit.request(`GET /repos/${import.meta.env.PROJECT_REPO}/installation`);
+const { data: { id } } = await app.octokit.request(`GET /repos/${import.meta.env.PUBLIC_PROJECT_REPO}/installation`);
 
 /**
  * DevJargons Helper App's Octokit instance

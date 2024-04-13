@@ -3,7 +3,7 @@ import Markdown from "react-markdown";
 import useWordEditor from "../../lib/hooks/use-word-editor.js";
 import handleSubmitWord from "../../lib/handlers/handle-submit-word.js";
 
-export default function WordEditor({ title = "", content = "", metadata = {}, action, projectRepoDetails, octokitAuths }) {
+export default function WordEditor({ title = "", content = "", metadata = {}, action, octokitAuths }) {
   return (
     <div className="w-full flex border rounded-lg">
       <Editor
@@ -13,7 +13,6 @@ export default function WordEditor({ title = "", content = "", metadata = {}, ac
         eMetadata={metadata}
         octokitAuths={octokitAuths}
         submitHandler={handleSubmitWord}
-        projectRepoDetails={projectRepoDetails}
         className="w-full h-full flex flex-col p-5 border-r"
       />
       <Preview className="w-full h-full flex flex-col p-5" />
@@ -30,7 +29,7 @@ export const SubmitButton = ({ children = "Submit" }) => (
   </button>
 );
 
-function Editor({ eTitle, eContent, eMetadata, className, submitHandler, action, octokitAuths, projectRepoDetails, ...props }) {
+function Editor({ eTitle, eContent, eMetadata, className, submitHandler, action, octokitAuths, ...props }) {
   const { title, setTitle, content, setContent } = useWordEditor();
   
   useEffect(() => {
@@ -43,7 +42,7 @@ function Editor({ eTitle, eContent, eMetadata, className, submitHandler, action,
       className={`${className} relative`}
       onSubmit={(e) => {
         e.preventDefault();
-        submitHandler(octokitAuths, action, projectRepoDetails, { title, content, metadata: eMetadata });
+        submitHandler(octokitAuths, action, { title, content, metadata: eMetadata });
       }}
       id="jargons.dev:word_editor"
       {...props}

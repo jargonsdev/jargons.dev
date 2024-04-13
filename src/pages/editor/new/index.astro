@@ -1,9 +1,11 @@
 ---
-import doAuth from "../../../lib/actions/do-auth";
-import { $userData } from "../../../lib/stores/user.js";
 import BaseLayout from "../../../layouts/base.astro";
+import doAuth from "../../../lib/actions/do-auth.js";
 import Navbar from "../../../components/navbar.astro";
-import WordEditor from "../../../components/islands/word-editor.jsx";
+import { $userData } from "../../../lib/stores/user.js";
+import doOctokitAuth from "../../../lib/actions/do-octokit-auth";
+import { resolveEditorActionFromPathname } from "../../../lib/utils/index.js";
+import WordEditor, { SubmitButton as WordEditorSubmitButton } from "../../../components/islands/word-editor.jsx";
 
 const { url: { pathname }, redirect } = Astro;
 
@@ -11,6 +13,9 @@ const { isAuthed, authedData: userData } = await doAuth(Astro);
 if (!isAuthed) return redirect(`/login?return_to=${encodeURIComponent(pathname)}`);
 // @ts-expect-error
 $userData.set(userData);
+
+const octokitAuths = doOctokitAuth(Astro);
+const action = resolveEditorActionFromPathname(pathname);
 ---
 
 <BaseLayout 
@@ -18,12 +23,14 @@ $userData.set(userData);
   class="flex flex-col w-full min-h-screen overflow-hidden"
 >
   <Navbar>
-    <a class="no-underline text-white bg-gray-900 hover:bg-gray-700 focus:ring-4 focus:ring-gray-600 font-medium rounded-lg text-base px-5 py-2.5 text-center ml-1 sm:ml-3">
-      Publish
-    </a>
+    <WordEditorSubmitButton client:load />
   </Navbar>
 
   <main class="flex grow px-5 md:px-6 pb-4">
-    <WordEditor client:load />
+    <WordEditor
+      action={action}
+      octokitAuths={octokitAuths}
+      client:load
+    />
   </main>
 </BaseLayout>

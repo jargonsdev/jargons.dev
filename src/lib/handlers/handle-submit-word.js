@@ -4,25 +4,20 @@ import { createBranch } from "../branch.js";
 import { submitWord } from "../submit-word.js";
 import { normalizeAsUrl } from "../utils/index.js";
 import { updateExistingWord } from "../word-editor.js";
+import { PROJECT_REPO_DETAILS } from "../../../constants.js";
 
 /**
  * Submit Handler for word editor, handles submit function based on action
  * @param {{user: string, devJargons: string}} octokitAuths 
  * @param {"new" | "edit"} action 
- * @param {{ repoFullname: string, repoMainBranchRef: string }} projectRepoDetails 
  * @param {{ title: string, content: string, metadata: object }} word 
- * 
- * @todo would be nice to have `projectRepoDetails` work directly from `constants` or `env`
  */
-export default async function handleSubmitWord(octokitAuths, action, projectRepoDetails, { title, content, metadata }) {
+export default async function handleSubmitWord(octokitAuths, action, { title, content, metadata }) {
   const userOctokit = new Octokit({ auth: octokitAuths.user });
   const devJargonsOctokit = new Octokit({ auth: octokitAuths.devJargons });
 
-  console.log(octokitAuths);
-  console.log(metadata);
-
   // Fork repo
-  const fork = await forkRepository(userOctokit, projectRepoDetails);
+  const fork = await forkRepository(userOctokit, PROJECT_REPO_DETAILS);
   console.log("Project Fork: ", fork);
 
   // Create a branch for action
@@ -30,7 +25,7 @@ export default async function handleSubmitWord(octokitAuths, action, projectRepo
     userOctokit, 
     {
       repoFullname: fork,
-      repoMainBranchRef: projectRepoDetails.repoMainBranchRef
+      repoMainBranchRef: PROJECT_REPO_DETAILS.repoMainBranchRef
     },
     generateBranchName(action, title)
   );
@@ -57,7 +52,7 @@ export default async function handleSubmitWord(octokitAuths, action, projectRepo
     devJargonsOctokit, 
     userOctokit, 
     action, 
-    projectRepoDetails, 
+    PROJECT_REPO_DETAILS, 
     forkedRepoDetails, 
     {
       title, 

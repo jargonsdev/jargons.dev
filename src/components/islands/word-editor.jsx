@@ -1,13 +1,21 @@
 import { useEffect } from "react";
 import Markdown from "react-markdown";
+import { useStore } from "@nanostores/react";
+import useRouter from "../../lib/hooks/use-router.js";
 import useWordEditor from "../../lib/hooks/use-word-editor.js";
+import { $isWordSubmitLoading } from "../../lib/stores/dictionary.js";
+import handleSubmitWord from "../../lib/handlers/handle-submit-word.js";
 
-export default function WordEditor({ title = "", content = "" }) {
+export default function WordEditor({ title = "", content = "", metadata = {}, action, octokitAuths }) {
   return (
     <div className="w-full flex border rounded-lg">
-      <Editor 
+      <Editor
+        action={action}
         eTitle={title} 
         eContent={content} 
+        eMetadata={metadata}
+        octokitAuths={octokitAuths}
+        submitHandler={handleSubmitWord}
         className="w-full h-full flex flex-col p-5 border-r"
       />
       <Preview className="w-full h-full flex flex-col p-5" />
@@ -15,7 +23,26 @@ export default function WordEditor({ title = "", content = "" }) {
   );
 }
 
-function Editor({ eTitle, eContent, className, ...props }) {
+export function SubmitButton({ children = "Submit" }) {
+  const isSubmitLoading = useStore($isWordSubmitLoading);
+  
+  return (
+    <button className="flex items-center justify-center no-underline text-white bg-gray-900 hover:bg-gray-700 focus:ring-0 font-medium rounded-lg text-base px-5 py-2.5 text-center ml-1 sm:ml-3"
+      type="submit"
+      form="jargons.dev:word_editor"
+      disabled={isSubmitLoading}
+    >
+      { isSubmitLoading ? (
+        <div className="flex-none h-4 w-4 md:w-6 md:h-6 rounded-full border-2 border-gray-400 border-b-gray-200 border-r-gray-200 animate-spin" />
+      ) : (
+        children
+      ) }
+    </button>
+  );
+}
+
+function Editor({ eTitle, eContent, eMetadata, className, submitHandler, action, octokitAuths, ...props }) {
+  const router = useRouter();
   const { title, setTitle, content, setContent } = useWordEditor();
   
   useEffect(() => {
@@ -23,16 +50,32 @@ function Editor({ eTitle, eContent, className, ...props }) {
     setContent(eContent);
   }, []);
 
+  async function handleOnSubmit() {
+    $isWordSubmitLoading.set(true);
+    await submitHandler(octokitAuths, action, { 
+      title, 
+      content, 
+      metadata: eMetadata 
+    });
+    router.push("/editor");
+  }
+
   return (
-    <div 
+    <form 
       className={`${className} relative`}
+      onSubmit={(e) => {
+        e.preventDefault();
+        handleOnSubmit();
+      }}
+      id="jargons.dev:word_editor"
       {...props}
     >
       <input 
-        className="block w-full pb-2 mb-3 text-gray-900 border-b text-lg font-bold focus:outline-none"
+        className={`${action === "edit" && "cursor-not-allowed"} block w-full pb-2 mb-3 text-gray-900 border-b text-lg font-bold focus:outline-none`}
         type="text"
         placeholder="New Word"
         value={title}
+        readOnly={action === "edit"}
         onChange={(e) => setTitle(e.target.value)}
       />
       <textarea 
@@ -40,7 +83,7 @@ function Editor({ eTitle, eContent, className, ...props }) {
         value={content}
         onChange={(e) => setContent(e.target.value)}
       />
-    </div>
+    </form>
   );
 }
 

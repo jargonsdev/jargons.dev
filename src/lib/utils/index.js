@@ -40,3 +40,12 @@ export function normalizeAsUrl(string) {
 export function isObjectEmpty(object) {
   return JSON.stringify(object) === "{}"
 }
+
+/**
+ * Resolve action (`new` or `edit` word) being perfored in Word editor from pathanme
+ * @param {string} pathname 
+ * @returns {"new" | "edit"}
+ */
+export function resolveEditorActionFromPathname(pathname) {
+  return pathname.slice(1).split("/")[1].toLowerCase();
+}

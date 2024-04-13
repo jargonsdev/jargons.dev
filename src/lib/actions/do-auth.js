@@ -25,7 +25,7 @@ export default async function doAuth(astroGlobal) {
     if (!isStateEmpty(state)){
       if (state.path) parsedState += `path:${state.path}`;
       const otherStates = String(Object.keys(state)
-        .filter(key => key !== "path" && key !== "redirect")
+        .filter(key => key !== "path")
         .map(key => key + ":" + state[key]).join("|"));
       if (otherStates.length > 0) parsedState += `|${otherStates}`;
     }
@@ -38,7 +38,7 @@ export default async function doAuth(astroGlobal) {
   }
 
   try {
-    if (!accessToken && code) {
+    if (code) {
       const response = await getAuthorization(astroGlobal);
       const auth = await response.json();
   

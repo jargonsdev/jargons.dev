@@ -6,12 +6,17 @@ import { getRepoParts, normalizeAsUrl } from "./utils/index.js";
  * @param {import("octokit").Octokit} userOctokit 
  * @param {{ repoFullname: string, repoChangeBranchRef: string }} forkedRepoDetails 
  * @param {{ title: string, content: string }} word 
+ * @param {{ env: "node" | "browser" }} options  
  */
-export async function writeNewWord(userOctokit, forkedRepoDetails, { title, content }) {
+export async function writeNewWord(userOctokit, forkedRepoDetails, { title, content }, options) {
   const { repoFullname, repoChangeBranchRef } = forkedRepoDetails;
   const { repoOwner, repoName } = getRepoParts(repoFullname);
   const branch = repoChangeBranchRef.split("/").slice(2).join("/");
   const wordFileContent = writeWordFileContent(title, content);
+
+  const content_encoded = options.env === "browser" 
+    ? btoa(wordFileContent) 
+    : Buffer.from(wordFileContent).toString("base64");
 
   try {
     const response = await userOctokit.request("PUT /repos/{owner}/{repo}/contents/{path}", {
@@ -19,7 +24,7 @@ export async function writeNewWord(userOctokit, forkedRepoDetails, { title, cont
       repo: repoName,
       branch,
       path: `src/pages/browse/${normalizeAsUrl(title)}.mdx`,
-      content: Buffer.from(wordFileContent).toString("base64"),
+      content: content_encoded,
       message: `word: commit to "${title}"`
     });
   
@@ -34,12 +39,17 @@ export async function writeNewWord(userOctokit, forkedRepoDetails, { title, cont
  * @param {import("octokit").Octokit} userOctokit 
  * @param {{ repoFullname: string, repoChangeBranchRef: string }} forkedRepoDetails 
  * @param {{ path: string, sha: string, title: string, content: string }} word  enter new content as value to `content` property
+ * @param {{ env: "node" | "browser" }} options 
  */
-export async function updateExistingWord(userOctokit, forkedRepoDetails, { path, sha, title, content }) {
+export async function updateExistingWord(userOctokit, forkedRepoDetails, { path, sha, title, content }, options) {
   const { repoFullname, repoChangeBranchRef } = forkedRepoDetails;
   const { repoOwner, repoName } = getRepoParts(repoFullname);
   const branch = repoChangeBranchRef.split("/").slice(2).join("/");
   const wordFileContent = writeWordFileContent(title, content);
+  
+  const content_encoded = options.env === "browser" 
+    ? btoa(wordFileContent) 
+    : Buffer.from(wordFileContent).toString("base64");
 
   try {
     const response = await userOctokit.request("PUT /repos/{owner}/{repo}/contents/{path}", {
@@ -47,7 +57,7 @@ export async function updateExistingWord(userOctokit, forkedRepoDetails, { path,
       repo: repoName,
       branch,
       path,
-      content: Buffer.from(wordFileContent).toString("base64"),
+      content: content_encoded,
       message: `word: edit commit to "${title}"`,
       sha
     });

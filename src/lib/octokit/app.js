@@ -25,6 +25,8 @@ const devJargonsAppAuth = await (
 
 /**
  * OAuth App's Octokit instance
+ * 
+ * @todo consider removing this later, its looking redundant
  */
 const octokit = new Octokit({
   authStrategy: createOAuthAppAuth,

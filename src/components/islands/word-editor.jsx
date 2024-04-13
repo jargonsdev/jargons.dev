@@ -27,7 +27,7 @@ export function SubmitButton({ children = "Submit" }) {
   const isSubmitLoading = useStore($isWordSubmitLoading);
   
   return (
-    <button className="flex items-center justify-center no-underline text-white bg-gray-900 hover:bg-gray-700 focus:ring-4 focus:ring-gray-600 font-medium rounded-lg text-base px-5 py-2.5 text-center ml-1 sm:ml-3"
+    <button className="flex items-center justify-center no-underline text-white bg-gray-900 hover:bg-gray-700 focus:ring-0 font-medium rounded-lg text-base px-5 py-2.5 text-center ml-1 sm:ml-3"
       type="submit"
       form="jargons.dev:word_editor"
       disabled={isSubmitLoading}

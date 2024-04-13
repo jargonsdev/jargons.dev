@@ -11,6 +11,9 @@ import { PROJECT_REPO_DETAILS } from "../../../constants.js";
  * @param {{user: string, devJargons: string}} octokitAuths 
  * @param {"new" | "edit"} action 
  * @param {{ title: string, content: string, metadata: object }} word 
+ * 
+ * @todo add error handling
+ * @todo BUG: address `octokitAuths.devJargons` turns a bad credential after seom time
  */
 export default async function handleSubmitWord(octokitAuths, action, { title, content, metadata }) {
   const userOctokit = new Octokit({ auth: octokitAuths.user });
@@ -60,6 +63,8 @@ export default async function handleSubmitWord(octokitAuths, action, { title, co
     }
   );
   console.log("Word submitted: ", wordSubmission);
+
+  return wordSubmission;
 }
 
 /**

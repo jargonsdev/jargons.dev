@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import Markdown from "react-markdown";
+import useRouter from "../../lib/hooks/use-router.js";
 import useWordEditor from "../../lib/hooks/use-word-editor.js";
 import handleSubmitWord from "../../lib/handlers/handle-submit-word.js";
 
@@ -30,6 +31,7 @@ export const SubmitButton = ({ children = "Submit" }) => (
 );
 
 function Editor({ eTitle, eContent, eMetadata, className, submitHandler, action, octokitAuths, ...props }) {
+  const router = useRouter();
   const { title, setTitle, content, setContent } = useWordEditor();
   
   useEffect(() => {
@@ -37,12 +39,21 @@ function Editor({ eTitle, eContent, eMetadata, className, submitHandler, action,
     setContent(eContent);
   }, []);
 
+  async function handleOnSubmit() {
+    await submitHandler(octokitAuths, action, { 
+      title, 
+      content, 
+      metadata: eMetadata 
+    });
+    router.push("/editor");
+  }
+
   return (
     <form 
       className={`${className} relative`}
       onSubmit={(e) => {
         e.preventDefault();
-        submitHandler(octokitAuths, action, { title, content, metadata: eMetadata });
+        handleOnSubmit();
       }}
       id="jargons.dev:word_editor"
       {...props}

@@ -1,15 +1,12 @@
 ---
 import { Image } from "astro:assets";
-import doAuth from "../../lib/actions/do-auth";
+import doAuth from "../../lib/actions/do-auth.js";
 import BaseLayout from "../../layouts/base.astro";
-import { $userData } from "../../lib/stores/user.js";
 
 const { url: { pathname }, redirect } = Astro;
 
 const { isAuthed, authedData: userData } = await doAuth(Astro);
 if (!isAuthed) return redirect(`/login?return_to=${encodeURIComponent(pathname)}`);
-// @ts-expect-error
-$userData.set(userData);
 ---
 
 <BaseLayout 
@@ -21,16 +18,17 @@ $userData.set(userData);
     <section class="mt-10 flex w-full items-center justify-between md:px-6">
       <div class="flex flex-col space-y-6 justify-center h-full py-6">
         <span class="relative flex shrink-0 overflow-hidden rounded-full w-20 h-20 border">
+          <!-- src="https://images.unsplash.com/profile-1606728664311-4bcc76a40e98image?bg=fff&crop=faces&dpr=2&h=150&w=150&auto=format&fit=crop&q=60&ixlib=rb-4.0.3"  -->
           <Image 
-            src="https://images.unsplash.com/profile-1606728664311-4bcc76a40e98image?bg=fff&crop=faces&dpr=2&h=150&w=150&auto=format&fit=crop&q=60&ixlib=rb-4.0.3" 
-            alt="Avatar"
+            src={ userData.avatar_url }
+            alt={ (userData.name || userData.login) ?? "User avatar" }
             width={100}
             height={100} 
             loading="eager"
           />
         </span>
         <div class="space-y-2">
-          <h3 class="text-2xl font-semibold">Hey, babblebey!</h3>
+          <h3 class="text-2xl font-semibold">Hey, { userData.login }👋</h3>
           <p class="text-base text-gray-500">Welcome to the Jargons Editor, we're super excited to see you here.</p>
         </div>  
       </div>

@@ -35,7 +35,8 @@ export async function submitWord(devJargonsOctokit, userOctokit, action, project
     head: `${forkedRepoOwner}:${headBranch}`,
     base: baseBranch,
     title,
-    body
+    body,
+    maintainers_can_modify: true
   });
 
   // DevJargons (bot) App adds related labels to PR

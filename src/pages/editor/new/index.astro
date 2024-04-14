@@ -1,0 +1,36 @@
+---
+import BaseLayout from "../../../layouts/base.astro";
+import doAuth from "../../../lib/actions/do-auth.js";
+import Navbar from "../../../components/navbar.astro";
+import { $userData } from "../../../lib/stores/user.js";
+import doOctokitAuth from "../../../lib/actions/do-octokit-auth";
+import { resolveEditorActionFromPathname } from "../../../lib/utils/index.js";
+import WordEditor, { SubmitButton as WordEditorSubmitButton } from "../../../components/islands/word-editor.jsx";
+
+const { url: { pathname }, redirect } = Astro;
+
+const { isAuthed, authedData: userData } = await doAuth(Astro);
+if (!isAuthed) return redirect(`/login?return_to=${encodeURIComponent(pathname)}`);
+// @ts-expect-error
+$userData.set(userData);
+
+const octokitAuths = doOctokitAuth(Astro);
+const action = resolveEditorActionFromPathname(pathname);
+---
+
+<BaseLayout 
+  pageTitle="Dictionry"
+  class="flex flex-col w-full min-h-screen overflow-hidden"
+>
+  <Navbar>
+    <WordEditorSubmitButton client:load />
+  </Navbar>
+
+  <main class="flex grow px-5 md:px-6 pb-4">
+    <WordEditor
+      action={action}
+      octokitAuths={octokitAuths}
+      client:load
+    />
+  </main>
+</BaseLayout>

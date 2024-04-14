@@ -49,3 +49,12 @@ export function isObjectEmpty(object) {
 export function resolveEditorActionFromPathname(pathname) {
   return pathname.slice(1).split("/")[1].toLowerCase();
 }
+
+/**
+ * Capitalize text
+ * @param {string} text 
+ * @returns {string}
+ */
+export function capitalizeText(text) {
+  return text.split(" ").map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(" ");
+}

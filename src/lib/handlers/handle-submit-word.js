@@ -3,8 +3,8 @@ import { forkRepository } from "../fork.js";
 import { createBranch } from "../branch.js";
 import { submitWord } from "../submit-word.js";
 import { normalizeAsUrl } from "../utils/index.js";
-import { updateExistingWord } from "../word-editor.js";
 import { PROJECT_REPO_DETAILS } from "../../../constants.js";
+import { updateExistingWord, writeNewWord } from "../word-editor.js";
 
 /**
  * Submit Handler for word editor, handles submit function based on action
@@ -40,16 +40,29 @@ export default async function handleSubmitWord(octokitAuths, action, { title, co
     repoChangeBranchRef: branch.ref
   }
   
-  // update existing word
-  const word = await updateExistingWord(userOctokit, forkedRepoDetails, {
-    title,
-    content,
-    path: metadata.path,
-    sha: metadata.sha
-  }, {
-    env: "browser"
-  });
-  console.log("Word updated: ", word);
+  // update existing word - if action is "edit"
+  if (action === "edit") {
+    const updatedWord = await updateExistingWord(userOctokit, forkedRepoDetails, {
+      title,
+      content,
+      path: metadata.path,
+      sha: metadata.sha
+    }, {
+      env: "browser"
+    });
+    console.log("Word updated: ", updatedWord);
+  }
+
+  // add new word - if action is "new"
+  if (action === "new") {
+    const newWord = await writeNewWord(userOctokit, forkedRepoDetails, {
+      title, 
+      content
+    }, {
+      env: "browser"
+    });
+    console.log("New word added: ", newWord);
+  }
 
   // submit the edit in new pr
   const wordSubmission = await submitWord(

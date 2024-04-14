@@ -22,7 +22,12 @@ const action = resolveEditorActionFromPathname(pathname);
   pageTitle="Dictionry"
   class="flex flex-col w-full min-h-screen overflow-hidden"
 >
-  <Navbar>
+  <Navbar
+    returnNav={{
+      label: "Back to Jargons Editor",
+      location: "/editor"
+    }}
+  >
     <WordEditorSubmitButton client:load />
   </Navbar>
 

@@ -1,7 +1,7 @@
 ---
+import { Image } from "astro:assets";
 import doAuth from "../../lib/actions/do-auth";
 import BaseLayout from "../../layouts/base.astro";
-import Navbar from "../../components/navbar.astro";
 import { $userData } from "../../lib/stores/user.js";
 
 const { url: { pathname }, redirect } = Astro;
@@ -14,17 +14,26 @@ $userData.set(userData);
 
 <BaseLayout 
   pageTitle="Dictionry"
-  class="flex flex-col w-full min-h-screen overflow-hidden"
+  class="flex flex-col w-full min-h-screen"
 >
-  <Navbar>
-    
-  </Navbar>
-
   <main class="flex flex-col grow px-5 md:px-6 pb-4">
-    <h1>
-      The Jargons Editor - Your Dashboard
-    </h1>
-    
-    <a href="/editor/new">Add New Word</a>
+    <!-- Profile Section -->
+    <section class="mt-10 flex w-full items-center justify-between md:px-6">
+      <div class="flex flex-col space-y-6 justify-center h-full py-6">
+        <span class="relative flex shrink-0 overflow-hidden rounded-full w-20 h-20 border">
+          <Image 
+            src="https://images.unsplash.com/profile-1606728664311-4bcc76a40e98image?bg=fff&crop=faces&dpr=2&h=150&w=150&auto=format&fit=crop&q=60&ixlib=rb-4.0.3" 
+            alt="Avatar"
+            width={100}
+            height={100} 
+            loading="eager"
+          />
+        </span>
+        <div class="space-y-2">
+          <h3 class="text-2xl font-semibold">Hey, babblebey!</h3>
+          <p class="text-base text-gray-500">Welcome to the Jargons Editor, we're super excited to see you here.</p>
+        </div>  
+      </div>
+    </section>
   </main>
 </BaseLayout>

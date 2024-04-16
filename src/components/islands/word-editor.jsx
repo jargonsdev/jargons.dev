@@ -80,7 +80,7 @@ function Editor({ eTitle, eContent, eMetadata, className, submitHandler, action,
         onChange={(e) => setTitle(e.target.value)}
       />
       <textarea 
-        className="w-full grow resize-none appearance-none border-none focus:outline-none scrollbar"
+        className="w-full h-1 grow resize-none appearance-none border-none focus:outline-none scrollbar"
         value={content}
         onChange={(e) => setContent(e.target.value)}
       />
@@ -96,7 +96,7 @@ function Preview({ className, ...props }) {
       className={`${className} select-none`}
       {...props}  
     >
-      <div className="grow overflow-auto space-y-6 rounded-lg border p-5 shadow-lg">
+      <div className="h-1 grow overflow-auto space-y-6 rounded-lg border p-5 shadow-lg scrollbar">
         <DummyPreviewNavbar />
 
         <div className="max-w-4xl space-y-8 mx-auto">
@@ -132,7 +132,7 @@ const DummyPreviewNavbar = () => (
       </span>
 
       <div>
-        <div className="relative w-56 text-sm hidden @md:flex items-center justify-between border pl-2.5 p-1 space-x-2 border-gray-400 rounded-lg cursor-text">
+        <div className="relative w-56 text-sm hidden @md:flex items-center justify-between border pl-2.5 p-1 space-x-2 border-gray-400 rounded-lg">
           <div className="flex items-center text-gray-400 space-x-2">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-5 h-5">
               <path strokeLinecap="round" strokeLinejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />

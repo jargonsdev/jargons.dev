@@ -19,17 +19,16 @@ export default async function doContributionStats(astroGlobal) {
   const baseQuery = `repo:${repoFullname} is:pull-request type:pr author:@me label:":computer: via word-editor"`;
   const baseStatsUrlQuery = `is:pr author:@me label:":computer: via word-editor"`;
 
-  // Get all New Word Contributions
+  /**
+   * @todo [thoughts]: would be nice to have all these requests in one, and use a filter to separate by labels
+   * [potential bottleneck]: no wat to know whether a PR is "merged" considering that "closed" doesn't mean merged
+   */
   const { data: newType } = await userOctokit.request("GET /search/issues", {
     q: `${baseQuery} label:":book: new word" is:merged is:closed`
   });
-
-  // Get all Edit Word Contributions
   const { data: editType } = await userOctokit.request("GET /search/issues", {
     q: `${baseQuery} label:":book: edit word" is:merged is:closed`
   });
-
-  // Get all Pending Word Contribution (both Edit and New)
   const { data: pendingType } = await userOctokit.request("GET /search/issues", {
     q: `${baseQuery} is:unmerged is:open`
   });

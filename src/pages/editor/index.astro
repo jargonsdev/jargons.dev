@@ -18,7 +18,7 @@ const totalWords = {
 ---
 
 <BaseLayout 
-  pageTitle="Dictionry"
+  pageTitle="Jargons Editor"
   class="flex flex-col w-full min-h-screen"
 >
   <main class="w-full max-w-screen-lg mx-auto flex flex-col grow p-5 space-y-3">
@@ -82,7 +82,7 @@ const totalWords = {
             <div class="text-3xl font-bold tracking-tighter">
               { totalWords.count }
             </div>
-            {!!totalWords && (
+            {!!totalWords.count && (
               <a class="text-sm" href={totalWords.url}>
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width={1.5} stroke="currentColor" class="w-4 h-4">
                   <title>See all Words Contributed</title>
@@ -107,7 +107,7 @@ const totalWords = {
             <div class="text-3xl font-bold tracking-tighter">
               { pendingWords.count }
             </div>
-            {!!pendingWords && (
+            {!!pendingWords.count && (
               <a class="text-sm" href={pendingWords.url}>
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width={1.5} stroke="currentColor" class="w-4 h-4">
                   <title>See all Pending Word Contribution</title>
@@ -146,7 +146,7 @@ const totalWords = {
               <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 21a9 9 0 1 1 0-18c1.052 0 2.062.18 3 .512M7 9.577l3.923 3.923 8.5-8.5M17 14v6m-3-3h6"/>
             </svg>            
             <span class="text-gray-500 dark:text-gray-400">
-              New Words
+              New Words Contributed
             </span>
           </div>
         </div>
@@ -171,7 +171,7 @@ const totalWords = {
               <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m14.304 4.844 2.852 2.852M7 7H4a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1v-4.5m2.409-9.91a2.017 2.017 0 0 1 0 2.853l-6.844 6.844L8 14l.713-3.565 6.844-6.844a2.015 2.015 0 0 1 2.852 0Z"/>
             </svg>            
             <span class="text-gray-500 dark:text-gray-400">
-              Edited Words
+              Edited Words Contribution
             </span>
           </div>
         </div>

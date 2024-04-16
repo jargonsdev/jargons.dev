@@ -13,7 +13,7 @@ if (!isAuthed) return redirect(`/login?return_to=${encodeURIComponent(pathname)}
   pageTitle="Dictionry"
   class="flex flex-col w-full min-h-screen"
 >
-  <main class="flex flex-col grow px-5 md:px-6 pb-4 space-y-3">
+  <main class="max-w-screen-2xl mx-auto flex flex-col grow p-5 space-y-3">
     <!-- Profile Section -->
     <section class="mt-10 flex w-full items-center justify-between md:px-6">
       <div class="flex flex-col space-y-6 justify-center h-full py-6">
@@ -52,6 +52,82 @@ if (!isAuthed) return redirect(`/login?return_to=${encodeURIComponent(pathname)}
             <path stroke-linecap="round" stroke-linejoin="round" d="m4.5 19.5 15-15m0 0H8.25m11.25 0v11.25" />
           </svg> 
         </a>
+      </div>
+    </section>
+
+    <!-- Contribution Stats -->
+    <section class="">
+      <div class="flex-col space-y-1 p-6 flex">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6">
+          <path d="M22 12h-4l-3 9L9 3l-3 9H2"></path>
+        </svg>
+        <div class="">
+          <h3 class="text-2xl font-semibold tracking-tight">Contribution Stats</h3>
+          <p class="text-sm">Words contributed to jargons.dev so far</p>
+        </div>
+        <a class="ml-auto underline" href="#"></a>
+      </div>
+
+      <div class="flex flex-wrap gap-2">
+        <!-- Total Words -->
+        <div class="w-full md:w-[49%] p-6 space-y-2 rounded-lg border shadow-sm">
+          <div class="text-3xl font-bold tracking-tighter">
+            32
+          </div>
+          <div class="flex items-center gap-2 text-sm">
+            <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.5 11.5 11 14l4-4m6 2a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/>
+            </svg>            
+            <span class="text-gray-500 dark:text-gray-400">
+              Contributed Words
+            </span>
+          </div>
+        </div>
+
+        <!-- Pending Words -->
+        <div class="w-full md:w-[49%] p-6 space-y-2 rounded-lg border shadow-sm">
+          <div class="text-3xl font-bold tracking-tighter">
+            32
+          </div>
+          <div class="flex items-center gap-2 text-sm">
+            <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/>
+            </svg>            
+            <span class="text-gray-500 dark:text-gray-400">
+              Pending Words
+            </span>
+          </div>
+        </div>
+
+        <!-- New Words -->
+        <div class="w-full md:w-[49%] p-6 space-y-2 rounded-lg border shadow-sm">
+          <div class="text-3xl font-bold tracking-tighter">
+            32
+          </div>
+          <div class="flex items-center gap-2 text-sm">
+            <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 21a9 9 0 1 1 0-18c1.052 0 2.062.18 3 .512M7 9.577l3.923 3.923 8.5-8.5M17 14v6m-3-3h6"/>
+            </svg>            
+            <span class="text-gray-500 dark:text-gray-400">
+              New Words
+            </span>
+          </div>
+        </div>
+
+        <!-- Edited Word -->
+        <div class="w-full md:w-[49%] p-6 space-y-2 rounded-lg border shadow-sm">
+          <div class="text-3xl font-bold tracking-tighter">
+            32
+          </div>
+          <div class="flex items-center gap-2 text-sm">
+            <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m14.304 4.844 2.852 2.852M7 7H4a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1v-4.5m2.409-9.91a2.017 2.017 0 0 1 0 2.853l-6.844 6.844L8 14l.713-3.565 6.844-6.844a2.015 2.015 0 0 1 2.852 0Z"/>
+            </svg>            
+            <span class="text-gray-500 dark:text-gray-400">
+              Edited Words
+            </span>
+          </div>
+        </div>
       </div>
     </section>
   </main>

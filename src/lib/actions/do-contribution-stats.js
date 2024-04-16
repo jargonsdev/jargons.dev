@@ -16,21 +16,23 @@ export default async function doContributionStats(astroGlobal) {
   /**
    * @todo Implement narrowed search to project's main branch 
    */
-  const baseQuery = `repo:${repoFullname} is:pull-request type:pr  is:merged is:closed author:@me label:":computer: via word-editor"`;
+  const baseQuery = `repo:${repoFullname} is:pull-request type:pr author:@me label:":computer: via word-editor"`;
   const baseStatsUrlQuery = `is:pr author:@me label:":computer: via word-editor"`;
 
   // Get all New Word Contributions
   const { data: newType } = await userOctokit.request("GET /search/issues", {
-    q: `${baseQuery} label:":book: new word"`
+    q: `${baseQuery} label:":book: new word" is:merged is:closed`
   });
 
   // Get all Edit Word Contributions
   const { data: editType } = await userOctokit.request("GET /search/issues", {
-    q: `${baseQuery} label:":book: edit word"`
+    q: `${baseQuery} label:":book: edit word" is:merged is:closed`
   });
 
-    // Calculate Total Contibutions
   // Get all Pending Word Contribution (both Edit and New)
+  const { data: pendingType } = await userOctokit.request("GET /search/issues", {
+    q: `${baseQuery} is:unmerged is:open`
+  });
 
   return {
     newWords: {
@@ -42,12 +44,8 @@ export default async function doContributionStats(astroGlobal) {
       url: buildStatsUrl(repoFullname, `${baseStatsUrlQuery} is:merged is:closed label:":book: edit word"`)
     },
     pendingWords: {
-      count: 0,
-      url: ""
-    },
-    totalWords: {
-      count: 0,
-      url: ""
+      count: pendingType.total_count,
+      url: buildStatsUrl(repoFullname, `${baseStatsUrlQuery} is:unmerged is:open`)
     }
   }
 }

@@ -2,11 +2,19 @@
 import { Image } from "astro:assets";
 import doAuth from "../../lib/actions/do-auth.js";
 import BaseLayout from "../../layouts/base.astro";
+import { PROJECT_REPO_DETAILS } from "../../../constants.js";
+import doContributionStats from "../../lib/actions/do-contribution-stats.js";
 
 const { url: { pathname }, redirect } = Astro;
 
 const { isAuthed, authedData: userData } = await doAuth(Astro);
 if (!isAuthed) return redirect(`/login?return_to=${encodeURIComponent(pathname)}`);
+
+const { newWords, editedWords, pendingWords } = await doContributionStats(Astro);
+const totalWords = {
+  count: newWords.count + editedWords.count,
+  url: `https://github.com/${PROJECT_REPO_DETAILS.repoFullname}/pulls?q=${encodeURIComponent(`is:pr is:closed is:merged author:@me label:":computer: via word-editor"`)}`
+};
 ---
 
 <BaseLayout 
@@ -72,7 +80,7 @@ if (!isAuthed) return redirect(`/login?return_to=${encodeURIComponent(pathname)}
         <!-- Total Words -->
         <div class="w-full md:w-[49%] p-6 space-y-2 rounded-lg border shadow-sm">
           <div class="text-3xl font-bold tracking-tighter">
-            32
+            { totalWords.count }
           </div>
           <div class="flex items-center gap-2 text-sm">
             <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
@@ -87,7 +95,7 @@ if (!isAuthed) return redirect(`/login?return_to=${encodeURIComponent(pathname)}
         <!-- Pending Words -->
         <div class="w-full md:w-[49%] p-6 space-y-2 rounded-lg border shadow-sm">
           <div class="text-3xl font-bold tracking-tighter">
-            32
+            { pendingWords.count }
           </div>
           <div class="flex items-center gap-2 text-sm">
             <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
@@ -102,7 +110,7 @@ if (!isAuthed) return redirect(`/login?return_to=${encodeURIComponent(pathname)}
         <!-- New Words -->
         <div class="w-full md:w-[49%] p-6 space-y-2 rounded-lg border shadow-sm">
           <div class="text-3xl font-bold tracking-tighter">
-            32
+            { newWords.count }
           </div>
           <div class="flex items-center gap-2 text-sm">
             <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
@@ -117,7 +125,7 @@ if (!isAuthed) return redirect(`/login?return_to=${encodeURIComponent(pathname)}
         <!-- Edited Word -->
         <div class="w-full md:w-[49%] p-6 space-y-2 rounded-lg border shadow-sm">
           <div class="text-3xl font-bold tracking-tighter">
-            32
+            { editedWords.count }
           </div>
           <div class="flex items-center gap-2 text-sm">
             <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">

@@ -25,6 +25,10 @@ export default async function doContributionStats(astroGlobal) {
   });
 
   // Get all Edit Word Contributions
+  const { data: editType } = await userOctokit.request("GET /search/issues", {
+    q: `${baseQuery} label:":book: edit word"`
+  });
+
     // Calculate Total Contibutions
   // Get all Pending Word Contribution (both Edit and New)
 
@@ -33,9 +37,9 @@ export default async function doContributionStats(astroGlobal) {
       count: newType.total_count,
       url: buildStatsUrl(repoFullname, `${baseStatsUrlQuery} is:merged is:closed label:":book: new word"`)
     },
-    editWords: {
-      count: 0,
-      url: ""
+    editedWords: {
+      count: editType.total_count,
+      url: buildStatsUrl(repoFullname, `${baseStatsUrlQuery} is:merged is:closed label:":book: edit word"`)
     },
     pendingWords: {
       count: 0,
@@ -52,7 +56,7 @@ export default async function doContributionStats(astroGlobal) {
  * Build URL to the Pull Request list on the project's Repo
  * @param {string} repoFullname 
  * @param {string} queryString 
- * @returns 
+ * @returns {string}
  */
 function buildStatsUrl(repoFullname, queryString) {
   return `https://github.com/${repoFullname}/pulls?q=${encodeURIComponent(queryString)}`;

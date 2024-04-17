@@ -5,6 +5,7 @@ import Search from "../components/islands/search.jsx";
 import { $dictionary } from "../lib/stores/dictionary.js";
 
 const { frontmatter } = Astro.props;
+const editUrl = `/editor/edit/${frontmatter.url.split("/")[2]}`;
 ---
 
 <BaseLayout pageTitle={ frontmatter.title }>
@@ -26,7 +27,7 @@ const { frontmatter } = Astro.props;
         </div>
         
         <!-- Edit Button -->
-        <a href={""}
+        <a href={editUrl}
           class="flex items-center space-x-0.5 text-xs"
         >
           <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">

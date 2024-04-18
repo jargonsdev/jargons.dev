@@ -6,9 +6,10 @@ import { $dictionary } from "../lib/stores/dictionary.js";
 
 const { frontmatter } = Astro.props;
 const editUrl = `/editor/edit/${frontmatter.url.split("/")[2]}`;
+const ogImageUrl = `${Astro.url.origin}/api/open-graph/${frontmatter.url.split("/")[2]}.png`;
 ---
 
-<BaseLayout pageTitle={ frontmatter.title }>
+<BaseLayout pageTitle={frontmatter.title} ogImageUrl={ogImageUrl}>
   <Navbar>
     <Search triggerSize="sm" dictionary={$dictionary.value} client:load />
   </Navbar>

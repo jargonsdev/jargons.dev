@@ -4,9 +4,9 @@ import Navbar from "../components/navbar.astro";
 import Search from "../components/islands/search.jsx";
 import { $dictionary } from "../lib/stores/dictionary.js";
 
-const { frontmatter } = Astro.props;
+const { props: { frontmatter }, url } = Astro;
 const editUrl = `/editor/edit/${frontmatter.url.split("/")[2]}`;
-const ogImageUrl = `${Astro.url.origin}/api/open-graph/${frontmatter.url.split("/")[2]}.png`;
+const ogImageUrl = `${url.origin}/api/open-graph/${frontmatter.url.split("/")[2]}.png`;
 ---
 
 <BaseLayout pageTitle={frontmatter.title} ogImageUrl={ogImageUrl}>

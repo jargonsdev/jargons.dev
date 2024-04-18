@@ -3,7 +3,7 @@ import { html } from "satori-html";
 import { readFileSync } from "node:fs";
 import { Resvg } from "@resvg/resvg-js";
 // import Inter from "../../../../public/font/Inter-Regular.ttf";
-import IBMPlexMono from "../../../../public/font/IBMPlexMono-SemiBold.ttf";
+// import IBMPlexMono from "../../../../public/font/IBMPlexMono-SemiBold.ttf";
 
 const dictionary = import.meta.glob("../../browse/*.mdx", { eager: true });
 
@@ -13,7 +13,7 @@ const dictionary = import.meta.glob("../../browse/*.mdx", { eager: true });
  */
 export async function GET({ params }) {
   // const InterBuffer = readFileSync(process.cwd() + Inter);
-  const IBMPlexMonoBuffer = readFileSync(process.cwd() + IBMPlexMono);
+  const IBMPlexMonoBuffer = readFileSync(process.cwd() + "font/IBMPlexMono-SemiBold.ttf");
 
   const word = dictionary[`../../browse/${params.id}.mdx`];
 

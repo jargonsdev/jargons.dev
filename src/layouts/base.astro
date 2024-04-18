@@ -3,7 +3,8 @@ import "@fontsource/inter";
 import "@fontsource/ibm-plex-mono";
 import "../base.css";
 
-const { pageTitle, class:list } = Astro.props;
+const { props, url } = Astro;
+const { pageTitle, class:list, ogImageUrl = "default", subtitle = "Developer Jargons" } = props;
 ---
 
 <html lang="en">
@@ -12,7 +13,27 @@ const { pageTitle, class:list } = Astro.props;
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<meta name="viewport" content="width=device-width" />
 		<meta name="generator" content={Astro.generator} />
-		<title>{ pageTitle } - Developer Jargons</title>
+
+		<!-- Facebook Meta Tags 
+		@todo: compute value for `og:description`
+		-->
+		<meta property="og:url" content={url.href}>
+		<meta property="og:type" content="website">
+		<meta property="og:title" content={`${ pageTitle } - ${subtitle}`}>
+		<meta property="og:description" content="">
+		<meta property="og:image" content={ogImageUrl}>
+
+		<!-- Twitter Meta Tags 
+		@todo: compute value for `twitter:description`
+		-->
+		<meta name="twitter:card" content="summary_large_image">
+		<meta property="twitter:domain" content={url.host}>
+		<meta property="twitter:url" content={url.href}>
+		<meta name="twitter:title" content={`${ pageTitle } - ${subtitle}`}>
+		<meta name="twitter:description" content="">
+		<meta name="twitter:image" content={ogImageUrl}>
+
+		<title>{ pageTitle } - {subtitle}</title>
 	</head>
 	<body class={list}>
     <slot />

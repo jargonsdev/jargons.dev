@@ -2,7 +2,11 @@ import satori from "satori";
 import { html } from "satori-html";
 import { readFileSync } from "node:fs";
 import { Resvg } from "@resvg/resvg-js";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
 
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+console.log(__dirname);
 const dictionary = import.meta.glob("../browse/*.mdx", { eager: true });
 
 /**
@@ -11,7 +15,12 @@ const dictionary = import.meta.glob("../browse/*.mdx", { eager: true });
  */
 export async function GET({ params }) {
   // const InterBuffer = readFileSync(process.cwd() + Inter);
-  const IBMPlexMonoBuffer = readFileSync(process.cwd() + "/font/IBMPlexMono-SemiBold.ttf");
+  // const fontU = new URL("../../../public/font/IBMPlexMono-SemiBold.ttf", process.cwd()).href;
+  // const IBMPlexMonoBuffer = readFileSync(path.resolve(fontU));
+  const IBMPlexMonoBuffer = readFileSync(path.resolve(__dirname, "../../../", "public/font/IBMPlexMono-SemiBold.ttf"));
+  // const IBMPlexMonoBuffer = readFileSync(process.cwd() + "/public/font/IBMPlexMono-SemiBold.ttf");
+  console.log(path.resolve(__dirname, "./", "_IBMPlexMono-SemiBold.ttf"))
+  // console.log(fontU);
 
   const word = dictionary[`../browse/${params.id}.mdx`] ?? null;
 

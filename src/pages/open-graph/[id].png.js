@@ -17,7 +17,8 @@ export async function GET({ params }) {
   // const InterBuffer = readFileSync(process.cwd() + Inter);
   // const fontU = new URL("../../../public/font/IBMPlexMono-SemiBold.ttf", process.cwd()).href;
   // const IBMPlexMonoBuffer = readFileSync(path.resolve(fontU));
-  const IBMPlexMonoBuffer = readFileSync(path.resolve(__dirname, "../../../", "public/font/IBMPlexMono-SemiBold.ttf"));
+  // const IBMPlexMonoBuffer = readFileSync(path.resolve(__dirname, "../../../", "public/font/IBMPlexMono-SemiBold.ttf"));
+  const IBMPlexMonoBuffer = readFileSync(path.resolve(__dirname, "./", "_IBMPlexMono-SemiBold.ttf"));
   // const IBMPlexMonoBuffer = readFileSync(process.cwd() + "/public/font/IBMPlexMono-SemiBold.ttf");
   console.log(path.resolve(__dirname, "./", "_IBMPlexMono-SemiBold.ttf"))
   // console.log(fontU);

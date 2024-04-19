@@ -2,10 +2,8 @@ import satori from "satori";
 import { html } from "satori-html";
 import { readFileSync } from "node:fs";
 import { Resvg } from "@resvg/resvg-js";
-// import Inter from "../../../../public/font/Inter-Regular.ttf";
-// import IBMPlexMono from "../../../../public/font/IBMPlexMono-SemiBold.ttf";
 
-const dictionary = import.meta.glob("../../browse/*.mdx", { eager: true });
+const dictionary = import.meta.glob("../browse/*.mdx", { eager: true });
 
 /**
  * Generate an Open Graph Image for word
@@ -15,10 +13,7 @@ export async function GET({ params }) {
   // const InterBuffer = readFileSync(process.cwd() + Inter);
   const IBMPlexMonoBuffer = readFileSync(process.cwd() + "/public/font/IBMPlexMono-SemiBold.ttf");
 
-  // const font = await fetch(new URL("../../../../public/font/IBMPlexMono-SemiBold.ttf", import.meta.url));
-  // const fontBuffer = await font.arrayBuffer();
-
-  const word = dictionary[`../../browse/${params.id}.mdx`];
+  const word = dictionary[`../browse/${params.id}.mdx`];
 
   const out = 
     html`<div tw="flex flex-col items-center justify-center w-full h-full bg-white">
@@ -53,9 +48,10 @@ export async function GET({ params }) {
   })).render();
 
   return new Response(image.asPng(), {
+    status:  200,
     headers: {
       "Content-Type": "image/png",
-      "Cache-Control": "public, max-age=31536000, immutable"
+      "Cache-Control": "s-maxage=1, stale-while-revalidate=59"
     }
   })
 }

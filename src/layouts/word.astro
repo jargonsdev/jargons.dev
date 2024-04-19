@@ -7,7 +7,7 @@ const { props: { frontmatter }, url } = Astro;
 
 const dictionary = await Astro.glob("../pages/browse/*.mdx");
 const editUrl = `/editor/edit/${frontmatter.url.split("/")[2]}`;
-const ogImageUrl = `${url.origin}/api/open-graph/${frontmatter.url.split("/")[2]}.png`;
+const ogImageUrl = `${url.origin}/open-graph/${frontmatter.url.split("/")[2]}.png`;
 ---
 
 <BaseLayout pageTitle={frontmatter.title} ogImageUrl={ogImageUrl}>

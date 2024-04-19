@@ -13,7 +13,10 @@ const dictionary = import.meta.glob("../../browse/*.mdx", { eager: true });
  */
 export async function GET({ params }) {
   // const InterBuffer = readFileSync(process.cwd() + Inter);
-  const IBMPlexMonoBuffer = readFileSync(process.cwd() + "font/IBMPlexMono-SemiBold.ttf");
+  const IBMPlexMonoBuffer = readFileSync(process.cwd() + "/public/font/IBMPlexMono-SemiBold.ttf");
+
+  // const font = await fetch(new URL("../../../../public/font/IBMPlexMono-SemiBold.ttf", import.meta.url));
+  // const fontBuffer = await font.arrayBuffer();
 
   const word = dictionary[`../../browse/${params.id}.mdx`];
 

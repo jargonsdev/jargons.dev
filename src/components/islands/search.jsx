@@ -1,11 +1,10 @@
 import Flexsearch from "flexsearch";
 import { useEffect, useState } from "react";
 import { useStore } from "@nanostores/react";
-import { $isSearchOpen } from "../../lib/stores/search.js";
 import useRouter from "../../lib/hooks/use-router.js";
 import useIsMacOS from "../../lib/hooks/use-is-mac-os.js";
 import useLockBody from "../../lib/hooks/use-lock-body.js";
-import { $addToRecentSearchesFn } from "../../lib/stores/search.js";
+import { $isSearchOpen, $addToRecentSearchesFn } from "../../lib/stores/search.js";
 
 // Create Search Index
 const searchIndex = new Flexsearch.Document({
@@ -25,10 +24,6 @@ export default function Search({ triggerSize, dictionary }) {
   const isSearchOpen = useStore($isSearchOpen);
 
   let idx = 0;
-  /**
-   * indexing dictionary in search engine
-   * @todo indexing happens on island load; try earlier if possible hahahaha, maybe in `index.astro` i.e. on page load
-   */
   for (const word of dictionary) {
     searchIndex.add({
       id: idx,

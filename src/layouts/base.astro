@@ -2,16 +2,12 @@
 import "@fontsource/inter";
 import "@fontsource/ibm-plex-mono";
 import "../base.css";
-import { $dictionary } from "../lib/stores/dictionary.js";
 
 const { props, url } = Astro;
 /**
  * @todo compute a default `ogImageUrl` as fallback
  */
 const { pageTitle, class:list, ogImageUrl = "default", subtitle = "Developer Jargons" } = props;
-
-const dictionary = await Astro.glob("../pages/browse/*.mdx");
-$dictionary.set(dictionary);
 ---
 
 <html lang="en">

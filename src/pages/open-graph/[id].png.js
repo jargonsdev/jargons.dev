@@ -11,9 +11,15 @@ const dictionary = import.meta.glob("../browse/*.mdx", { eager: true });
  */
 export async function GET({ params }) {
   // const InterBuffer = readFileSync(process.cwd() + Inter);
-  const IBMPlexMonoBuffer = readFileSync(process.cwd() + "/public/font/IBMPlexMono-SemiBold.ttf");
+  const IBMPlexMonoBuffer = readFileSync(process.cwd() + "/font/IBMPlexMono-SemiBold.ttf");
 
-  const word = dictionary[`../browse/${params.id}.mdx`];
+  const word = dictionary[`../browse/${params.id}.mdx`] ?? null;
+
+  if (!word) {
+    return new Response("", {
+      status:  404
+    });
+  }
 
   const out = 
     html`<div tw="flex flex-col items-center justify-center w-full h-full bg-white">

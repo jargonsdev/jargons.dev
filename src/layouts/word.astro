@@ -3,9 +3,8 @@ import BaseLayout from "./base.astro";
 import Navbar from "../components/navbar.astro";
 import Search from "../components/islands/search.jsx";
 
-const { props: { frontmatter }, glob } = Astro;
-
-const dictionary = await glob("../pages/browse/*.mdx");
+const { frontmatter } = Astro.props;
+const dictionary = await Astro.glob("../pages/browse/*.mdx");
 const editUrl = `/editor/edit/${frontmatter.url.split("/")[2]}`;
 ---
 

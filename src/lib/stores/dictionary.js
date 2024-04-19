@@ -1,6 +1,10 @@
 import { atom, map } from "nanostores";
 
-export const $dictionary = atom([]);
+/**
+ * [Deprecated] - Stopped using state to share dictionary with islands
+ * 
+ * export const $dictionary = atom([]);
+ */
 
 /**
  * @typedef {Object} Word

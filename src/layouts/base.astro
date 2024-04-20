@@ -4,7 +4,12 @@ import "@fontsource/ibm-plex-mono";
 import "../base.css";
 
 const { props, url } = Astro;
-const { pageTitle, class:list, ogImageUrl = "default", subtitle = "Developer Jargons" } = props;
+const { 
+	pageTitle, 
+	class:list, 
+	ogImageUrl = `${url.origin}/og.svg`, 
+	subtitle = "Developer Jargons" 
+} = props;
 ---
 
 <html lang="en">

@@ -23,7 +23,7 @@ export async function writeNewWord(userOctokit, forkedRepoDetails, { title, cont
       owner: repoOwner,
       repo: repoName,
       branch,
-      path: `src/pages/browse/${normalizeAsUrl(title)}.mdx`,
+      path: `src/content/dictionary/${normalizeAsUrl(title)}.mdx`,
       content: content_encoded,
       message: `word: commit to "${title}"`
     });
@@ -83,7 +83,7 @@ export async function getExistingWord(userOctokit, repoDetails, wordTitle) {
       owner: repoOwner,
       repo: repoName,
       ref: repoBranchRef,
-      path: `src/pages/browse/${normalizeAsUrl(wordTitle)}.mdx`,
+      path: `src/content/dictionary/${normalizeAsUrl(wordTitle)}.mdx`,
     });
 
     const { content, ...responseData } = response.data;

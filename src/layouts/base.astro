@@ -8,6 +8,7 @@ const {
 	pageTitle, 
 	class:list, 
 	ogImageUrl = `${url.origin}/og.png`, 
+	ogDescription= "A community-driven dictionary that simplifies software, engineering and tech terms for all levels. Curated by contributors, jargons.dev offers clear, easy-to-understand definitions.",
 	subtitle = "Developer Jargons" 
 } = props;
 ---
@@ -19,23 +20,17 @@ const {
 		<meta name="viewport" content="width=device-width" />
 		<meta name="generator" content={Astro.generator} />
 
-		<!-- Facebook Meta Tags 
-		@todo: compute value for `og:description`
-		-->
 		<meta property="og:url" content={url.href}>
 		<meta property="og:type" content="website">
 		<meta property="og:title" content={`${ pageTitle } - ${subtitle}`}>
-		<meta property="og:description" content="">
+		<meta property="og:description" content={ogDescription}>
 		<meta property="og:image" content={ogImageUrl}>
 
-		<!-- Twitter Meta Tags 
-		@todo: compute value for `twitter:description`
-		-->
 		<meta name="twitter:card" content="summary_large_image">
 		<meta property="twitter:domain" content={url.host}>
 		<meta property="twitter:url" content={url.href}>
 		<meta name="twitter:title" content={`${ pageTitle } - ${subtitle}`}>
-		<meta name="twitter:description" content="">
+		<meta name="twitter:description" content={ogDescription}>
 		<meta name="twitter:image" content={ogImageUrl}>
 
 		<title>{ pageTitle } - {subtitle}</title>

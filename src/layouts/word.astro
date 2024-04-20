@@ -1,10 +1,11 @@
 ---
 import BaseLayout from "./base.astro";
+import { getCollection } from "astro:content";
 import Navbar from "../components/navbar.astro";
 import Search from "../components/islands/search.jsx";
 
 const { frontmatter } = Astro.props;
-const dictionary = await Astro.glob("../pages/browse/*.mdx");
+const dictionary = await getCollection("dictionary");
 const editUrl = `/editor/edit/${frontmatter.url.split("/")[2]}`;
 ---
 

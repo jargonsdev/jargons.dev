@@ -2,8 +2,16 @@
 import "@fontsource/inter";
 import "@fontsource/ibm-plex-mono";
 import "../base.css";
+import { SITE_META_KEYWORDS, SITE_META_DESCRIPTION } from "../../constants.js";
 
-const { pageTitle, class:list } = Astro.props;
+const { props, url } = Astro;
+const { 
+	pageTitle, 
+	class:list, 
+	ogImageUrl = `${url.origin}/og.png`, 
+	description = SITE_META_DESCRIPTION,
+	subtitle = "Developer Jargons" 
+} = props;
 ---
 
 <html lang="en">
@@ -12,7 +20,23 @@ const { pageTitle, class:list } = Astro.props;
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<meta name="viewport" content="width=device-width" />
 		<meta name="generator" content={Astro.generator} />
-		<title>{ pageTitle } - Developer Jargons</title>
+		<meta name="description" content={description} />
+		<meta name="keyword" content={SITE_META_KEYWORDS.join(",")} />
+
+		<meta property="og:url" content={url.href}>
+		<meta property="og:type" content="website">
+		<meta property="og:title" content={`${ pageTitle } - ${subtitle}`}>
+		<meta property="og:description" content={description}>
+		<meta property="og:image" content={ogImageUrl}>
+
+		<meta name="twitter:card" content="summary_large_image">
+		<meta property="twitter:domain" content={url.host}>
+		<meta property="twitter:url" content={url.href}>
+		<meta name="twitter:title" content={`${ pageTitle } - ${subtitle}`}>
+		<meta name="twitter:description" content={description}>
+		<meta name="twitter:image" content={ogImageUrl}>
+
+		<title>{ pageTitle } - {subtitle}</title>
 	</head>
 	<body class={list}>
     <slot />

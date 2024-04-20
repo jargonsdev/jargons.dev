@@ -15,5 +15,9 @@ export const SITE_META_KEYWORDS = [
   "developer jargons",  
   "web jargons",  
   "web development terms",  
-  "software development jargons"
+  "software development jargons",
+  "software engineering dictionary",
+  "dev dictionary",
+  "developer dictionary",
+  "software development dictionary",
 ];

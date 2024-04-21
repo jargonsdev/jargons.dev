@@ -1,7 +1,11 @@
 import app from "../../lib/octokit/app.js";
+import { forkRepository } from "../../lib/fork.js";
+import { createBranch } from "../../lib/branch.js";
 import { decrypt } from "../../lib/utils/crypto.js";
+import { submitWord } from "../../lib/submit-word.js";
 import { PROJECT_REPO_DETAILS } from "../../../constants.js";
-import { generateBranchName } from "../../lib/utils/index.js";
+import { updateExistingWord, writeNewWord } from "../../lib/word-editor.js";
+import { capitalizeText, generateBranchName } from "../../lib/utils/index.js";
 
 /**
  * Submit New Word to Dictionary
@@ -27,17 +31,11 @@ export async function POST({ request, cookies }) {
       }
     })
   }
-  
-  // console.log(cookies.get("jargons.dev:token"));
-  
-  const title = data.get("title");
+
+  const title = capitalizeText(data.get("title").trim());
   const content = data.get("content");
   const action = data.get("action");
   const metadata = JSON.parse(data.get("metadata"));
-
-  // console.log({
-  //   title, content, action, metadata
-  // });
 
   const userOctokit = app.getUserOctokit({ token: accessToken.value });
   const devJargonsOctokit = app.devJargonsOctokit;
@@ -70,7 +68,7 @@ export async function POST({ request, cookies }) {
       path: metadata.path,
       sha: metadata.sha
     }, {
-      env: "browser"
+      env: "node"
     });
     console.log("Word updated: ", updatedWord);
   }
@@ -81,7 +79,7 @@ export async function POST({ request, cookies }) {
       title, 
       content
     }, {
-      env: "browser"
+      env: "node"
     });
     console.log("New word added: ", newWord);
   }
@@ -100,7 +98,7 @@ export async function POST({ request, cookies }) {
   );
   console.log("Word submitted: ", wordSubmission);
 
-  return new Response(JSON.stringify(""), {
+  return new Response(JSON.stringify(wordSubmission), {
     status: 200,
     headers: {
       "Content-type": "application/json"

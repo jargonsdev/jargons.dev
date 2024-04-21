@@ -1,6 +1,7 @@
 import app from "../../lib/octokit/app.js";
 import { decrypt } from "../../lib/utils/crypto.js";
 import { PROJECT_REPO_DETAILS } from "../../../constants.js";
+import { generateBranchName } from "../../lib/utils/index.js";
 
 /**
  * Submit New Word to Dictionary
@@ -105,14 +106,4 @@ export async function POST({ request, cookies }) {
       "Content-type": "application/json"
     }
   });
-}
-
-/**
- * Generate branch name
- * @param {string} action 
- * @param {string} wordTitle 
- * @returns {string}
- */
-function generateBranchName(action, wordTitle) {
-  return `word/${action}/${normalizeAsUrl(wordTitle)}`;
 }

@@ -58,3 +58,13 @@ export function resolveEditorActionFromPathname(pathname) {
 export function capitalizeText(text) {
   return text.split(" ").map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(" ");
 }
+
+/**
+ * Generate branch name
+ * @param {string} action 
+ * @param {string} wordTitle 
+ * @returns {string}
+ */
+export function generateBranchName(action, wordTitle) {
+  return `word/${action}/${normalizeAsUrl(wordTitle)}`;
+}

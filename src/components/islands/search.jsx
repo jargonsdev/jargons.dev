@@ -11,7 +11,7 @@ const searchIndex = new Flexsearch.Document({
   cache: 100,
   document: { 
     index: "title",
-    store: ["title", "url"] 
+    store: ["title", "slug"] 
   },
   tokenize: "full"
 });
@@ -23,14 +23,12 @@ const searchIndex = new Flexsearch.Document({
 export default function Search({ triggerSize, dictionary }) {
   const isSearchOpen = useStore($isSearchOpen);
 
-  let idx = 0;
   for (const word of dictionary) {
     searchIndex.add({
-      id: idx,
-      title: word.frontmatter.title,
-      url: word.url
+      id: word.id,
+      title: word.data.title,
+      slug: word.slug
     });
-    idx++;
   }
 
   return (
@@ -226,7 +224,7 @@ const SearchInfo = () => (
 
 /**
  * Search result
- * @param {{ result: Array<{ id: number, doc: { title: string, url: string }, searchTerm: string }> }} props
+ * @param {{ result: Array<{ id: number, doc: { title: string, slug: string }, searchTerm: string }> }} props
  */
 function SearchResult({ result = [], cursor, searchTerm }) { 
   const router = useRouter();
@@ -241,7 +239,10 @@ function SearchResult({ result = [], cursor, searchTerm }) {
       ) : ( 
         result.map(({ doc }, i) => (
           <a key={i}
-            href={doc.url}  
+            /**
+             * @todo find better ways - don't hardcode `browse` string to the word slug
+             */
+            href={`browse/${doc.slug}`}  
             onClick={(e) => {
               e.preventDefault();
               $addToRecentSearchesFn({

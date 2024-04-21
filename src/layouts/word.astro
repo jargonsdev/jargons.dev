@@ -1,11 +1,17 @@
 ---
 import BaseLayout from "./base.astro";
+import { getCollection } from "astro:content";
 import Navbar from "../components/navbar.astro";
 import Search from "../components/islands/search.jsx";
 
 const { frontmatter } = Astro.props;
-const dictionary = await Astro.glob("../pages/browse/*.mdx");
-const editUrl = `/editor/edit/${frontmatter.url.split("/")[2]}`;
+const dictionary = await getCollection("dictionary");
+
+/**
+ * @todo implement a better way to resolve the `slug` used in the `editUrl`
+ * `frontmatter.url.split("/")*****` will not scale when we bring in internationalization
+ */
+const editUrl = `/editor/edit/${frontmatter.url.split("/")[3].split(".")[0]}`;
 ---
 
 <BaseLayout pageTitle={ frontmatter.title }>

@@ -17,66 +17,66 @@ import { updateExistingWord, writeNewWord } from "../word-editor.js";
  * @todo add a logic that checks whether there's a change existing word - if not? Don't do any submit
  */
 export default async function handleSubmitWord(octokitAuths, action, { title, content, metadata }) {
-  const userOctokit = new Octokit({ auth: octokitAuths.user });
-  const devJargonsOctokit = new Octokit({ auth: octokitAuths.devJargons });
+  // const userOctokit = new Octokit({ auth: octokitAuths.user });
+  // const devJargonsOctokit = new Octokit({ auth: octokitAuths.devJargons });
 
-  // Fork repo
-  const fork = await forkRepository(userOctokit, PROJECT_REPO_DETAILS);
-  console.log("Project Fork: ", fork);
+  // // Fork repo
+  // const fork = await forkRepository(userOctokit, PROJECT_REPO_DETAILS);
+  // console.log("Project Fork: ", fork);
 
-  // Create a branch for action
-  const branch = await createBranch(
-    userOctokit, 
-    {
-      repoFullname: fork,
-      repoMainBranchRef: PROJECT_REPO_DETAILS.repoMainBranchRef
-    },
-    generateBranchName(action, title)
-  );
-  console.log("Branch Created: ", branch);
+  // // Create a branch for action
+  // const branch = await createBranch(
+  //   userOctokit, 
+  //   {
+  //     repoFullname: fork,
+  //     repoMainBranchRef: PROJECT_REPO_DETAILS.repoMainBranchRef
+  //   },
+  //   generateBranchName(action, title)
+  // );
+  // console.log("Branch Created: ", branch);
 
-  const forkedRepoDetails = {
-    repoFullname: fork,
-    repoChangeBranchRef: branch.ref
-  }
+  // const forkedRepoDetails = {
+  //   repoFullname: fork,
+  //   repoChangeBranchRef: branch.ref
+  // }
   
-  // update existing word - if action is "edit"
-  if (action === "edit") {
-    const updatedWord = await updateExistingWord(userOctokit, forkedRepoDetails, {
-      title,
-      content,
-      path: metadata.path,
-      sha: metadata.sha
-    }, {
-      env: "browser"
-    });
-    console.log("Word updated: ", updatedWord);
-  }
+  // // update existing word - if action is "edit"
+  // if (action === "edit") {
+  //   const updatedWord = await updateExistingWord(userOctokit, forkedRepoDetails, {
+  //     title,
+  //     content,
+  //     path: metadata.path,
+  //     sha: metadata.sha
+  //   }, {
+  //     env: "browser"
+  //   });
+  //   console.log("Word updated: ", updatedWord);
+  // }
 
-  // add new word - if action is "new"
-  if (action === "new") {
-    const newWord = await writeNewWord(userOctokit, forkedRepoDetails, {
-      title, 
-      content
-    }, {
-      env: "browser"
-    });
-    console.log("New word added: ", newWord);
-  }
+  // // add new word - if action is "new"
+  // if (action === "new") {
+  //   const newWord = await writeNewWord(userOctokit, forkedRepoDetails, {
+  //     title, 
+  //     content
+  //   }, {
+  //     env: "browser"
+  //   });
+  //   console.log("New word added: ", newWord);
+  // }
 
-  // submit the edit in new pr
-  const wordSubmission = await submitWord(
-    devJargonsOctokit, 
-    userOctokit, 
-    action, 
-    PROJECT_REPO_DETAILS, 
-    forkedRepoDetails, 
-    {
-      title, 
-      content
-    }
-  );
-  console.log("Word submitted: ", wordSubmission);
+  // // submit the edit in new pr
+  // const wordSubmission = await submitWord(
+  //   devJargonsOctokit, 
+  //   userOctokit, 
+  //   action, 
+  //   PROJECT_REPO_DETAILS, 
+  //   forkedRepoDetails, 
+  //   {
+  //     title, 
+  //     content
+  //   }
+  // );
+  // console.log("Word submitted: ", wordSubmission);
 
   return wordSubmission;
 }

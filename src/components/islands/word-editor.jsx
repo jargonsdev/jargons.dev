@@ -51,14 +51,14 @@ function Editor({ eTitle, eContent, eMetadata, className, submitHandler, action,
     setContent(eContent);
   }, []);
 
-  async function handleOnSubmit() {
+  async function handleOnSubmit(e) {
     $isWordSubmitLoading.set(true);
-    await submitHandler(octokitAuths, action, { 
-      title: capitalizeText(title.trim()), 
-      content, 
-      metadata: eMetadata 
+    const formData = new FormData(e.target);
+    const response = await fetch("/api/dictionary", {
+      method: "POST",
+      body: formData,
     });
-    router.push("/editor");
+    response.status === 200 && router.push("/editor");
   }
 
   return (
@@ -66,7 +66,7 @@ function Editor({ eTitle, eContent, eMetadata, className, submitHandler, action,
       className={`${className} relative`}
       onSubmit={(e) => {
         e.preventDefault();
-        handleOnSubmit();
+        handleOnSubmit(e);
       }}
       id="jargons.dev:word_editor"
       {...props}
@@ -74,16 +74,36 @@ function Editor({ eTitle, eContent, eMetadata, className, submitHandler, action,
       <input 
         className={`${action === "edit" && "cursor-not-allowed"} block w-full pb-2 mb-3 text-gray-900 border-b text-lg font-bold focus:outline-none`}
         type="text"
+        id="title"
+        name="title"
         placeholder="New Word"
         value={title}
+        required
         readOnly={action === "edit"}
         onChange={(e) => setTitle(e.target.value)}
       />
       <textarea 
         className="w-full h-1 grow resize-none appearance-none border-none focus:outline-none scrollbar"
+        id="content"
+        name="content"
         value={content}
+        required
         onChange={(e) => setContent(e.target.value)}
       />
+      <input 
+        type="hidden" 
+        id="action" 
+        name="action"
+        value={action}
+      />
+      {action === "edit" && (
+        <input 
+          type="hidden" 
+          id="metadata"
+          name="metadata"
+          value={JSON.stringify(eMetadata)}
+        />
+      )}
     </form>
   );
 }

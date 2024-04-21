@@ -8,7 +8,7 @@ import { updateExistingWord, writeNewWord } from "../../lib/word-editor.js";
 import { capitalizeText, generateBranchName } from "../../lib/utils/index.js";
 
 /**
- * Submit New Word to Dictionary
+ * Submit Word (New or Edit) to the Dictionary
  * @param {import("astro").APIContext} context
  */
 export async function POST({ request, cookies }) {

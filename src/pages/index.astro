@@ -1,9 +1,10 @@
 ---
+import { getCollection } from "astro:content";
 import BaseLayout from "../layouts/base.astro";
 import Search from "../components/islands/search.jsx";
 import RecentSearches from "../components/islands/recent-searches.jsx";
 
-const dictionary = await Astro.glob("../pages/browse/*.mdx");
+const dictionary = await getCollection("dictionary");
 ---
 
 <BaseLayout pageTitle="Dictionary">

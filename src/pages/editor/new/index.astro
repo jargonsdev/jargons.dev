@@ -3,7 +3,6 @@ import BaseLayout from "../../../layouts/base.astro";
 import doAuth from "../../../lib/actions/do-auth.js";
 import Navbar from "../../../components/navbar.astro";
 import { $userData } from "../../../lib/stores/user.js";
-import doOctokitAuth from "../../../lib/actions/do-octokit-auth";
 import { resolveEditorActionFromPathname } from "../../../lib/utils/index.js";
 import WordEditor, { SubmitButton as WordEditorSubmitButton } from "../../../components/islands/word-editor.jsx";
 
@@ -14,7 +13,6 @@ if (!isAuthed) return redirect(`/login?return_to=${encodeURIComponent(pathname)}
 // @ts-expect-error
 $userData.set(userData);
 
-const octokitAuths = doOctokitAuth(Astro);
 const action = resolveEditorActionFromPathname(pathname);
 ---
 
@@ -32,10 +30,6 @@ const action = resolveEditorActionFromPathname(pathname);
   </Navbar>
 
   <main class="flex grow px-5 md:px-6 pb-4">
-    <WordEditor
-      action={action}
-      octokitAuths={octokitAuths}
-      client:load
-    />
+    <WordEditor action={action} client:load />
   </main>
 </BaseLayout>

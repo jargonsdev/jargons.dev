@@ -4,7 +4,6 @@ import BaseLayout from "../../../layouts/base.astro";
 import Navbar from "../../../components/navbar.astro";
 import doAuth from "../../../lib/actions/do-auth.js";
 import doEditWord from "../../../lib/actions/do-edit-word.js";
-import doOctokitAuth from "../../../lib/actions/do-octokit-auth.js";
 import { resolveEditorActionFromPathname } from "../../../lib/utils/index.js";
 import WordEditor, { SubmitButton as WordEditorSubmitButton } from "../../../components/islands/word-editor.jsx";
 
@@ -12,8 +11,6 @@ const { url: { pathname }, redirect } = Astro;
 
 const { isAuthed, authedData: userData } = await doAuth(Astro);
 if (!isAuthed) return redirect(`/login?return_to=${encodeURIComponent(pathname)}`);
-
-const octokitAuths = doOctokitAuth(Astro);
 
 const {content_decoded, ...otherWordData} = await doEditWord(Astro);
 const word = matter(content_decoded);
@@ -38,7 +35,6 @@ const action = resolveEditorActionFromPathname(pathname);
       title={word.data.title} 
       content={word.content} 
       metadata={otherWordData}
-      octokitAuths={octokitAuths}
       client:load
     />
   </main>

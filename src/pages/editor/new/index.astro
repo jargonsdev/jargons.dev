@@ -23,7 +23,7 @@ const action = resolveEditorActionFromPathname(pathname);
   <Navbar
     returnNav={{
       label: "Back to Jargons Editor",
-      location: "/editor"
+      location: "javascript: history.back()"
     }}
   >
     <WordEditorSubmitButton client:load />

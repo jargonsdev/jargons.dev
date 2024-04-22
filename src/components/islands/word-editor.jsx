@@ -6,6 +6,9 @@ import { capitalizeText } from "../../lib/utils/index.js";
 import useWordEditor from "../../lib/hooks/use-word-editor.js";
 import { $isWordSubmitLoading } from "../../lib/stores/dictionary.js";
 
+/**
+ * Main Word Editor Component - Island
+ */
 export default function WordEditor({ title = "", content = "", metadata = {}, action }) {
   return (
     <div className="w-full flex border rounded-lg">
@@ -21,6 +24,9 @@ export default function WordEditor({ title = "", content = "", metadata = {}, ac
   );
 }
 
+/**
+ * Detached Editor Submit Button Component - Island
+ */
 export function SubmitButton({ children = "Submit" }) {
   const isSubmitLoading = useStore($isWordSubmitLoading);
   
@@ -39,6 +45,9 @@ export function SubmitButton({ children = "Submit" }) {
   );
 }
 
+/**
+ * Editor Markdown Input Component
+ */
 function Editor({ eTitle, eContent, eMetadata, className, action, ...props }) {
   const router = useRouter();
   const { title, setTitle, content, setContent } = useWordEditor();
@@ -112,6 +121,9 @@ function Editor({ eTitle, eContent, eMetadata, className, action, ...props }) {
   );
 }
 
+/**
+ * Editor Markdown Preview Component
+ */
 function Preview({ className, ...props }) {
   const { title, content } = useWordEditor();
 
@@ -143,6 +155,9 @@ function Preview({ className, ...props }) {
   );
 }
 
+/**
+ * Editor Preview Section Dummy Navbar
+ */
 const DummyPreviewNavbar = () => (
   <div className="@container mb-6">
     <nav className="flex items-center justify-between pb-4">

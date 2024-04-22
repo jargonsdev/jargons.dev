@@ -2,7 +2,6 @@
 import BaseLayout from "../../../layouts/base.astro";
 import doAuth from "../../../lib/actions/do-auth.js";
 import Navbar from "../../../components/navbar.astro";
-import { $userData } from "../../../lib/stores/user.js";
 import { resolveEditorActionFromPathname } from "../../../lib/utils/index.js";
 import WordEditor, { SubmitButton as WordEditorSubmitButton } from "../../../components/islands/word-editor.jsx";
 
@@ -10,8 +9,6 @@ const { url: { pathname }, redirect } = Astro;
 
 const { isAuthed, authedData: userData } = await doAuth(Astro);
 if (!isAuthed) return redirect(`/login?return_to=${encodeURIComponent(pathname)}`);
-// @ts-expect-error
-$userData.set(userData);
 
 const action = resolveEditorActionFromPathname(pathname);
 ---

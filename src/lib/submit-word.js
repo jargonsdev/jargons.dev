@@ -12,7 +12,6 @@ import editWordPRTemp from "./templates/edit-word-pr.md.js";
  * @param {{ title: string, content: string }} word 
  * 
  * @todo implement (submit as) `draft` feature - [idea]
- * @todo implement `maintainer_can_modify` toggle - [idea]
  */
 export async function submitWord(devJargonsOctokit, userOctokit, action, projectRepoDetails, forkedRepoDetails, word) {
   const { repoFullname, repoMainBranchRef } = projectRepoDetails;
@@ -46,7 +45,7 @@ export async function submitWord(devJargonsOctokit, userOctokit, action, project
     issue_number: response.data.number,
     labels: [
       `:book: ${action} word`,
-      ":computer: via word-editor"
+      ":computer: via jargons-editor"
     ]
   });
 

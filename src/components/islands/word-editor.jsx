@@ -120,7 +120,7 @@ function Preview({ className, ...props }) {
       className={`${className} select-none`}
       {...props}  
     >
-      <div className="h-1 grow overflow-auto space-y-6 rounded-lg border p-5 shadow-lg scrollbar">
+      <div className="h-1 grow overflow-auto rounded-lg border p-5 shadow-lg scrollbar">
         <DummyPreviewNavbar />
 
         <div className="max-w-4xl space-y-8 mx-auto">
@@ -144,9 +144,9 @@ function Preview({ className, ...props }) {
 }
 
 const DummyPreviewNavbar = () => (
-  <div className="@container">
+  <div className="@container mb-6">
     <nav className="flex items-center justify-between pb-4">
-      <span className="flex items-center underline">
+      <span className="flex items-center underline cursor-not-allowed">
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-4 h-4">
           <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
         </svg> 
@@ -155,7 +155,7 @@ const DummyPreviewNavbar = () => (
         </span>       
       </span>
 
-      <div>
+      <div className="cursor-not-allowed">
         <div className="relative w-56 text-sm hidden @md:flex items-center justify-between border pl-2.5 p-1 space-x-2 border-gray-400 rounded-lg">
           <div className="flex items-center text-gray-400 space-x-2">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-5 h-5">

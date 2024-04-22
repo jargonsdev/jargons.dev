@@ -2,12 +2,11 @@ import { useEffect } from "react";
 import Markdown from "react-markdown";
 import { useStore } from "@nanostores/react";
 import useRouter from "../../lib/hooks/use-router.js";
+import { capitalizeText } from "../../lib/utils/index.js";
 import useWordEditor from "../../lib/hooks/use-word-editor.js";
 import { $isWordSubmitLoading } from "../../lib/stores/dictionary.js";
-import handleSubmitWord from "../../lib/handlers/handle-submit-word.js";
-import { capitalizeText } from "../../lib/utils/index.js";
 
-export default function WordEditor({ title = "", content = "", metadata = {}, action, octokitAuths }) {
+export default function WordEditor({ title = "", content = "", metadata = {}, action }) {
   return (
     <div className="w-full flex border rounded-lg">
       <Editor
@@ -15,8 +14,6 @@ export default function WordEditor({ title = "", content = "", metadata = {}, ac
         eTitle={title} 
         eContent={content} 
         eMetadata={metadata}
-        octokitAuths={octokitAuths}
-        submitHandler={handleSubmitWord}
         className="w-full h-full flex flex-col p-5 border-r"
       />
       <Preview className="w-full h-full flex flex-col p-5" />
@@ -42,7 +39,7 @@ export function SubmitButton({ children = "Submit" }) {
   );
 }
 
-function Editor({ eTitle, eContent, eMetadata, className, submitHandler, action, octokitAuths, ...props }) {
+function Editor({ eTitle, eContent, eMetadata, className, action, ...props }) {
   const router = useRouter();
   const { title, setTitle, content, setContent } = useWordEditor();
   
@@ -51,14 +48,21 @@ function Editor({ eTitle, eContent, eMetadata, className, submitHandler, action,
     setContent(eContent);
   }, []);
 
-  async function handleOnSubmit() {
+  /**
+   * Word Submit Handler
+   * @param {import("react").FormEvent} e 
+   * 
+   * @todo implement a submitted State that updates after submission for visual cue before routing
+   * @todo handle error for when submission isn't successful
+   */
+  async function handleSubmit(e) {
     $isWordSubmitLoading.set(true);
-    await submitHandler(octokitAuths, action, { 
-      title: capitalizeText(title.trim()), 
-      content, 
-      metadata: eMetadata 
+    const formData = new FormData(e.target);
+    const response = await fetch("/api/dictionary", {
+      method: "POST",
+      body: formData,
     });
-    router.push("/editor");
+    response.status === 200 && router.push("/editor");
   }
 
   return (
@@ -66,24 +70,44 @@ function Editor({ eTitle, eContent, eMetadata, className, submitHandler, action,
       className={`${className} relative`}
       onSubmit={(e) => {
         e.preventDefault();
-        handleOnSubmit();
+        handleSubmit(e);
       }}
       id="jargons.dev:word_editor"
       {...props}
     >
       <input 
-        className={`${action === "edit" && "cursor-not-allowed"} block w-full pb-2 mb-3 text-gray-900 border-b text-lg font-bold focus:outline-none`}
+        required
         type="text"
-        placeholder="New Word"
+        id="title"
+        name="title"
         value={title}
+        placeholder="New Word"
         readOnly={action === "edit"}
         onChange={(e) => setTitle(e.target.value)}
+        className={`${action === "edit" && "cursor-not-allowed"} block w-full pb-2 mb-3 text-gray-900 border-b text-lg font-bold focus:outline-none`}
       />
       <textarea 
-        className="w-full h-1 grow resize-none appearance-none border-none focus:outline-none scrollbar"
+        required
+        id="content"
+        name="content"
         value={content}
         onChange={(e) => setContent(e.target.value)}
+        className="w-full h-1 grow resize-none appearance-none border-none focus:outline-none scrollbar"
       />
+      <input 
+        type="hidden" 
+        id="action" 
+        name="action"
+        value={action}
+      />
+      {action === "edit" && (
+        <input 
+          type="hidden" 
+          id="metadata"
+          name="metadata"
+          value={JSON.stringify(eMetadata)}
+        />
+      )}
     </form>
   );
 }

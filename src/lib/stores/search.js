@@ -14,6 +14,8 @@ export const $recentSearches = map({});
 /**
  * Add search term to recent search history
  * @param {SearchedItem} item 
+ * 
+ * @todo implement logic to allow holding maximum of 5 words by removing older words when new a one gets added
  */
 export function $addToRecentSearchesFn({ word, url }) {
   const lowercaseKey = word.toLowerCase();
@@ -31,5 +33,5 @@ export function $addToRecentSearchesFn({ word, url }) {
     return;
   }
   
-  localStorage.setItem("devJargonsRecentSearches", JSON.stringify($recentSearches.get()));
+  localStorage.setItem("jargons.dev:recent_searches", JSON.stringify($recentSearches.get()));
 }

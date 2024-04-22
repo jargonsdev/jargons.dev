@@ -13,7 +13,7 @@ if (!isAuthed) return redirect(`/login?return_to=${encodeURIComponent(pathname)}
 const { newWords, editedWords, pendingWords } = await doContributionStats(Astro);
 const totalWords = {
   count: newWords.count + editedWords.count,
-  url: `https://github.com/${PROJECT_REPO_DETAILS.repoFullname}/pulls?q=${encodeURIComponent(`is:pr is:closed is:merged author:@me label:":computer: via word-editor"`)}`
+  url: `https://github.com/${PROJECT_REPO_DETAILS.repoFullname}/pulls?q=${encodeURIComponent(`is:pr is:closed is:merged author:@me`)}`
 };
 ---
 

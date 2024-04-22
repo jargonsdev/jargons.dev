@@ -38,7 +38,7 @@ export async function POST({ request, cookies }) {
   const metadata = JSON.parse(data.get("metadata"));
 
   const userOctokit = app.getUserOctokit({ token: accessToken.value });
-  const devJargonsOctokit = app.devJargonsOctokit;
+  const devJargonsOctokit = app.octokit;
 
   // Fork repo
   const fork = await forkRepository(userOctokit, PROJECT_REPO_DETAILS);

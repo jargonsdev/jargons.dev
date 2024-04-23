@@ -1,7 +1,8 @@
 ---
 import { Image } from "astro:assets";
-import doAuth from "../../lib/actions/do-auth.js";
 import BaseLayout from "../../layouts/base.astro";
+import doAuth from "../../lib/actions/do-auth.js";
+import Navbar from "../../components/navbar.astro";
 import { PROJECT_REPO_DETAILS } from "../../../constants.js";
 import doContributionStats from "../../lib/actions/do-contribution-stats.js";
 
@@ -13,20 +14,24 @@ if (!isAuthed) return redirect(`/login?return_to=${encodeURIComponent(pathname)}
 const { newWords, editedWords, pendingWords } = await doContributionStats(Astro);
 const totalWords = {
   count: newWords.count + editedWords.count,
-  url: `https://github.com/${PROJECT_REPO_DETAILS.repoFullname}/pulls?q=${encodeURIComponent(`is:pr is:closed is:merged author:@me label:":computer: via word-editor"`)}`
-};
+  url: `https://github.com/${PROJECT_REPO_DETAILS.repoFullname}/pulls?q=${encodeURIComponent(`is:pr is:closed is:merged author:@me`)}`
+}
 ---
 
 <BaseLayout 
   pageTitle="Jargons Editor"
   class="flex flex-col w-full min-h-screen"
 >
+  <!-- Navbar 
+  TODO: implement profile menu here, should carry logout functionality
+  -->
+  <Navbar returnNav={{ label: "Back to Dictionary", location: "../" }} />
+
   <main class="w-full max-w-screen-lg mx-auto flex flex-col grow p-5 space-y-3">
     <!-- Profile Section -->
     <section class="mt-10 flex w-full items-center justify-between md:px-6">
       <div class="flex flex-col space-y-6 justify-center h-full py-6">
         <span class="relative flex shrink-0 overflow-hidden rounded-full w-20 h-20 border">
-          <!-- src="https://images.unsplash.com/profile-1606728664311-4bcc76a40e98image?bg=fff&crop=faces&dpr=2&h=150&w=150&auto=format&fit=crop&q=60&ixlib=rb-4.0.3"  -->
           <Image 
             src={ userData.avatar_url }
             alt={ (userData.name || userData.login) ?? "User avatar" }
@@ -151,7 +156,7 @@ const totalWords = {
           </div>
         </div>
 
-        <!-- Edited Word -->
+        <!-- Edited Words -->
         <div class="p-6 space-y-2 rounded-lg border shadow-sm">
           <div class="w-full flex justify-between">
             <div class="text-3xl font-bold tracking-tighter">

@@ -18,7 +18,7 @@ export async function POST({ request, cookies }) {
   });
 
   // Verify accessToken validity
-  const { data: authData, status: verificationStatus } = await app.octokit.request("POST /applications/{client_id}/token", {
+  const { data: authData, status: verificationStatus } = await app.oauth.octokit.request("POST /applications/{client_id}/token", {
     client_id: import.meta.env.GITHUB_OAUTH_APP_CLIENT_ID,
     access_token: accessToken.value
   });
@@ -38,7 +38,7 @@ export async function POST({ request, cookies }) {
   const metadata = JSON.parse(data.get("metadata"));
 
   const userOctokit = app.getUserOctokit({ token: accessToken.value });
-  const devJargonsOctokit = app.devJargonsOctokit;
+  const devJargonsOctokit = app.octokit;
 
   // Fork repo
   const fork = await forkRepository(userOctokit, PROJECT_REPO_DETAILS);

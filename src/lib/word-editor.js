@@ -7,6 +7,8 @@ import { getRepoParts, normalizeAsUrl } from "./utils/index.js";
  * @param {{ repoFullname: string, repoChangeBranchRef: string }} forkedRepoDetails 
  * @param {{ title: string, content: string }} word 
  * @param {{ env: "node" | "browser" }} options  
+ * 
+ * @todo deprecate the `options` params 
  */
 export async function writeNewWord(userOctokit, forkedRepoDetails, { title, content }, options) {
   const { repoFullname, repoChangeBranchRef } = forkedRepoDetails;
@@ -40,6 +42,8 @@ export async function writeNewWord(userOctokit, forkedRepoDetails, { title, cont
  * @param {{ repoFullname: string, repoChangeBranchRef: string }} forkedRepoDetails 
  * @param {{ path: string, sha: string, title: string, content: string }} word  enter new content as value to `content` property
  * @param {{ env: "node" | "browser" }} options 
+ * 
+ * @todo deprecate the `options` params 
  */
 export async function updateExistingWord(userOctokit, forkedRepoDetails, { path, sha, title, content }, options) {
   const { repoFullname, repoChangeBranchRef } = forkedRepoDetails;

@@ -1,10 +1,10 @@
 const title = `Dictionary (Edit Word): $word_title`;
 
-const content = `### Word
+const content = `# Word
 
 #### $word_title
 
-### Updated Meaning/Definition
+# Updated Meaning/Definition
 
 $word_content`;
 

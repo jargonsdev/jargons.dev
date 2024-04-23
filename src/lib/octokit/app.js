@@ -9,26 +9,14 @@ const app = new App({
 const { data: { id } } = await app.octokit.request(`GET /repos/${import.meta.env.PUBLIC_PROJECT_REPO}/installation`);
 
 /**
- * DevJargons Helper App's Octokit instance
-*/
-const devJargonsOctokit = await app.getInstallationOctokit(id);
+ * jargons.dev Helper GitHub App's Octokit instance
+ */
+const appOctokit = await app.getInstallationOctokit(id);
 
 /**
- * DevJargons Helper App's Auth Token 
+ * OAuth App's Octokit instance - useful for verifying user accessToken validity
  */
-const devJargonsAppAuth = await (
-  async () => {
-    const { data: { token } } = await devJargonsOctokit.request(`POST /app/installations/${id}/access_tokens`);
-    return token;
-  }
-)();
-
-/**
- * OAuth App's Octokit instance
- * 
- * @todo consider removing this later, its looking redundant
- */
-const octokit = new Octokit({
+const oauthAppOctokit = new Octokit({
   authStrategy: createOAuthAppAuth,
   auth: {
     clientId: import.meta.env.GITHUB_OAUTH_APP_CLIENT_ID,
@@ -84,10 +72,9 @@ function getUserOctokit({ token, ...options }) {
 };
 
 export default { 
-  octokit,
-  devJargonsAppAuth,
-  devJargonsOctokit,
+  octokit: appOctokit,
   oauth: {
+    octokit: oauthAppOctokit,
     getWebFlowAuthorizationUrl, 
     exchangeWebFlowCode,
   },

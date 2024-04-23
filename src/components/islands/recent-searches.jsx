@@ -3,14 +3,16 @@ import { useStore } from "@nanostores/react";
 import { $recentSearches } from "../../lib/stores/search.js";
 
 /**
+ * Recent Searches Component - An Island that displays a user's last 5 searches
+ * 
  * @todo implement a default list instead of `null` when no `$recentSearch` is found 
  * @todo implement loading component to avoid flickering UI
  */
-export default function RecenctSearches() {
+export default function RecentSearches() {
   const recentSearches = useStore($recentSearches);
 
   useEffect(() => {
-    $recentSearches.set({...JSON.parse(localStorage.getItem("devJargonsRecentSearches"))})
+    $recentSearches.set({...JSON.parse(localStorage.getItem("jargons.dev:recent_searches"))})
   }, []);
 
   return Object.values(recentSearches).length ? (

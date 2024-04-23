@@ -16,8 +16,8 @@ export default async function doContributionStats(astroGlobal) {
   /**
    * @todo Implement narrowed search to project's main branch 
    */
-  const baseQuery = `repo:${repoFullname} is:pull-request type:pr author:@me label:":computer: via word-editor"`;
-  const baseStatsUrlQuery = `is:pr author:@me label:":computer: via word-editor"`;
+  const baseQuery = `repo:${repoFullname} is:pull-request type:pr author:@me`;
+  const baseStatsUrlQuery = `is:pr author:@me`;
 
   /**
    * @todo [thoughts]: would be nice to have all these requests in one, and use a filter to separate by labels

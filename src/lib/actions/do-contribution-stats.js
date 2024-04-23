@@ -30,7 +30,7 @@ export default async function doContributionStats(astroGlobal) {
     q: `${baseQuery} label:":book: edit word" is:merged is:closed`
   });
   const { data: pendingType } = await userOctokit.request("GET /search/issues", {
-    q: `${baseQuery} is:unmerged is:open`
+    q: `${baseQuery} label:":book: edit word",":book: new word" is:unmerged is:open`
   });
 
   return {

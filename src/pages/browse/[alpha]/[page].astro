@@ -2,9 +2,13 @@
 import { getCollection } from "astro:content";
 import { ALPHABETS } from "../../../../constants.js";
 import BaseLayout from "../../../layouts/base.astro";
+import Navbar from "../../../components/navbar.astro";
+import Search from "../../../components/islands/search";
 
 const { page } = Astro.props;
 const params = Astro.params;
+
+const dictionary = await getCollection("dictionary");
 
 export const prerender = true;
 
@@ -23,6 +27,10 @@ export async function getStaticPaths({ paginate }) {
 ---
 
 <BaseLayout>
+  <Navbar>
+    <Search triggerSize="sm" dictionary={dictionary} client:load />
+  </Navbar>
+  
   <main class="max-w-screen-lg p-5 md:mt-10 mx-auto min-h-screen space-y-6">
     <h1 class="text-3xl md:text-5xl font-black">
       Browse: Letter { params.alpha.toUpperCase() }

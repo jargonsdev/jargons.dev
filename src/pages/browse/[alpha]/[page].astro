@@ -26,7 +26,10 @@ export async function getStaticPaths({ paginate }) {
 }
 ---
 
-<BaseLayout>
+<BaseLayout 
+  pageTitle={`Browse jargons.dev`}
+  subtitle={`Words Starting With "${params.alpha.toUpperCase()}" (Page ${page.currentPage})`}
+>
   <Navbar>
     <Search triggerSize="sm" dictionary={dictionary} client:load />
   </Navbar>

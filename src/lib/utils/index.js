@@ -68,3 +68,13 @@ export function capitalizeText(text) {
 export function generateBranchName(action, wordTitle) {
   return `word/${action}/${normalizeAsUrl(wordTitle)}`;
 }
+
+/**
+ * Build URL to the Pull Request list on the project's Repo
+ * @param {string} repoFullname 
+ * @param {string} queryString 
+ * @returns {string}
+ */
+export function buildStatsUrl(repoFullname, queryString) {
+  return `https://github.com/${repoFullname}/pulls?q=${encodeURIComponent(queryString)}`;
+}

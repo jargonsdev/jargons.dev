@@ -1,5 +1,6 @@
 import app from "../octokit/app.js";
 import { decrypt } from "../utils/crypto.js";
+import { buildStatsUrl } from "../utils/index.js";
 import { PROJECT_REPO_DETAILS } from "../../../constants.js";
 
 /**
@@ -30,7 +31,7 @@ export default async function doContributionStats(astroGlobal) {
     q: `${baseQuery} label:":book: edit word" is:merged is:closed`
   });
   const { data: pendingType } = await userOctokit.request("GET /search/issues", {
-    q: `${baseQuery} is:unmerged is:open`
+    q: `${baseQuery} label:":book: edit word",":book: new word" is:unmerged is:open`
   });
 
   return {
@@ -47,14 +48,4 @@ export default async function doContributionStats(astroGlobal) {
       url: buildStatsUrl(repoFullname, `${baseStatsUrlQuery} is:unmerged is:open`)
     }
   }
-}
-
-/**
- * Build URL to the Pull Request list on the project's Repo
- * @param {string} repoFullname 
- * @param {string} queryString 
- * @returns {string}
- */
-function buildStatsUrl(repoFullname, queryString) {
-  return `https://github.com/${repoFullname}/pulls?q=${encodeURIComponent(queryString)}`;
 }

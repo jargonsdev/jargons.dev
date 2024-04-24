@@ -242,7 +242,7 @@ function SearchResult({ result = [], cursor, searchTerm }) {
             /**
              * @todo find better ways - don't hardcode `browse` string to the word slug
              */
-            href={`browse/${doc.slug}`}  
+            href={`/browse/${doc.slug}`}  
             onClick={(e) => {
               e.preventDefault();
               $addToRecentSearchesFn({

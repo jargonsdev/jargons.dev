@@ -156,6 +156,10 @@ function SearchDialog() {
       e.preventDefault();
       if (document.querySelector("._cursor")) {
         const word = document.querySelector("._cursor");
+        /**
+         * @todo extract this `$addToRecentSearchesFn` operation to `word` layout..
+         * ..so words are added to recent searches when viewed (not only when searched)
+         */
         $addToRecentSearchesFn({
           word: word.textContent,
           url: word.href
@@ -245,6 +249,10 @@ function SearchResult({ result = [], cursor, searchTerm }) {
             href={`/browse/${doc.slug}`}  
             onClick={(e) => {
               e.preventDefault();
+              /**
+               * @todo extract this `$addToRecentSearchesFn` operation to `word` layout..
+               * ..so words are added to recent searches when viewed (not only when searched)
+               */
               $addToRecentSearchesFn({
                 word: e.currentTarget.textContent,
                 url: e.currentTarget.href

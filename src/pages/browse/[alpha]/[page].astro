@@ -29,15 +29,19 @@ export async function getStaticPaths({ paginate }) {
 <BaseLayout 
   pageTitle={`Browse jargons.dev`}
   subtitle={`Words Starting With "${params.alpha.toUpperCase()}" (Page ${page.currentPage})`}
+  class="min-h-screen flex flex-col"
 >
   <Navbar>
     <Search triggerSize="sm" dictionary={dictionary} client:load />
   </Navbar>
   
-  <main class="max-w-screen-lg p-5 md:mt-10 mx-auto min-h-screen space-y-6">
+  <main class="w-full max-w-screen-lg grow flex flex-col p-5 md:mt-10 mx-auto space-y-6">
+    <!-- Page Title -->
     <h1 class="text-3xl md:text-5xl font-black">
       Browse: Letter { params.alpha.toUpperCase() }
     </h1>
+
+    <!-- Words List -->
     <div>
       {page.data.map(word => (
         <a href={`/browse/${word.slug}`}
@@ -49,6 +53,27 @@ export async function getStaticPaths({ paginate }) {
           </svg>
         </a>
       ))}
+    </div>
+
+    <!-- Pagination -->
+    <div class="w-full flex !mt-auto">
+      <div class="mx-auto flex items-center space-x-4">
+        {page.url.prev ? ( 
+          <a href={page.url.prev} class="bg-black text-white no-underline rounded py-1 px-2">Previous</a>
+        ) : (
+          <span class="bg-gray-100 text-gray-400 cursor-not-allowed no-underline rounded py-1 px-2">Previous</span>
+        )}
+
+        <span>
+          Page { page.currentPage }
+        </span>
+
+        {page.url.next ? ( 
+          <a href={page.url.next} class="bg-black text-white no-underline rounded py-1 px-2">Next</a>
+        ) : (
+          <span class="bg-gray-100 text-gray-400 cursor-not-allowed no-underline rounded py-1 px-2">Next</span>
+        )}
+      </div>
     </div>
   </main>
 </BaseLayout>

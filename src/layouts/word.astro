@@ -1,4 +1,7 @@
 ---
+/**
+ * @todo Get URL of previous page (maybe from `referer`) and return there on Navigation back; good for browse page
+ */
 import BaseLayout from "./base.astro";
 import { getCollection } from "astro:content";
 import Navbar from "../components/navbar.astro";
@@ -51,5 +54,26 @@ const editUrl = `/editor/edit/${frontmatter.url.split("/")[3].split(".")[0]}`;
     <article class="w-full max-w-screen-lg prose">
       <slot /> 
     </article>
+
+    <!-- Scripts 
+    TODO [THOUGHTS]: I didn't want to implement anything using the `script` tag at all, but this looked to be..
+    ..the only means of adding current word to recent searches when word is opened on client-side, will be..
+    ..nice if we can find another means ;)
+    -->
+    <script>
+      /**
+       * This (Commented out for now) should rightfully add current word to recentSearches on view; which should..
+       * ..extract the functionality from the `search` island `onClick` search result..
+       * ..but see @todo below
+       * 
+       * @todo it's exhibiting similar behaviour reported in issue @link below
+       * @link https://github.com/babblebey/jargons.dev/issues/10
+       */
+      // import { $addToRecentSearchesFn } from "../lib/stores/search.js";
+      // $addToRecentSearchesFn({
+      //   word: document.querySelector("h1").textContent.trim(),
+      //   url: document.location.href
+      // });
+    </script>
   </main>
 </BaseLayout>

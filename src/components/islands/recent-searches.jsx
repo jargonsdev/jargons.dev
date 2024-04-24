@@ -5,7 +5,7 @@ import { $recentSearches } from "../../lib/stores/search.js";
 /**
  * Recent Searches Component - An Island that displays a user's last 5 searches
  * 
- * @todo implement a default list instead of `null` when no `$recentSearch` is found 
+ * @todo implement a default list instead of `null` (now browse-word link) when no `$recentSearch` is found 
  * @todo implement loading component to avoid flickering UI
  */
 export default function RecentSearches() {
@@ -28,5 +28,11 @@ export default function RecentSearches() {
         ))}
 			</ol>
 		</div>
-  ) : null;
+  ) : (
+    <div className="ml-2 mt-4 md:mt-6">
+      <a href="/browse">
+        Browse Words
+      </a>
+    </div>
+  );
 }

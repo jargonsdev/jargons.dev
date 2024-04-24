@@ -29,7 +29,7 @@ export function getRepoParts(repoFullname) {
  * @returns {string}
  */
 export function normalizeAsUrl(string) {
-  return string.toLowerCase().replace(/\s+/g, "-");
+  return string.trim().toLowerCase().replace(/\s+/g, "-");
 }
 
 /**

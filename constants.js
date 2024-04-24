@@ -21,3 +21,11 @@ export const SITE_META_KEYWORDS = [
   "developer dictionary",
   "software development dictionary",
 ];
+
+export const ALPHABETS = [
+  "a", "b", "c", "d", "e", "f",
+  "g", "h", "i", "j", "k", "l",
+  "m", "n", "o", "p", "q", "r",
+  "s", "t", "u", "v", "w", "x",
+  "y", "z"
+];

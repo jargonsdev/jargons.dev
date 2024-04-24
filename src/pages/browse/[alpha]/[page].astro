@@ -16,8 +16,6 @@ export async function getStaticPaths({ paginate }) {
   const dictionary = await getCollection("dictionary");
   return ALPHABETS.flatMap(alpha => {
     const filteredWords = dictionary.filter(word => word.slug[0] === alpha);
-    console.log(filteredWords);
-
     return paginate(filteredWords, {
       params: { alpha },
       pageSize: 1
@@ -56,24 +54,26 @@ export async function getStaticPaths({ paginate }) {
     </div>
 
     <!-- Pagination -->
-    <div class="w-full flex !mt-auto">
-      <div class="mx-auto flex items-center space-x-4">
-        {page.url.prev ? ( 
-          <a href={page.url.prev} class="bg-black text-white no-underline rounded py-1 px-2">Previous</a>
-        ) : (
-          <span class="bg-gray-100 text-gray-400 cursor-not-allowed no-underline rounded py-1 px-2">Previous</span>
-        )}
-
-        <span>
-          Page { page.currentPage }
-        </span>
-
-        {page.url.next ? ( 
-          <a href={page.url.next} class="bg-black text-white no-underline rounded py-1 px-2">Next</a>
-        ) : (
-          <span class="bg-gray-100 text-gray-400 cursor-not-allowed no-underline rounded py-1 px-2">Next</span>
-        )}
+    {(page.url.next || page.url.prev) ? (
+      <div class="w-full flex !mt-auto">
+        <div class="mx-auto flex items-center space-x-4">
+          {page.url.prev ? ( 
+            <a href={page.url.prev} class="bg-black text-white no-underline rounded py-1 px-2">Previous</a>
+          ) : (
+            <span class="bg-gray-100 text-gray-400 cursor-not-allowed no-underline rounded py-1 px-2">Previous</span>
+          )}
+  
+          <span>
+            Page { page.currentPage }
+          </span>
+  
+          {page.url.next ? ( 
+            <a href={page.url.next} class="bg-black text-white no-underline rounded py-1 px-2">Next</a>
+          ) : (
+            <span class="bg-gray-100 text-gray-400 cursor-not-allowed no-underline rounded py-1 px-2">Next</span>
+          )}
+        </div>
       </div>
-    </div>
+    ) : null}
   </main>
 </BaseLayout>

@@ -58,7 +58,7 @@ To create an Issue, please follow these steps:
 
 If you wish to work on an open issue, please ask for it to be assigned to you and it will be assigned to you.
 
-> [!IMPRORTANT]  
+> [!Important]  
 > Only start working on an Issue (and open a Pull Request) when it has been assigned to you - this will prevent confusion, multiple people working on the same issue and work not being used
 
 In case you get stuck while working on an issue you've been assigned, feel free to ask question openly in the comment.

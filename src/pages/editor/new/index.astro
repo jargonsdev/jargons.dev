@@ -19,6 +19,11 @@ const action = resolveEditorActionFromPathname(pathname);
 >
   <Navbar
     returnNav={{
+      /**
+       * @todo now this looks weirds the commit link below - the `editor/new` route can now be reached from places..
+       * ..other than the jargons editor page.
+       * @link https://github.com/babblebey/jargons.dev/pull/60/commits/6e1ccf74f31c6b8da4b42bc1ffdc0efbf16b19ac
+       */
       label: "Back to Jargons Editor",
       location: "javascript: history.back()"
     }}

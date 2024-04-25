@@ -1,1 +1,72 @@
-# dictionry
+<div align="center" style="margin-top: 12px">
+  <a href="https://www.jargons.dev">
+   <img width="500" alt="jargons.dev" src="https://github.com/babblebey/jargons.dev/assets/25631971/f2adedb8-4324-439a-8663-d3e30fd68416">
+  </a>
+
+  <h1><tt>jargons.dev</tt></h1>
+  <h3>The Software Engineering Dictionary</h3>
+</div>
+
+## About
+
+<tt>jargons.dev</tt> is an open source dictionary curated by contributors providing simplified meaning and definitions to software development, engineering, and general technology terms.
+
+## Tech Stack
+
+<tt>jargons.dev</tt> is built using the following open source technologies: 
+
+- [Astro](https://astro.build/) - Web framework for building content-driven websites
+- [React](https://react.dev) - Library for building web interfaces
+- [Tailwind CSS](https://tailwindcss.com) - A Utility-first CSS Library
+
+## Run Project Locally
+
+To run the project locally running on your machine, follow these simple steps.
+
+### Prerequisite
+
+To run the project locally, ensure your machine has **Node.js** installed. The project requires **Node.js** version 19 or higher. If you don't have **Node.js** installed, you can download it from the [Node.js website](https://nodejs.org/).
+
+### Setup 
+
+To get set-up follow these steps:
+
+1. Clone the repository:
+
+   ```sh
+   git clone https://github.com/babblebey/jargons.dev.git
+   ```
+
+2. Navigate to the project directory:
+
+   ```sh
+   cd jargons.dev
+   ```
+
+3. Install dependencies:
+
+   ```sh
+   npm ci
+   ```
+
+4. Run set scripts........[wip]
+
+5. Start the development server:
+
+   ```sh
+   npm start
+   ```
+
+6. Open your browser and visit `http://localhost:4321` to view the project.
+
+## Contributing
+
+We welcome contributions to jargons.dev! There are two main ways you can contribute to:
+
+1. **Dictionary Word Contribution:** 
+  This includes adding new words to the dictionary or editing existing word entries. We highly recommend using our Jargons Editor at [jargons.dev/editor](https://jargons.dev/editor) for this purpose. This user-friendly interface ensures your contribution ends up as a pull request seamlessly.
+
+2. **Other Contributions:**
+  Theses are contributions other than adding or editing words in the dictionary, feel free to contribute in other ways such as code improvements, bug fixes, or feature enhancements.
+
+To get started with contributing, please refer to our [Contribution Guide](./CONTRIBUTING.md). Thank you for contributing to the jargons.dev project!

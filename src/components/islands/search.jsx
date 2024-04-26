@@ -156,14 +156,6 @@ function SearchDialog() {
       e.preventDefault();
       if (document.querySelector("._cursor")) {
         const word = document.querySelector("._cursor");
-        /**
-         * @todo extract this `$addToRecentSearchesFn` operation to `word` layout..
-         * ..so words are added to recent searches when viewed (not only when searched)
-         */
-        $addToRecentSearchesFn({
-          word: word.textContent,
-          url: word.href
-        });
         router.push(word.href);
       }
     }
@@ -249,14 +241,6 @@ function SearchResult({ result = [], cursor, searchTerm }) {
             href={`/browse/${doc.slug}`}  
             onClick={(e) => {
               e.preventDefault();
-              /**
-               * @todo extract this `$addToRecentSearchesFn` operation to `word` layout..
-               * ..so words are added to recent searches when viewed (not only when searched)
-               */
-              $addToRecentSearchesFn({
-                word: e.currentTarget.textContent,
-                url: e.currentTarget.href
-              });
               router.push(e.currentTarget.href);
             }}
             className={`${cursor === i && "bg-gray-100 _cursor"} flex items-center justify-between no-underline w-full p-2 md:p-4 hover:bg-gray-100`}

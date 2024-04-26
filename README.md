@@ -49,7 +49,13 @@ To get set-up follow these steps:
    npm ci
    ```
 
-4. Run set scripts........[wip]
+4. Run the `dev/setup` script and create test repo
+
+   This script streamlines the process of creating a GitHub App required to run jargons.dev locally and sets up the environment file (.env) for you; Learn more at [dev/setup](/dev/README.md) 
+   
+   ```sh
+   npm run setup
+   ```
 
 5. Start the development server:
 

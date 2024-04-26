@@ -18,6 +18,9 @@ export const $recentSearches = map({});
  * @todo implement logic to allow holding maximum of 5 words by removing older words when new a one gets added
  */
 export function $addToRecentSearchesFn({ word, url }) {
+  // Re-initialise the state with current localStorage value
+  $recentSearches.set({...JSON.parse(localStorage.getItem("jargons.dev:recent_searches"))});
+
   const lowercaseKey = word.toLowerCase();
   const key = lowercaseKey.includes(" ") ? lowercaseKey.split(" ").join("-") : lowercaseKey;
   const isInRecentSearch = $recentSearches.get()[key];

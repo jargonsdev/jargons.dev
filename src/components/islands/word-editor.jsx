@@ -4,7 +4,7 @@ import { useStore } from "@nanostores/react";
 import useRouter from "../../lib/hooks/use-router.js";
 import { capitalizeText } from "../../lib/utils/index.js";
 import useWordEditor from "../../lib/hooks/use-word-editor.js";
-import { $isWordSubmitLoading } from "../../lib/stores/dictionary.js";
+import { $isWordSubmitLoading, $isWordSubmitted } from "../../lib/stores/dictionary.js";
 
 /**
  * Main Word Editor Component - Island
@@ -28,16 +28,21 @@ export default function WordEditor({ title = "", content = "", metadata = {}, ac
  * Detached Editor Submit Button Component - Island
  */
 export function SubmitButton({ children = "Submit" }) {
+  const isSubmitted = useStore($isWordSubmitted);
   const isSubmitLoading = useStore($isWordSubmitLoading);
   
   return (
-    <button className="flex items-center justify-center no-underline text-white bg-gray-900 hover:bg-gray-700 focus:ring-0 font-medium rounded-lg text-base px-5 py-2.5 text-center ml-1 sm:ml-3"
+    <button className={`flex items-center justify-center no-underline text-white ${isSubmitted ? "bg-green-700" : "bg-gray-900 hover:bg-gray-700"} focus:ring-0 font-medium rounded-lg text-base px-5 py-2.5 text-center ml-1 sm:ml-3`}
       type="submit"
       form="jargons.dev:word_editor"
-      disabled={isSubmitLoading}
+      disabled={isSubmitLoading || isSubmitted}
     >
       { isSubmitLoading ? (
         <div className="flex-none h-4 w-4 md:w-6 md:h-6 rounded-full border-2 border-gray-400 border-b-gray-200 border-r-gray-200 animate-spin" />
+      ) : !isSubmitLoading && isSubmitted ? (
+        <svg className="h-4 w-4 md:w-6 md:h-6 text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+          <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 11.917 9.724 16.5 19 7.5"/>
+        </svg>
       ) : (
         children
       ) }
@@ -50,7 +55,11 @@ export function SubmitButton({ children = "Submit" }) {
  */
 function Editor({ eTitle, eContent, eMetadata, className, action, ...props }) {
   const router = useRouter();
+  const isSubmitted = useStore($isWordSubmitted);
+  const isSubmitLoading = useStore($isWordSubmitLoading);
   const { title, setTitle, content, setContent } = useWordEditor();
+
+  const isDone = isSubmitLoading || isSubmitted;
   
   useEffect(() => {
     setTitle(eTitle);
@@ -61,7 +70,6 @@ function Editor({ eTitle, eContent, eMetadata, className, action, ...props }) {
    * Word Submit Handler
    * @param {import("react").FormEvent} e 
    * 
-   * @todo implement a submitted State that updates after submission for visual cue before routing
    * @todo handle error for when submission isn't successful
    */
   async function handleSubmit(e) {
@@ -71,6 +79,8 @@ function Editor({ eTitle, eContent, eMetadata, className, action, ...props }) {
       method: "POST",
       body: formData,
     });
+    $isWordSubmitted.set(true);
+    $isWordSubmitLoading.set(false);
     response.status === 200 && router.push("/editor");
   }
 
@@ -91,9 +101,9 @@ function Editor({ eTitle, eContent, eMetadata, className, action, ...props }) {
         name="title"
         value={title}
         placeholder="New Word"
-        readOnly={action === "edit"}
         onChange={(e) => setTitle(e.target.value)}
-        className={`${action === "edit" && "cursor-not-allowed"} block w-full pb-2 mb-3 text-gray-900 border-b text-lg font-bold focus:outline-none`}
+        readOnly={action === "edit" || isDone}
+        className={`${(action === "edit" || isDone) && "cursor-not-allowed"} block w-full pb-2 mb-3 text-gray-900 border-b text-lg font-bold focus:outline-none`}
       />
       <textarea 
         required
@@ -101,7 +111,8 @@ function Editor({ eTitle, eContent, eMetadata, className, action, ...props }) {
         name="content"
         value={content}
         onChange={(e) => setContent(e.target.value)}
-        className="w-full h-1 grow resize-none appearance-none border-none focus:outline-none scrollbar"
+        readOnly={isDone}
+        className={`${isDone && "cursor-not-allowed select-none"} w-full h-1 grow resize-none appearance-none border-none focus:outline-none scrollbar`}
       />
       <input 
         type="hidden" 
@@ -182,7 +193,7 @@ const DummyPreviewNavbar = () => (
             <><span className="text-sm mr-0.5">⌘</span>K</>
           </kbd>
         </div>
-        <button className="flex @md:hidden font-bold">
+        <button className="cursor-not-allowed flex @md:hidden font-bold">
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-5 h-5">
             <path strokeLinecap="round" strokeLinejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
           </svg>

@@ -76,3 +76,7 @@ We welcome contributions to jargons.dev! There are two main ways you can contrib
   Theses are contributions other than adding or editing words in the dictionary, feel free to contribute in other ways such as code improvements, bug fixes, or feature enhancements.
 
 To get started with contributing, please refer to our [Contribution Guide](./CONTRIBUTING.md). Thank you for contributing to the jargons.dev project!
+
+## Support 
+
+Do leave the project a star ⭐️

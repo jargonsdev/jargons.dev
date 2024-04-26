@@ -64,7 +64,7 @@ To get set-up follow these steps:
 We welcome contributions to jargons.dev! There are two main ways you can contribute to:
 
 1. **Dictionary Word Contribution:** 
-  This includes adding new words to the dictionary or editing existing word entries. We highly recommend using our Jargons Editor at [jargons.dev/editor](https://jargons.dev/editor) for this purpose. This user-friendly interface ensures your contribution ends up as a pull request seamlessly.
+  This includes adding new words to the dictionary or editing existing word entries. We highly recommend using our Jargons Editor at [jargons.dev/editor](https://jargons.dev/editor) for this purpose. This user-friendly interface streamlines your contribution allowing it end up as a pull request.
 
 2. **Other Contributions:**
   Theses are contributions other than adding or editing words in the dictionary, feel free to contribute in other ways such as code improvements, bug fixes, or feature enhancements.

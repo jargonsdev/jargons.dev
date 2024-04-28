@@ -20,7 +20,7 @@ const dictionary = await getCollection("dictionary");
     <h2 class="text-3xl md:text-5xl font-black">
       Browse Alphabetically
     </h2>
-    <div class="flex flex-wrap gap-3">
+    <div class="flex flex-wrap gap-3" id="whirl-alphas">
       {ALPHABETS.map(alpha => (
         <a 
           href={`/browse/${alpha}/1`} 
@@ -31,4 +31,36 @@ const dictionary = await getCollection("dictionary");
       ))}
     </div>
   </main>
+
+  <script>
+    import { driver } from "driver.js";
+		import "driver.js/dist/driver.css";
+
+    const t = document.querySelector("#whirl-alphas").children[19];
+
+    function run() {
+      const driverObj = driver({
+        showProgress: true,
+        steps: [
+          {
+            element: "#whirl-alphas",
+            popover: {
+              title: "Browsing Alphatically",
+              description: "Here's all Alphabets which allows you to click and browse for words in the dictionary in an alphabetic order; 😉 and yea we don't have word for all alphabets yet "
+            }
+          },
+          {
+            element: t,
+            popover: {
+              title: "Browse words stating with T",
+              description: "We've got in few places at the moment you can start my clicking T"
+            }
+          }
+        ]
+      });
+      driverObj.drive();
+    }
+    run();
+    document.querySelector("#whirl-btn").addEventListener("click", run);
+  </script>
 </BaseLayout>

@@ -40,7 +40,7 @@ export async function getStaticPaths({ paginate }) {
     </h1>
 
     <!-- Words List -->
-    <div>
+    <div id="whirl-words">
       {page.data.length ? page.data.map(word => (
         <a href={`/browse/${word.slug}`}
           class="flex items-center md:text-lg justify-between no-underline w-full p-4 even:bg-gray-100 hover:bg-gray-100/50"
@@ -101,4 +101,18 @@ export async function getStaticPaths({ paginate }) {
       </div>
     ) : null}
   </main>
+
+  <script>
+    import { driver } from "driver.js";
+    import "driver.js/dist/driver.css";
+
+    const driverObj = driver();
+    driverObj.highlight({
+      element: document.querySelector("#whirl-words").children[0],
+      popover: {
+        title: "A Word",
+        description: "Click to the the meaning/definition of the word"
+      }
+    })
+  </script>
 </BaseLayout>

@@ -34,8 +34,9 @@ export function SubmitButton({ children = "Submit" }) {
   return (
     <button className={`flex items-center justify-center no-underline text-white ${isSubmitted ? "bg-green-700" : "bg-gray-900 hover:bg-gray-700"} focus:ring-0 font-medium rounded-lg text-base px-5 py-2.5 text-center ml-1 sm:ml-3`}
       type="submit"
-      form="jargons.dev:word_editor"
+      form="jargons_dev_word_editor"
       disabled={isSubmitLoading || isSubmitted}
+      id="whirl-word-submit-btn"
     >
       { isSubmitLoading ? (
         <div className="flex-none h-4 w-4 md:w-6 md:h-6 rounded-full border-2 border-gray-400 border-b-gray-200 border-r-gray-200 animate-spin" />
@@ -91,7 +92,7 @@ function Editor({ eTitle, eContent, eMetadata, className, action, ...props }) {
         e.preventDefault();
         handleSubmit(e);
       }}
-      id="jargons.dev:word_editor"
+      id="jargons_dev_word_editor"
       {...props}
     >
       <input 
@@ -143,7 +144,9 @@ function Preview({ className, ...props }) {
       className={`${className} select-none`}
       {...props}  
     >
-      <div className="h-1 grow overflow-auto rounded-lg border p-5 shadow-lg scrollbar">
+      <div className="h-1 grow overflow-auto rounded-lg border p-5 shadow-lg scrollbar"
+        id="whirl-word-editor-preview"
+      >
         <DummyPreviewNavbar />
 
         <div className="max-w-4xl space-y-8 mx-auto">

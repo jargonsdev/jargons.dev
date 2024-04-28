@@ -34,4 +34,75 @@ const action = resolveEditorActionFromPathname(pathname);
   <main class="flex grow px-5 md:px-6 pb-4">
     <WordEditor action={action} client:load />
   </main>
+  
+  <script>
+    import { driver } from "driver.js";
+    import "driver.js/dist/driver.css";
+
+    function run() {
+      const driverObj = driver({
+        showProgress: true,
+        steps: [
+          {
+            popover: {
+              title: "The Jargons Editor",
+              description: "This Jargons Editor makes your word contribution to jargons.dev dictionary seamless; It streamlines you word contribution process leveraging some GitHub APIs ensuring it ends-up as a Pull Request without every interfacing with the GitHub UI or any IDE."
+            }
+          },
+          {
+            element: "#title",
+            popover: {
+              title: "Word Title",
+              description: "You are currently in 'new' word, so you can enter a new word here"
+            }
+          },
+          {
+            element: "#content",
+            popover: {
+              title: "Word Content",
+              description: "You can add the content i.e. meaning/definition of the word"
+            }
+          },
+          {
+            element: "#jargons_dev_word_editor",
+            popover: {
+              title: "The Editor",
+              description: "Zoom out! it the Word Input Tab of the Editor, it collects markdown to build its content"
+            }
+          },
+          {
+            element: "#whirl-word-editor-preview",
+            popover: {
+              title: "The Editor Preview",
+              description: "This is the Preview Tab of the Editor, it was intended to mimic what the word would look exactly like live on jargons.dev, so don't mind the non-interactive Dummy Navbar"
+            }
+          },
+          {
+            element: "#whirl-word-submit-btn",
+            popover: {
+              title: "The Submit Button",
+              description: `
+                This is part where the magic happens; when the submit button is clicked, the follwoing actions are taken...
+                <ol>
+                  <li>- Fork jargons.dev repository to user's account</li>
+                  <li>- Create a Branch specific for the current contribution</li>
+                  <li>- Makes the submitted changes to the branch, modifies content in the "content/dictionary" directory</li>
+                  <li>- Then it creates a Pull Request to merge the user's change Branch to the base jargons.dev repo</li>
+                </ol>
+              `
+            }
+          },
+          {
+            popover: {
+              title: "Let's Contribute!!",
+              description: "Whenever you're ready! Please try out the contribution flow."
+            }
+          }
+        ]
+      });
+      driverObj.drive();
+    }
+    run();
+    document.querySelector("#whirl-btn").addEventListener("click", run);
+  </script>
 </BaseLayout>

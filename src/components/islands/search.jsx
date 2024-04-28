@@ -91,6 +91,7 @@ function SearchTrigger({ size = "md" }) {
   return (
     <div onClick={() => $isSearchOpen.set(!isSearchOpen)}
       className="relative flex items-center justify-between mt-2 border pl-3 p-1 md:pl-5 md:pr-2 md:py-2 space-x-3 border-gray-400 rounded-lg hover:shadow cursor-text"
+      id="whirl-search-form"
     >
       <div className="flex items-center text-gray-400 space-x-3">
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="h-4 w-4 md:w-6 md:h-6">

@@ -26,6 +26,74 @@ const dictionary = await getCollection("dictionary");
 		<Search triggerSize="md" dictionary={dictionary} client:load />
 
 		<!-- Recent Word Look Up -->
-		<RecentSearches client:load />
+		<div id="whirl-recent-search-wrapper">
+			<RecentSearches client:load />
+		</div>
 	</main>
+
+	<script>
+		import { driver } from "driver.js";
+		import "driver.js/dist/driver.css";
+
+		const recentSearchWrapper = document.querySelector("#whirl-recent-search-wrapper");
+		let oldWrapValue;
+
+		document.querySelector("#whirl-btn").addEventListener("click", () => {
+			const driverObj = driver({
+				showProgress: true,
+				steps: [
+					{
+						element: "#whirl-search-form",
+						popover: {
+							title: "The Search Trigger",
+							description: "The Quickest means to search for a technical jargon or word you're seeking definitions for",
+						},
+					},
+					{
+						element: "#whirl-browse-words",
+						popover: {
+							title: "Browse all words",
+							description: "Here's a link to the page where you get the option to browse all words, only Alphabetically at the moment though",
+							onNextClick: () => {
+								oldWrapValue = recentSearchWrapper.innerHTML;
+								recentSearchWrapper.innerHTML =	`
+									<div class="space-y-3 mt-4 md:mt-6" id="whirl-recent-searches">
+										<h2 class="text-2xl md:text-4xl font-black">Recent</h2>
+										<ol class="space-y-1.5 underline">
+											<li><a href="/browse/tuple">Tuple</a></li>
+											<li><a href="/browse/concatenate">Concatenate</a></li>
+										</ol>
+									</div>
+								`;
+								driverObj.moveNext();
+							}
+						}
+					},
+					{
+						element: "#whirl-recent-searches",
+						popover: {
+							title: "Recent Searches",
+							description: "Assuming you've done a search, this section lists the last 5 jargon you searched on the jargons.dev, the data is held in your browser's local storage",
+							onPrevClick: () => {
+								recentSearchWrapper.innerHTML = oldWrapValue;
+								driverObj.movePrevious();
+							},
+							onNextClick: () => {
+								recentSearchWrapper.innerHTML = oldWrapValue;
+								driverObj.moveNext();
+							}
+						},
+					},
+					{
+						element: "#whirl-browse-words",
+						popover: {
+							title: "Let's browse some words, shall we!?",
+							description: "Click on the highlighted link"
+						}
+					}
+				]
+			});
+			driverObj.drive();
+		});
+	</script>
 </BaseLayout>

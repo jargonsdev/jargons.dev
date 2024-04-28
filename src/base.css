@@ -27,3 +27,7 @@ a:hover {
 .scrollbar::-webkit-scrollbar {
   width: 5px;
 }
+.temporary-bounce {
+  -webkit-animation-iteration-count: 3;
+  animation-iteration-count: 3;
+}

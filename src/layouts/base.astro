@@ -41,8 +41,8 @@ const {
 	<body class={list + " relative"}>
     <slot />
 
-		<div class="fixed group flex w-full h-fit bottom-0  transition-transform ease-in-out duration-50 -translate-y-10">
-			<div class="flex items-center justify-between p-2.5 md:p-5 mx-auto w-[90%] rounded-md shadow-md border-2 border-gray-200">
+		<div class="fixed group flex w-full h-fit bottom-0 group">
+			<div class="flex bg-white items-center animate-bounce temporary-bounce justify-between p-2.5 md:p-5 mx-auto w-[90%] rounded-md shadow-md border-2 border-gray-200 transition-transform ease-in-out duration-50 translate-y-8 group-hover:-translate-y-10">
 				<div class="flex items-center space-x-2">
 					<div>
 						<svg class="w-10 h-10 group-hover:hidden" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
@@ -52,12 +52,18 @@ const {
 							<path fill-rule="evenodd" d="M9.586 2.586A2 2 0 0 1 11 2h2a2 2 0 0 1 2 2v.089l.473.196.063-.063a2.002 2.002 0 0 1 2.828 0l1.414 1.414a2 2 0 0 1 0 2.827l-.063.064.196.473H20a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2h-.089l-.196.473.063.063a2.002 2.002 0 0 1 0 2.828l-1.414 1.414a2 2 0 0 1-2.828 0l-.063-.063-.473.196V20a2 2 0 0 1-2 2h-2a2 2 0 0 1-2-2v-.089l-.473-.196-.063.063a2.002 2.002 0 0 1-2.828 0l-1.414-1.414a2 2 0 0 1 0-2.827l.063-.064L4.089 15H4a2 2 0 0 1-2-2v-2a2 2 0 0 1 2-2h.09l.195-.473-.063-.063a2 2 0 0 1 0-2.828l1.414-1.414a2 2 0 0 1 2.827 0l.064.063L9 4.089V4a2 2 0 0 1 .586-1.414ZM8 12a4 4 0 1 1 8 0 4 4 0 0 1-8 0Z" clip-rule="evenodd"/>
 						</svg>
 					</div>						
-					<h5 class="font-black text-xs md:text-base"><span class="text-lg md:text-2xl">whirl</span>.jargons.dev!</h5>				
+					<h5 class="font-black text-xs md:text-base"><span class="text-lg md:text-2xl">whirl!</span>.jargons.dev</h5>				
 				</div>
 				<button
-					class="flex cursor-pointer items-center space-x-1 h-fit w-fit justify-center no-underline px-4 py-2 rounded-md border border-gray-200 bg-black text-white text-sm shadow-sm hover:shadow transition-colors"
+					class="relative flex cursor-pointer items-center space-x-1 h-fit w-fit justify-center no-underline px-4 py-2 rounded-md border border-gray-200 bg-black text-white text-sm shadow-sm hover:shadow transition-colors"
 					id="whirl-btn"
 				>
+					<div class="absolute -right-4 -top-4">
+						<span class="relative flex items-center justify-center h-10 w-10">
+							<span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+							<span class="relative inline-flex rounded-full h-5 w-5 bg-red-600"></span>
+						</span>
+					</div>
 					<span>Show me around</span>
 					<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width={1.5} stroke="currentColor" class="w-4 h-4">
 						<path stroke-linecap="round" stroke-linejoin="round" d="m4.5 19.5 15-15m0 0H8.25m11.25 0v11.25" />

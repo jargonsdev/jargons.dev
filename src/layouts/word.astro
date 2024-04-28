@@ -62,19 +62,23 @@ const editUrl = `/editor/edit/${frontmatter.url.split("/")[3].split(".")[0]}`;
     ..nice if we can find another means ;)
     -->
     <script>
-      import { driver } from "driver.js";
-      import "driver.js/dist/driver.css";
       import { $addToRecentSearchesFn } from "../lib/stores/search.js";
 
       $addToRecentSearchesFn({
         word: document.querySelector("h1").textContent.trim(),
         url: document.location.href
       });
+    </script>
 
+    <script is:inline src="https://cdn.jsdelivr.net/npm/driver.js@1.0.1/dist/driver.js.iife.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/driver.js@1.0.1/dist/driver.css"/>
+    <script is:inline>
       let oldMetaValue;
       const metatab = document.querySelector("#whirl-word-metatab");
 
       function run() {
+        const driver = window.driver?.js.driver;
+        
         const driverObj = driver({
           showProgress: true,
           steps: [

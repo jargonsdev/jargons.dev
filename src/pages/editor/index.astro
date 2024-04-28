@@ -33,7 +33,7 @@ const totalWords = {
 
   <main class="w-full max-w-screen-lg mx-auto flex flex-col grow p-5 space-y-3">
     <!-- Profile Section -->
-    <section class="mt-10 flex w-full items-center justify-between md:px-6">
+    <section class="mt-10 flex w-full items-center justify-between md:px-6" id="whirl-je-profile">
       <div class="flex flex-col space-y-6 justify-center h-full py-6">
         <span class="relative flex shrink-0 overflow-hidden rounded-full w-20 h-20 border">
           <Image 
@@ -52,7 +52,7 @@ const totalWords = {
     </section>
 
     <!-- Contribution CTA -->
-    <section class="rounded-lg border shadow-sm">
+    <section class="rounded-lg border shadow-sm" id="whirl-je-contribution-cta">
       <div class="space-y-1.5 p-3 md:p-6 flex flex-col lg:flex-row lg:items-center justify-between gap-4">
         <div class="space-y-1">
           <h3 class="font-semibold tracking-tight text-2xl">Contribute Words</h3>
@@ -63,6 +63,7 @@ const totalWords = {
         <a
           class="flex items-center w-fit justify-center no-underline px-4 py-2 rounded-md border border-gray-200 bg-white hover:bg-gray-100 text-sm shadow-sm hover:shadow transition-colors"
           href="/editor/new"
+          id="whirl-start-now-btn"
         >
           <span>Start Now</span>
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width={1.5} stroke="currentColor" class="w-4 h-4">
@@ -73,7 +74,7 @@ const totalWords = {
     </section>
 
     <!-- Contribution Stats -->
-    <section class="">
+    <section class="" id="whirl-contribution-stats">
       <div class="flex-col space-y-1 p-6 flex">
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6">
           <path d="M22 12h-4l-3 9L9 3l-3 9H2"></path>
@@ -86,7 +87,7 @@ const totalWords = {
 
       <div class="grid md:grid-cols-2 gap-2">
         <!-- Total Words -->
-        <div class="p-6 space-y-2 rounded-lg border shadow-sm">
+        <div class="p-6 space-y-2 rounded-lg border shadow-sm" id="whirl-stats-total">
           <div class="w-full flex justify-between">
             <div class="text-3xl font-bold tracking-tighter">
               { totalWords.count }
@@ -111,7 +112,7 @@ const totalWords = {
         </div>
 
         <!-- Pending Words -->
-        <div class="p-6 space-y-2 rounded-lg border shadow-sm">
+        <div class="p-6 space-y-2 rounded-lg border shadow-sm" id="whirl-stats-pending">
           <div class="w-full flex justify-between">
             <div class="text-3xl font-bold tracking-tighter">
               { pendingWords.count }
@@ -136,7 +137,7 @@ const totalWords = {
         </div>
 
         <!-- New Words -->
-        <div class="p-6 space-y-2 rounded-lg border shadow-sm">
+        <div class="p-6 space-y-2 rounded-lg border shadow-sm" id="whirl-stats-new">
           <div class="w-full flex justify-between">
             <div class="text-3xl font-bold tracking-tighter">
               { newWords.count }
@@ -161,7 +162,7 @@ const totalWords = {
         </div>
 
         <!-- Edited Words -->
-        <div class="p-6 space-y-2 rounded-lg border shadow-sm">
+        <div class="p-6 space-y-2 rounded-lg border shadow-sm" id="whirl-stats-edit">
           <div class="w-full flex justify-between">
             <div class="text-3xl font-bold tracking-tighter">
               { editedWords.count }
@@ -187,4 +188,116 @@ const totalWords = {
       </div>
     </section>
   </main>
+
+  <script>
+    import { driver } from "driver.js";
+    import "driver.js/dist/driver.css";
+
+    let oldContent;
+    const statUrlDiv = `
+      <a class="text-sm" href="#" id="whirl-stats-url">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width={1.5} stroke="currentColor" class="w-4 h-4">
+          <title>See all New Words Contributed</title>
+          <path stroke-linecap="round" stroke-linejoin="round" d="m4.5 19.5 15-15m0 0H8.25m11.25 0v11.25" />
+        </svg> 
+      </a>
+    `
+
+    function run() {
+      const driverObj = driver({
+        showProgress: true,
+        steps: [
+          {
+            popover: {
+              title: "The Jargons Editor - Dashboard",
+              description: "The <b>Jargons Editor</b> - Dashboard; the management portal for all user's word contribution to jargons.dev"
+            }
+          },
+          {
+            element: "#whirl-je-profile",
+            popover: {
+              title: "User Profile",
+              description: "This is user welcome profile section - details here was fetch directly from the publicly available data of current user using their token"
+            }
+          },
+          {
+            element: "#whirl-contribution-stats",
+            popover: {
+              title: "The Contributions Stats",
+              description: "This section display current user's statistics for word contribution to the jargons.dev dictionary.",
+              onNextClick: () => {
+                oldContent = document.querySelector("#whirl-stats-total div").innerHTML;
+                document.querySelector("#whirl-stats-total div").innerHTML += statUrlDiv;
+                driverObj.moveNext();
+              }
+            }
+          },
+          {
+            element: "#whirl-stats-total",
+            popover: {
+              title: "Total Contributed Words",
+              description: "This section displays a total number of completed word contributions (new word and edited words combined) to the jargons.dev dictionary; it is computed by list of <b>merged</b> pull requests authored by current user and with `<b>new word</b>` or `<b>edit word</b>` labels.",
+              onPrevClick: () => {
+                document.querySelector("#whirl-stats-total div").innerHTML = oldContent;
+                driverObj.movePrevious();
+              }
+            }
+          },
+          {
+            element: "#whirl-stats-url",
+            popover: {
+              title: "See full Statistics data",
+              description: "Assuming current user atleast one contribution on this stats; This Link will appear and on-click, it takes them to the jargons.dev pull request filtered list of their <b>merged</b> word contribution, this specifically targets PRs with`<b>new word</b>` or `<b>edit word</b>` labels",
+              onNextClick: () => {
+                document.querySelector("#whirl-stats-total div").innerHTML = oldContent;
+                driverObj.moveNext();
+              }
+            }
+          },
+          {
+            element: "#whirl-stats-pending",
+            popover: {
+              title: "Total Pending Contributions",
+              description: "This section display total number of pending word contribution to jargons.dev dictionary; it is computed by a list of <b>opened/unmerged</b> pull requests authored by current user and with `<b>new word</b>` or `<b>edit word</b>` labels.",
+              onPrevClick: () => {
+                document.querySelector("#whirl-stats-total div").innerHTML += statUrlDiv;
+                driverObj.movePrevious();
+              }
+            }
+          },
+          {
+            element: "#whirl-stats-new",
+            popover: {
+              title: "New Word Contributions",
+              description: "This section display total number of completed new word contributions to jargons.dev dictionary; it is computed by a list of <b>merged</b> pull requests authored by current user and with the `<b>new word</b>` label.",
+            }
+          },
+          {
+            element: "#whirl-stats-edit",
+            popover: {
+              title: "Edited Word Contributions",
+              description: "This section display total number of completed edited word contributions to jargons.dev dictionary; it is computed by a list of <b>merged</b> pull requests authored by current user and with the `<b>edit word</b>` label.",
+            }
+          },
+          {
+            element: "#whirl-je-contribution-cta",
+            popover: {
+              title: "Contribute New Word",
+              description: "This section is the super big CTA 😁 with a link to a fresh editor for you contribute NEW word to the jargons.dev dictionary."
+            }
+          },
+          {
+            element: "#whirl-start-now-btn",
+            popover: {
+              title: "Let's Contribute!!!",
+              description: "Whenever you're ready, click that button and add a new word 😉"
+            }
+          }
+        ]
+      });
+      driverObj.drive();
+    }
+    run();
+    document.querySelector("#whirl-btn").addEventListener("click", run);
+  </script>
 </BaseLayout>

@@ -20,6 +20,7 @@ const action = resolveEditorActionFromPathname(pathname);
 <BaseLayout 
   pageTitle="Dictionry"
   class="flex flex-col w-full min-h-screen overflow-hidden"
+  isAuthed={isAuthed}
 >
   <Navbar returnNav={{
     label: `Return to ${word.data.title}`,

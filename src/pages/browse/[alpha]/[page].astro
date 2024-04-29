@@ -4,11 +4,13 @@ import { ALPHABETS } from "../../../../constants.js";
 import BaseLayout from "../../../layouts/base.astro";
 import Navbar from "../../../components/navbar.astro";
 import Search from "../../../components/islands/search";
+import doAuth from "../../../lib/actions/do-auth.js";
 
 const { page } = Astro.props;
 const params = Astro.params;
 
 const dictionary = await getCollection("dictionary");
+const { isAuthed } = await doAuth(Astro);
 
 export const prerender = true;
 
@@ -28,6 +30,7 @@ export async function getStaticPaths({ paginate }) {
   pageTitle={`Browse jargons.dev`}
   subtitle={`Words Starting With "${params.alpha.toUpperCase()}" (Page ${page.currentPage})`}
   class="min-h-screen flex flex-col"
+  isAuthed={isAuthed}
 >
   <Navbar>
     <Search triggerSize="sm" dictionary={dictionary} client:load />

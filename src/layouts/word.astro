@@ -6,9 +6,11 @@ import BaseLayout from "./base.astro";
 import { getCollection } from "astro:content";
 import Navbar from "../components/navbar.astro";
 import Search from "../components/islands/search.jsx";
+import doAuth from "../lib/actions/do-auth.js";
 
 const { frontmatter } = Astro.props;
 const dictionary = await getCollection("dictionary");
+const { isAuthed } = await doAuth(Astro);
 
 /**
  * @todo implement a better way to resolve the `slug` used in the `editUrl`
@@ -17,7 +19,7 @@ const dictionary = await getCollection("dictionary");
 const editUrl = `/editor/edit/${frontmatter.url.split("/")[3].split(".")[0]}`;
 ---
 
-<BaseLayout pageTitle={ frontmatter.title }>
+<BaseLayout pageTitle={ frontmatter.title } isAuthed={isAuthed}>
   <Navbar>
     <Search triggerSize="sm" dictionary={dictionary} client:load />
   </Navbar>

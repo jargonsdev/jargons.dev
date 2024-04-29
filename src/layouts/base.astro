@@ -4,7 +4,6 @@ import "@fontsource/ibm-plex-mono";
 import "../base.css";
 import { SITE_META_KEYWORDS, SITE_META_DESCRIPTION } from "../../constants.js";
 import Feedback, { FeedbackTrigger } from "../components/islands/feedback.jsx";
-import doAuth from "../lib/actions/do-auth.js";
 
 const { props, url } = Astro;
 const { 
@@ -12,10 +11,9 @@ const {
 	class:list, 
 	ogImageUrl = `${url.origin}/og.png`, 
 	description = SITE_META_DESCRIPTION,
-	subtitle = "Developer Jargons" 
+	subtitle = "Developer Jargons",
+	isAuthed
 } = props;
-
-const { isAuthed } = await doAuth(Astro);
 ---
 
 <html lang="en">
@@ -61,10 +59,12 @@ const { isAuthed } = await doAuth(Astro);
 					<h5 class="font-black text-xs md:text-base"><span class="text-lg md:text-2xl">whirl!</span>.jargons.dev</h5>				
 				</div>
 				<div>
-					{ isAuthed ? <FeedbackTrigger client:load /> : (
+					{ !isAuthed ? (
 						<a href={`/login?return_to=${encodeURIComponent(url.pathname)}`}>
 							Authenticate to Send Feedback
 						</a>
+					) : (
+						<FeedbackTrigger client:load />
 					) }
 				</div>
 				<button

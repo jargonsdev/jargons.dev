@@ -9,7 +9,7 @@ if (isAuthed) return redirect(searchParams.get("return_to"));
 const authUrl = getAuthUrl({ path: searchParams.get("return_to") });
 ---
 
-<BaseLayout pageTitle="Dictionary">
+<BaseLayout pageTitle="Dictionary" isAuthed={isAuthed}>
 	<main class="flex flex-col max-w-screen-lg p-5 justify-center mx-auto min-h-screen">
     <a href={authUrl} id="whirl-login-btn" class="flex items-center justify-center h-10 mr-3 px-3 font-medium text-gray-900 bg-white border border-gray-200 no-underline rounded-lg focus:outline-none hover:bg-gray-100">
       <svg class="w-4 h-4 mr-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">

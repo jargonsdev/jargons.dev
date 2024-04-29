@@ -4,13 +4,16 @@ import { ALPHABETS } from "../../../constants.js";
 import BaseLayout from "../../layouts/base.astro";
 import Navbar from "../../components/navbar.astro";
 import Search from "../../components/islands/search.jsx";
+import doAuth from "../../lib/actions/do-auth.js";
 
 const dictionary = await getCollection("dictionary");
+const { isAuthed } = await doAuth(Astro);
 ---
 
 <BaseLayout 
   pageTitle="Browse Words"
   class="min-h-screen"
+  isAuthed={isAuthed}
 >
   <Navbar>
     <Search triggerSize="sm" dictionary={dictionary} client:load />

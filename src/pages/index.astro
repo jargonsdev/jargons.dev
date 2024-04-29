@@ -3,13 +3,16 @@ import { getCollection } from "astro:content";
 import BaseLayout from "../layouts/base.astro";
 import Search from "../components/islands/search.jsx";
 import RecentSearches from "../components/islands/recent-searches.jsx";
+import doAuth from "../lib/actions/do-auth.js";
 
 const dictionary = await getCollection("dictionary");
+const { isAuthed } = await doAuth(Astro);
 ---
 
 <BaseLayout 
 	pageTitle="Jargons.dev"
 	subtitle="Simplified Meaning & Definition to Technical Terms"
+	isAuthed={isAuthed}
 >
 	<main class="flex flex-col max-w-screen-lg p-5 justify-center mx-auto min-h-screen">
 		<!-- Title -->

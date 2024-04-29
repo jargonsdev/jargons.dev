@@ -1,18 +1,13 @@
 ---
-import { getCollection } from "astro:content";
+import { getEntry } from "astro:content";
 
-const { entry } = Astro.props;
-
-//@ts-expect-error - `entry` is percieved as "never" type
-const { Content } = await entry.render();
-
-export const prerender = true;
-
-export async function getStaticPaths() {
-  const dictionary = await getCollection("dictionary");
-  return dictionary.map(entry => ({
-    params: { slug: entry.slug }, props: { entry },
-  }));
+const { slug } = Astro.params;
+if (slug === undefined) {
+  throw new Error("Slug is required");
 }
+
+const entry = await getEntry("dictionary", slug);
+
+const { Content } = await entry.render();
 ---
 <Content />

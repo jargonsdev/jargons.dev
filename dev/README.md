@@ -1,4 +1,4 @@
-### <tt>jargons.dev</tt> Dev Setup Script
+# <tt>jargons.dev</tt> Dev Setup Script
 
 This script streamlines the process of creating a GitHub App required to run jargons.dev locally and sets up the environment file (.env) for you. Here's how to use it:
 

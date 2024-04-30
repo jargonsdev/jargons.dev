@@ -20,7 +20,7 @@ export async function getStaticPaths({ paginate }) {
     const filteredWords = dictionary.filter(word => word.slug[0] === alpha);
     return paginate(filteredWords, {
       params: { alpha },
-      pageSize: 1
+      pageSize: 25
     });
   });
 }

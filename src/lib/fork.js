@@ -36,6 +36,7 @@ export async function forkRepository(userOctokit, projectRepoDetails) {
     const response = await userOctokit.request("POST /repos/{owner}/{repo}/forks", {
       owner: repoOwner,
       repo: repoName,
+      default_branch_only: true,
     });
 
     return response.data.full_name;

@@ -4,12 +4,14 @@ import { useStore } from "@nanostores/react";
 import useRouter from "../../lib/hooks/use-router.js";
 import { capitalizeText } from "../../lib/utils/index.js";
 import useWordEditor from "../../lib/hooks/use-word-editor.js";
-import { $isWordSubmitLoading, $isWordSubmitted } from "../../lib/stores/dictionary.js";
+import { $isWordSubmitLoading, $isWordSubmitted, $togglePreview } from "../../lib/stores/dictionary.js";
 
 /**
  * Main Word Editor Component - Island
  */
 export default function WordEditor({ title = "", content = "", metadata = {}, action }) {
+  const togglePreview = useStore($togglePreview);
+
   return (
     <div className="w-full flex border rounded-lg">
       <Editor
@@ -17,9 +19,10 @@ export default function WordEditor({ title = "", content = "", metadata = {}, ac
         eTitle={title} 
         eContent={content} 
         eMetadata={metadata}
-        className="w-full h-full flex flex-col p-5 border-r"
+        className={` ${ !togglePreview ? "flex" : "hidden" } w-full h-full md:!flex flex-col p-5 border-r`}
       />
-      <Preview className="w-full h-full flex flex-col p-5" />
+      <Preview className="w-full h-full hidden md:flex flex-col p-5" />
+      <Preview className={`${ togglePreview ? "flex" : "hidden" } w-full h-full md:!hidden flex-col p-5`} />
     </div>
   );
 }
@@ -50,6 +53,18 @@ export function SubmitButton({ children = "Submit" }) {
     </button>
   );
 }
+
+export function TogglePreview() {
+  const togglePreview = useStore($togglePreview);
+
+  return (
+    <label class="inline-flex md:hidden items-center cursor-pointer">
+      <span class="me-3 text-sm font-medium text-gray-900 dark:text-gray-300">{ togglePreview ? "Preview On" : "Preview Off" }</span>
+      <input type="checkbox" class="sr-only peer" onChange={() => $togglePreview.set(!togglePreview)} />
+      <div class="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
+    </label>
+  );
+};
 
 /**
  * Editor Markdown Input Component

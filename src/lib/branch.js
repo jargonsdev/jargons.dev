@@ -24,9 +24,7 @@ export async function createBranch(userOctokit, repoDetails, newBranchName) {
   
     return response.data
   } catch (error) {
-    throw new Error("error creating a new branch", { 
-      cause: error.message 
-    })
+    throw error;
   }
 }
 
@@ -50,4 +48,27 @@ export async function getBranch(userOctokit, repoFullname, ref) {
   });
 
   return response.data;
+}
+
+/**
+ * Delete a branch from a given repository
+ * @param {import("octokit").Octokit} userOctokit 
+ * @param {string} repoFullname
+ * @param {string} branchName
+ * @returns 
+ */
+export async function deleteBranch(userOctokit, repoFullname, branchName) {
+  const { repoName, repoOwner } = getRepoParts(repoFullname);
+
+  try {
+    const response = await userOctokit.request("DELETE /repos/{owner}/{repo}/git/refs/{ref}", {
+      owner: repoOwner,
+      repo: repoName,
+      ref: `heads/${branchName}`,
+    });
+  
+    return response.status
+  } catch (error) {
+    throw error;
+  }
 }

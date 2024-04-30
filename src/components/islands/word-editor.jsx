@@ -95,9 +95,32 @@ function Editor({ eTitle, eContent, eMetadata, className, action, ...props }) {
       method: "POST",
       body: formData,
     });
-    $isWordSubmitted.set(true);
-    $isWordSubmitLoading.set(false);
-    response.status === 200 && router.push("/editor");
+    if (response && response.status === 200) {
+      $isWordSubmitted.set(true);
+      $isWordSubmitLoading.set(false);
+      router.push("/editor");
+    } else {
+      /**
+       * Temporary workaround for handling deletion of existing reference/branch
+       */
+      const data = await response.json();
+      $isWordSubmitLoading.set(false);
+      if (data.message === "Reference already exists") {
+        if (confirm("It appears you have an existing reference for the current word, do you wish to clear that reference?")) {
+          $isWordSubmitLoading.set(true);
+          const response = await fetch("/api/dictionary", {
+            method: "DELETE",
+            body: formData,
+          });
+          if (response.status === 200) {
+            $isWordSubmitLoading.set(false);
+            alert("Reference cleared successfully! Kindly publish your contribution again!");
+          }
+        } else {
+          router.push("/editor");
+        }
+      }
+    }
   }
 
   return (

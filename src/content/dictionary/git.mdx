@@ -2,4 +2,54 @@
 layout: ../../layouts/word.astro
 title: 'Git'
 ---
-A distributed version control system used for tracking changes in source code during software development. Example: git commit -m "Commit message" is used to commit changes to a Git repository.
+**Git** is a distributed version control system used for tracking changes in source code during software development. It was created by Linus Torvalds in 2005 for managing the Linux kernel development. Git is widely used in both open-source and commercial software development projects due to its efficiency and powerful features.
+
+### Key Concepts of Git:
+
+1. **Repository**: A repository, or repo, is a collection of files and directories that make up a project, along with the version history of each file.
+
+2. **Commit**: A commit is a snapshot of changes to the repository at a specific point in time. It represents a single, atomic change to the repository.
+
+3. **Branch**: A branch is a parallel version of the repository that allows for independent development of features or fixes. Branches are used to work on new features without affecting the main codebase.
+
+4. **Merge**: Merging is the process of combining changes from one branch into another. It is used to incorporate the changes made in a branch back into the main codebase.
+
+5. **Pull Request**: A pull request, or PR, is a request to merge changes from one branch into another. It is typically used in a collaborative development environment to review and discuss code changes before merging.
+
+6. **Remote**: A remote is a copy of the repository that is stored on a server. It allows multiple developers to collaborate on the same project and keep their local repositories in sync with the remote repository.
+
+### Basic Git Workflow:
+
+1. **Clone**: Clone a repository from a remote server to create a local copy on your machine.
+   ```
+   git clone <repository-url>
+   ```
+
+2. **Add**: Add changes to the staging area to prepare them for commit.
+   ```
+   git add <file>
+   ```
+
+3. **Commit**: Commit changes to the repository with a descriptive message.
+   ```
+   git commit -m "Commit message"
+   ```
+
+4. **Push**: Push committed changes from your local repository to a remote repository.
+   ```
+   git push
+   ```
+
+5. **Pull**: Pull changes from a remote repository to update your local repository.
+   ```
+   git pull
+   ```
+
+6. **Branch**: Create, switch, and merge branches to work on different features or fixes.
+   ```
+   git branch <branch-name>
+   git checkout <branch-name>
+   git merge <branch-name>
+   ```
+
+Git provides a powerful set of tools for version control and collaboration in software development, enabling developers to work efficiently and effectively on projects of any size.

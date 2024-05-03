@@ -28,6 +28,13 @@ const { isAuthed } = await doAuth(Astro);
 		<!-- Search -->
 		<Search triggerSize="md" dictionary={dictionary} client:load />
 
+		<!-- Browse words -->
+		<div class="ml-2 mt-4 md:mt-6" id="whirl-browse-words">
+      <a href="/browse">
+        Browse Words
+      </a>
+    </div>
+
 		<!-- Recent Word Look Up -->
 		<div id="whirl-recent-search-wrapper">
 			<RecentSearches client:load />

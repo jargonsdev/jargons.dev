@@ -5,7 +5,7 @@ import { $recentSearches } from "../../lib/stores/search.js";
 /**
  * Recent Searches Component - An Island that displays a user's last 5 searches
  * 
- * @todo implement a default list instead of `null` (now browse-word link) when no `$recentSearch` is found 
+ * @todo implement a default list instead of `null` when no `$recentSearch` is found 
  * @todo implement loading component to avoid flickering UI
  */
 export default function RecentSearches() {
@@ -16,7 +16,7 @@ export default function RecentSearches() {
   }, []);
 
   return Object.values(recentSearches).length ? (
-    <div className="space-y-3 mt-4 md:mt-6" id="whirl-recent-searches">
+    <div className="space-y-3 ml-2 mt-4 md:mt-6" id="whirl-recent-searches">
 			<h2 className="text-2xl md:text-4xl font-black">Recent</h2>
 			<ol className="space-y-1.5 underline">
         {Object.values(recentSearches).slice(0, 5).map((item, i) => (
@@ -28,11 +28,5 @@ export default function RecentSearches() {
         ))}
 			</ol>
 		</div>
-  ) : (
-    <div className="ml-2 mt-4 md:mt-6" id="whirl-browse-words">
-      <a href="/browse">
-        Browse Words
-      </a>
-    </div>
-  );
+  ) : null;
 }

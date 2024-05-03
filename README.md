@@ -34,7 +34,7 @@ To get set-up follow these steps:
 1. Clone the repository:
 
    ```sh
-   git clone https://github.com/babblebey/jargons.dev.git
+   git clone https://github.com/jargons-dev/jargons.dev.git
    ```
 
 2. Navigate to the project directory:

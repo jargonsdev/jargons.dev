@@ -3,7 +3,7 @@ import BaseLayout from "../../../layouts/base.astro";
 import doAuth from "../../../lib/actions/do-auth.js";
 import Navbar from "../../../components/navbar.astro";
 import { resolveEditorActionFromPathname } from "../../../lib/utils/index.js";
-import WordEditor, { SubmitButton as WordEditorSubmitButton } from "../../../components/islands/word-editor.jsx";
+import WordEditor, { SubmitButton as WordEditorSubmitButton, TogglePreview } from "../../../components/islands/word-editor.jsx";
 
 const { url: { pathname }, redirect } = Astro;
 
@@ -28,7 +28,10 @@ const action = resolveEditorActionFromPathname(pathname);
       location: "/editor"
     }}
   >
-    <WordEditorSubmitButton client:load />
+    <div class="flex space-x-3">
+      <TogglePreview client:load />
+      <WordEditorSubmitButton client:load />
+    </div>
   </Navbar>
 
   <main class="flex grow px-5 md:px-6 pb-4">

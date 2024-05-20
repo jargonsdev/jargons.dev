@@ -5,20 +5,13 @@ import { getRepoParts, normalizeAsUrl } from "./utils/index.js";
  * Write and add a new word to user's forked dictionary
  * @param {import("octokit").Octokit} userOctokit 
  * @param {{ repoFullname: string, repoChangeBranchRef: string }} forkedRepoDetails 
- * @param {{ title: string, content: string }} word 
- * @param {{ env: "node" | "browser" }} options  
- * 
- * @todo deprecate the `options` params 
+ * @param {{ title: string, content: string }} word  
  */
-export async function writeNewWord(userOctokit, forkedRepoDetails, { title, content }, options) {
+export async function writeNewWord(userOctokit, forkedRepoDetails, { title, content }) {
   const { repoFullname, repoChangeBranchRef } = forkedRepoDetails;
   const { repoOwner, repoName } = getRepoParts(repoFullname);
   const branch = repoChangeBranchRef.split("/").slice(2).join("/");
   const wordFileContent = writeWordFileContent(title, content);
-
-  const content_encoded = options.env === "browser" 
-    ? btoa(wordFileContent) 
-    : Buffer.from(wordFileContent).toString("base64");
 
   try {
     const response = await userOctokit.request("PUT /repos/{owner}/{repo}/contents/{path}", {
@@ -26,7 +19,7 @@ export async function writeNewWord(userOctokit, forkedRepoDetails, { title, cont
       repo: repoName,
       branch,
       path: `src/content/dictionary/${normalizeAsUrl(title)}.mdx`,
-      content: content_encoded,
+      content: Buffer.from(wordFileContent).toString("base64"),
       message: `word: commit to "${title}"`
     });
   
@@ -40,10 +33,7 @@ export async function writeNewWord(userOctokit, forkedRepoDetails, { title, cont
  * Update an existing word in user's forked dictionary
  * @param {import("octokit").Octokit} userOctokit 
  * @param {{ repoFullname: string, repoChangeBranchRef: string }} forkedRepoDetails 
- * @param {{ path: string, sha: string, title: string, content: string }} word  enter new content as value to `content` property
- * @param {{ env: "node" | "browser" }} options 
- * 
- * @todo deprecate the `options` params 
+ * @param {{ path: string, sha: string, title: string, content: string }} word  enter new content as value to `content` property 
  */
 export async function updateExistingWord(userOctokit, forkedRepoDetails, { path, sha, title, content }, options) {
   const { repoFullname, repoChangeBranchRef } = forkedRepoDetails;
@@ -51,17 +41,13 @@ export async function updateExistingWord(userOctokit, forkedRepoDetails, { path,
   const branch = repoChangeBranchRef.split("/").slice(2).join("/");
   const wordFileContent = writeWordFileContent(title, content);
   
-  const content_encoded = options.env === "browser" 
-    ? btoa(wordFileContent) 
-    : Buffer.from(wordFileContent).toString("base64");
-
   try {
     const response = await userOctokit.request("PUT /repos/{owner}/{repo}/contents/{path}", {
       owner: repoOwner,
       repo: repoName,
       branch,
       path,
-      content: content_encoded,
+      content: Buffer.from(wordFileContent).toString("base64"),
       message: `word: edit commit to "${title}"`,
       sha
     });

@@ -59,10 +59,6 @@ function SearchTrigger({ size = "md" }) {
     return () => document.removeEventListener("keydown", handleOpenSearch);
   }, []);
 
-  /**
-   * @todo fix localstorage `recentSearches` getting overwitten on `SearchResult` click or select
-   * specific to this `sm` search trigger
-   */
   if (size === "sm") return (
     <div onClick={() => $isSearchOpen.set(!isSearchOpen)}>
       <div className="relative w-56 text-sm hidden md:flex items-center justify-between border pl-2.5 p-1 space-x-2 border-gray-400 rounded-lg cursor-text">

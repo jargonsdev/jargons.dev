@@ -1,8 +1,7 @@
 <div align="center" style="margin-top: 12px">
   <a href="https://www.jargons.dev">
-   <img width="500" alt="jargons.dev" src="https://github.com/babblebey/jargons.dev/assets/25631971/f2adedb8-4324-439a-8663-d3e30fd68416">
+    <img width="700" alt="jargons.dev" src="https://github.com/devjargons/jargons.dev/assets/25631971/5d1db25d-18e0-4544-ac98-9aa4e1097e14">
   </a>
-
   <h1><tt>jargons.dev</tt></h1>
   <h3>The Software Engineering Dictionary</h3>
 </div>
@@ -34,7 +33,7 @@ To get set-up follow these steps:
 1. Clone the repository:
 
    ```sh
-   git clone https://github.com/jargons-dev/jargons.dev.git
+   git clone https://github.com/devjargons/jargons.dev.git
    ```
 
 2. Navigate to the project directory:

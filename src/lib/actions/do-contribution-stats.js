@@ -22,7 +22,7 @@ export default async function doContributionStats(astroGlobal) {
 
   /**
    * @todo [thoughts]: would be nice to have all these requests in one, and use a filter to separate by labels
-   * [potential bottleneck]: no wat to know whether a PR is "merged" considering that "closed" doesn't mean merged
+   * [potential bottleneck]: no way to know whether a PR is "merged" considering that "closed" doesn't mean merged
    */
   const { data: newType } = await userOctokit.request("GET /search/issues", {
     q: `${baseQuery} label:":book: new word" is:merged is:closed`

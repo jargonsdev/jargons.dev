@@ -1,0 +1,31 @@
+---
+layout: ../../layouts/word.astro
+title: 'Algorithm'
+---
+
+An algorithm is a step-by-step procedure or formula for solving a problem. In the context of computer science, algorithms are essential for writing efficient and effective computer programs. They help in organizing and processing data to produce the desired output. Here's a fuller explanation of an algorithm with a code example written in JavaScript:
+
+### Explanation:
+An algorithm to find the factorial of a number calculates the product of all positive integers up to the given number. For example, the factorial of 5 (written as 5!) is 5 * 4 * 3 * 2 * 1 = 120.
+
+### Code Example:
+```javascript
+function factorial(n) {
+    // Base case: If the number is 0 or 1, return 1
+    if (n === 0 || n === 1) {
+        return 1;
+    } else {
+        // Recursive case: Multiply the number by the factorial of (n-1)
+        return n * factorial(n - 1);
+    }
+}
+
+// Example usage
+console.log(factorial(5)); // Output: 120
+```
+
+In this code:
+- The `factorial` function takes a single argument `n`, which is the number whose factorial is to be calculated.
+- It uses recursion to calculate the factorial. If the number is 0 or 1, it returns 1 (base case). Otherwise, it multiplies the number by the factorial of `(n-1)` (recursive case) until it reaches the base case.
+
+This algorithm demonstrates the use of recursion to solve a mathematical problem. It showcases a fundamental concept in algorithm design and highlights the importance of breaking down a complex problem into simpler, manageable subproblems.

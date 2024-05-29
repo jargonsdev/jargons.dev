@@ -1,0 +1,85 @@
+---
+layout: ../../layouts/word.astro
+title: 'CSS (Cascading Style Sheets)'
+---
+A style sheet language used for describing the presentation of a document written in HTML or XML. **Cascading Style Sheets (CSS)** is a stylesheet language used to describe the presentation of a document written in HTML or XML (including XML dialects such as SVG, MathML, etc.). It controls the layout, colors, fonts, and other visual aspects of a web page.
+
+### Basic Syntax:
+```css
+selector {
+  property: value;
+}
+```
+
+### Selectors:
+- **Element Selector**: Selects HTML elements by name.
+  ```css
+  p {
+    color: red;
+  }
+  ```
+
+- **Class Selector**: Selects elements with a specific class attribute.
+  ```css
+  .highlight {
+    background-color: yellow;
+  }
+  ```
+
+- **ID Selector**: Selects a single element with a specific id attribute.
+  ```css
+  #main-header {
+    font-size: 24px;
+  }
+  ```
+
+- **Descendant Selector**: Selects an element that is a descendant of another specified element.
+  ```css
+  article p {
+    line-height: 1.5;
+  }
+  ```
+
+### Box Model:
+- **Margin**: Space outside the border.
+- **Border**: Border around the padding and content.
+- **Padding**: Space between the content and the border.
+- **Content**: The actual content of the box.
+
+### Example:
+```css
+/* Styles for a simple box */
+.box {
+  width: 200px;
+  height: 200px;
+  background-color: #f0f0f0;
+  border: 1px solid #ccc;
+  padding: 20px;
+  margin: 20px;
+  text-align: center;
+}
+
+/* Styles for a class */
+.button {
+  display: inline-block;
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  text-decoration: none;
+  border-radius: 5px;
+}
+
+/* Styles for an ID */
+#header {
+  font-size: 24px;
+  font-weight: bold;
+  text-align: center;
+  color: #333;
+}
+```
+
+### Importance of CSS:
+- **Consistency**: Ensures a consistent look and feel across a website.
+- **Accessibility**: Helps make content more accessible to users with disabilities.
+- **Responsiveness**: Allows for the creation of responsive designs that adapt to different screen sizes.
+- **Maintainability**: Makes it easier to maintain and update styles across a website.

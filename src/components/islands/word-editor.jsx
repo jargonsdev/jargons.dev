@@ -4,12 +4,14 @@ import { useStore } from "@nanostores/react";
 import useRouter from "../../lib/hooks/use-router.js";
 import { capitalizeText } from "../../lib/utils/index.js";
 import useWordEditor from "../../lib/hooks/use-word-editor.js";
-import { $isWordSubmitLoading, $isWordSubmitted } from "../../lib/stores/dictionary.js";
+import { $isWordSubmitLoading, $isWordSubmitted, $togglePreview } from "../../lib/stores/dictionary.js";
 
 /**
  * Main Word Editor Component - Island
  */
 export default function WordEditor({ title = "", content = "", metadata = {}, action }) {
+  const togglePreview = useStore($togglePreview);
+
   return (
     <div className="w-full flex border rounded-lg">
       <Editor
@@ -17,9 +19,10 @@ export default function WordEditor({ title = "", content = "", metadata = {}, ac
         eTitle={title} 
         eContent={content} 
         eMetadata={metadata}
-        className="w-full h-full flex flex-col p-5 border-r"
+        className={` ${ !togglePreview ? "flex" : "hidden" } w-full h-full lg:!flex flex-col p-5 border-r`}
       />
-      <Preview className="w-full h-full flex flex-col p-5" />
+      <Preview className="w-full h-full hidden lg:flex flex-col p-5" />
+      <Preview className={`${ togglePreview ? "flex" : "hidden" } w-full h-full lg:!hidden flex-col p-5`} />
     </div>
   );
 }
@@ -32,7 +35,7 @@ export function SubmitButton({ children = "Submit" }) {
   const isSubmitLoading = useStore($isWordSubmitLoading);
   
   return (
-    <button className={`flex items-center justify-center no-underline text-white ${isSubmitted ? "bg-green-700" : "bg-gray-900 hover:bg-gray-700"} focus:ring-0 font-medium rounded-lg text-base px-5 py-2.5 text-center ml-1 sm:ml-3`}
+    <button className={`flex items-center justify-center no-underline text-white ${isSubmitted ? "bg-green-700" : "bg-gray-900 hover:bg-gray-700"} focus:ring-0 font-medium rounded-lg text-base px-5 py-2.5 text-center`}
       type="submit"
       form="jargons.dev:word_editor"
       disabled={isSubmitLoading || isSubmitted}
@@ -49,6 +52,18 @@ export function SubmitButton({ children = "Submit" }) {
     </button>
   );
 }
+
+export function TogglePreview() {
+  const togglePreview = useStore($togglePreview);
+
+  return (
+    <label class="inline-flex lg:hidden items-center cursor-pointer border-r pr-2.5 mr-2.5">
+      <span class="me-3 text-sm font-medium text-gray-900 dark:text-gray-300">Preview</span>
+      <input type="checkbox" class="sr-only peer" onChange={() => $togglePreview.set(!togglePreview)} />
+      <div class="relative w-8 h-5 bg-gray-400 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-[75%] rtl:peer-checked:after:-translate-x-[75%] peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all dark:border-gray-600 peer-checked:bg-black"></div>
+    </label>
+  );
+};
 
 /**
  * Editor Markdown Input Component
@@ -79,9 +94,32 @@ function Editor({ eTitle, eContent, eMetadata, className, action, ...props }) {
       method: "POST",
       body: formData,
     });
-    $isWordSubmitted.set(true);
-    $isWordSubmitLoading.set(false);
-    response.status === 200 && router.push("/editor");
+    if (response && response.status === 200) {
+      $isWordSubmitted.set(true);
+      $isWordSubmitLoading.set(false);
+      router.push("/editor");
+    } else {
+      /**
+       * Temporary workaround for handling deletion of existing reference/branch
+       */
+      const data = await response.json();
+      $isWordSubmitLoading.set(false);
+      if (data.message === "Reference already exists") {
+        if (confirm("It appears you have an existing reference for the current word, do you wish to clear that reference?")) {
+          $isWordSubmitLoading.set(true);
+          const response = await fetch("/api/dictionary", {
+            method: "DELETE",
+            body: formData,
+          });
+          if (response.status === 200) {
+            $isWordSubmitLoading.set(false);
+            alert("Reference cleared successfully! Kindly publish your contribution again!");
+          }
+        } else {
+          router.push("/editor");
+        }
+      }
+    }
   }
 
   return (

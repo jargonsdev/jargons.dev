@@ -20,3 +20,5 @@ export const $wordEditor = map({
 export const $isWordSubmitLoading = atom(false);
 
 export const $isWordSubmitted = atom(false);
+
+export const $togglePreview = atom(false);

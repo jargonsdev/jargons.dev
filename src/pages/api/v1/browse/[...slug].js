@@ -4,7 +4,8 @@ import { getEntry } from "astro:content";
  * Get a jargon (word) from the dictionary
  * @param {import("astro").APIContext} context
  * 
- * @todo Nice to have: endpoint queries the GitHub to fetch word directly from jargons.dev repo using the requester's accessToken
+ * @todo Nice to have: endpoint queries the GitHub to fetch word directly from jargons.dev repo using the requester's accessToken 
+ * ...will be super useful in the context where we are consuming this endpoint on the anticipated browser extention integration
  */
 export async function GET({ params: { slug } }) {
   const word = await getEntry("dictionary", slug);

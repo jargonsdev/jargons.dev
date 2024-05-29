@@ -6,6 +6,7 @@ import { getCollection } from "astro:content";
  * 
  * @todo implement pagination
  * @todo Nice to have: endpoint queries the GitHub to fetch words directly from jargons.dev repo using the requester's accessToken
+ * ... will be super useful in the context where we are consuming the endpoint on the anticipated browser extension integrations
  */
 export async function GET() {
   const dictionary = await getCollection("dictionary");

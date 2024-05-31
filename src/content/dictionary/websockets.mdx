@@ -1,0 +1,51 @@
+---
+layout: ../../layouts/word.astro
+title: 'WebSockets'
+---
+WebSockets are a communication protocol that allows for real-time, full-duplex communication between a client (like a web browser) and a server over a single, long-lived connection. Unlike traditional HTTP requests where the client initiates communication and the server responds, WebSockets enable both the client and server to send messages to each other at any time without the overhead of multiple HTTP requests.
+
+**How it works:**
+
+1. **Handshake**: The client sends a WebSocket handshake request to the server, indicating its desire to establish a WebSocket connection.
+
+   Client: 
+   ```javascript
+   GET /chat HTTP/1.1
+   Host: server.example.com
+   Upgrade: websocket
+   Connection: Upgrade
+   Sec-WebSocket-Key: dGhlIHNhbXBsZSBub25jZQ==
+   Sec-WebSocket-Version: 13
+   ```
+
+2. **Connection Establishment**: If the server supports WebSockets, it responds with a WebSocket handshake indicating the connection is established.
+
+   Server: 
+   ```javascript
+   HTTP/1.1 101 Switching Protocols
+   Upgrade: websocket
+   Connection: Upgrade
+   Sec-WebSocket-Accept: s3pPLMBiTxaQ9kYGzzhZRbK+xOo=
+   ```
+
+3. Bi-Directional Communication: Once the connection is established, both client and server can send messages to each other directly without waiting for a request.
+
+     Client to Server:
+     ```javascript
+     WebSocket.send("Hello Server!");
+      ```
+     Server to Client:
+     ```javascript
+     WebSocket.onmessage = function(event) {
+     console.log("Message from server: " + event.data);
+     };
+   ```
+**Use Cases:**
+
+- Real-time chat applications
+- Multiplayer online games
+- Live collaboration tools
+- Stock market tickers
+- Any application requiring real-time updates
+
+WebSockets offer significant advantages over traditional HTTP communication for applications requiring real-time data exchange, reducing latency and server load while providing a smoother user experience.

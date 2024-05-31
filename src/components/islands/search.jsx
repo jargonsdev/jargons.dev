@@ -158,7 +158,7 @@ function SearchDialog() {
   };
 
   return (
-    <div className="fixed left-0 top-0 z-auto p-5 w-full h-full flex justify-center bg-gray-100/30">
+    <div className="fixed left-0 top-0 z-auto p-5 w-full h-screen flex justify-center bg-gray-100/30">
       {/* Blur */}
       <div onClick={() => $isSearchOpen.set(!isSearchOpen)}
         className="absolute w-full h-full left-0 top-0 z-50 backdrop-blur-sm"

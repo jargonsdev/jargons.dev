@@ -1,0 +1,43 @@
+---
+layout: ../../layouts/word.astro
+title: "Abstraction"
+---
+Abstraction is a concept in programming that refers to the process of hiding complex implementation details and showing only the essential features of an object or system. It allows developers to work at a higher level of understanding without needing to know the intricate details of how things work internally. Abstraction is achieved through the use of abstract classes, interfaces, and other mechanisms that define a clear and simplified interface for interacting with a system or object.
+
+In software development, abstraction is used to manage complexity and improve code readability and maintainability. By abstracting away the unnecessary details, developers can focus on the essential aspects of a system or object, making it easier to understand and work with.
+
+**Example:**
+Consider a car. When you drive a car, you don't need to understand how the engine, transmission, and other components work in detail. Instead, you interact with the car through a simple interface, such as the steering wheel, pedals, and dashboard controls. This abstraction allows you to drive the car without needing to know the complexities of its internal mechanisms.
+
+**In JavaScript:**
+```javascript
+// Example of abstraction using classes
+class Shape {
+  constructor(color) {
+    this.color = color;
+  }
+
+  // Abstract method that must be implemented by subclasses
+  draw() {
+    throw new Error("Method 'draw' must be implemented.");
+  }
+}
+
+// Concrete subclass that implements the draw method
+class Circle extends Shape {
+  constructor(color, radius) {
+    super(color);
+    this.radius = radius;
+  }
+
+  draw() {
+    console.log(`Drawing a ${this.color} circle with radius ${this.radius}`);
+  }
+}
+
+// Usage
+let circle = new Circle("red", 10);
+circle.draw(); // Output: Drawing a red circle with radius 10
+```
+
+In this example, `Shape` is an abstract class that defines the interface for shapes. `Circle` is a concrete subclass of `Shape` that implements the `draw` method. The `draw` method is an abstraction that allows us to draw shapes without needing to know the details of how each shape is drawn.

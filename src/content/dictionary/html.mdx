@@ -1,0 +1,94 @@
+---
+layout: ../../layouts/word.astro
+title: "HTML"
+---
+HTML (Hypertext Markup Language) is the standard markup language used for creating web pages and web applications. It describes the structure of a web page semantically and can include text, images, links, and other multimedia content. HTML elements form the building blocks of all websites.
+
+HTML uses a system of tags and attributes to define the content and structure of web pages. Tags are used to mark up the beginning and end of elements, and attributes provide additional information about elements. HTML documents are structured hierarchically, with a nested arrangement of elements.
+
+**Basic Structure of an HTML Document:**
+```html
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Document Title</title>
+    </head>
+    <body>
+        <h1>Hello, World!</h1>
+        <p>This is a paragraph of text.</p>
+        <a href="https://www.example.com">Visit Example.com</a>
+    </body>
+</html>
+```
+
+**Examples of HTML Elements:**
+- **Headings:** `<h1>`, `<h2>`, `<h3>`, `<h4>`, `<h5>`, `<h6>`
+  ```html
+  <h1>This is a top-level heading</h1>
+  <h2>This is a second-level heading</h2>
+  ```
+
+- **Paragraphs:** `<p>`
+  ```html
+  <p>This is a paragraph of text.</p>
+  ```
+
+- **Links:** `<a>`
+  ```html
+  <a href="https://www.example.com">This is a link</a>
+  ```
+
+- **Images:** `<img>`
+  ```html
+  <img src="image.jpg" alt="Description of image">
+  ```
+
+- **Lists:**
+  - Unordered list: `<ul>` and `<li>`
+    ```html
+    <ul>
+        <li>Item 1</li>
+        <li>Item 2</li>
+        <li>Item 3</li>
+    </ul>
+    ```
+  - Ordered list: `<ol>` and `<li>`
+    ```html
+    <ol>
+        <li>First item</li>
+        <li>Second item</li>
+        <li>Third item</li>
+    </ol>
+    ```
+
+**Attributes:**
+HTML elements can have attributes that provide additional information about the element. Common attributes include `id`, `class`, `src`, `href`, `alt`, and `title`.
+
+- **Example of an Image Element with Attributes:**
+  ```html
+  <img src="logo.png" alt="Company Logo" width="200" height="100">
+  ```
+
+**Semantic HTML:**
+Semantic HTML refers to using HTML tags that convey the meaning of the content they enclose. Examples include `<article>`, `<section>`, `<header>`, `<footer>`, and `<aside>`. Using semantic HTML improves accessibility and SEO.
+
+- **Example of Semantic HTML:**
+  ```html
+  <article>
+      <header>
+          <h1>Article Title</h1>
+          <p>By Author Name</p>
+      </header>
+      <section>
+          <p>This is the main content of the article.</p>
+      </section>
+      <footer>
+          <p>Published on: Date</p>
+      </footer>
+  </article>
+  ```
+
+**Use Case:**
+HTML is the fundamental technology for building web pages and web applications. It allows developers to structure and present content on the web, enabling users to interact with and navigate websites. HTML is often used in combination with CSS (for styling) and JavaScript (for behavior and interactivity) to create rich and dynamic web experiences.

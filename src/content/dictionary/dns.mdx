@@ -1,0 +1,26 @@
+---
+layout: ../../layouts/word.astro
+title: "DNS (Domain Name System)"
+---
+The Domain Name System (DNS) is a hierarchical and distributed naming system for computers, services, or any resource connected to the Internet or a private network. It translates domain names (e.g., www.example.com) into IP addresses (e.g., 192.0.2.1) needed to locate the requested resource.
+
+When you type a domain name into a web browser, such as www.example.com, your computer needs to know the corresponding IP address to connect to the website's server. The DNS acts like a phone book for the internet, translating human-readable domain names into IP addresses that computers can understand.
+
+**Key Concepts of DNS:**
+1. **Domain Name:** A domain name is a human-readable address used to access websites and other internet resources.
+2. **IP Address:** An IP address is a unique numerical label assigned to each device connected to a computer network, used to identify and locate the device.
+3. **DNS Server:** DNS servers are specialized servers that store DNS records and respond to DNS queries from clients, translating domain names into IP addresses.
+4. **DNS Record Types:** DNS supports various types of records, including A records (maps domain names to IPv4 addresses), AAAA records (maps domain names to IPv6 addresses), CNAME records (aliases one domain name to another), MX records (identifies mail servers for a domain), and more.
+5. **DNS Resolution:** DNS resolution is the process of translating a domain name into an IP address. It involves querying DNS servers to find the correct IP address for a given domain name.
+
+**Example:**
+When you enter www.google.com into your web browser, your computer sends a DNS query to a DNS server to resolve the domain name to an IP address. The DNS server responds with the IP address of one of Google's servers (e.g., 172.217.3.110), allowing your browser to connect to the website.
+
+**Benefits of DNS:**
+- **Human-Readable Addresses:** DNS allows users to access websites using easy-to-remember domain names instead of complex IP addresses.
+- **Load Balancing:** DNS can be used for load balancing by distributing traffic across multiple servers based on their IP addresses.
+- **Redundancy and Fault Tolerance:** DNS supports redundant DNS servers to ensure that domain names can still be resolved in case of server failures.
+- **Security:** DNS can be used for security purposes, such as blocking access to malicious websites or implementing DNSSEC (DNS Security Extensions) to protect against DNS spoofing and other attacks.
+
+**Use Cases:**
+DNS is used in virtually every aspect of internet communication, from browsing websites and sending emails to accessing cloud services and connecting IoT devices. It is essential for the functioning of the modern internet and is a foundational technology for network communication.

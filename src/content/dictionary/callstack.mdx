@@ -1,0 +1,32 @@
+---
+layout: ../../layouts/word.astro
+title: "Call Stack"
+---
+The call stack is a mechanism used by programming languages to keep track of function calls in a program. It stores information about the active functions, including the function's parameters, local variables, and the return address. When a function is called, the function's information is pushed onto the call stack, and when the function completes, its information is popped off the stack.
+
+Imagine the call stack as a stack of plates. Each time you call a function, a new plate (representing the function's information) is added to the top of the stack. When the function finishes executing, its plate is removed from the stack, and the program continues from where it left off.
+
+**Example:**
+```javascript
+function firstFunction() {
+  console.log("Inside firstFunction");
+  secondFunction();
+}
+
+function secondFunction() {
+  console.log("Inside secondFunction");
+}
+
+firstFunction();
+```
+
+**Step-by-Step:**
+1. `firstFunction` is called, so its information is pushed onto the call stack.
+2. Inside `firstFunction`, `console.log("Inside firstFunction");` is executed.
+3. `secondFunction` is called from `firstFunction`, so its information is pushed onto the call stack.
+4. Inside `secondFunction`, `console.log("Inside secondFunction");` is executed.
+5. `secondFunction` completes, so its information is popped off the call stack.
+6. `firstFunction` completes, so its information is popped off the call stack.
+7. The program continues to execute any remaining code.
+
+The call stack helps manage the flow of execution in a program, ensuring that functions are executed in the correct order and that their return values are properly handled.

@@ -1,0 +1,21 @@
+---
+layout: ../../layouts/word.astro
+title: "ARIA"
+---
+ARIA, which stands for Accessible Rich Internet Applications, is a set of attributes that can be added to HTML elements to improve the accessibility of web content for users with disabilities. ARIA attributes provide additional information to assistive technologies, such as screen readers, in interpreting and presenting web content more effectively to users.
+
+ARIA is particularly useful for making dynamic web applications, such as those built with JavaScript frameworks like React or Angular, more accessible. It provides a way to enhance the semantics of web content beyond what is possible with standard HTML elements, making it easier for assistive technologies to understand and interact with complex web applications.
+
+**Examples:**
+- **aria-label:** Specifies a text label for an element that is not visible on the screen, such as an icon or image button.
+- **aria-describedby:** Identifies another element (or elements) on the page that provides a description or additional information about the current element.
+- **aria-hidden:** Indicates whether an element should be visible or hidden to assistive technologies.
+- **aria-live:** Indicates that an element should be treated as live content and updates to it should be announced to the user.
+
+**Use Case:**
+```html
+<!-- Example: Adding aria-label to a button -->
+<button aria-label="Close">X</button>
+```
+
+In this example, the `aria-label` attribute provides a text label ("Close") for a button that contains only an "X" icon. This label is important for users who rely on screen readers, as it allows them to understand the purpose of the button without relying on visual cues.

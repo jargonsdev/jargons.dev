@@ -1,0 +1,72 @@
+---
+layout: ../../layouts/word.astro
+title: "HTTP"
+---
+HTTP (Hypertext Transfer Protocol) is an application-layer protocol used for transmitting hypermedia documents, such as HTML. It is the foundation of data communication on the World Wide Web, enabling web browsers and servers to communicate and exchange information.
+
+HTTP is a request-response protocol where a client (usually a web browser) sends a request to a server, which then responds with the requested resource or an appropriate status message. The protocol defines methods for various types of actions, status codes to indicate the result of a request, and headers for passing additional information.
+
+**HTTP Methods:**
+- **GET:** Requests a representation of the specified resource. It should only retrieve data and not modify it.
+- **POST:** Submits data to be processed to a specified resource, often causing a change in state or side effects on the server.
+- **PUT:** Replaces all current representations of the target resource with the uploaded content.
+- **DELETE:** Removes the specified resource.
+- **PATCH:** Applies partial modifications to a resource.
+- **OPTIONS:** Describes the communication options for the target resource.
+- **HEAD:** Same as GET but transfers the status line and header section only.
+
+**Examples of HTTP Requests:**
+1. **GET Request:**
+   ```plaintext
+   GET /index.html HTTP/1.1
+   Host: www.example.com
+   ```
+   This request asks the server to return the content of the "index.html" page.
+
+2. **POST Request:**
+   ```plaintext
+   POST /submit-form HTTP/1.1
+   Host: www.example.com
+   Content-Type: application/x-www-form-urlencoded
+   Content-Length: 27
+
+   username=johndoe&password=1234
+   ```
+   This request sends form data (username and password) to the server for processing.
+
+**Example of Using HTTP in JavaScript:**
+```javascript
+// Using Fetch API to make a GET request
+fetch('https://api.example.com/data')
+  .then(response => response.json())
+  .then(data => console.log(data))
+  .catch(error => console.error('Error:', error));
+
+// Using Fetch API to make a POST request
+fetch('https://api.example.com/submit', {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify({ username: 'johndoe', password: '1234' })
+})
+.then(response => response.json())
+.then(data => console.log(data))
+.catch(error => console.error('Error:', error));
+```
+
+**Status Codes:**
+- **1xx (Informational):** The request was received, and the process is continuing.
+- **2xx (Success):** The request was successfully received, understood, and accepted.
+  - **200 OK:** The request has succeeded.
+  - **201 Created:** The request has been fulfilled and resulted in a new resource being created.
+- **3xx (Redirection):** Further action needs to be taken to complete the request.
+  - **301 Moved Permanently:** The resource has been permanently moved to a new URL.
+- **4xx (Client Error):** The request contains bad syntax or cannot be fulfilled.
+  - **400 Bad Request:** The server could not understand the request due to invalid syntax.
+  - **404 Not Found:** The server can not find the requested resource.
+- **5xx (Server Error):** The server failed to fulfill a valid request.
+  - **500 Internal Server Error:** The server encountered an unexpected condition that prevented it from fulfilling the request.
+
+**Use Case:**
+HTTP is the backbone of web communication, enabling the exchange of information between clients and servers. It is used for loading web pages, submitting forms, interacting with APIs, and more. Understanding HTTP is fundamental for web development and network communication.

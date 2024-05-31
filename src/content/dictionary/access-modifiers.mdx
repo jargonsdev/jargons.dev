@@ -1,0 +1,50 @@
+---
+layout: ../../layouts/word.astro
+title: "Access Modifiers"
+---
+Access modifiers are keywords in object-oriented programming languages that are used to control the visibility and accessibility of class members (variables and methods). They specify the level of access that other classes or code modules have to these members.
+
+Access modifiers help enforce encapsulation and data hiding, which are key principles of object-oriented programming. They determine whether a class member can be accessed from within the same class, from a subclass, from classes in the same package, or from classes in different packages.
+
+**Common Access Modifiers:**
+1. **Public:** Public members are accessible from any other class or code module. They have the least restrictive access level.
+2. **Private:** Private members are accessible only from within the same class. They are not visible to subclasses or classes in the same package.
+3. **Protected:** Protected members are accessible from within the same class, subclasses, and classes in the same package. They are not accessible from classes in different packages.
+4. **Default (Package-Private):** Default or package-private members are accessible only within the same package. They are not accessible from classes in different packages.
+
+**Example:**
+```java
+public class MyClass {
+    private int privateVar;
+    public int publicVar;
+    protected int protectedVar;
+    int defaultVar; // package-private
+    
+    private void privateMethod() {
+        // code here
+    }
+    
+    public void publicMethod() {
+        // code here
+    }
+    
+    protected void protectedMethod() {
+        // code here
+    }
+    
+    void defaultMethod() {
+        // code here
+    }
+}
+```
+
+In this example, `privateVar` and `privateMethod()` are only accessible within the `MyClass` class. `publicVar` and `publicMethod()` are accessible from any class. `protectedVar` and `protectedMethod()` are accessible within `MyClass`, its subclasses, and classes in the same package. `defaultVar` and `defaultMethod()` are accessible only within classes in the same package.
+
+**Benefits of Using Access Modifiers:**
+- **Encapsulation:** Access modifiers help enforce encapsulation by hiding implementation details and exposing only the necessary interface.
+- **Security:** By restricting access to certain class members, access modifiers help improve the security and integrity of the code.
+- **Code Readability:** Access modifiers make code more readable by clearly indicating the intended visibility and accessibility of class members.
+- **Maintainability:** Access modifiers help in maintaining and managing large codebases by controlling how classes interact with each other.
+
+**Use Cases:**
+Access modifiers are used in object-oriented programming languages such as Java, C++, C#, and others to control the visibility and accessibility of class members. They are essential for creating well-structured and maintainable code.

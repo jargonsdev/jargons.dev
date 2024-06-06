@@ -1,0 +1,12 @@
+---
+layout: ../../layouts/word.astro
+title: "TTFB  (Time to First Byte)"
+---
+Time to First Byte (TTFB) is a metric used to measure the responsiveness of a web server or network in delivering the first byte of data for a requested web page or resource. It is the time elapsed between the initiation of the request by the client (e.g., a web browser) and the receipt of the first byte of the server's response.
+
+TTFB is an important metric in web performance monitoring and optimization because it reflects the server's initial responsiveness to a client request. TTFB can be influenced by various factors, including server processing time, network latency, and the efficiency of the server's infrastructure and configuration.
+
+TTFB can be calculated as the difference between the time when the client sends the request and the time when the client receives the first byte of the server's response. It does not include the time taken to download the entire response body or render the web page.
+
+**Example:**
+Suppose a user clicks a link to load a web page. The browser sends an HTTP request to the server, and the server begins processing the request. The time taken for the server to generate the response and send the first byte back to the client is the TTFB.

@@ -1,0 +1,38 @@
+---
+layout: ../../layouts/word.astro
+title: "Type Conversion"
+---
+Type conversion, also known as type casting, is the explicit conversion of a value from one data type to another in a programming language. Unlike type coercion, which is implicit and happens automatically, type conversion requires an explicit conversion operation in the code.
+
+Type conversion is necessary when performing operations that require operands to be of a specific type or when converting data for compatibility with certain functions or operations. Most programming languages provide built-in functions or syntax for performing type conversion.
+
+**Example:**
+Here are some examples of type conversion in JavaScript:
+
+```javascript
+// String to Number
+let str = '123';
+let num = Number(str);
+console.log(num); // Output: 123
+
+// Number to String
+let num = 123;
+let str = String(num);
+console.log(str); // Output: '123'
+
+// Boolean to Number
+let bool = true;
+let num = Number(bool);
+console.log(num); // Output: 1
+
+// Number to Boolean
+let num = 0;
+let bool = Boolean(num);
+console.log(bool); // Output: false
+```
+
+**Explanation of the Examples:**
+- **String to Number:** The `Number()` function is used to convert a string to a number.
+- **Number to String:** The `String()` function is used to convert a number to a string.
+- **Boolean to Number:** The `Number()` function is used to convert a boolean to a number (true is converted to 1, false is converted to 0).
+- **Number to Boolean:** The `Boolean()` function is used to convert a number to a boolean (0 is converted to false, any other number is converted to true).

@@ -1,0 +1,26 @@
+---
+layout: ../../layouts/word.astro
+title: "Type Coercion"
+---
+Type coercion is the automatic or implicit conversion of values from one data type to another in a programming language. This conversion can occur when an operator or function requires its arguments to be of a different type than the ones provided.
+
+In languages like JavaScript, type coercion can happen in various scenarios, such as when performing arithmetic operations on different types, comparing values of different types using equality operators (`==`), or using values in a boolean context (e.g., in an `if` statement).
+
+**Example:**
+Here are some examples of type coercion in JavaScript:
+
+```javascript
+// Addition
+console.log(5 + '5'); // Output: '55' (number is coerced to a string)
+
+// Comparison
+console.log(5 == '5'); // Output: true (string is coerced to a number)
+
+// Boolean context
+console.log(!!'hello'); // Output: true (string is coerced to a boolean)
+```
+
+**Explanation of the Examples:**
+- **Addition:** When a number is added to a string, JavaScript coerces the number to a string and performs string concatenation.
+- **Comparison:** When using the loose equality operator (`==`), JavaScript attempts to convert operands to the same type before comparing. In this case, the string `'5'` is coerced to a number for the comparison.
+- **Boolean Context:** In a boolean context (e.g., using the `!!` operator), JavaScript coerces non-boolean values to a boolean. Any non-empty string is coerced to `true`.

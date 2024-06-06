@@ -1,0 +1,28 @@
+---
+layout: ../../layouts/word.astro
+title: "Tree Shaking"
+---
+Tree shaking is a term commonly used in the JavaScript context to refer to a dead code elimination technique. It is a process of removing unused code from a bundle, typically performed during the bundling or compilation process of a JavaScript application.
+
+When you import modules in a JavaScript application, you may not use all the functions or variables exported by those modules. Tree shaking analyzes the application's code and only includes the code that is actually used, discarding the rest. This helps reduce the size of the final bundle, leading to faster load times and better performance.
+
+**Example:**
+Consider a JavaScript module that exports multiple functions, but only one of them is used in the application:
+
+```javascript
+// math.js
+export function add(a, b) {
+    return a + b;
+}
+
+export function subtract(a, b) {
+    return a - b;
+}
+
+// app.js
+import { add } from './math.js';
+
+console.log(add(5, 3)); // Output: 8
+```
+
+In this example, when the application is bundled, only the `add` function from `math.js` will be included in the bundle. The `subtract` function will be excluded because it is not used.

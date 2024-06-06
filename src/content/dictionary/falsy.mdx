@@ -1,0 +1,22 @@
+---
+layout: ../../layouts/word.astro
+title: "Falsy"
+---
+In programming, a value is considered "falsy" if it is evaluated as false in a boolean context. Like truthy values, falsy values are not specific to a particular programming language and are found in various languages, including JavaScript.
+
+In JavaScript, falsy values are those that coerce to `false` when evaluated as a boolean. This includes values like `false`, `0`, `''` (empty string), `null`, `undefined`, and `NaN` (Not-a-Number). Similar to truthy values, the concept of falsy values exists in many programming languages, but the specific values considered falsy may vary.
+
+**Example (JavaScript):**
+```javascript
+if (0) {
+    console.log('0 is truthy'); // This will not be executed
+}
+
+if ('') {
+    console.log('Empty string is truthy'); // This will not be executed
+}
+
+if (null) {
+    console.log('null is truthy'); // This will not be executed
+}
+```

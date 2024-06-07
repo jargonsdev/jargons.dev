@@ -2,4 +2,60 @@
 layout: ../../layouts/word.astro
 title: 'ORM (Object-Relational Mapping)'
 ---
-A programming technique for converting data between incompatible type systems using object-oriented programming languages. Example: Using an ORM like Sequelize to interact with a relational database in Node.js.
+Object-Relational Mapping (ORM) is a programming technique that allows developers to interact with a relational database using an object-oriented paradigm. ORM frameworks map database tables to classes and rows to objects, facilitating database operations without writing raw SQL queries.
+
+ORMs simplify database interactions by allowing developers to work with objects instead of direct database queries. This abstraction layer helps to maintain the application code and database schema in sync, providing a more intuitive way to perform CRUD (Create, Read, Update, Delete) operations. Common features of ORMs include automatic generation of SQL queries, schema migration tools, and support for relationships between entities.
+
+**Example:**
+Here’s an example using JavaScript with Sequelize, a popular ORM for Node.js:
+
+1. **Defining a Model:**
+   ```javascript
+   const { Sequelize, DataTypes } = require('sequelize');
+   const sequelize = new Sequelize('database', 'username', 'password', {
+       host: 'localhost',
+       dialect: 'mysql'
+   });
+
+   const User = sequelize.define('User', {
+       id: {
+           type: DataTypes.INTEGER,
+           autoIncrement: true,
+           primaryKey: true
+       },
+       name: {
+           type: DataTypes.STRING,
+           allowNull: false
+       },
+       email: {
+           type: DataTypes.STRING,
+           allowNull: false,
+           unique: true
+       }
+   });
+
+   module.exports = User;
+   ```
+
+2. **Creating a Record:**
+   ```javascript
+   const User = require('./models/user');
+
+   async function createUser() {
+       await User.sync();  // Create table if it doesn't exist
+       const user = await User.create({ name: 'John Doe', email: 'john.doe@example.com' });
+       console.log(user.toJSON());
+   }
+
+   createUser();
+   ```
+
+3. **Querying Records:**
+   ```javascript
+   async function getUsers() {
+       const users = await User.findAll();
+       console.log(users);
+   }
+
+   getUsers();
+   ```

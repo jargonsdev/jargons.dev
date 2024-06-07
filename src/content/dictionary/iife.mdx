@@ -42,12 +42,3 @@ IIFEs can also accept parameters, allowing for greater flexibility and reuse.
 })('Alice');
 ```
 This IIFE takes the parameter `name` and logs "Hello, Alice!" to the console.
-
-**Benefits of Using IIFEs:**
-- **Encapsulation:** Encapsulates code within a local scope, preventing global variable pollution.
-- **Isolation:** Isolates variables and functions, reducing the risk of naming collisions.
-- **Initialization:** Allows for immediate execution of setup code or initialization logic.
-- **Private Variables:** Enables the creation of private variables and functions that cannot be accessed from outside the IIFE.
-
-**Use Case:**
-IIFEs are widely used in JavaScript for scenarios where immediate execution is required, such as initialization code, creating modules, and avoiding conflicts in global scope. They are particularly useful in older JavaScript codebases and libraries where modularization (like ES6 modules) is not available.

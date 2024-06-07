@@ -2,10 +2,22 @@
 layout: ../../layouts/word.astro
 title: "WebAssembly (WASM)"
 ---
-**WebAssembly** (sometimes abbreviated as WASM) defines a portable binary-code format and a corresponding text format for executable programs. It also provides software interfaces for interactions between such programs and their host environment. Here are the key points about WebAssembly:
+WebAssembly (abbreviated Wasm) is a binary instruction format for a stack-based virtual machine. It is designed as a portable compilation target for programming languages, enabling code written in languages such as C, C++, and Rust to be run on web browsers.
 
-1. **Performance**: WebAssembly runs with near-native performance, making it suitable for high-performance applications on web pages. It doesn't assume any web-specific features, so it can be used in other environments too.
+- **Portable Compilation Target:** WebAssembly is designed to be a compilation target for high-level programming languages, allowing them to be compiled into a binary format that can be executed in a web browser.
+  
+- **Efficient and Fast:** WebAssembly is designed to be efficient and fast, with performance close to that of native code. This makes it suitable for performance-critical applications such as games and multimedia applications.
 
-2. **Language Support**: WebAssembly aims to support any language on any operating system. Popular languages like C/C++, Rust, and C# already have some level of WebAssembly support.
+**Example:**
+A simple example of using WebAssembly with JavaScript:
 
-3. **History**: Announced in 2015, WebAssembly became a World Wide Web Consortium (W3C) recommendation in 2019. It received the Programming Languages Software Award from ACM SIGPLAN in 2021. Major browser vendors, including Mozilla, Microsoft, Google, Apple, Fastly, Intel, and Red Hat, contribute to its development.
+```javascript
+// Load and instantiate a WebAssembly module
+fetch('example.wasm')
+  .then(response => response.arrayBuffer())
+  .then(buffer => WebAssembly.instantiate(buffer))
+  .then(result => {
+    // Call a function from the WebAssembly module
+    result.instance.exports.myFunction();
+  });
+```

@@ -28,11 +28,3 @@ closure(); // Output: I am from the outer function
 ```
 
 In this example, `innerFunction` is a closure that has access to the `outerVariable` defined in the scope of `outerFunction`. Even though `outerFunction` has finished executing by the time `innerFunction` is called, `innerFunction` still has access to `outerVariable` because of the closure.
-
-**Benefits of Using Closures:**
-- **Encapsulation:** Closures can be used to create private variables and functions, encapsulating them within a scope and preventing external access.
-- **Data Hiding:** Closures allow you to hide implementation details and expose only the necessary interface, improving code maintainability and readability.
-- **Callback Functions:** Closures are often used to create callback functions with access to variables from their parent scope, making them useful for event handling and asynchronous programming.
-
-**Use Cases:**
-Closures are commonly used in JavaScript for tasks such as creating private variables and functions, implementing module patterns, and handling asynchronous operations. They are a powerful tool for creating flexible and maintainable code.

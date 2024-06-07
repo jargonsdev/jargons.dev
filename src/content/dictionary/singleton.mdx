@@ -1,8 +1,32 @@
 ---
 layout: ../../layouts/word.astro
-title: 'Singleton'
+title: "Singleton"
 ---
+Singleton is a creational design pattern that ensures a class has only one instance and provides a global point of access to that instance.
 
-The Singleton Pattern is a design paradigm in object-oriented programming that restricts the instantiation of a class to a single object. This pattern ensures that only one instance of the class exists and provides a global point of access to it.
+- **Instance Control:** The Singleton pattern is used when you want to ensure that a class has only one instance and provide a way to access that instance from any part of the application.
 
-## Example
+- **Global Access:** By providing a global point of access to the instance, the Singleton pattern allows you to access the same instance from multiple parts of the codebase without the need to pass references around.
+
+**Example:**
+```java
+public class Singleton {
+    private static Singleton instance;
+
+    private Singleton() {
+        // Private constructor to prevent instantiation
+    }
+
+    public static Singleton getInstance() {
+        if (instance == null) {
+            instance = new Singleton();
+        }
+        return instance;
+    }
+}
+```
+
+**Usage:**
+```java
+Singleton singleton = Singleton.getInstance();
+```

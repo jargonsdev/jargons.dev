@@ -1,0 +1,20 @@
+---
+layout: ../../layouts/word.astro
+title: "Recursion"
+---
+Recursion is a programming technique where a function calls itself in order to solve smaller instances of the same problem. It is a powerful concept in programming that allows for elegant solutions to problems that can be broken down into smaller, similar sub-problems.
+
+In recursion, a function solves a problem by breaking it down into smaller, simpler instances of the same problem. Each recursive call works on a smaller subset of the original problem until a base case is reached, which is a problem small enough to be solved without further recursion. The results of the base cases are then combined to produce the final result.
+
+**Example (Factorial in Python):**
+```python
+def factorial(n):
+    if n == 0:
+        return 1
+    else:
+        return n * factorial(n - 1)
+
+result = factorial(5)
+print(result)  # Output: 120
+```
+In this example, the `factorial` function calculates the factorial of a number `n` by recursively calling itself with `n-1` until it reaches the base case of `n == 0`.

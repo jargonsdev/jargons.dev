@@ -1,0 +1,29 @@
+---
+layout: ../../layouts/word.astro
+title: "Scope"
+---
+In programming, scope refers to the visibility and accessibility of variables, functions, and other identifiers within a program. It defines the parts of the program where a particular identifier can be referenced.
+
+There are typically two main types of scope:
+
+1. **Global Scope:** Variables or functions declared in the global scope are accessible from anywhere in the program, including within functions or blocks.
+   
+2. **Local Scope:** Variables or functions declared within a block, such as a function or loop, have local scope and are only accessible within that block. They are not accessible from outside the block.
+
+Scope determines the lifetime and visibility of variables. Variables with local scope are typically created when the block is entered and destroyed when the block is exited, while variables with global scope persist throughout the program's execution.
+
+**Example (Scope in JavaScript):**
+```javascript
+// Global scope
+let globalVariable = 'I am global';
+
+function myFunction() {
+    // Local scope
+    let localVariable = 'I am local';
+    console.log(globalVariable);   // Accessible
+    console.log(localVariable);    // Accessible
+}
+
+console.log(globalVariable);   // Accessible
+console.log(localVariable);    // Not accessible
+```

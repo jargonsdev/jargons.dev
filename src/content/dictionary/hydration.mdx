@@ -1,0 +1,18 @@
+---
+layout: ../../layouts/word.astro
+title: "Hydration"
+---
+Hydration in the context of web development refers to the process of taking static HTML content and turning it into a fully interactive and dynamic user interface. This process is typically associated with client-side frameworks like React and Vue.js, which initially render the UI on the server and then "hydrate" it with JavaScript on the client side to enable interactivity.
+
+When a web page is first loaded, the server sends HTML content that represents the initial state of the UI. In a hydrated application, the client-side JavaScript framework takes over once the HTML is loaded, reusing the existing DOM elements and adding event listeners to enable interactivity. This approach allows for faster initial page loads and better SEO performance, as search engines can index the static HTML content.
+
+**Example (React Hydration):**
+```jsx
+// Server-side rendering
+const html = ReactDOMServer.renderToString(<App />);
+
+// Client-side hydration
+ReactDOM.hydrate(<App />, document.getElementById('root'));
+```
+
+In this example, the `ReactDOMServer.renderToString` method renders the React component `App` to a string on the server. The `ReactDOM.hydrate` method then takes over on the client side, reusing the server-rendered HTML and making the UI interactive.

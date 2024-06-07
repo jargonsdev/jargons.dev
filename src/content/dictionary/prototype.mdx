@@ -1,0 +1,32 @@
+---
+layout: ../../layouts/word.astro
+title: "Prototype"
+---
+In JavaScript, a prototype is a mechanism that allows objects to inherit properties and methods from other objects. Every JavaScript object has a prototype property, which points to another object. When you access a property or method of an object, JavaScript first checks the object itself for the property/method. If it doesn't find it, it looks at the object's prototype, and so on, until it finds the property/method or reaches the end of the prototype chain.
+
+Prototypes are central to JavaScript's object-oriented programming paradigm, particularly its implementation of inheritance. When you create a new object in JavaScript, you can specify another object as its prototype. The new object will then inherit all properties and methods from the prototype object.
+
+**Example:**
+```javascript
+// Creating a prototype object
+const animalPrototype = {
+    type: 'Animal',
+    speak() {
+        console.log('Animal sound');
+    }
+};
+
+// Creating a new object using the prototype
+const dog = Object.create(animalPrototype);
+dog.type = 'Dog';
+dog.breed = 'Labrador';
+dog.speak = function() {
+    console.log('Woof!');
+};
+
+// Accessing properties and methods
+console.log(dog.type); // Output: Dog
+dog.speak(); // Output: Woof!
+```
+
+In this example, `animalPrototype` is a prototype object with a `type` property and a `speak` method. The `dog` object is created using `Object.create(animalPrototype)`, so it inherits `type` and `speak` from `animalPrototype`.

@@ -1,0 +1,38 @@
+---
+layout: ../../layouts/word.astro
+title: "Parse"
+---
+Parsing is the process of analyzing a string of symbols, either in natural language, computer languages, or data formats, to extract meaningful information or convert it into a data structure that a computer program can manipulate.
+
+In programming and computer science, parsing involves taking input data (often in the form of text) and analyzing its structure based on a set of rules or grammar. The goal is to break down the input into more manageable pieces and convert it into a format that can be easily processed by a program. Parsing is commonly used in compilers, interpreters, data processing, and web development.
+
+**Example (JavaScript):**
+
+1. **Parsing JSON:**
+
+   ```javascript
+   const jsonString = '{"name": "Alice", "age": 30, "city": "Wonderland"}';
+   const jsonObject = JSON.parse(jsonString);
+   console.log(jsonObject.name); // Output: Alice
+   ```
+
+   In this example, the `JSON.parse` method is used to parse a JSON string into a JavaScript object.
+
+2. **Parsing URL Parameters:**
+
+   ```javascript
+   function getQueryParams(url) {
+       const params = {};
+       const parser = new URL(url);
+       parser.searchParams.forEach((value, key) => {
+           params[key] = value;
+       });
+       return params;
+   }
+
+   const url = 'https://example.com/?name=Alice&age=30&city=Wonderland';
+   const queryParams = getQueryParams(url);
+   console.log(queryParams); // Output: { name: 'Alice', age: '30', city: 'Wonderland' }
+   ```
+
+   In this example, the URL is parsed to extract query parameters and convert them into a JavaScript object.

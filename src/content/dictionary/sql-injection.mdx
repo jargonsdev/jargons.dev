@@ -1,0 +1,30 @@
+---
+layout: ../../layouts/word.astro
+title: "SQL injection"
+---
+SQL injection is a type of attack that occurs when a malicious user inserts malicious SQL code into input fields or parameters of a web application, which is then executed by the application's database. This can lead to unauthorized access to the database, data manipulation, and other malicious activities.
+
+SQL injection attacks take advantage of insecure coding practices that allow user input to be directly concatenated into SQL queries without proper validation or sanitization. Attackers can exploit this vulnerability to bypass authentication, retrieve sensitive information, or even delete or modify data in the database.
+
+To prevent SQL injection attacks, developers should use parameterized queries or prepared statements, which separate the SQL code from the user input and prevent malicious code from being executed.
+
+**Example (SQL Injection Attack):**
+Consider a simple login form where the username and password are checked against a database:
+
+```sql
+SELECT * FROM users WHERE username = 'username' AND password = 'password'
+```
+
+An attacker could input `' OR '1'='1` as the username and `' OR '1'='1` as the password, resulting in the following query being executed:
+
+```sql
+SELECT * FROM users WHERE username = '' OR '1'='1' AND password = '' OR '1'='1'
+```
+
+This query will return all records from the `users` table, effectively bypassing the login authentication.
+
+**Prevention:**
+To prevent SQL injection attacks, developers should:
+- Use parameterized queries or prepared statements.
+- Validate and sanitize user input.
+- Limit database permissions for application users.

@@ -1,0 +1,30 @@
+---
+layout: ../../layouts/word.astro
+title: "Shallow Copy"
+---
+A shallow copy is a type of copy operation in which only the top-level structure of the original object is duplicated, while the internal references or nested objects are shared between the original and the copy. In other words, a shallow copy of an object creates a new object, but does not recursively duplicate the nested objects within it.
+
+When you create a shallow copy of an object, you essentially create a new object with the same keys and values as the original object. However, if the original object contains nested objects (objects within objects), these nested objects are not duplicated. Instead, the shallow copy contains references to the same nested objects as the original object.
+
+Shallow copies are often created using built-in methods or techniques provided by programming languages or libraries. They are useful when you want to create a new object that shares some of the structure of an existing object, but you don't want to duplicate the entire object, especially if the object is large or contains complex nested structures.
+
+**Example (Shallow Copy in JavaScript):**
+```javascript
+let original = {
+    name: 'John',
+    age: 30,
+    pets: ['dog', 'cat']
+};
+
+// Creating a shallow copy
+let shallowCopy = Object.assign({}, original);
+
+// Modifying the shallow copy
+shallowCopy.age = 31;
+shallowCopy.pets.push('fish');
+
+console.log(original.age);  // Output: 30 (unchanged)
+console.log(original.pets); // Output: ['dog', 'cat', 'fish'] (changed)
+```
+
+In the example above, `shallowCopy` is a shallow copy of `original`. While modifying the `age` property in `shallowCopy` does not affect the `age` property in `original`, modifying the `pets` array in `shallowCopy` does affect the `pets` array in `original`, because both objects share the same reference to the `pets` array.

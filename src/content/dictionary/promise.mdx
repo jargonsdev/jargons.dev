@@ -1,0 +1,39 @@
+---
+layout: ../../layouts/word.astro
+title: "Promise"
+---
+A promise is an object representing the eventual completion or failure of an asynchronous operation, and its resulting value. It allows you to handle asynchronous operations in a more readable and manageable way compared to traditional callback-based approaches.
+
+In JavaScript, many operations are asynchronous, such as fetching data from a server or reading a file. Traditionally, these operations are handled using callbacks, which can lead to callback hell (nested callbacks that are hard to read and maintain). Promises were introduced to provide a more elegant solution to this problem.
+
+A promise can be in one of three states:
+1. **Pending:** Initial state, neither fulfilled nor rejected.
+2. **Fulfilled:** The operation completed successfully, and the promise now has a value.
+3. **Rejected:** The operation failed, and the promise has a reason for the failure.
+
+**Example:**
+```javascript
+// Creating a promise
+const myPromise = new Promise((resolve, reject) => {
+    // Simulating an asynchronous operation
+    setTimeout(() => {
+        const success = true;
+        if (success) {
+            resolve('Operation completed successfully');
+        } else {
+            reject('Operation failed');
+        }
+    }, 2000);
+});
+
+// Consuming the promise
+myPromise
+    .then((result) => {
+        console.log(result); // Output: Operation completed successfully
+    })
+    .catch((error) => {
+        console.error(error); // Output: Operation failed
+    });
+```
+
+In this example, `myPromise` represents an asynchronous operation that completes after 2 seconds. The `then` method is used to handle the successful completion of the operation, while the `catch` method is used to handle any errors.

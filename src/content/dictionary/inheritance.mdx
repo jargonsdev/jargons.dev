@@ -1,0 +1,44 @@
+---
+layout: ../../layouts/word.astro
+title: "Inheritance"
+---
+Inheritance is a fundamental concept in object-oriented programming (OOP) where a new class (called a child or subclass) is created based on an existing class (called a parent or superclass). The child class inherits the properties and methods of the parent class, allowing for code reuse and the creation of a hierarchical relationship between classes.
+
+Inheritance allows for the extension and modification of behavior without altering existing code. It promotes code reuse and helps in organizing code into a hierarchical structure. A child class can override methods of the parent class to provide specific implementations while still retaining the overall structure and behavior of the parent class.
+
+**Example:**
+In JavaScript, inheritance is typically implemented using classes and the `extends` keyword:
+
+```javascript
+// Parent class
+class Animal {
+    constructor(name) {
+        this.name = name;
+    }
+
+    speak() {
+        console.log(`${this.name} makes a sound.`);
+    }
+}
+
+// Child class
+class Dog extends Animal {
+    constructor(name, breed) {
+        super(name); // Call the parent class constructor
+        this.breed = breed;
+    }
+
+    speak() {
+        console.log(`${this.name} barks.`);
+    }
+}
+
+const dog = new Dog('Rex', 'German Shepherd');
+dog.speak(); // Output: Rex barks.
+```
+
+In this example:
+- The `Animal` class is the parent class with a constructor and a `speak` method.
+- The `Dog` class is the child class that extends the `Animal` class, inheriting its properties and methods.
+- The `Dog` class overrides the `speak` method to provide a specific implementation.
+- The `super` keyword is used to call the constructor of the parent class within the child class.

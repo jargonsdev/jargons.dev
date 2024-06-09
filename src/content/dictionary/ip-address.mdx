@@ -1,0 +1,32 @@
+---
+layout: ../../layouts/word.astro
+title: "IP Address"
+---
+An IP (Internet Protocol) address is a unique string of numbers separated by periods (IPv4) or colons (IPv6) that identifies each computer using the Internet Protocol to communicate over a network.
+
+IP addresses are used to identify devices on a network, enabling the routing of data between different devices. There are two versions of IP addresses in use: IPv4 and IPv6. 
+
+- **IPv4:** Consists of four sets of numbers ranging from 0 to 255, separated by periods (e.g., 192.168.1.1).
+- **IPv6:** Consists of eight groups of four hexadecimal digits, separated by colons (e.g., 2001:0db8:85a3:0000:0000:8a2e:0370:7334).
+
+**Example:**
+Here’s an example demonstrating the use of an IP address in a JavaScript context to fetch data from an API:
+
+```javascript
+const ipAddress = '192.168.1.1';
+
+// Fetch data from an API using the IP address
+fetch(`https://api.ipgeolocation.io/ipgeo?apiKey=YOUR_API_KEY&ip=${ipAddress}`)
+    .then(response => response.json())
+    .then(data => {
+        console.log(`IP Address: ${data.ip}`);
+        console.log(`Country: ${data.country_name}`);
+        console.log(`City: ${data.city}`);
+    })
+    .catch(error => console.error('Error:', error));
+```
+
+In this example:
+- An IP address (`ipAddress`) is defined.
+- The `fetch` function is used to make a GET request to an IP geolocation API, substituting the `ipAddress` variable in the URL.
+- The response is then converted to JSON and logged to the console, displaying information about the IP address, such as the country and city associated with it.

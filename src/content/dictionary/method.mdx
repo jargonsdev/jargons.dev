@@ -1,0 +1,26 @@
+---
+layout: ../../layouts/word.astro
+title: "Method"
+---
+A method in programming is a function associated with an object or class. It defines the behavior or actions that objects of the class can perform. Methods are an essential part of object-oriented programming (OOP) and are used to encapsulate code that operates on the object's data.
+
+In OOP, methods are used to define the behavior of objects. They can manipulate the object's internal state, perform calculations, interact with other objects, and more. Methods are typically defined within the class definition and are invoked using dot notation on an instance of the class.
+
+**Example (Python Method):**
+```python
+class Car:
+    def __init__(self, make, model):
+        self.make = make
+        self.model = model
+
+    def display_info(self):
+        print(f"Car: {self.make} {self.model}")
+
+# Create an instance of the Car class
+my_car = Car("Toyota", "Corolla")
+
+# Call the display_info method
+my_car.display_info()  # Output: Car: Toyota Corolla
+```
+
+In this example, `display_info` is a method of the `Car` class. It takes `self` (which refers to the current instance of the class) as its first parameter and prints information about the car's make and model.

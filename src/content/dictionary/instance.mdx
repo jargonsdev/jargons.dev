@@ -1,0 +1,38 @@
+---
+layout: ../../layouts/word.astro
+title: "Instance"
+---
+In programming, an instance is a specific realization of an object or class. It represents a single, unique entity created based on a class blueprint, containing its own set of properties and methods defined by the class.
+
+When a class is defined, it serves as a blueprint for creating objects. Each object created from the class is called an instance. Instances allow for the creation of multiple objects from the same class, each with its own set of attributes and behaviors.
+
+**Example:**
+In JavaScript, instances are created using the `new` keyword followed by the class constructor:
+
+```javascript
+// Define a class
+class Car {
+    constructor(make, model, year) {
+        this.make = make;
+        this.model = model;
+        this.year = year;
+    }
+
+    displayInfo() {
+        console.log(`${this.year} ${this.make} ${this.model}`);
+    }
+}
+
+// Create instances of the class
+const car1 = new Car('Toyota', 'Corolla', 2020);
+const car2 = new Car('Honda', 'Civic', 2018);
+
+// Call methods on the instances
+car1.displayInfo(); // Output: 2020 Toyota Corolla
+car2.displayInfo(); // Output: 2018 Honda Civic
+```
+
+In this example:
+- The `Car` class is defined with a constructor and a method `displayInfo`.
+- Two instances of the `Car` class, `car1` and `car2`, are created using the `new` keyword.
+- Each instance has its own set of properties (`make`, `model`, `year`) and can call the `displayInfo` method independently.

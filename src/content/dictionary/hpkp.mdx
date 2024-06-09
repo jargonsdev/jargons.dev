@@ -1,0 +1,30 @@
+---
+layout: ../../layouts/word.astro
+title: "HPKP (HTTP Public Key Pinning)"
+---
+HPKP (HTTP Public Key Pinning) is a web security mechanism that helps prevent man-in-the-middle attacks and certificate forgery by allowing websites to specify which public keys are valid for their domain. It was used to ensure that browsers only accept specific public keys when establishing a connection to a server.
+
+When a website implements HPKP, it sends an HTTP header (`Public-Key-Pins`) to the browser, which includes a set of "pinned" public keys. These pins tell the browser to only accept certificates that match the pinned keys for a specified period. If a certificate is presented that does not match any of the pinned keys, the browser will refuse the connection, helping to prevent attacks involving rogue certificate authorities.
+
+**Example:**
+To enable HPKP on a web server, you need to configure it to send the `Public-Key-Pins` header. Here is an example configuration for an Nginx server:
+
+```nginx
+server {
+    listen 443 ssl;
+    server_name example.com;
+
+    ssl_certificate /path/to/cert.pem;
+    ssl_certificate_key /path/to/key.pem;
+
+    # Enable HPKP
+    add_header Public-Key-Pins 'pin-sha256="base64+primary_key=="; pin-sha256="base64+backup_key=="; max-age=5184000; includeSubDomains';
+
+    location / {
+        # Your configuration here
+    }
+}
+```
+
+**Note:**
+As of 2018, major browsers like Chrome and Firefox have deprecated support for HPKP due to the risks associated with misconfiguration, which could potentially lock users out of their sites permanently. The industry has since moved towards using other security mechanisms such as Certificate Transparency and the Expect-CT header.

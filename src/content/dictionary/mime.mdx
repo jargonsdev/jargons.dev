@@ -1,0 +1,42 @@
+---
+layout: ../../layouts/word.astro
+title: "MIME"
+---
+MIME (Multipurpose Internet Mail Extensions) is a standard that extends the format of email messages to support text in character sets other than ASCII, as well as attachments of audio, video, images, and application programs.
+
+MIME allows email clients to send and receive messages that contain multimedia content, such as images, audio, and video, in addition to plain text. It also specifies how this content should be encoded and formatted within the email message.
+
+**Example (Email with MIME Content):**
+```
+From: sender@example.com
+To: recipient@example.com
+Subject: Example Email with MIME Content
+Content-Type: multipart/mixed; boundary="boundary-example"
+
+--boundary-example
+Content-Type: text/plain; charset=us-ascii
+
+This is the plain text part of the email.
+
+--boundary-example
+Content-Type: text/html; charset=us-ascii
+
+<html>
+<head></head>
+<body>
+    <p>This is the HTML part of the email.</p>
+    <img src="cid:image1">
+</body>
+</html>
+
+--boundary-example
+Content-Type: image/jpeg
+Content-Transfer-Encoding: base64
+Content-ID: <image1>
+
+[Base64-encoded image data]
+
+--boundary-example--
+```
+
+In this example, the email contains both plain text and HTML content, as well as an inline JPEG image. Each part of the email is identified by a MIME boundary and specifies the content type and encoding.

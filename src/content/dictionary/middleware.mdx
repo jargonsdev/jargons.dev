@@ -1,0 +1,29 @@
+---
+layout: ../../layouts/word.astro
+title: "Middleware"
+---
+Middleware is software that acts as an intermediary between different applications, systems, or components. It can intercept and process requests and responses, perform tasks such as authentication, logging, and data transformation, and facilitate communication between different parts of a software application.
+
+Middleware is commonly used in web development to add additional functionality to web servers or applications. It sits between the client and the server, processing requests before they reach the application and handling responses before they are sent back to the client.
+
+**Example (Express.js Middleware):**
+```javascript
+// Logger middleware
+const logger = (req, res, next) => {
+    console.log(`${req.method} ${req.url}`);
+    next();
+};
+
+// Middleware to parse JSON requests
+app.use(express.json());
+
+// Middleware to log requests
+app.use(logger);
+
+// Route handler
+app.get('/api/users', (req, res) => {
+    res.json(users);
+});
+```
+
+In this example using Express.js, the `logger` middleware logs the HTTP method and URL of each incoming request, while the `express.json()` middleware parses incoming JSON requests. These middleware functions are executed for every request before reaching the route handler.

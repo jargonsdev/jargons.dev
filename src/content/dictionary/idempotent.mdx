@@ -1,0 +1,25 @@
+---
+layout: ../../layouts/word.astro
+title: "Idempotent"
+---
+In computing, an operation is considered idempotent if performing it multiple times has the same effect as performing it once. Idempotency is a key concept in various areas of computer science, including programming, networking, and database systems.
+
+Idempotent operations are crucial for ensuring reliability and consistency, especially in distributed systems. An idempotent operation guarantees that no matter how many times it is applied, the result will remain consistent. This property is particularly useful in situations where an operation might be retried due to network issues or failures, as it ensures that the operation can be repeated safely without causing unintended side effects.
+
+**Example in JavaScript:**
+Here is an example demonstrating an idempotent operation in JavaScript:
+
+```javascript
+// Idempotent function
+function setToTen(value) {
+    return 10;
+}
+
+// Applying the function multiple times yields the same result
+let result = setToTen(5); // result is 10
+result = setToTen(result); // result is still 10
+result = setToTen(result); // result remains 10
+console.log(result); // Output: 10
+```
+
+In this example, the `setToTen` function is idempotent because calling it multiple times with any input will always produce the same output, `10`.

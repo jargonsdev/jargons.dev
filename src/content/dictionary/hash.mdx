@@ -1,0 +1,24 @@
+---
+layout: ../../layouts/word.astro
+title: "Hash"
+---
+In the context of computing, a hash is a function that converts an input (or 'message') into a fixed-size string of bytes. The output, typically a hexadecimal or base64-encoded string, is a unique representation of the input data.
+
+Hash functions are commonly used in various applications, such as cryptography, data retrieval, and data validation. They are designed to be fast and efficient, producing a unique hash value for each unique input. Even a small change in the input data should produce a significantly different hash value.
+
+**Example:**
+```python
+import hashlib
+
+# Create a SHA-256 hash object
+hash_object = hashlib.sha256()
+
+# Update the hash object with input data
+data = b'Hello, World!'
+hash_object.update(data)
+
+# Get the hexadecimal digest of the hash
+hash_digest = hash_object.hexdigest()
+
+print(hash_digest)
+```

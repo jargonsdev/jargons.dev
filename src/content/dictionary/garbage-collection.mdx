@@ -1,0 +1,22 @@
+---
+layout: ../../layouts/word.astro
+title: "Garbage Collection"
+---
+Garbage collection (GC) is a process in computer programming that automatically deallocates memory when it is no longer needed. It is a form of automatic memory management, freeing programmers from manually managing memory allocation and deallocation.
+
+In languages with garbage collection, such as Java, Python, and C#, the runtime system periodically scans the memory to determine which objects are no longer referenced by the program. It then deallocates the memory used by these unreferenced objects, making it available for future use.
+
+**Example in Java:**
+In Java, objects are automatically garbage collected when they are no longer reachable. Here's a simple example:
+
+```java
+public class Main {
+    public static void main(String[] args) {
+        // Create a new object
+        MyClass obj = new MyClass();
+
+        // The object is no longer reachable after this point
+        // The garbage collector will reclaim its memory
+    }
+}
+```

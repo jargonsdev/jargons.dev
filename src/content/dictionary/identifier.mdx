@@ -1,0 +1,43 @@
+---
+layout: ../../layouts/word.astro
+title: "Identifier"
+---
+An identifier is a name used to identify a variable, function, class, module, or other entity in a programming language. Identifiers are used to label and reference these entities in the code, allowing programmers to interact with and manipulate them.
+
+Identifiers must follow specific naming rules and conventions defined by the programming language. These rules typically include:
+
+1. **Starting Character:** Identifiers usually must begin with a letter (a-z or A-Z) or an underscore (_). Some languages also allow starting with a dollar sign ($).
+2. **Subsequent Characters:** After the initial character, identifiers can include letters, digits (0-9), underscores, and sometimes other special characters, depending on the language.
+3. **Case Sensitivity:** Many programming languages treat identifiers as case-sensitive, meaning `foo` and `Foo` would be considered different identifiers.
+
+**Example in JavaScript:**
+Here is an example demonstrating the use of identifiers in JavaScript:
+
+```javascript
+// Variable identifier
+let userName = 'Alice';
+
+// Function identifier
+function greetUser() {
+    console.log('Hello, ' + userName);
+}
+
+// Class identifier
+class User {
+    constructor(name) {
+        this.name = name;
+    }
+
+    // Method identifier
+    sayHello() {
+        console.log('Hello, ' + this.name);
+    }
+}
+
+greetUser(); // Output: Hello, Alice
+
+const user = new User('Bob');
+user.sayHello(); // Output: Hello, Bob
+```
+
+In this example, `userName`, `greetUser`, `User`, and `sayHello` are all identifiers used to name and reference variables, functions, and classes.

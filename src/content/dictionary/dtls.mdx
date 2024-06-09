@@ -1,0 +1,42 @@
+---
+layout: ../../layouts/word.astro
+title: "DTLS (Datagram Transport Layer Security)"
+---
+Datagram Transport Layer Security (DTLS) is a protocol that provides communication security for datagram-based applications, ensuring that data is transmitted securely over an unreliable transport. It is an adaptation of the Transport Layer Security (TLS) protocol to work with datagram transport protocols such as User Datagram Protocol (UDP).
+
+DTLS ensures that applications that communicate over unreliable, packet-oriented transport protocols can secure their communications in a similar manner to how TLS secures connections over reliable, byte-stream protocols like TCP. It provides privacy, data integrity, and authentication between communicating applications.
+
+**JavaScript Example:**
+While JavaScript in a browser environment does not directly implement DTLS, it can interact with DTLS via WebRTC, which uses DTLS for securing data channels.
+
+Here's an example of setting up a WebRTC connection that internally uses DTLS for security:
+
+```javascript
+// Creating a new RTCPeerConnection
+const configuration = {
+  iceServers: [
+    { urls: 'stun:stun.l.google.com:19302' }
+  ]
+};
+const peerConnection = new RTCPeerConnection(configuration);
+
+// Adding data channel
+const dataChannel = peerConnection.createDataChannel("chat");
+
+// Handling the connection state changes
+peerConnection.oniceconnectionstatechange = () => {
+  if (peerConnection.iceConnectionState === 'connected') {
+    console.log('Connected via DTLS!');
+  }
+};
+
+// Creating an offer
+peerConnection.createOffer().then(offer => {
+  return peerConnection.setLocalDescription(offer);
+}).then(() => {
+  // Send the offer to the remote peer via signaling server
+  // signalingChannel.send(JSON.stringify({ offer: peerConnection.localDescription }));
+});
+
+// Handling incoming offer/answer from remote peer would be done similarly
+```

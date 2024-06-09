@@ -1,0 +1,32 @@
+---
+layout: ../../layouts/word.astro
+title: "Deep Copy"
+---
+A deep copy is the process of creating a new copy of an object where all nested objects and arrays are recursively copied, resulting in a completely independent clone of the original object.
+
+A deep copy means that any changes made to the new object will not affect the original object, and vice versa. This is in contrast to a shallow copy, which only copies the top-level properties, leading to shared references for nested objects or arrays.
+
+**JavaScript Example:**
+
+In JavaScript, creating a deep copy can be done using various methods, such as using libraries like Lodash or by utilizing JSON methods (though with limitations).
+
+1. **Using JSON methods (limitations include inability to copy functions, undefined, and special objects like Date):**
+
+```javascript
+const originalObject = {
+  name: "Alice",
+  age: 30,
+  address: {
+    city: "Wonderland",
+    zip: "12345"
+  }
+};
+
+const deepCopiedObject = JSON.parse(JSON.stringify(originalObject));
+
+// Modifying the deep copy
+deepCopiedObject.address.city = "New Wonderland";
+
+console.log(originalObject.address.city); // Outputs: Wonderland
+console.log(deepCopiedObject.address.city); // Outputs: New Wonderland
+```

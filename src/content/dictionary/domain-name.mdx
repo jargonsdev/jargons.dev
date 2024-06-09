@@ -1,0 +1,29 @@
+---
+layout: ../../layouts/word.astro
+title: "Domain Name"
+---
+A domain name is a human-readable address used to access websites on the internet. It represents the numeric IP addresses of web servers in an easy-to-remember format.
+
+A domain name is part of the URL (Uniform Resource Locator) that specifies an address where internet resources such as websites are located. It consists of a series of labels separated by dots, typically including a top-level domain (TLD), a second-level domain (SLD), and possibly subdomains.
+
+- **Top-Level Domain (TLD):** The last segment of the domain name, such as .com, .org, .net.
+- **Second-Level Domain (SLD):** The segment directly to the left of the TLD. For example, in `example.com`, "example" is the SLD.
+- **Subdomain:** A segment to the left of the SLD, which can be used to organize different sections of a website. For example, `blog.example.com` has "blog" as a subdomain.
+
+**JavaScript Example:**
+JavaScript can be used to extract and manipulate parts of a domain name. Here's a simple example:
+
+```javascript
+const url = new URL('https://blog.example.com/path');
+console.log(url.hostname); // Outputs: blog.example.com
+
+// Extracting parts of the domain name
+const parts = url.hostname.split('.');
+const subdomain = parts.length > 2 ? parts[0] : null;
+const sld = parts.length > 1 ? parts[parts.length - 2] : null;
+const tld = parts.length > 0 ? parts[parts.length - 1] : null;
+
+console.log(`Subdomain: ${subdomain}`); // Outputs: blog
+console.log(`Second-Level Domain: ${sld}`); // Outputs: example
+console.log(`Top-Level Domain: ${tld}`); // Outputs: com
+```

@@ -1,0 +1,37 @@
+---
+layout: ../../layouts/word.astro
+title: "Compile"
+---
+In computer science, compiling is the process of translating source code written in a high-level programming language into machine code or bytecode that can be executed by a computer. This process is performed by a software tool called a compiler.
+
+The compilation process involves several stages, including lexical analysis, syntax analysis, semantic analysis, optimization, and code generation. The end result is an executable file or bytecode that can be run on a specific platform or virtual machine.
+
+**Example:**
+
+Consider a simple C program:
+
+```c
+#include <stdio.h>
+
+int main() {
+    printf("Hello, World!\n");
+    return 0;
+}
+```
+
+The steps to compile this program using the GCC (GNU Compiler Collection) would be:
+
+1. **Write the Source Code:** Save the above code in a file named `hello.c`.
+2. **Compile the Code:** Use a compiler to translate the source code into an executable.
+   ```bash
+   gcc hello.c -o hello
+   ```
+3. **Run the Executable:** Execute the compiled program.
+   ```bash
+   ./hello
+   ```
+
+In this example:
+- The source code (`hello.c`) is written in C.
+- The GCC compiler translates the source code into an executable file (`hello`).
+- The executable file can be run to produce the output `Hello, World!`.

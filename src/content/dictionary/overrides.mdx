@@ -1,0 +1,48 @@
+---
+layout: ../../layouts/word.astro
+title: "Overrides"
+---
+Overrides refer to the concept in object-oriented programming where a subclass provides a specific implementation for a method that is already defined in its super class. The overridden method in the subclass takes precedence over the method in the super class when invoked on an instance of the subclass.
+
+When a method is overridden, the subclass method has the same name, return type, and parameters as the method in the super class. This allows the subclass to provide a specific behavior for the method while still maintaining the same interface. Overriding is a key feature of polymorphism in object-oriented programming, enabling dynamic method dispatch and allowing subclasses to tailor inherited methods to their specific needs.
+
+**Example:**
+
+Here is an example in JavaScript, demonstrating the concept of method overriding:
+
+```javascript
+// Super class
+class Animal {
+  constructor(name) {
+    this.name = name;
+  }
+
+  speak() {
+    console.log(`${this.name} makes a sound.`);
+  }
+}
+
+// Subclass that overrides the speak method
+class Dog extends Animal {
+  constructor(name) {
+    super(name); // Call the super class constructor
+  }
+
+  // Overriding the speak method
+  speak() {
+    console.log(`${this.name} barks.`);
+  }
+}
+
+// Creating instances of the super class and subclass
+const genericAnimal = new Animal('Generic Animal');
+genericAnimal.speak(); // Output: Generic Animal makes a sound.
+
+const dog = new Dog('Rex');
+dog.speak(); // Output: Rex barks.
+```
+
+In this example:
+- The `Animal` class has a `speak` method that outputs a generic message.
+- The `Dog` class extends `Animal` and overrides the `speak` method to provide a specific message for dogs.
+- When `speak` is called on an instance of `Dog`, the overridden method in the `Dog` class is executed, demonstrating method overriding.

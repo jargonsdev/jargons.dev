@@ -1,0 +1,50 @@
+---
+layout: ../../layouts/word.astro
+title: "Integration Test"
+---
+An integration test is a type of software testing that verifies the interactions between different components or modules of an application to ensure they work together as expected. It focuses on the integration points and communication between the modules rather than testing them individually.
+
+Integration tests are performed after unit tests and before system tests. While unit tests test individual components in isolation, integration tests check how these components interact with each other when combined. The goal is to identify issues that may arise when different parts of the system work together, such as data exchange, interface mismatches, and unexpected behaviors.
+
+**Example (JavaScript):**
+
+Here is an example of a simple integration test for a JavaScript application using a testing framework like Jest and a mock HTTP server like nock.
+
+```javascript
+// userService.js
+const axios = require('axios');
+
+async function getUser(userId) {
+  const response = await axios.get(`https://api.example.com/users/${userId}`);
+  return response.data;
+}
+
+module.exports = getUser;
+
+// userService.test.js
+const getUser = require('./userService');
+const nock = require('nock');
+
+describe('Integration test: User Service', () => {
+  beforeAll(() => {
+    nock('https://api.example.com')
+      .get('/users/1')
+      .reply(200, { id: 1, name: 'John Doe' });
+  });
+
+  afterAll(() => {
+    nock.cleanAll();
+  });
+
+  test('should fetch user data from API', async () => {
+    const user = await getUser(1);
+    expect(user).toEqual({ id: 1, name: 'John Doe' });
+  });
+});
+```
+
+In this example:
+- `getUser` function makes an HTTP request to fetch user data from an external API.
+- The integration test checks the interaction between the `getUser` function and the external API.
+- `nock` is used to mock the HTTP request and response to isolate the test from actual network dependencies.
+- The test verifies that the `getUser` function correctly processes the response from the mocked API, ensuring the integration between the HTTP client and the API is functioning as expected.

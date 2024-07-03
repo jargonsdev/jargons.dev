@@ -1,0 +1,42 @@
+---
+layout: ../../layouts/word.astro
+title: "Memoization"
+---
+Memoization is an optimization technique that stores the results of expensive function calls and returns the cached result when the same inputs occur again.
+
+Memoization is used to speed up computer programs by storing the results of function calls, so the next time the function is called with the same arguments, the previously computed result is retrieved from the cache instead of recalculating it. This technique is particularly useful for functions with expensive or repetitive computations, such as recursive algorithms.
+
+**Example:**
+
+Here is an example of memoization in JavaScript:
+
+```javascript
+function memoize(fn) {
+  const cache = new Map();
+  return function (...args) {
+    const key = JSON.stringify(args);
+    if (cache.has(key)) {
+      return cache.get(key);
+    }
+    const result = fn(...args);
+    cache.set(key, result);
+    return result;
+  };
+}
+
+// Example function to memoize: a recursive Fibonacci function
+function fibonacci(n) {
+  if (n <= 1) return n;
+  return fibonacci(n - 1) + fibonacci(n - 2);
+}
+
+const memoizedFibonacci = memoize(fibonacci);
+
+console.log(memoizedFibonacci(40)); // Faster after the first call
+console.log(memoizedFibonacci(40)); // Cached result, very fast
+```
+
+In this example:
+- The `memoize` function takes another function `fn` as an argument and returns a new function that caches the results of `fn`.
+- The `fibonacci` function is a classic example of an expensive recursive function.
+- `memoizedFibonacci` is the memoized version of `fibonacci`, which will cache and reuse the results of previous computations. 

@@ -1,0 +1,56 @@
+---
+layout: ../../layouts/word.astro
+title: "WCAG"
+---
+WCAG (Web Content Accessibility Guidelines) are a set of international standards developed by the World Wide Web Consortium (W3C) to ensure that web content is accessible to all users, including those with disabilities.
+
+WCAG provides guidelines for making web content more accessible to a wider range of people with disabilities, including blindness and low vision, deafness and hearing loss, learning disabilities, cognitive limitations, limited movement, speech disabilities, and combinations of these. The guidelines are organized around four principles: Perceivable, Operable, Understandable, and Robust (POUR).
+
+**Principles:**
+1. **Perceivable:** Information and user interface components must be presentable to users in ways they can perceive. For example, providing text alternatives for non-text content and making content adaptable.
+2. **Operable:** User interface components and navigation must be operable. This includes making all functionality available from a keyboard and providing users enough time to read and use content.
+3. **Understandable:** Information and the operation of the user interface must be understandable. This means making text readable and understandable and making web pages appear and operate in predictable ways.
+4. **Robust:** Content must be robust enough that it can be interpreted reliably by a wide variety of user agents, including assistive technologies. This includes using standard markup and coding practices.
+
+**Example (Implementing WCAG in HTML):**
+Here's an example demonstrating a few WCAG techniques in HTML:
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WCAG Example</title>
+</head>
+<body>
+    <!-- Text alternative for non-text content -->
+    <img src="logo.png" alt="Company Logo">
+
+    <!-- Form with accessible labels -->
+    <form>
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username" required>
+        
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" required>
+        
+        <button type="submit">Login</button>
+    </form>
+
+    <!-- Providing headings for structure -->
+    <h1>Main Heading</h1>
+    <h2>Subheading</h2>
+    <p>This is a paragraph under the subheading.</p>
+
+    <!-- Making content adaptable (e.g., using relative units for font sizes) -->
+    <p style="font-size: 1em;">This text scales with the user's font size settings.</p>
+</body>
+</html>
+```
+
+In this example:
+- The `alt` attribute provides a text alternative for an image.
+- Form elements are associated with their labels to improve accessibility.
+- Headings (`<h1>`, `<h2>`) are used to structure the content, making it easier to navigate.
+- Relative units (e.g., `em`) are used for font sizes to ensure text can be resized according to user preferences.

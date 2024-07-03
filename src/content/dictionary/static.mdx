@@ -1,0 +1,27 @@
+---
+layout: ../../layouts/word.astro
+title: "Static"
+---
+In programming, static refers to attributes or methods that belong to a class rather than an instance of the class. Static elements are shared among all instances of the class and can be accessed without creating an object of the class.
+
+The concept of static can be applied to various programming contexts, such as static variables, static methods, and static blocks. These elements are initialized once and retain their value or state throughout the execution of the program. Static attributes or methods are called on the class itself rather than on a specific instance, making them accessible from any instance of the class or even without creating any instances.
+
+**Example:**
+
+In JavaScript, you can use the `static` keyword to define static methods in classes:
+
+```javascript
+class MathUtil {
+  // Static method
+  static add(a, b) {
+    return a + b;
+  }
+}
+
+// Calling the static method
+console.log(MathUtil.add(5, 3)); // Output: 8
+```
+
+In this example:
+- The `add` method is static and belongs to the `MathUtil` class.
+- It can be called directly on the class (`MathUtil.add`) without needing to create an instance of `MathUtil`.

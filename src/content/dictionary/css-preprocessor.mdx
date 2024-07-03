@@ -1,0 +1,68 @@
+---
+layout: ../../layouts/word.astro
+title: "CSS Preprocessor"
+---
+A CSS preprocessor is a scripting language that extends CSS by allowing developers to write code in one language and then compile it into regular CSS. It introduces features like variables, nested rules, mixins, functions, and more, which make writing CSS more maintainable and efficient.
+
+CSS preprocessors make it easier to write and manage complex CSS by adding programming-like features. Common CSS preprocessors include Sass (Syntactically Awesome Style Sheets), Less, and Stylus. These tools allow for more reusable, organized, and scalable CSS code.
+
+- **Variables:** Allow you to store values that you use repeatedly.
+- **Nesting:** Lets you nest CSS selectors in a way that follows the same visual hierarchy of HTML.
+- **Mixins:** Reusable chunks of CSS that can be included in other rules.
+- **Functions and Operations:** Enable calculations and dynamic styling.
+
+**Example in Sass (SCSS):**
+
+```scss
+// Variable
+$primary-color: #3498db;
+$padding: 16px;
+
+// Mixin
+@mixin box-shadow($shadow) {
+  -webkit-box-shadow: $shadow;
+     -moz-box-shadow: $shadow;
+          box-shadow: $shadow;
+}
+
+// Nesting and Using Mixin
+.button {
+  padding: $padding;
+  background-color: $primary-color;
+  border: none;
+  color: white;
+
+  &:hover {
+    background-color: darken($primary-color, 10%);
+  }
+
+  @include box-shadow(0px 4px 6px rgba(0, 0, 0, 0.1));
+}
+```
+
+**Compiled CSS:**
+
+```css
+.button {
+  padding: 16px;
+  background-color: #3498db;
+  border: none;
+  color: white;
+}
+
+.button:hover {
+  background-color: #2980b9;
+}
+
+.button {
+  -webkit-box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+     -moz-box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+          box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+```
+
+**Key Points:**
+- CSS preprocessors add programming features to CSS, making it more powerful and maintainable.
+- Common CSS preprocessors include Sass, Less, and Stylus.
+- They compile preprocessor code into standard CSS that browsers can understand.
+- Preprocessors help keep CSS code DRY (Don't Repeat Yourself) and well-organized.

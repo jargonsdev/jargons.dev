@@ -1,0 +1,33 @@
+---
+layout: ../../layouts/word.astro
+title: "Final Class"
+---
+In programming, a final class is a class that cannot be subclassed or inherited from. Once a class is declared as final, no other class can extend it, effectively preventing inheritance.
+
+The concept of a final class is used to restrict inheritance for security, design, or optimization reasons. It ensures that the class's implementation remains unchanged and is not extended or overridden by any subclass. This can be useful when designing a class that provides core functionality or when you want to prevent unintended modifications through inheritance.
+
+**Example:**
+
+In Java, you can declare a class as final using the `final` keyword:
+
+```java
+public final class Utility {
+    public static void printMessage(String message) {
+        System.out.println(message);
+    }
+}
+
+// The following class declaration would cause a compile-time error
+// public class SubUtility extends Utility {
+// }
+
+public class Main {
+    public static void main(String[] args) {
+        Utility.printMessage("Hello, World!"); // Output: Hello, World!
+    }
+}
+```
+
+In this example:
+- The `Utility` class is declared as final, meaning it cannot be subclassed.
+- Attempting to create a subclass of `Utility` (as shown in the commented-out `SubUtility` class) would result in a compile-time error.

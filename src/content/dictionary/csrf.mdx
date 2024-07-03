@@ -1,0 +1,66 @@
+---
+layout: ../../layouts/word.astro
+title: "CSRF (Cross-Site Request Forgery)"
+---
+Cross-Site Request Forgery (CSRF) is a type of security attack in which a malicious website, email, or program causes a user's web browser to perform an unwanted action on a trusted site for which the user is currently authenticated.
+
+CSRF exploits the trust that a website has in a user's browser. For example, if a user is logged into a bank website and then visits a malicious site, the malicious site could trigger a request to the bank site without the user's knowledge, potentially causing unauthorized actions like transferring funds.
+
+**Example (JavaScript):**
+
+Here's an example illustrating a CSRF attack and its mitigation:
+
+**Vulnerable Scenario:**
+Suppose a banking site allows money transfers through a simple form submission without additional protection:
+
+```html
+<form action="https://bank.com/transfer" method="POST">
+  <input type="hidden" name="amount" value="1000">
+  <input type="hidden" name="to_account" value="attacker_account">
+  <input type="submit" value="Transfer">
+</form>
+```
+
+If the user is logged into their bank account, a malicious site could include a similar form and use JavaScript to automatically submit it, causing an unauthorized transfer:
+
+```html
+<!-- Malicious website -->
+<body onload="document.forms[0].submit()">
+  <form action="https://bank.com/transfer" method="POST">
+    <input type="hidden" name="amount" value="1000">
+    <input type="hidden" name="to_account" value="attacker_account">
+  </form>
+</body>
+```
+
+**Mitigation:**
+To protect against CSRF, websites commonly use anti-CSRF tokens, which are unique tokens included in each request and validated by the server.
+
+**Secure Implementation:**
+
+On the server side, generate a CSRF token and include it in forms:
+
+```html
+<!-- Secure banking site -->
+<form action="https://bank.com/transfer" method="POST">
+  <input type="hidden" name="csrf_token" value="unique_token_from_server">
+  <input type="hidden" name="amount" value="1000">
+  <input type="hidden" name="to_account" value="recipient_account">
+  <input type="submit" value="Transfer">
+</form>
+```
+
+On the server side, validate the token:
+
+```javascript
+// Server-side CSRF token validation (example in JavaScript/Node.js)
+app.post('/transfer', (req, res) => {
+  const token = req.body.csrf_token;
+  if (token !== req.session.csrf_token) {
+    return res.status(403).send('CSRF token validation failed');
+  }
+  // Process the transfer
+});
+```
+
+In this example, `req.session.csrf_token` is a token stored in the user's session. Each form submission must include a matching token to be processed successfully.

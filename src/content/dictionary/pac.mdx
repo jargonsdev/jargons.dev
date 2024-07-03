@@ -1,0 +1,33 @@
+---
+layout: ../../layouts/word.astro
+title: "PAC (Proxy Auto-Configuration)"
+---
+A Proxy Auto-Configuration (PAC) file is a script used by web browsers and other user agents to automatically determine whether to send web traffic directly to the destination server or via a proxy server.
+
+PAC files contain JavaScript code that defines a `FindProxyForURL` function. This function takes a URL and host as input and returns a string specifying the proxy server to use, or indicates that the connection should be made directly.
+
+**Example (JavaScript):**
+
+Here is an example of a PAC file:
+
+```javascript
+function FindProxyForURL(url, host) {
+  // If the URL matches "example.com", use the specified proxy server
+  if (shExpMatch(host, "*.example.com")) {
+    return "PROXY proxy.example.com:8080";
+  }
+
+  // If the URL matches "internal.local", connect directly
+  if (shExpMatch(host, "*.internal.local")) {
+    return "DIRECT";
+  }
+
+  // For all other URLs, use another proxy server
+  return "PROXY another-proxy.com:8080";
+}
+```
+
+In this example:
+- Requests to any subdomain of `example.com` are routed through `proxy.example.com:8080`.
+- Requests to any subdomain of `internal.local` are connected directly.
+- All other requests are routed through `another-proxy.com:8080`.

@@ -1,0 +1,67 @@
+---
+layout: ../../layouts/word.astro
+title: "Transpile"
+---
+Transpiling is the process of converting source code written in one programming language into source code written in another programming language that has a similar level of abstraction. This process is performed by a tool called a transpiler.
+
+Transpilers are often used to convert code from one version of a language to another (such as from ES6+ JavaScript to ES5 JavaScript) or from one language to another that shares similar syntax and features (such as TypeScript to JavaScript or CoffeeScript to JavaScript). Unlike traditional compilers, which generate machine code or bytecode, transpilers produce human-readable source code.
+
+**Example:**
+
+Consider a simple ES6 JavaScript code:
+
+```javascript
+// ES6+ JavaScript
+const greet = (name) => {
+  console.log(`Hello, ${name}!`);
+};
+
+greet('World');
+```
+
+Using a transpiler like Babel, this code can be converted to ES5 JavaScript:
+
+```javascript
+// Transpiled ES5 JavaScript
+"use strict";
+
+var greet = function greet(name) {
+  console.log("Hello, " + name + "!");
+};
+
+greet('World');
+```
+
+In this example:
+- The source language is ES6+ JavaScript.
+- The target language is ES5 JavaScript.
+- Babel is the transpiler that performs the conversion.
+- The output is human-readable ES5 JavaScript code.
+
+**JavaScript Transpilers:**
+- **Babel:** A popular JavaScript transpiler that converts ES6+ code into backward-compatible ES5 code.
+- **TypeScript Compiler (tsc):** Transpiles TypeScript code into JavaScript.
+
+**Example of TypeScript to JavaScript Transpilation:**
+
+TypeScript code:
+
+```typescript
+// TypeScript
+let message: string = 'Hello, World!';
+console.log(message);
+```
+
+Using the TypeScript compiler, this code can be converted to JavaScript:
+
+```javascript
+// Transpiled JavaScript
+var message = 'Hello, World!';
+console.log(message);
+```
+
+In this example:
+- The source language is TypeScript.
+- The target language is JavaScript.
+- The TypeScript compiler (`tsc`) performs the conversion.
+- The output is human-readable JavaScript code.

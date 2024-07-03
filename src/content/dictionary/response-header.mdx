@@ -1,0 +1,23 @@
+---
+layout: ../../layouts/word.astro
+title: "Response Header"
+---
+A response header is a component of an HTTP response message sent from the server to the client, containing metadata about the response. Response headers provide additional information to the client, such as the type of content being sent, caching directives, and server details.
+
+Response headers consist of key-value pairs, where the key is the header name and the value is the header's content. There are several types of response headers, including general headers, response headers, and entity headers. These headers help the client understand the context and content of the response, as well as how to handle it.
+
+**Example (HTTP Response with Headers):**
+```http
+HTTP/1.1 200 OK
+Content-Type: text/html; charset=UTF-8
+Content-Length: 138
+Cache-Control: no-cache
+Server: Apache/2.4.1 (Unix)
+```
+
+**Common Response Headers:**
+- `Content-Type`: Indicates the media type of the resource sent in the response body.
+- `Content-Length`: Specifies the size of the response body in bytes.
+- `Cache-Control`: Provides caching directives to control how and for how long the response can be cached.
+- `Set-Cookie`: Sends cookies from the server to the client.
+- `Server`: Contains information about the software used by the server to handle the request.

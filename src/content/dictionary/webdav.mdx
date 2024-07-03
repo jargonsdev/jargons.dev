@@ -1,0 +1,32 @@
+---
+layout: ../../layouts/word.astro
+title: "WebDAV"
+---
+WebDAV (Web Distributed Authoring and Versioning) is an extension of the HTTP protocol that facilitates collaborative editing and file management on web servers. It enables users to create, move, delete, and edit files and directories on a remote server.
+
+WebDAV enhances the capabilities of HTTP by introducing a set of methods and headers that support distributed authoring and versioning. It allows multiple users to collaborate on documents and other resources over the web, making it an essential tool for web-based file management and version control. WebDAV is widely supported by various operating systems and applications, enabling seamless integration with existing workflows.
+
+**Example (Basic WebDAV Operations in JavaScript):**
+```javascript
+const xhr = new XMLHttpRequest();
+
+// Create a new directory
+xhr.open("MKCOL", "https://example.com/webdav/new-directory", true);
+xhr.send();
+
+// Upload a file
+const uploadFile = new XMLHttpRequest();
+uploadFile.open("PUT", "https://example.com/webdav/new-directory/file.txt", true);
+uploadFile.setRequestHeader("Content-Type", "text/plain");
+uploadFile.send("This is the content of the file.");
+
+// Delete a file
+const deleteFile = new XMLHttpRequest();
+deleteFile.open("DELETE", "https://example.com/webdav/new-directory/file.txt", true);
+deleteFile.send();
+```
+
+In this example, we demonstrate three basic WebDAV operations using JavaScript:
+- Creating a new directory (`MKCOL` method).
+- Uploading a file (`PUT` method).
+- Deleting a file (`DELETE` method).

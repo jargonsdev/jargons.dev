@@ -1,0 +1,12 @@
+---
+layout: ../../layouts/word.astro
+title: "Cumulative Layout Shift (CLS)"
+---
+Cumulative Layout Shift (CLS) is a metric used to quantify the visual stability of a web page. It measures the sum of all individual layout shift scores for every unexpected layout shift that occurs during the entire lifespan of the page. An unexpected layout shift happens when visible elements on the page change their position from one rendered frame to the next.
+
+CLS is important because it helps measure how much the content of a web page moves around while it's loading, which can be a frustrating experience for users. A high CLS score indicates a higher likelihood of content shifting unexpectedly, potentially causing users to click on the wrong elements or lose their place on the page.
+
+CLS is calculated by summing up the impact fractions for all individual layout shifts that occur during the page lifespan. The impact fraction is the distance moved by the element divided by the viewport size.
+
+**Example:**
+If a button suddenly shifts down as an image loads above it, that would contribute to the CLS score. A low CLS score means that the page content remains stable and predictable as it loads.

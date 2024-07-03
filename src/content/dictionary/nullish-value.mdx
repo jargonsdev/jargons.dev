@@ -1,0 +1,21 @@
+---
+layout: ../../layouts/word.astro
+title: "Nullish Value"
+---
+A nullish value is a value that is either `null` or `undefined` in JavaScript. Nullish values are distinct from other falsy values (such as `0`, `''`, and `false`) because they specifically represent the absence of a meaningful value rather than a value that evaluates to false in a boolean context.
+
+- The nullish coalescing operator (`??`) is commonly used in JavaScript to provide a default value for a variable that may be nullish.
+- Nullish values are often used to distinguish between a variable that has not been assigned a value and a variable that has been explicitly set to a nullish value.
+
+**Example:**
+```javascript
+let value1 = null;
+let value2 = undefined;
+let value3 = 0;
+let value4 = '';
+
+console.log(value1 ?? 'default'); // Output: 'default'
+console.log(value2 ?? 'default'); // Output: 'default'
+console.log(value3 ?? 'default'); // Output: 0 (0 is not nullish)
+console.log(value4 ?? 'default'); // Output: '' (empty string is not nullish)
+```

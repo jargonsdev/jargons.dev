@@ -1,0 +1,48 @@
+---
+layout: ../../layouts/word.astro
+title: "Super Class"
+---
+A super class, also known as a parent class or base class, is a class in object-oriented programming from which other classes inherit properties and methods. It serves as a blueprint for creating subclasses, which can extend or modify its behavior.
+
+Super classes provide a way to define common attributes and behaviors that can be shared across multiple subclasses. By inheriting from a super class, a subclass can reuse code, leading to more modular and maintainable software design. The concept of inheritance allows subclasses to override or extend the functionality of the super class while still retaining a base set of features.
+
+**Example:**
+
+Here is an example in JavaScript, demonstrating the concept of super classes and inheritance:
+
+```javascript
+// Super class
+class Animal {
+  constructor(name) {
+    this.name = name;
+  }
+
+  speak() {
+    console.log(`${this.name} makes a sound.`);
+  }
+}
+
+// Subclass that extends the super class
+class Dog extends Animal {
+  constructor(name, breed) {
+    super(name); // Call the super class constructor
+    this.breed = breed;
+  }
+
+  speak() {
+    console.log(`${this.name} barks.`);
+  }
+}
+
+// Creating instances of the subclasses
+const genericAnimal = new Animal('Generic Animal');
+genericAnimal.speak(); // Output: Generic Animal makes a sound.
+
+const dog = new Dog('Rex', 'German Shepherd');
+dog.speak(); // Output: Rex barks.
+```
+
+In this example:
+- The `Animal` class is the super class with a constructor and a `speak` method.
+- The `Dog` class is a subclass that inherits from `Animal`. It extends the functionality of the `Animal` class by adding a new property (`breed`) and overriding the `speak` method.
+- Instances of `Animal` and `Dog` demonstrate how subclasses can inherit and override methods from their super classes.

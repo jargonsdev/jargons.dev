@@ -1,0 +1,48 @@
+---
+layout: ../../layouts/word.astro
+title: "Unit Testing"
+---
+Unit testing is a software testing method where individual units or components of a software application are tested in isolation from the rest of the application. The primary goal is to validate that each unit of the software performs as expected.
+
+A "unit" refers to the smallest testable part of an application, such as a function, method, or class. Unit tests are typically written by developers during the development process to ensure that the code works as intended before it is integrated with other parts of the application. These tests are usually automated and can be run frequently to catch bugs early in the development cycle.
+
+Unit testing frameworks and libraries, such as JUnit for Java, pytest for Python, and Jest for JavaScript, provide tools to create, run, and manage unit tests.
+
+**Example (JavaScript):**
+
+Here is an example of a simple unit test for a JavaScript function using Jest.
+
+```javascript
+// math.js
+function add(a, b) {
+  return a + b;
+}
+
+function subtract(a, b) {
+  return a - b;
+}
+
+module.exports = { add, subtract };
+
+// math.test.js
+const { add, subtract } = require('./math');
+
+describe('Math functions', () => {
+  test('add() should return the sum of two numbers', () => {
+    expect(add(1, 2)).toBe(3);
+    expect(add(-1, 1)).toBe(0);
+  });
+
+  test('subtract() should return the difference of two numbers', () => {
+    expect(subtract(2, 1)).toBe(1);
+    expect(subtract(1, 2)).toBe(-1);
+  });
+});
+```
+
+In this example:
+- The `add` and `subtract` functions are defined in the `math.js` module.
+- The `math.test.js` file contains unit tests for these functions using Jest.
+- Each test case uses the `expect` function to assert that the actual output of the function matches the expected output.
+- The `describe` and `test` functions organize and define the test cases.
+- Running the tests will check if the `add` and `subtract` functions return correct results for given inputs, ensuring their correctness in isolation.

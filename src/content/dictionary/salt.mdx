@@ -1,0 +1,17 @@
+---
+layout: ../../layouts/word.astro
+title: "Salt"
+---
+In cryptography, a salt is a random sequence of data that is added to the input of a hash function to ensure that even if the input is the same, the resulting hash will be different. Salting is commonly used to protect passwords and other sensitive data stored in databases.
+
+When storing passwords in a database, simply hashing the password without a salt can lead to vulnerabilities, as identical passwords will produce the same hash value. Attackers can use precomputed tables (rainbow tables) to quickly look up the hash and recover the original password.
+
+By adding a unique salt to each password before hashing, even if two users have the same password, their hashes will be different due to the different salts. This prevents the use of precomputed tables and makes it much harder for attackers to crack the passwords.
+
+**Example (Password Salting):**
+```plaintext
+Password: "password123"
+Salt: "f1nd8B"
+Salted Password: "password123f1nd8B"
+Hashed Password: "5f4dcc3b5aa765d61d8327deb882cf99" (MD5 hash of "password123f1nd8B")
+```

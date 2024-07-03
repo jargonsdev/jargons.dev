@@ -1,0 +1,43 @@
+---
+layout: ../../layouts/word.astro
+title: "Origin"
+---
+In the context of web development and computer networking, an origin refers to the combination of a scheme (protocol), host (domain), and port number that identifies the source of a request or content.
+
+The concept of an origin is crucial for understanding security models in web development, particularly the Same-Origin Policy (SOP). This policy restricts how documents or scripts from one origin can interact with resources from another origin, helping to prevent malicious attacks such as Cross-Site Scripting (XSS) and Cross-Site Request Forgery (CSRF).
+
+An origin is defined as follows:
+- **Scheme:** The protocol used (e.g., `http`, `https`).
+- **Host:** The domain name or IP address (e.g., `example.com`).
+- **Port:** The port number (e.g., `80` for HTTP, `443` for HTTPS).
+
+For instance, the URL `https://www.example.com:443/path/to/resource` has the following origin:
+- Scheme: `https`
+- Host: `www.example.com`
+- Port: `443`
+
+Two URLs are considered to have the same origin if all three components match exactly.
+
+**Example (JavaScript):**
+
+Here is an example of how the origin of a URL can be accessed and compared in JavaScript:
+
+```javascript
+// URL 1
+const url1 = new URL('https://www.example.com:443/path/to/resource');
+
+// URL 2
+const url2 = new URL('https://www.example.com:443/another/path');
+
+console.log(url1.origin); // Output: 'https://www.example.com:443'
+console.log(url2.origin); // Output: 'https://www.example.com:443'
+
+// Compare origins
+if (url1.origin === url2.origin) {
+  console.log('The origins are the same.');
+} else {
+  console.log('The origins are different.');
+}
+```
+
+In this example, both `url1` and `url2` have the same origin, so the comparison will output `The origins are the same.`

@@ -1,0 +1,29 @@
+---
+layout: ../../layouts/word.astro
+title: "Transpiler"
+---
+A transpiler, short for "source-to-source compiler," is a type of compiler that translates source code from one programming language into another. Unlike traditional compilers that translate high-level code into machine code, transpilers typically convert code between languages that share similar abstraction levels or compile down to a lower-level language, such as JavaScript to TypeScript or TypeScript to JavaScript.
+
+Transpilers are particularly useful in software development for:
+
+1. **Language Compatibility:** They enable developers to use newer language features or syntax that may not yet be supported by all platforms or browsers.
+2. **Code Optimization:** Transpilers can optimize code for performance or readability without changing the overall behavior.
+3. **Cross-Platform Development:** They facilitate writing code in a language that can be easily translated to multiple platforms or environments.
+
+**Example: TypeScript to JavaScript**
+
+```typescript
+// TypeScript code
+const greeting: string = "Hello, World!";
+console.log(greeting);
+```
+
+Using a TypeScript transpiler such as `tsc` (TypeScript Compiler), you can compile this TypeScript code into JavaScript:
+
+```javascript
+// JavaScript code after transpiling from TypeScript
+const greeting = "Hello, World!";
+console.log(greeting);
+```
+
+Here, TypeScript's type annotations are stripped away, and the TypeScript-specific syntax is converted into plain JavaScript, which can be executed in any JavaScript runtime environment.

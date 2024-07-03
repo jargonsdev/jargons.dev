@@ -1,0 +1,50 @@
+---
+layout: ../../layouts/word.astro
+title: "Packet"
+---
+A packet is a small unit of data transmitted over a network. It consists of a header, which contains control information such as the source and destination addresses, and a payload, which is the actual data being transmitted.
+
+In networking, data is broken down into smaller, manageable pieces called packets before being sent over a network. Each packet travels independently and may take different paths to reach the destination. Upon arrival, packets are reassembled into the original message. This method of data transmission is known as packet switching and is used to efficiently use network resources and improve reliability.
+
+**Structure of a Packet:**
+1. **Header:** Contains metadata about the packet, such as:
+   - **Source Address:** The address of the sender.
+   - **Destination Address:** The address of the receiver.
+   - **Packet Number:** An identifier for reassembling packets in the correct order.
+   - **Protocol Information:** Data on how the packet should be processed.
+
+2. **Payload:** The actual data being transmitted.
+
+**Example:**
+
+In JavaScript, while you don't typically handle packets directly, you can work with data over networks using libraries and protocols that do. Here's an example using Node.js with the `dgram` module to send and receive UDP packets:
+
+```javascript
+// UDP server example
+const dgram = require('dgram');
+const server = dgram.createSocket('udp4');
+
+server.on('message', (msg, rinfo) => {
+  console.log(`Server got: ${msg} from ${rinfo.address}:${rinfo.port}`);
+});
+
+server.bind(41234, () => {
+  console.log('Server is listening on port 41234');
+});
+
+// UDP client example
+const message = Buffer.from('Hello, World!');
+const client = dgram.createSocket('udp4');
+
+client.send(message, 41234, 'localhost', (err) => {
+  if (err) {
+    console.error(err);
+    client.close();
+  } else {
+    console.log('Message sent');
+    client.close();
+  }
+});
+```
+
+In this example, the server listens for UDP packets on port 41234 and logs any received messages. The client sends a packet containing the message "Hello, World!" to the server.

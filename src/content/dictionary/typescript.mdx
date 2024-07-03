@@ -1,0 +1,30 @@
+---
+layout: ../../layouts/word.astro
+title: "TypeScript"
+---
+TypeScript is an open-source programming language developed and maintained by Microsoft. It is a strict syntactical superset of JavaScript, adding optional static typing to the language. TypeScript is designed for the development of large applications and transcompiles to JavaScript.
+
+TypeScript extends JavaScript by adding types, which allow developers to define the shape of their data more explicitly. This helps catch errors early in the development process and makes the code more predictable and easier to maintain. TypeScript code is transpiled into JavaScript, which means it can run on any browser or JavaScript engine.
+
+**Key Features:**
+- **Static Typing:** TypeScript allows developers to specify types for variables, function parameters, and return values, helping to catch type-related errors at compile time.
+- **Interfaces:** TypeScript supports interfaces, which define the structure of objects. This helps ensure that objects have the required properties and methods.
+- **Classes:** TypeScript supports class-based object-oriented programming, including inheritance, interfaces, and access modifiers.
+- **Enums:** TypeScript has enum types, which allow developers to define a set of named constants.
+- **Generics:** TypeScript supports generics, which allow developers to create reusable components that can work with a variety of data types.
+
+**Example:**
+Here is a simple example of TypeScript code:
+
+```typescript
+// Define a function that takes two numbers and returns their sum
+function add(a: number, b: number): number {
+    return a + b;
+}
+
+// Call the function
+const result = add(10, 20);
+console.log(result); // Output: 30
+```
+
+In this example, the `add` function specifies that its parameters `a` and `b` are of type `number` and that the function returns a value of type `number`.

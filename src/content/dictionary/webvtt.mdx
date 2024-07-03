@@ -1,0 +1,44 @@
+---
+layout: ../../layouts/word.astro
+title: "WebVTT (Web Video Text Tracks)"
+---
+WebVTT (Web Video Text Tracks) is a standard format used for displaying timed text tracks (such as subtitles or captions) with HTML5 video. It allows the creation of text overlays synchronized with video or audio content, providing accessibility features and additional information to the media.
+
+WebVTT files contain text data that is time-aligned with the media it is associated with. This text can include subtitles, captions, descriptions, chapters, or metadata. The format is simple, human-readable, and easy to author. Each WebVTT file has a series of cues that define the start and end times for displaying the text, along with the text content itself.
+
+**Example (WebVTT File):**
+```vtt
+WEBVTT
+
+00:00:00.000 --> 00:00:02.000
+Hello, welcome to our video!
+
+00:00:02.500 --> 00:00:05.000
+In this video, we will learn about WebVTT.
+
+00:00:06.000 --> 00:00:09.000
+Let's get started!
+
+00:00:10.000 --> 00:00:12.000
+WebVTT is used for subtitles and captions.
+```
+
+**Example (HTML5 Video with WebVTT):**
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WebVTT Example</title>
+</head>
+<body>
+    <video controls>
+        <source src="example-video.mp4" type="video/mp4">
+        <track src="subtitles.vtt" kind="subtitles" srclang="en" label="English">
+    </video>
+</body>
+</html>
+```
+
+In this example, the `track` element within the `video` tag specifies a WebVTT file (`subtitles.vtt`) to be used as subtitles. The `kind` attribute indicates that this track is for subtitles, `srclang` specifies the language, and `label` provides a label for the track.

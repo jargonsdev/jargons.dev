@@ -1,0 +1,29 @@
+---
+layout: ../../layouts/word.astro
+title: "NaN (Not a Number)"
+---
+NaN (Not a Number) is a special value in JavaScript that represents an unrepresentable value resulting from an operation that should return a number but doesn't. It is a property of the global object and is returned when a mathematical operation cannot produce a meaningful result.
+
+NaN is typically returned when:
+
+1. Performing arithmetic operations on non-numeric values or strings that cannot be converted to numbers.
+2. Using functions that return NaN, such as parseInt() when the string does not contain a parsable number.
+
+**Example:**
+```javascript
+let result = 10 / "abc"; // result will be NaN because "abc" cannot be converted to a number
+console.log(result); // Output: NaN
+
+let num = parseInt("Hello"); // parseInt() returns NaN because "Hello" cannot be converted to a number
+console.log(num); // Output: NaN
+```
+
+**Handling NaN:**
+It's important to check for NaN when dealing with operations that may produce it, as using NaN in further calculations can lead to unexpected results. You can check for NaN using the isNaN() function:
+
+```javascript
+let result = 10 / "abc";
+if (isNaN(result)) {
+    console.log("Result is not a number!");
+}
+```

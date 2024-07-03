@@ -1,0 +1,27 @@
+---
+layout: ../../layouts/word.astro
+title: "Constant"
+---
+In programming, a constant is a value that, once assigned, cannot be changed during the execution of a program. Constants are used to represent fixed values that do not change, such as mathematical constants, configuration values, or identifiers.
+
+Constants help improve code readability and maintainability by providing meaningful names for fixed values. They also prevent accidental modification of values that should remain unchanged.
+
+**Example in JavaScript:**
+
+```javascript
+// Declaration of a constant
+const PI = 3.14159;
+const MAX_USERS = 100;
+
+// Usage of constants
+console.log(`The value of PI is ${PI}`);
+console.log(`The maximum number of users is ${MAX_USERS}`);
+
+// Attempting to reassign a constant will result in an error
+// PI = 3.14; // Uncaught TypeError: Assignment to constant variable.
+```
+
+In this example:
+- `PI` is a constant representing the mathematical constant pi.
+- `MAX_USERS` is a constant representing the maximum number of users allowed.
+- Both constants are declared using the `const` keyword, and their values cannot be changed once assigned.

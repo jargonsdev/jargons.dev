@@ -1,0 +1,39 @@
+---
+layout: ../../layouts/word.astro
+title: "Media Query"
+---
+A media query is a CSS technique used to apply different styles to a document based on the characteristics of the device or media displaying it. It allows developers to create responsive designs that adapt to different screen sizes, resolutions, and orientations.
+
+Media queries use the `@media` rule in CSS to specify conditions under which certain styles should be applied. This allows developers to create layouts that are optimized for various devices, such as desktops, tablets, and smartphones, without needing separate stylesheets for each device.
+
+**Syntax:**
+```css
+@media (max-width: 768px) {
+    /* CSS styles for screens up to 768px wide */
+}
+
+@media (min-width: 768px) and (max-width: 1024px) {
+    /* CSS styles for screens between 768px and 1024px wide */
+}
+
+/* Other media queries can be added for different conditions */
+```
+
+**Example:**
+```css
+/* Styles for screens larger than 768px */
+@media (min-width: 768px) {
+    body {
+        font-size: 16px;
+    }
+}
+
+/* Styles for screens smaller than or equal to 768px */
+@media (max-width: 768px) {
+    body {
+        font-size: 14px;
+    }
+}
+```
+
+In this example, the font size of the `body` element will be 16px on screens larger than 768px wide and 14px on screens 768px or smaller.

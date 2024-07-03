@@ -1,0 +1,22 @@
+---
+layout: ../../layouts/word.astro
+title: "SOAP"
+---
+SOAP (Simple Object Access Protocol) is a protocol for exchanging structured information in the implementation of web services. It is a messaging protocol that allows programs running on different operating systems (such as Windows and Unix) to communicate over the Internet.
+
+SOAP is based on XML (eXtensible Markup Language) and consists of three main parts: an envelope, which defines the structure of the message; a set of encoding rules for expressing instances of application-defined datatypes; and a convention for representing remote procedure calls and responses.
+
+SOAP messages are typically sent over HTTP (Hypertext Transfer Protocol) or its secure variant, HTTPS, making it suitable for communication over the Internet. SOAP is language-agnostic, meaning that it can be used with programming languages such as Java, C#, and Python.
+
+**Example (SOAP Message):**
+A simple example of a SOAP message:
+```xml
+<SOAP-ENV:Envelope xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/">
+    <SOAP-ENV:Header/>
+    <SOAP-ENV:Body>
+        <m:GetStockPrice xmlns:m="http://example.com/stock">
+            <m:StockName>IBM</m:StockName>
+        </m:GetStockPrice>
+    </SOAP-ENV:Body>
+</SOAP-ENV:Envelope>
+```

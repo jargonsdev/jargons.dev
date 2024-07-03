@@ -1,0 +1,63 @@
+---
+layout: ../../layouts/word.astro
+title: "CRUD"
+---
+CRUD stands for Create, Read, Update, and Delete. It represents the four basic operations that can be performed on data in a database or a persistent storage system.
+
+CRUD operations are essential in managing data in applications. Each letter in CRUD corresponds to an action that allows for handling data:
+
+- **Create:** Adding new data to the database.
+- **Read:** Retrieving existing data from the database.
+- **Update:** Modifying existing data in the database.
+- **Delete:** Removing data from the database.
+
+**Example in JavaScript (using a basic REST API):**
+
+```javascript
+// Importing required modules
+const express = require('express');
+const app = express();
+app.use(express.json());
+
+// In-memory data store (for demonstration purposes)
+let items = [];
+
+// Create - Add a new item
+app.post('/items', (req, res) => {
+    const newItem = req.body;
+    items.push(newItem);
+    res.status(201).send('Item created');
+});
+
+// Read - Get all items
+app.get('/items', (req, res) => {
+    res.json(items);
+});
+
+// Update - Modify an existing item
+app.put('/items/:id', (req, res) => {
+    const id = req.params.id;
+    const updatedItem = req.body;
+    items = items.map(item => item.id === id ? updatedItem : item);
+    res.send('Item updated');
+});
+
+// Delete - Remove an item
+app.delete('/items/:id', (req, res) => {
+    const id = req.params.id;
+    items = items.filter(item => item.id !== id);
+    res.send('Item deleted');
+});
+
+// Starting the server
+const port = 3000;
+app.listen(port, () => {
+    console.log(`Server running on port ${port}`);
+});
+```
+
+In this example:
+- **Create:** The `POST /items` endpoint allows adding new items to the in-memory data store.
+- **Read:** The `GET /items` endpoint retrieves all items from the data store.
+- **Update:** The `PUT /items/:id` endpoint updates an existing item identified by its `id`.
+- **Delete:** The `DELETE /items/:id` endpoint deletes an item identified by its `id`.

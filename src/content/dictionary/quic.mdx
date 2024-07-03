@@ -1,0 +1,17 @@
+---
+layout: ../../layouts/word.astro
+title: "QUIC"
+---
+QUIC (Quick UDP Internet Connections) is a transport layer network protocol developed by Google. It is designed to provide fast, reliable, and secure internet connections, improving upon traditional protocols like TCP.
+
+QUIC combines features of both TCP and UDP, aiming to reduce latency and improve the performance of internet applications. Unlike TCP, which establishes a connection with a three-way handshake, QUIC uses a single handshake to establish a secure connection. This reduces the time it takes to start data transmission.
+
+QUIC is built on top of UDP, allowing it to avoid some of the overhead associated with TCP. It includes built-in encryption based on TLS (Transport Layer Security), ensuring data security without the need for separate HTTPS layers.
+
+**Example (QUIC Connection Establishment):**
+
+In QUIC, a connection is established with a single round-trip handshake:
+
+1. **Client sends Initial packet:** The client sends a packet to the server to initiate the connection.
+2. **Server responds with Handshake packet:** The server responds with the necessary information to establish a secure connection.
+3. **Client confirms:** The client confirms the connection and starts sending data.

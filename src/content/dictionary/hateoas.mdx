@@ -1,0 +1,32 @@
+---
+layout: ../../layouts/word.astro
+title: "HATEOAS"
+---
+HATEOAS, which stands for Hypermedia as the Engine of Application State, is a constraint of the REST (Representational State Transfer) application architecture. It specifies that a client should interact with a RESTful web service entirely through hypermedia provided dynamically by application servers. This means that the server responses should contain links to other resources and actions that the client can follow or perform.
+
+HATEOAS decouples client and server interactions, allowing the server to guide the client through the application state using hypermedia links. This makes the client less reliant on hardcoded URLs or paths and more resilient to changes in the API, as the navigation and available actions are embedded within the server's responses.
+
+**Examples:**
+- **Linking to Related Resources:** A response from an API endpoint might include URLs to other related resources.
+- **Embedding Actions:** Responses can include actions that the client can perform next, such as creating, updating, or deleting resources.
+
+Consider a RESTful API for a bookstore. When a client requests information about a book, the server's response includes links to related resources and possible actions:
+```json
+{
+  "title": "The Great Gatsby",
+  "author": "F. Scott Fitzgerald",
+  "isbn": "9780743273565",
+  "links": {
+    "self": { "href": "/books/9780743273565" },
+    "author": { "href": "/authors/f-scott-fitzgerald" },
+    "publisher": { "href": "/publishers/scribner" },
+    "reviews": { "href": "/books/9780743273565/reviews" }
+  }
+}
+```
+
+In this example, the response includes:
+- A link to the current book's resource (`self`).
+- A link to the author's resource (`author`).
+- A link to the publisher's resource (`publisher`).
+- A link to the book's reviews (`reviews`).

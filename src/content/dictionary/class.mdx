@@ -1,0 +1,35 @@
+---
+layout: ../../layouts/word.astro
+title: "Class"
+---
+In object-oriented programming (OOP), a class is a blueprint for creating objects (instances) that share similar properties and behaviors. A class defines the structure and behavior of objects, including their properties (attributes) and methods (functions).
+
+Classes are a fundamental concept in OOP and are used to create objects that encapsulate data and functionality. Each object created from a class is known as an instance of that class and inherits its properties and methods. Classes provide a way to model real-world entities and define their behavior in a structured and reusable manner.
+
+**Key Concepts of Classes:**
+1. **Properties (Attributes):** Properties are the data members of a class that define the characteristics or state of an object. They represent the object's attributes.
+2. **Methods (Functions):** Methods are the functions defined within a class that define the behavior or actions that an object can perform.
+3. **Constructor:** A constructor is a special method in a class that is used to initialize new objects. It is called automatically when a new object is created.
+4. **Inheritance:** Inheritance is a mechanism in OOP that allows a class to inherit properties and methods from another class. It promotes code reusability and helps in creating a hierarchy of classes.
+5. **Encapsulation:** Encapsulation is the concept of bundling the data (properties) and methods that operate on the data (methods) into a single unit (class). It helps in data hiding and abstraction.
+6. **Polymorphism:** Polymorphism is the ability of objects to take on multiple forms. It allows objects of different classes to be treated as objects of a common superclass.
+
+**Example:**
+```javascript
+class Animal {
+  constructor(name, age) {
+    this.name = name;
+    this.age = age;
+  }
+
+  speak() {
+    console.log(`${this.name} is speaking.`);
+  }
+}
+
+// Creating an instance of the Animal class
+const dog = new Animal('Buddy', 5);
+dog.speak(); // Output: Buddy is speaking.
+```
+
+In this example, `Animal` is a class that defines the blueprint for creating animal objects. The `constructor` method is used to initialize the `name` and `age` properties of an animal object, and the `speak` method defines the behavior of an animal speaking.

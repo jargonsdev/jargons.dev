@@ -1,0 +1,31 @@
+---
+layout: ../../layouts/word.astro
+title: "Code Splitting"
+---
+Code splitting is a technique used in software development to improve the performance of web applications by splitting the codebase into smaller bundles that can be loaded on-demand. This allows the application to load only the code that is needed for a particular page or feature, reducing the initial load time and improving the overall user experience.
+
+In web development, code splitting is often used to break up a large JavaScript bundle into smaller bundles that can be loaded asynchronously. This can be done manually by separating code into different files or automatically using tools like Webpack, which analyze the codebase and generate separate bundles for different parts of the application.
+
+**Key Concepts of Code Splitting:**
+1. **Lazy Loading:** Code splitting enables lazy loading, which means that code is loaded only when it is needed, rather than all at once when the application is first loaded.
+2. **Bundle Size Optimization:** By splitting the codebase into smaller bundles, code splitting helps reduce the overall size of the initial bundle, improving load times, especially for large applications.
+3. **Dynamic Imports:** Code splitting often uses dynamic imports to load code on-demand, allowing developers to specify when and where code should be loaded based on user interactions or other events.
+
+**Example:**
+```javascript
+// Using dynamic import to split code
+const button = document.getElementById('myButton');
+button.addEventListener('click', async () => {
+    const module = await import('./module.js');
+    module.doSomething();
+});
+```
+In this example, the `import('./module.js')` statement is used to dynamically load the `module.js` file when the button is clicked, demonstrating lazy loading.
+
+**Benefits of Code Splitting:**
+- **Faster Load Times:** By loading only the code that is needed, code splitting reduces the initial load time of the application, improving user experience.
+- **Improved Performance:** Smaller bundles result in faster parsing and execution times, especially on low-powered devices or slow network connections.
+- **Better Resource Management:** Code splitting allows for more efficient use of resources by loading code only when it is needed, reducing memory usage and improving overall performance.
+
+**Use Cases:**
+Code splitting is particularly useful in large web applications or websites with complex UIs. It can be used to improve the performance of single-page applications (SPAs) by reducing the initial bundle size and loading only the code needed for the current view. It is also commonly used in progressive web applications (PWAs) to improve load times and responsiveness.

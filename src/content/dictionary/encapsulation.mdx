@@ -1,0 +1,54 @@
+---
+layout: ../../layouts/word.astro
+title: "Encapsulation"
+---
+Encapsulation is a fundamental principle in object-oriented programming (OOP) that involves bundling the data (attributes) and methods (functions) that operate on the data into a single unit called a class. It restricts direct access to some of the object's components, which can prevent the accidental modification of data.
+
+Encapsulation helps to hide the internal state and implementation details of an object from the outside world, exposing only what is necessary through a public interface (methods). This is often achieved using access modifiers (such as private, protected, and public) to control the visibility of class members.
+
+**Key Concepts of Encapsulation:**
+1. **Classes and Objects:** Encapsulation is implemented through classes, which define the structure and behavior of objects. Objects are instances of classes.
+2. **Access Modifiers:** These control the visibility of class members:
+   - **Private:** Members are accessible only within the same class.
+   - **Protected:** Members are accessible within the same class and its subclasses.
+   - **Public:** Members are accessible from any other code.
+3. **Getter and Setter Methods:** These methods provide controlled access to private attributes. Getters return the value of an attribute, while setters modify the value of an attribute.
+
+**Example:**
+Consider a class representing a bank account with encapsulated data:
+
+```javascript
+class BankAccount {
+    constructor(owner, balance) {
+        this._owner = owner; // Private attribute (conventionally indicated by an underscore)
+        this._balance = balance; // Private attribute
+    }
+
+    // Getter for balance
+    getBalance() {
+        return this._balance;
+    }
+
+    // Setter for balance with validation
+    deposit(amount) {
+        if (amount > 0) {
+            this._balance += amount;
+        }
+    }
+
+    // Method to withdraw money with validation
+    withdraw(amount) {
+        if (amount > 0 && amount <= this._balance) {
+            this._balance -= amount;
+        }
+    }
+}
+
+// Creating an instance of BankAccount
+const myAccount = new BankAccount('Alice', 1000);
+console.log(myAccount.getBalance()); // Output: 1000
+myAccount.deposit(500);
+console.log(myAccount.getBalance()); // Output: 1500
+myAccount.withdraw(200);
+console.log(myAccount.getBalance()); // Output: 1300
+```

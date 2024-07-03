@@ -1,0 +1,35 @@
+---
+layout: ../../layouts/word.astro
+title: "Multi-threading"
+---
+**Definition:**
+Multi-threading is a programming and execution model that allows multiple threads to exist within the context of a single process. These threads share the process's resources but execute independently, which can improve the performance of applications, especially on multi-core processors.
+
+Multi-threading enables concurrent execution of code, allowing a program to perform multiple operations simultaneously. Each thread runs independently but shares the same memory space and resources, which makes communication between threads efficient but requires careful management to avoid issues such as race conditions and deadlocks.
+
+**Example:**
+
+Here is a basic example of multi-threading in JavaScript using Web Workers:
+
+```javascript
+// main.js
+const worker = new Worker('worker.js');
+
+worker.onmessage = function(event) {
+  console.log('Message from worker:', event.data);
+};
+
+worker.postMessage('Hello, Worker!');
+
+// worker.js
+self.onmessage = function(event) {
+  console.log('Message from main script:', event.data);
+  self.postMessage('Hello, Main!');
+};
+```
+
+In this example:
+- A new `Worker` is created in `main.js` to run `worker.js` in a separate thread.
+- The main script sends a message to the worker thread using `worker.postMessage`.
+- The worker thread receives the message, processes it, and sends a response back to the main thread using `self.postMessage`.
+- Both the main script and the worker can handle messages with `onmessage`.

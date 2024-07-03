@@ -1,0 +1,13 @@
+---
+layout: ../../layouts/word.astro
+title: "Lazy Loading"
+---
+Lazy loading is a technique in web development that defers the loading of non-essential resources at the time the page is initially loaded. Instead, these resources are loaded only when they are needed, typically when they are about to come into the viewport as the user scrolls down the page.
+
+Lazy loading is used to improve page load times and reduce the initial payload of a web page, especially for pages that contain a lot of images or other media. By only loading resources as they are needed, lazy loading can help speed up the perceived performance of a website and reduce bandwidth usage.
+
+**Example:**
+```html
+<!-- Image will only be loaded when it comes into view -->
+<img src="placeholder.jpg" data-src="image.jpg" loading="lazy" alt="Lazy loaded image">
+```

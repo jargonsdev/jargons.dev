@@ -1,0 +1,28 @@
+---
+layout: ../../layouts/word.astro
+title: "Callback"
+---
+A callback is a function that is passed as an argument to another function and is executed after some operation has been completed. Callbacks are commonly used in asynchronous programming to handle tasks that depend on the completion of other tasks.
+
+In JavaScript, functions are first-class citizens, which means they can be passed around and used as arguments to other functions. Callback functions are often used to handle responses from asynchronous operations such as reading a file, making a network request, or handling user input.
+
+**Example:**
+```javascript
+function fetchData(url, callback) {
+    // Simulate fetching data from a server after a delay
+    setTimeout(() => {
+        const data = { name: 'John', age: 30 };
+        callback(data);
+    }, 1000);
+}
+
+function processData(data) {
+    console.log('Processing data:', data);
+}
+
+fetchData('https://example.com/api/data', processData);
+```
+In this example, `fetchData` is a function that simulates fetching data from a server asynchronously. It takes a URL and a callback function as arguments. The `processData` function is passed as a callback to `fetchData` and is executed once the data is fetched.
+
+**Use Cases:**
+Callbacks are commonly used in event handling, timers, and asynchronous operations in JavaScript. They are also used in APIs that require a response or notification when an operation is completed, such as AJAX requests or file system operations. Callbacks are a fundamental concept in JavaScript and are widely used in libraries and frameworks for handling asynchronous code.

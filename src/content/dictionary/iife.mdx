@@ -1,0 +1,44 @@
+---
+layout: ../../layouts/word.astro
+title: "IIFE"
+---
+An IIFE (Immediately Invoked Function Expression) is a JavaScript function that runs as soon as it is defined. It is a design pattern also known as a self-executing anonymous function and has two main parts: the function definition and the invocation of that function immediately after its definition.
+
+IIFEs are commonly used to create a new scope and avoid polluting the global namespace. This pattern is especially useful for encapsulating code, preventing variable collisions, and creating private variables.
+
+**Syntax:**
+The syntax for an IIFE involves wrapping the function in parentheses and then invoking it immediately with another set of parentheses.
+
+```javascript
+(function () {
+    // Function body
+})();
+```
+
+Alternatively, the syntax can also look like this:
+
+```javascript
+(function () {
+    // Function body
+}());
+```
+
+**Example of an IIFE:**
+```javascript
+(function () {
+    var message = "Hello, World!";
+    console.log(message);
+})();
+```
+In this example, the function is defined and immediately invoked, logging "Hello, World!" to the console. The variable `message` is not accessible outside the IIFE, ensuring it does not interfere with other code.
+
+**IIFE with Parameters:**
+IIFEs can also accept parameters, allowing for greater flexibility and reuse.
+
+```javascript
+(function (name) {
+    var greeting = `Hello, ${name}!`;
+    console.log(greeting);
+})('Alice');
+```
+This IIFE takes the parameter `name` and logs "Hello, Alice!" to the console.

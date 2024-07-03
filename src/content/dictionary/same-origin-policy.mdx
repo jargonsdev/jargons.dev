@@ -1,0 +1,18 @@
+---
+layout: ../../layouts/word.astro
+title: "Same-Origin Policy"
+---
+The Same-Origin Policy (SOP) is a security feature implemented in web browsers to prevent scripts running on one origin from accessing resources on a different origin. An origin is defined by the combination of protocol, domain, and port number.
+
+The SOP is a critical security measure that helps protect users from cross-site scripting (XSS) attacks, where malicious scripts from one origin attempt to access sensitive data from another origin. The policy ensures that scripts and resources from different origins cannot interfere with each other's operation, enhancing the security and privacy of web applications.
+
+Under the SOP, web pages can only interact with resources (such as cookies, DOM elements, and XMLHttpRequests) from the same origin. If a script attempts to access resources from a different origin, the browser will block the request, unless the target origin explicitly allows such access through mechanisms like CORS (Cross-Origin Resource Sharing).
+
+**Example (Violation):**
+An example of a violation of the Same-Origin Policy:
+```javascript
+// Attempting to access a resource from a different origin
+fetch('https://example.com/api/data')
+    .then(response => console.log(response))
+    .catch(error => console.error(error));
+```

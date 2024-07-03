@@ -1,0 +1,48 @@
+---
+layout: ../../layouts/word.astro
+title: "Wildcards"
+---
+Wildcards are symbols or characters that represent one or more other characters in pattern matching, search operations, or programming. They are used to enable flexible matching and searching of text, data, or other content by allowing for variable or unspecified portions of a string or dataset.
+
+Wildcards are commonly used in various contexts, including file searching, database queries, and programming languages. There are two primary types of wildcards:
+
+- **Asterisk (*)**: Represents zero or more characters. It can be used to match any sequence of characters.
+- **Question mark (?)**: Represents a single character. It can be used to match any one character.
+
+Wildcards are particularly useful for tasks such as searching files with similar names, filtering data, and constructing flexible queries.
+
+**Example:**
+
+In the context of searching files in a filesystem:
+
+```bash
+# List all files with .txt extension
+ls *.txt
+```
+
+In SQL, wildcards can be used in `LIKE` clauses to perform pattern matching in queries:
+
+```sql
+-- Select all entries where the name starts with 'A' and ends with 'n'
+SELECT * FROM users WHERE name LIKE 'A%n';
+```
+
+In JavaScript, a wildcard-like functionality can be implemented using regular expressions:
+
+```javascript
+// Example function to filter an array of strings using a wildcard pattern
+function filterWithWildcard(arr, pattern) {
+  // Convert the wildcard pattern to a regular expression
+  const regexPattern = new RegExp('^' + pattern.split('*').join('.*') + '$');
+  return arr.filter(item => regexPattern.test(item));
+}
+
+const filenames = ['file1.txt', 'file2.doc', 'notes.txt', 'image.png'];
+const filtered = filterWithWildcard(filenames, '*.txt');
+console.log(filtered); // Output: ['file1.txt', 'notes.txt']
+```
+
+In this example:
+- The `filterWithWildcard` function takes an array of strings and a wildcard pattern.
+- The wildcard pattern is converted to a regular expression.
+- The function filters the array to include only items that match the pattern, demonstrating how wildcards can be applied in different contexts.

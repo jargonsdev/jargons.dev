@@ -1,0 +1,14 @@
+---
+layout: ../../layouts/word.astro
+title: "Asynchronous"
+---
+Asynchronous, in the context of programming, refers to a method of executing code where tasks are performed independently of the main program flow. In an asynchronous operation, the program can continue to execute other tasks while waiting for the asynchronous task to complete. This allows for more efficient use of resources and can improve the overall responsiveness of the program.
+
+In synchronous programming, tasks are executed sequentially, meaning that each task must complete before the next one can begin. This can lead to blocking, where the program is waiting for a task to finish before it can proceed. Asynchronous programming allows tasks to be executed concurrently, so that the program can continue to run other tasks while waiting for the asynchronous task to complete.
+
+**Examples:**
+- **Asynchronous I/O:** Reading from or writing to a file can be done asynchronously, allowing the program to continue executing other tasks while waiting for the file operation to complete.
+- **Asynchronous Functions:** Functions in JavaScript can be declared as asynchronous using the `async` keyword, allowing them to execute asynchronously and return a promise that resolves with the function's return value.
+- **Asynchronous APIs:** Many web APIs, such as the Fetch API for making HTTP requests, are designed to be used asynchronously to avoid blocking the main program flow.
+
+Asynchronous programming is particularly useful for tasks that involve I/O operations, such as reading from files or making network requests, where waiting for the operation to complete would otherwise block the program. By using asynchronous techniques, programs can be more responsive and efficient.

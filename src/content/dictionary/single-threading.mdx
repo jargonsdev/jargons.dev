@@ -1,0 +1,36 @@
+---
+layout: ../../layouts/word.astro
+title: "Single-threading"
+---
+Single-threading is a programming and execution model where a process runs as a single sequence of instructions. In a single-threaded environment, tasks are executed one after the other without overlapping, meaning only one operation can be performed at a time within the same thread.
+
+In a single-threaded environment, the entire application runs on one thread, which processes one instruction at a time in a sequential manner. This model simplifies the design of the program since there is no need to manage multiple threads or handle synchronization issues. However, it can also limit the application's performance and responsiveness, especially for tasks that could benefit from parallel execution, such as I/O operations or computations.
+
+**Example:**
+
+Here is a basic example of single-threaded execution in JavaScript:
+
+```javascript
+// Single-threaded JavaScript code
+function task1() {
+  console.log('Executing Task 1');
+}
+
+function task2() {
+  console.log('Executing Task 2');
+}
+
+function task3() {
+  console.log('Executing Task 3');
+}
+
+task1();
+task2();
+task3();
+```
+
+In this example:
+- `task1`, `task2`, and `task3` are defined and called sequentially.
+- The tasks are executed one after the other, following the order they were called.
+
+JavaScript is inherently single-threaded in its execution model due to its use of the event loop. However, it can perform asynchronous operations (such as setTimeout, network requests, or file I/O) without blocking the main thread, making it appear as though multiple tasks are being executed concurrently, even though they are not.

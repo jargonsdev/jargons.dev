@@ -1,0 +1,23 @@
+---
+layout: ../../layouts/word.astro
+title: "SDP (Session Description Protocol)"
+---
+The Session Description Protocol (SDP) is a format for describing multimedia communication sessions. It is used to negotiate parameters for audio and video streams in real-time communication applications, such as Voice over IP (VoIP) and video conferencing.
+
+SDP is a text-based protocol that describes the media streams, codecs, and network information needed to establish a communication session between two or more parties. It includes details such as the session name, media types (e.g., audio, video), network addresses, and codec information.
+
+SDP is typically used in conjunction with other protocols, such as the Real-time Transport Protocol (RTP) for transporting media streams, and the Session Initiation Protocol (SIP) for session establishment and control.
+
+**Example (SDP Message):**
+An example of an SDP message describing a session with audio and video streams:
+```
+v=0
+o=- 2890844526 2890844526 IN IP4 192.168.1.1
+s=My VoIP Session
+c=IN IP4 192.168.1.1
+t=0 0
+m=audio 49170 RTP/AVP 0
+a=rtpmap:0 PCMU/8000
+m=video 51372 RTP/AVP 31
+a=rtpmap:31 H261/90000
+```

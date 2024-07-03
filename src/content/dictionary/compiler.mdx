@@ -1,0 +1,37 @@
+---
+layout: ../../layouts/word.astro
+title: "Compiler"
+---
+A compiler is a program that translates source code written in a high-level programming language into machine code or intermediate code that a computer's processor can execute.
+
+Compilers are essential tools in software development, enabling the transformation of human-readable code into a form that machines can understand and execute efficiently. The compilation process typically involves several stages:
+
+1. **Lexical Analysis:** The source code is divided into tokens, which are the smallest units of meaning, such as keywords, operators, and identifiers.
+2. **Syntax Analysis:** The tokens are analyzed according to the grammatical rules of the programming language to create a syntax tree or parse tree.
+3. **Semantic Analysis:** The compiler checks for semantic errors and ensures that the program's logic adheres to the rules and constraints of the programming language.
+4. **Optimization:** The compiler improves the performance and efficiency of the code without changing its output or behavior.
+5. **Code Generation:** The optimized intermediate representation is translated into machine code or bytecode.
+6. **Code Linking:** The machine code is linked with other code libraries and modules to create an executable program.
+
+Compilers are crucial for programming languages like C, C++, and Rust, among others, which require translation into machine code before execution. This process contrasts with interpreted languages like Python or JavaScript, where code is executed directly by an interpreter.
+
+**Example in C:**
+
+```c
+#include <stdio.h>
+
+int main() {
+    printf("Hello, World!\n");
+    return 0;
+}
+```
+
+In this example, the C source code must be compiled using a C compiler (such as `gcc` or `clang`) to produce an executable program. The compiler will translate the human-readable C code into machine code that the computer can run directly.
+
+To compile the code using `gcc`, you would run:
+
+```sh
+gcc -o hello hello.c
+```
+
+This command compiles the `hello.c` file and generates an executable named `hello`.

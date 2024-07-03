@@ -1,0 +1,33 @@
+---
+layout: ../../layouts/word.astro
+title: "Mixin"
+---
+A mixin is a way to reuse and share code in object-oriented programming languages that do not support multiple inheritance. It allows a class to inherit methods and properties from multiple classes.
+
+Mixins are used to add functionality to a class without using inheritance. Instead, mixins are "mixed in" to a class, adding their methods and properties to the class's own methods and properties. This allows for code reuse and helps avoid the issues associated with multiple inheritance, such as the diamond problem.
+
+**Example (JavaScript Mixin):**
+```javascript
+// Define a mixin
+let myMixin = {
+    sayHello() {
+        console.log('Hello!');
+    },
+    sayBye() {
+        console.log('Goodbye!');
+    }
+};
+
+// Use the mixin
+class MyClass {
+    constructor() {
+        Object.assign(this, myMixin);
+    }
+}
+
+let obj = new MyClass();
+obj.sayHello(); // Output: Hello!
+obj.sayBye();   // Output: Goodbye!
+```
+
+In this example, the `myMixin` object contains two methods, `sayHello` and `sayBye`. These methods are mixed into the `MyClass` class using `Object.assign`, allowing instances of `MyClass` to use these methods.

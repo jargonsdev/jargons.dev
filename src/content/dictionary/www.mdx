@@ -1,0 +1,29 @@
+---
+layout: ../../layouts/word.astro
+title: "World Wide Web (WWW)"
+---
+The World Wide Web (WWW or Web) is an information system where documents and other web resources are identified by URLs (Uniform Resource Locators), interlinked by hypertext links, and accessible via the Internet.
+
+The World Wide Web is a vast collection of interconnected documents and resources, such as text, images, videos, and other multimedia, that are accessed through web browsers. It was invented by Tim Berners-Lee in 1989 while working at CERN. The core components of the web include:
+
+- **URLs (Uniform Resource Locators):** Addresses that identify web resources.
+- **HTTP/HTTPS (Hypertext Transfer Protocol/Secure):** Protocols used for transmitting data over the web.
+- **HTML (Hypertext Markup Language):** The standard language for creating and designing web pages and applications.
+
+The web operates on a client-server model, where web browsers (clients) request resources from web servers using HTTP/HTTPS, and the servers respond with the requested resources.
+
+**Example (JavaScript):**
+
+Accessing a web resource using JavaScript and the Fetch API:
+
+```javascript
+fetch('https://api.example.com/data')
+  .then(response => response.json())
+  .then(data => console.log(data))
+  .catch(error => console.error('Error:', error));
+```
+
+In this example:
+- The `fetch` function sends a request to the specified URL (`https://api.example.com/data`).
+- The response is then converted to JSON format.
+- The data is logged to the console, or an error is logged if the request fails.

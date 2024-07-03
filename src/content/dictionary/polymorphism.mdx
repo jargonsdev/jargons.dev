@@ -1,0 +1,59 @@
+---
+layout: ../../layouts/word.astro
+title: "Polymorphism"
+---
+Polymorphism is a concept in programming that allows objects of different types to be treated as objects of a common supertype. It is the ability to present the same interface for different underlying forms (data types).
+
+Polymorphism is a core concept in object-oriented programming (OOP) that allows for methods to do different things based on the object it is acting upon, even if they share the same name. This can be achieved through method overriding (where a subclass provides a specific implementation of a method already defined in its superclass) or method overloading (where multiple methods have the same name but different parameters).
+
+**Example (JavaScript):**
+
+1. **Method Overriding:**
+   ```javascript
+   class Animal {
+       speak() {
+           console.log("The animal makes a sound.");
+       }
+   }
+
+   class Dog extends Animal {
+       speak() {
+           console.log("The dog barks.");
+       }
+   }
+
+   class Cat extends Animal {
+       speak() {
+           console.log("The cat meows.");
+       }
+   }
+
+   const myDog = new Dog();
+   const myCat = new Cat();
+   
+   myDog.speak(); // Output: The dog barks.
+   myCat.speak(); // Output: The cat meows.
+   ```
+
+   In this example, the `speak` method is overridden in the `Dog` and `Cat` subclasses to provide specific behavior.
+
+2. **Method Overloading (Not directly supported in JavaScript, but can be simulated):**
+   ```javascript
+   class Calculator {
+       add(a, b) {
+           if (typeof a === 'number' && typeof b === 'number') {
+               return a + b;
+           } else if (Array.isArray(a) && Array.isArray(b)) {
+               return a.concat(b);
+           } else {
+               throw new Error('Invalid arguments');
+           }
+       }
+   }
+
+   const calc = new Calculator();
+   console.log(calc.add(2, 3)); // Output: 5
+   console.log(calc.add([1, 2], [3, 4])); // Output: [1, 2, 3, 4]
+   ```
+
+   Here, the `add` method behaves differently based on the types of its arguments, simulating method overloading.

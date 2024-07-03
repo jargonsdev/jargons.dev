@@ -1,0 +1,17 @@
+---
+layout: ../../layouts/word.astro
+title: "RTSP (Real-Time Streaming Protocol)"
+---
+Real-Time Streaming Protocol (RTSP) is a network control protocol used for streaming media, such as audio and video, over the internet. It is designed to facilitate the transmission of real-time media from a server to clients, allowing for interactive and on-demand streaming applications.
+
+RTSP operates on top of the UDP or TCP transport layer protocols and is used to establish and control media sessions between a server and client. It provides commands for playing, pausing, and stopping media streams, as well as for negotiating parameters such as codec types and transmission rates.
+
+RTSP does not transmit the actual media data but rather provides a control interface for clients to request and control the streaming of media from servers. The actual media data is typically transmitted using other protocols, such as RTP (Real-time Transport Protocol) for the actual media transport.
+
+**Example (RTSP Request):**
+An example of an RTSP request to play a media stream:
+```
+PLAY rtsp://example.com/media/stream1 RTSP/1.0
+CSeq: 1
+Session: 12345678
+```

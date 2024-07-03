@@ -1,0 +1,46 @@
+---
+layout: ../../layouts/word.astro
+title: "Joins"
+---
+Joins are operations in database management systems that combine records from two or more tables based on a related column between them. They are used to retrieve data that is spread across multiple tables.
+
+Joins are essential for querying relational databases where data is normalized into separate tables. By using joins, you can retrieve a comprehensive set of data that combines information from multiple tables, linked by a common attribute. There are different types of joins, including inner join, left join, right join, and full outer join, each serving a specific purpose.
+
+**Example:**
+
+Here’s an example of using joins in SQL:
+
+Suppose we have two tables, `Orders` and `Customers`:
+
+`Orders` table:
+| OrderID | CustomerID | OrderDate   |
+|---------|------------|-------------|
+| 1       | 101        | 2024-06-01  |
+| 2       | 102        | 2024-06-02  |
+| 3       | 101        | 2024-06-03  |
+
+`Customers` table:
+| CustomerID | CustomerName |
+|------------|--------------|
+| 101        | Alice        |
+| 102        | Bob          |
+| 103        | Charlie      |
+
+To retrieve a list of orders along with the customer names, you can use an inner join:
+
+```sql
+SELECT Orders.OrderID, Customers.CustomerName, Orders.OrderDate
+FROM Orders
+INNER JOIN Customers ON Orders.CustomerID = Customers.CustomerID;
+```
+
+This will produce the following result:
+| OrderID | CustomerName | OrderDate   |
+|---------|--------------|-------------|
+| 1       | Alice        | 2024-06-01  |
+| 2       | Bob          | 2024-06-02  |
+| 3       | Alice        | 2024-06-03  |
+
+In this example:
+- The `INNER JOIN` clause combines rows from the `Orders` and `Customers` tables where there is a match in the `CustomerID` column.
+- The resulting table includes only the orders with matching customer records, showing the `OrderID`, `CustomerName`, and `OrderDate`.

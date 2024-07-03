@@ -1,0 +1,41 @@
+---
+layout: ../../layouts/word.astro
+title: "Machine Learning"
+---
+Machine Learning (ML) is a subset of artificial intelligence (AI) that enables systems to learn from data, identify patterns, and make decisions with minimal human intervention. It involves the use of algorithms and statistical models to allow computers to improve their performance on a specific task through experience.
+
+In machine learning, algorithms are trained on large datasets to recognize patterns and make predictions or decisions. The learning process can be supervised, where the model is trained on labeled data; unsupervised, where the model identifies patterns in unlabeled data; or semi-supervised, combining both approaches. There are also reinforcement learning methods, where models learn to make sequences of decisions by receiving feedback in the form of rewards or penalties.
+
+For example, in supervised learning, a model could be trained to recognize images of cats and dogs by being fed a large number of labeled images. Once trained, the model can accurately classify new, unseen images as either a cat or a dog.
+
+Machine learning applications are vast and include fields such as natural language processing, computer vision, healthcare, finance, and more. It powers technologies like recommendation systems, spam filters, autonomous vehicles, and predictive analytics.
+
+**Example in Python:**
+
+```python
+from sklearn.model_selection import train_test_split
+from sklearn.datasets import load_iris
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.metrics import accuracy_score
+
+# Load dataset
+data = load_iris()
+X = data.data
+y = data.target
+
+# Split data into training and test sets
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42)
+
+# Train a Random Forest classifier
+clf = RandomForestClassifier(n_estimators=100, random_state=42)
+clf.fit(X_train, y_train)
+
+# Make predictions on the test set
+y_pred = clf.predict(X_test)
+
+# Evaluate the model
+accuracy = accuracy_score(y_test, y_pred)
+print(f"Accuracy: {accuracy * 100:.2f}%")
+```
+
+In this example, a machine learning model is trained to classify iris flowers into different species based on their features. The RandomForestClassifier from the scikit-learn library is used to train the model and make predictions. The model's accuracy is then evaluated based on its performance on a test dataset.

@@ -1,0 +1,35 @@
+---
+layout: ../../layouts/word.astro
+title: "Constructors"
+---
+A constructor is a special function or method used to initialize objects when they are created. It sets up the initial state of an object by assigning values to its properties and performing any setup tasks required for the object.
+
+Constructors are commonly used in object-oriented programming languages to create and initialize objects. In many languages, a constructor has the same name as the class and is called automatically when a new instance of the class is created. Constructors can take parameters to initialize an object with specific values.
+
+**Example:**
+
+In JavaScript, constructors are defined within classes using the `constructor` method. Here’s an example:
+
+```javascript
+class Person {
+  constructor(name, age) {
+    this.name = name;
+    this.age = age;
+  }
+
+  greet() {
+    console.log(`Hello, my name is ${this.name} and I am ${this.age} years old.`);
+  }
+}
+
+const person1 = new Person('Alice', 30);
+person1.greet(); // Output: Hello, my name is Alice and I am 30 years old.
+
+const person2 = new Person('Bob', 25);
+person2.greet(); // Output: Hello, my name is Bob and I am 25 years old.
+```
+
+In this example:
+- The `Person` class has a constructor method that takes two parameters, `name` and `age`.
+- When a new `Person` object is created (e.g., `new Person('Alice', 30)`), the constructor initializes the object's `name` and `age` properties with the provided values.
+- The `greet` method can then be used to display a personalized greeting based on the object's properties.

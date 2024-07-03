@@ -1,0 +1,34 @@
+---
+layout: ../../layouts/word.astro
+title: "Smoke Test"
+---
+A smoke test is a preliminary testing process that checks the basic functionality of an application to ensure that it works as expected. It is a type of software testing that focuses on verifying the core features and functionalities of a system before more in-depth testing is performed.
+
+Smoke testing is typically performed after a new build or version of an application is created. The purpose is to verify that the critical components of the software are working correctly and that the application is stable enough for further testing. This type of test is often automated and is part of continuous integration and deployment pipelines.
+
+**Example (JavaScript):**
+
+Here is an example of a simple smoke test for a JavaScript application using a testing framework like Jest.
+
+```javascript
+// app.js
+function sum(a, b) {
+  return a + b;
+}
+
+module.exports = sum;
+
+// app.test.js
+const sum = require('./app');
+
+test('Smoke test: sum function', () => {
+  expect(sum(1, 2)).toBe(3);
+  expect(sum(0, 0)).toBe(0);
+  expect(sum(-1, 1)).toBe(0);
+});
+```
+
+In this example:
+- The `sum` function is a basic functionality of the application.
+- The smoke test checks if the `sum` function works correctly by testing it with a few different inputs.
+- If the test passes, it indicates that the core functionality of the `sum` function is working correctly, allowing further, more detailed testing to proceed.

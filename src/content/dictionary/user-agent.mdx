@@ -1,0 +1,20 @@
+---
+layout: ../../layouts/word.astro
+title: "User Agent"
+---
+A user agent is a string that a web browser or other client software sends to web servers to identify itself and provide information about the client software and the operating system it is running on.
+
+The user agent string contains details such as the browser name, version, rendering engine, operating system, and device type. Web servers use this information to deliver content that is optimized for the specific client or to track usage statistics.
+
+**Example:**
+Here is an example of accessing the user agent string in JavaScript:
+
+```javascript
+// Accessing the user agent string in JavaScript
+const userAgent = navigator.userAgent;
+console.log(userAgent); 
+// Example output: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36"
+```
+
+**Explanation of the Example:**
+- **navigator.userAgent:** This property of the `navigator` object in JavaScript returns the user agent string of the browser. The example output shows a typical user agent string, which includes information about the browser (Chrome), its version (91.0.4472.124), the rendering engine (AppleWebKit/537.36), and the operating system (Windows NT 10.0; Win64; x64).

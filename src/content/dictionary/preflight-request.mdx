@@ -1,0 +1,28 @@
+---
+layout: ../../layouts/word.astro
+title: "Preflight Request"
+---
+A preflight request is a CORS (Cross-Origin Resource Sharing) mechanism in web browsers that is used to check if the actual request (e.g., a POST request) is safe to send to a server before sending the actual request. It is an HTTP OPTIONS request sent by the browser to the server to determine whether the actual request should be allowed.
+
+When a web application makes a cross-origin request (i.e., a request to a different domain, protocol, or port than the one from which the current document originated), the browser sends a preflight request to the server to ask for permission to send the actual request. This helps prevent certain types of cross-site request forgery (CSRF) attacks.
+
+**Example:**
+Suppose you have a web application running on `https://example.com` that makes a cross-origin POST request to `https://api.example.com/data`. Before sending the actual POST request, the browser sends a preflight request (an OPTIONS request) to `https://api.example.com/data` to check if the POST request is allowed.
+
+**Example (JavaScript - Fetch API):**
+Here's an example of how you might make a cross-origin POST request with the Fetch API, which triggers a preflight request:
+
+```javascript
+fetch('https://api.example.com/data', {
+    method: 'POST',
+    headers: {
+        'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ key: 'value' })
+})
+.then(response => response.json())
+.then(data => console.log(data))
+.catch(error => console.error(error));
+```
+
+In this example, before the actual POST request is sent, the browser first sends an OPTIONS request to `https://api.example.com/data` to check if the server allows the POST request. If the server responds with the appropriate CORS headers indicating that the request is allowed, then the actual POST request is sent.

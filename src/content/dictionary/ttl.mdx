@@ -1,0 +1,17 @@
+---
+layout: ../../layouts/word.astro
+title: "TTL (Time To Live)"
+---
+TTL, or Time To Live, is a term used in computer networking and systems to specify the lifespan or longevity of data. It represents the amount of time that a piece of data, such as a packet or a cache entry, is allowed to remain active or valid before it is discarded or considered stale.
+
+## Networking
+In networking, TTL is commonly used in the context of IP (Internet Protocol) packets. The TTL field in an IP packet header indicates the maximum number of network hops (routers) that the packet can pass through before being discarded. Each router decrements the TTL value by at least one when forwarding the packet, and if the TTL reaches zero, the packet is discarded.
+
+**Example (Networking):**
+Suppose a computer sends an IP packet with a TTL value of 64. If the packet passes through four routers before reaching its destination, each router will decrement the TTL value by one. If the TTL reaches zero before the packet reaches the destination, the packet is discarded, and an ICMP (Internet Control Message Protocol) message may be sent back to the sender.
+
+## Caching
+In the context of caching, TTL is used to specify how long a cache entry should be considered valid before it expires. Once the TTL for a cache entry expires, the data is considered stale, and a new value must be fetched or computed to refresh the cache.
+
+**Example (Caching):**
+In a caching system, a cache entry may have a TTL of 60 seconds. This means that the cached data will be considered valid for 60 seconds after it is stored. After 60 seconds, the data is considered stale, and the next request for that data will result in a cache miss, requiring the data to be fetched or computed again.

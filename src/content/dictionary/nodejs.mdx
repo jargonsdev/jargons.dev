@@ -1,0 +1,23 @@
+---
+layout: ../../layouts/word.astro
+title: "Node.js"
+---
+Node.js is an open-source, cross-platform JavaScript runtime environment that allows developers to run JavaScript code outside of a web browser. It is built on the V8 JavaScript engine, which is the same engine that powers the Google Chrome browser's JavaScript execution.
+
+Node.js enables developers to use JavaScript to write server-side code, providing a way to create scalable and efficient web applications. It uses an event-driven, non-blocking I/O model, which makes it lightweight and efficient, especially for applications that require real-time communication or data streaming.
+
+**Example:**
+```javascript
+// Example of a simple HTTP server using Node.js
+const http = require('http');
+
+const server = http.createServer((req, res) => {
+  res.statusCode = 200;
+  res.setHeader('Content-Type', 'text/plain');
+  res.end('Hello, World!\n');
+});
+
+server.listen(3000, '127.0.0.1', () => {
+  console.log('Server running at http://127.0.0.1:3000/');
+});
+```

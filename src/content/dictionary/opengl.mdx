@@ -1,0 +1,50 @@
+---
+layout: ../../layouts/word.astro
+title: "OpenGL"
+---
+OpenGL (Open Graphics Library) is a cross-platform, open-standard API (Application Programming Interface) for rendering 2D and 3D vector graphics. It is widely used in computer graphics, video games, CAD (Computer-Aided Design), virtual reality, and scientific visualization.
+
+OpenGL provides a set of functions that allow developers to create and manipulate graphics objects and images. It abstracts the underlying hardware, enabling developers to write graphics programs without needing to understand the specific details of the hardware.
+
+**Example:**
+Here’s a simple example of an OpenGL program written in C++ that initializes a window and draws a triangle:
+
+```cpp
+#include <GL/glut.h>  // GLUT, include glu.h and gl.h
+
+// Initialize OpenGL Graphics
+void initGL() {
+    glClearColor(0.0f, 0.0f, 0.0f, 1.0f); // Set background color to black and opaque
+    glClearDepth(1.0f);                   // Set background depth to farthest
+    glEnable(GL_DEPTH_TEST);   // Enable depth testing for z-culling
+    glDepthFunc(GL_LEQUAL);    // Set the type of depth-test
+    glShadeModel(GL_SMOOTH);   // Enable smooth shading
+    glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);  // Nice perspective corrections
+}
+
+// Function to draw a triangle
+void display() {
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // Clear color and depth buffers
+    glLoadIdentity();                 // Reset the model-view matrix
+
+    glBegin(GL_TRIANGLES);            // Begin drawing the triangle
+        glVertex3f(0.0f, 1.0f, 0.0f); // Top
+        glVertex3f(-1.0f, -1.0f, 0.0f); // Bottom left
+        glVertex3f(1.0f, -1.0f, 0.0f); // Bottom right
+    glEnd();   // End of drawing the triangle
+
+    glutSwapBuffers();  // Swap the front and back frame buffers (double buffering)
+}
+
+int main(int argc, char** argv) {
+    glutInit(&argc, argv);            // Initialize GLUT
+    glutInitDisplayMode(GLUT_DOUBLE); // Enable double buffered mode
+    glutInitWindowSize(640, 480);     // Set the window's initial width & height
+    glutInitWindowPosition(50, 50);   // Position the window's initial top-left corner
+    glutCreateWindow("OpenGL Setup Test"); // Create window with the given title
+    glutDisplayFunc(display);         // Register callback handler for window re-paint event
+    initGL();                         // Our own OpenGL initialization
+    glutMainLoop();                   // Enter the infinite event-processing loop
+    return 0;
+}
+```

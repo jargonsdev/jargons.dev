@@ -1,0 +1,32 @@
+---
+layout: ../../layouts/word.astro
+title: "First-Class Function"
+---
+In programming language design, a first-class function is a function that can be treated like any other variable or value. This means that a first-class function can be passed as an argument to other functions, returned as a value from other functions, and assigned to variables.
+
+The concept of first-class functions is a fundamental feature of functional programming languages. It allows functions to be manipulated and used as data, enabling powerful programming techniques such as higher-order functions, closures, and function composition.
+
+**Example:**
+```javascript
+// Assigning a function to a variable
+const greet = function(name) {
+    return `Hello, ${name}!`;
+};
+
+// Passing a function as an argument to another function
+function sayHello(greetingFunction) {
+    console.log(greetingFunction("John"));
+}
+
+sayHello(greet);
+
+// Returning a function from another function
+function createGreeter() {
+    return function(name) {
+        return `Hola, ${name}!`;
+    };
+}
+
+const spanishGreeter = createGreeter();
+console.log(spanishGreeter("Maria"));
+```

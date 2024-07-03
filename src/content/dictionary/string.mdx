@@ -1,0 +1,68 @@
+---
+layout: ../../layouts/word.astro
+title: "String"
+---
+A String is a sequence of characters used to represent text in programming. Strings can include letters, numbers, symbols, and spaces. In most programming languages, strings are a fundamental data type and can be manipulated using various built-in methods and functions.
+
+**Examples:**
+
+**JavaScript:**
+
+1. **Creating Strings:**
+   ```javascript
+   let greeting = "Hello, world!";
+   let singleQuoteString = 'Single quotes work too.';
+   let templateLiteral = `You can use template literals for strings too.`;
+   ```
+
+2. **String Concatenation:**
+   ```javascript
+   let firstName = "John";
+   let lastName = "Doe";
+   let fullName = firstName + " " + lastName;
+   console.log(fullName); // Output: John Doe
+   ```
+
+3. **String Methods:**
+   ```javascript
+   let message = "JavaScript is awesome!";
+   
+   // Length of the string
+   console.log(message.length); // Output: 21
+   
+   // Convert to uppercase
+   console.log(message.toUpperCase()); // Output: JAVASCRIPT IS AWESOME!
+   
+   // Convert to lowercase
+   console.log(message.toLowerCase()); // Output: javascript is awesome!
+   
+   // Find a substring
+   console.log(message.indexOf("awesome")); // Output: 15
+   
+   // Extract a substring
+   console.log(message.slice(0, 10)); // Output: JavaScript
+   
+   // Replace a substring
+   let newMessage = message.replace("awesome", "fantastic");
+   console.log(newMessage); // Output: JavaScript is fantastic!
+   ```
+
+4. **Template Literals:**
+   ```javascript
+   let age = 30;
+   let introduction = `My name is ${fullName} and I am ${age} years old.`;
+   console.log(introduction); // Output: My name is John Doe and I am 30 years old.
+   ```
+
+5. **Multiline Strings:**
+   ```javascript
+   let multilineString = `This is a string
+   that spans across
+   multiple lines.`;
+   
+   console.log(multilineString);
+   // Output:
+   // This is a string
+   // that spans across
+   // multiple lines.
+   ```

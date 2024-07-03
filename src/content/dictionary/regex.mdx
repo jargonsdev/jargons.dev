@@ -1,0 +1,20 @@
+---
+layout: ../../layouts/word.astro
+title: "Regular Expression (regex)"
+---
+A regular expression (regex or regexp) is a sequence of characters that define a search pattern. It is a powerful tool used for pattern matching and string manipulation in programming and text processing. Regular expressions provide a concise and flexible means of identifying patterns in text data.
+
+Regular expressions consist of normal characters, such as letters and digits, which match themselves, and special characters, which have special meanings. These special characters can be used to define the rules for matching patterns, such as specifying the number of occurrences of a character or defining alternative patterns.
+
+**Example (JavaScript):**
+```javascript
+const regex = /hello/;
+const str = 'hello world';
+
+if (regex.test(str)) {
+    console.log('Match found');
+} else {
+    console.log('Match not found');
+}
+```
+In this example, the regular expression `/hello/` is used to search for the string `'hello'` in the variable `str`. The `test` method is used to check if the regex pattern matches the string.

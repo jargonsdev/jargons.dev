@@ -1,0 +1,44 @@
+---
+layout: ../../layouts/word.astro
+title: "Natural Language Processing (NLP)"
+---
+Natural Language Processing (NLP) is a field of artificial intelligence (AI) that focuses on the interaction between computers and humans through natural language. It involves the ability of computers to understand, interpret, generate, and manipulate human language.
+
+NLP combines computational linguistics with machine learning and deep learning models to enable computers to process and understand human language. It encompasses a variety of tasks including:
+
+- **Text Analysis:** Extracting meaningful information from text.
+- **Speech Recognition:** Converting spoken language into text.
+- **Machine Translation:** Automatically translating text or speech from one language to another.
+- **Sentiment Analysis:** Determining the sentiment or emotional tone behind a body of text.
+- **Chatbots and Virtual Assistants:** Creating systems that can carry on a conversation with users.
+- **Information Retrieval:** Finding relevant information within large datasets.
+- **Part-of-Speech Tagging:** Identifying the grammatical parts of speech in a text (e.g., nouns, verbs, adjectives).
+
+NLP techniques often involve the use of algorithms to parse and understand the structure of sentences, as well as machine learning models to predict and interpret meanings.
+
+**Example in Python:**
+
+```python
+import nltk
+from nltk.tokenize import word_tokenize
+from nltk.corpus import stopwords
+from nltk.probability import FreqDist
+
+# Sample text
+text = "Natural Language Processing is a fascinating field of AI that focuses on the interaction between computers and humans through natural language."
+
+# Tokenize the text
+tokens = word_tokenize(text)
+
+# Remove stopwords
+stop_words = set(stopwords.words('english'))
+filtered_tokens = [word for word in tokens if word.lower() not in stop_words]
+
+# Calculate frequency distribution
+freq_dist = FreqDist(filtered_tokens)
+
+# Display the most common words
+print(freq_dist.most_common(5))
+```
+
+In this example, the Natural Language Toolkit (nltk) in Python is used to tokenize a sample text, remove common stopwords, and calculate the frequency distribution of the remaining words. This demonstrates basic NLP tasks such as tokenization, stopword removal, and frequency analysis.

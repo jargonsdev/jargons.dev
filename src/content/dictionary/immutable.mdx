@@ -1,0 +1,58 @@
+---
+layout: ../../layouts/word.astro
+title: "Immutable"
+---
+Immutable refers to an object whose state cannot be modified after it is created. In programming, immutability is a property that ensures data remains unchanged over time, providing predictability and stability within the code.
+
+Immutable objects cannot be altered once they are instantiated. Any operation that seems to modify the object actually returns a new object with the modified state, leaving the original object unchanged. Immutability is a key concept in functional programming and is used to avoid side effects and ensure data integrity.
+
+**Examples in JavaScript:**
+
+1. **Immutable Strings:**
+   In JavaScript, strings are immutable. Any method that appears to modify a string will return a new string instead.
+   ```javascript
+   let originalString = "hello";
+   let uppercasedString = originalString.toUpperCase();
+
+   console.log(originalString); // "hello"
+   console.log(uppercasedString); // "HELLO"
+   ```
+
+2. **Immutable Objects with `Object.freeze()`:**
+   You can create immutable objects in JavaScript using `Object.freeze()`. This method prevents modification of existing properties and prevents adding or removing properties.
+   ```javascript
+   const person = Object.freeze({
+       name: "Alice",
+       age: 30
+   });
+
+   person.age = 31; // Attempt to modify will not change the object
+   person.city = "New York"; // Attempt to add a new property will not work
+
+   console.log(person); // { name: "Alice", age: 30 }
+   ```
+
+3. **Immutable Arrays:**
+   JavaScript arrays are mutable by default, but you can use methods like `concat()`, `slice()`, and the spread operator to create new arrays instead of modifying the original one.
+   ```javascript
+   const originalArray = [1, 2, 3];
+   const newArray = originalArray.concat(4);
+
+   console.log(originalArray); // [1, 2, 3]
+   console.log(newArray); // [1, 2, 3, 4]
+   ```
+   
+### Example of Immutable Data Structure in JavaScript:
+
+Here’s an example of using the `Immutable.js` library to create an immutable data structure:
+```javascript
+const { Map } = require('immutable');
+
+let originalMap = Map({ a: 1, b: 2, c: 3 });
+let newMap = originalMap.set('b', 50);
+
+console.log(originalMap.get('b')); // 2
+console.log(newMap.get('b')); // 50
+```
+
+In this example, `originalMap` remains unchanged after `newMap` is created, demonstrating the concept of immutability in practice.

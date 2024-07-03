@@ -1,0 +1,53 @@
+---
+layout: ../../layouts/word.astro
+title: "XSS (Cross-Site Scripting)"
+---
+Cross-Site Scripting (XSS) is a type of security vulnerability typically found in web applications. It allows attackers to inject malicious scripts into content that is delivered to users, potentially leading to the execution of these scripts in the context of the victim's browser.
+
+XSS attacks occur when an application includes untrusted data in a web page without proper validation or escaping. This can allow attackers to execute scripts in the user's browser, which can be used to steal cookies, session tokens, or other sensitive information, deface websites, or redirect users to malicious sites.
+
+**Example (JavaScript):**
+
+Here is an example of how an XSS vulnerability might occur in a JavaScript web application and how to mitigate it:
+
+**Vulnerable Code:**
+```html
+<!DOCTYPE html>
+<html>
+<head>
+  <title>XSS Example</title>
+</head>
+<body>
+  <h1>Welcome, <span id="username"></span></h1>
+  <script>
+    // This script takes a user-provided input from the URL and inserts it into the page without sanitization.
+    const urlParams = new URLSearchParams(window.location.search);
+    const username = urlParams.get('username');
+    document.getElementById('username').innerHTML = username;
+  </script>
+</body>
+</html>
+```
+
+If the user visits `https://example.com?username=<script>alert('XSS')</script>`, the script alert will execute in their browser, demonstrating a reflected XSS vulnerability.
+
+**Secure Code:**
+```html
+<!DOCTYPE html>
+<html>
+<head>
+  <title>XSS Example</title>
+</head>
+<body>
+  <h1>Welcome, <span id="username"></span></h1>
+  <script>
+    // This script safely handles user input by encoding it before inserting it into the page.
+    const urlParams = new URLSearchParams(window.location.search);
+    const username = urlParams.get('username');
+    document.getElementById('username').textContent = username;
+  </script>
+</body>
+</html>
+```
+
+In this secure version, `textContent` is used instead of `innerHTML`, which ensures that the input is treated as plain text rather than HTML, preventing the execution of any injected scripts.

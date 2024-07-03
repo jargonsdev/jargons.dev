@@ -1,0 +1,40 @@
+---
+layout: ../../layouts/word.astro
+title: "JSON"
+---
+JSON (JavaScript Object Notation) is a lightweight data interchange format that is easy for humans to read and write, and easy for machines to parse and generate. It is used to represent structured data as text.
+
+JSON is commonly used for transmitting data in web applications (e.g., sending data from the server to the client, or vice versa). JSON syntax is a subset of the JavaScript object notation syntax:
+
+- Data is represented in key-value pairs.
+- Curly braces `{}` hold objects.
+- Square brackets `[]` hold arrays.
+
+**Example:**
+Here’s an example of a JSON object and how to parse and generate JSON in JavaScript:
+
+```javascript
+// JSON object as a string
+const jsonString = '{"name": "John", "age": 30, "city": "New York"}';
+
+// Parse JSON string to a JavaScript object
+const jsonObject = JSON.parse(jsonString);
+
+console.log(jsonObject.name); // Output: John
+console.log(jsonObject.age); // Output: 30
+console.log(jsonObject.city); // Output: New York
+
+// Modify the JavaScript object
+jsonObject.age = 31;
+
+// Convert JavaScript object back to JSON string
+const newJsonString = JSON.stringify(jsonObject);
+
+console.log(newJsonString); // Output: {"name":"John","age":31,"city":"New York"}
+```
+
+In this example:
+- A JSON string (`jsonString`) is defined.
+- The `JSON.parse` method is used to convert the JSON string to a JavaScript object (`jsonObject`).
+- The properties of the `jsonObject` are accessed and modified.
+- The `JSON.stringify` method is used to convert the modified JavaScript object back into a JSON string (`newJsonString`).

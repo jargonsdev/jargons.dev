@@ -1,0 +1,63 @@
+---
+layout: ../../layouts/word.astro
+title: "Sitemap"
+---
+A sitemap is a file or page on a website that provides a structured list of the website's pages, making it easier for search engines and users to navigate the site and find relevant content.
+
+Sitemaps serve as a blueprint for a website, outlining the hierarchy and relationships between different pages. There are two primary types of sitemaps: XML sitemaps and HTML sitemaps.
+
+**XML Sitemap Example:**
+An XML sitemap example that might be submitted to search engines:
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+    <url>
+        <loc>https://www.example.com/</loc>
+        <lastmod>2024-06-22</lastmod>
+        <changefreq>daily</changefreq>
+        <priority>1.0</priority>
+    </url>
+    <url>
+        <loc>https://www.example.com/about</loc>
+        <lastmod>2024-06-20</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    <url>
+        <loc>https://www.example.com/contact</loc>
+        <lastmod>2024-06-18</lastmod>
+        <changefreq>yearly</changefreq>
+        <priority>0.5</priority>
+    </url>
+</urlset>
+```
+
+**HTML Sitemap Example:**
+An HTML sitemap example that might be included on a website's page:
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HTML Sitemap</title>
+</head>
+<body>
+    <h1>HTML Sitemap</h1>
+    <ul>
+        <li><a href="/">Home</a></li>
+        <li><a href="/about">About Us</a></li>
+        <li><a href="/services">Services</a>
+            <ul>
+                <li><a href="/services/design">Design</a></li>
+                <li><a href="/services/development">Development</a></li>
+            </ul>
+        </li>
+        <li><a href="/contact">Contact Us</a></li>
+        <li><a href="/blog">Blog</a></li>
+    </ul>
+</body>
+</html>
+```

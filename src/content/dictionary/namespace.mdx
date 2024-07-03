@@ -1,0 +1,36 @@
+---
+layout: ../../layouts/word.astro
+title: "Namespace"
+---
+A namespace is a declarative region in a programming language that is used to organize code elements, such as functions, classes, and variables, to prevent name collisions and to make the code more readable and maintainable. Namespaces help to group related code together and avoid conflicts with other parts of the codebase.
+
+In languages that support namespaces, such as C++, C#, and TypeScript, namespaces provide a way to logically group related code elements under a common name. This helps to avoid naming conflicts that can occur when different parts of a program use the same names for different purposes.
+
+**Example (C++):**
+```cpp
+// Declaration of a namespace
+namespace Math {
+    int add(int a, int b) {
+        return a + b;
+    }
+}
+
+// Usage of the namespace
+int result = Math::add(5, 3);
+```
+
+**Example (C#):**
+```csharp
+// Declaration of a namespace
+namespace MyNamespace {
+    public class MyClass {
+        public void MyMethod() {
+            Console.WriteLine("Hello, World!");
+        }
+    }
+}
+
+// Usage of the namespace
+MyNamespace.MyClass obj = new MyNamespace.MyClass();
+obj.MyMethod();
+```

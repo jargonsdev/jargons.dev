@@ -1,0 +1,20 @@
+---
+layout: ../../layouts/word.astro
+title: "BigInt"
+---
+BigInt is a built-in object in JavaScript that provides a way to represent arbitrarily large integers. It allows developers to work with integers larger than the maximum safe integer size (`Number.MAX_SAFE_INTEGER`), which is `2^53 - 1`. BigInts can represent integers with arbitrary precision, limited only by available memory.
+
+In JavaScript, integers are represented as 64-bit floating-point numbers using the IEEE 754 standard, which limits the maximum safe integer size. BigInts, on the other hand, are represented using a different internal format that allows for arbitrary precision, making them suitable for tasks that require working with very large integers, such as cryptography or large numerical calculations.
+
+**Examples:**
+```javascript
+// Creating a BigInt
+const bigInt = BigInt(Number.MAX_SAFE_INTEGER) + BigInt(1);
+console.log(bigInt); // Output: 9007199254740992n
+
+// Performing arithmetic operations with BigInt
+const result = bigInt * BigInt(2);
+console.log(result); // Output: 18014398509481984n
+```
+
+BigInts are useful for tasks that involve working with very large integers, such as cryptographic algorithms, mathematical calculations, or any scenario where precision is required beyond the limits of standard JavaScript integers.

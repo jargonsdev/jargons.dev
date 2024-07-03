@@ -1,0 +1,23 @@
+---
+layout: ../../layouts/word.astro
+title: "WebAssembly (WASM)"
+---
+WebAssembly (abbreviated Wasm) is a binary instruction format for a stack-based virtual machine. It is designed as a portable compilation target for programming languages, enabling code written in languages such as C, C++, and Rust to be run on web browsers.
+
+- **Portable Compilation Target:** WebAssembly is designed to be a compilation target for high-level programming languages, allowing them to be compiled into a binary format that can be executed in a web browser.
+  
+- **Efficient and Fast:** WebAssembly is designed to be efficient and fast, with performance close to that of native code. This makes it suitable for performance-critical applications such as games and multimedia applications.
+
+**Example:**
+A simple example of using WebAssembly with JavaScript:
+
+```javascript
+// Load and instantiate a WebAssembly module
+fetch('example.wasm')
+  .then(response => response.arrayBuffer())
+  .then(buffer => WebAssembly.instantiate(buffer))
+  .then(result => {
+    // Call a function from the WebAssembly module
+    result.instance.exports.myFunction();
+  });
+```

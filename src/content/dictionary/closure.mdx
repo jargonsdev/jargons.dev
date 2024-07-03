@@ -1,0 +1,30 @@
+---
+layout: ../../layouts/word.astro
+title: "Closure"
+---
+In programming, a closure is a function that has access to its own scope (lexical scope) as well as the scope in which it was defined. This means that a closure can access variables and parameters defined in its own scope, as well as those defined in the scope of the outer function.
+
+Closures are a powerful feature of programming languages that support first-class functions, such as JavaScript. They allow functions to maintain access to variables from their parent scope even after the parent function has finished executing. This enables functions to "remember" their lexical environment, making them useful for tasks such as creating private variables and implementing callback functions.
+
+**Key Concepts of Closures:**
+1. **Lexical Scope:** Closures have access to variables in their lexical scope, even after the outer function has finished executing.
+2. **Access to Outer Scope:** Closures can access variables and parameters from the scope in which they were defined, even if those variables are no longer in scope.
+3. **Function Factory:** Closures are often used to create functions with unique behavior based on the variables in their lexical scope.
+
+**Example:**
+```javascript
+function outerFunction() {
+  let outerVariable = 'I am from the outer function';
+
+  function innerFunction() {
+    console.log(outerVariable);
+  }
+
+  return innerFunction;
+}
+
+const closure = outerFunction();
+closure(); // Output: I am from the outer function
+```
+
+In this example, `innerFunction` is a closure that has access to the `outerVariable` defined in the scope of `outerFunction`. Even though `outerFunction` has finished executing by the time `innerFunction` is called, `innerFunction` still has access to `outerVariable` because of the closure.

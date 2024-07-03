@@ -1,0 +1,18 @@
+---
+layout: ../../layouts/word.astro
+title: "Deserialization"
+---
+Deserialization is the process of converting data that has been serialized (converted into a format that can be easily stored or transmitted) back into its original form. It is the reverse process of serialization.
+
+Serialization is commonly used to store or transmit data structures, objects, or complex data types in a format that can be easily reconstructed later. Deserialization is the process of reconstructing the original data structure from the serialized form.
+
+**Key Concepts of Deserialization:**
+1. **Serialization Formats:** Deserialization depends on the serialization format used. Common formats include JSON (JavaScript Object Notation), XML (eXtensible Markup Language), and binary serialization formats.
+2. **Object Reconstruction:** During deserialization, the serialized data is used to reconstruct the original object or data structure, including its properties and relationships.
+3. **Data Validation:** Deserialization often involves validating the serialized data to ensure that it is well-formed and does not contain errors or malicious content.
+4. **Security Considerations:** Deserialization can pose security risks, such as deserialization of untrusted data leading to remote code execution (a vulnerability known as "deserialization vulnerability").
+
+**Example:**
+Consider a simple example of deserialization in JSON format:
+- **Serialized Data (JSON):** `{"name": "Alice", "age": 30}`
+- **Deserialized Object:** An object with properties `name` set to "Alice" and `age` set to 30.

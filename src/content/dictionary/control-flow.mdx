@@ -1,0 +1,30 @@
+---
+layout: ../../layouts/word.astro
+title: "Control Flow"
+---
+Control flow refers to the order in which the individual statements, instructions, or function calls of a program are executed. It determines the path that the program takes from start to finish, based on conditions and decisions made during execution.
+
+In programming, control flow is managed using control structures such as loops, conditionals, and function calls. These structures dictate the flow of execution and allow the program to make decisions, repeat tasks, and respond to different inputs or conditions.
+
+**Key Concepts of Control Flow:**
+1. **Sequential Execution:** By default, statements in a program are executed sequentially, from top to bottom.
+2. **Conditional Execution:** Conditional statements, such as `if`, `else`, and `switch`, allow the program to execute different blocks of code based on specified conditions.
+3. **Loops:** Looping structures, such as `for`, `while`, and `do-while`, allow the program to repeat a block of code multiple times until a certain condition is met.
+4. **Function Calls:** Functions allow for modular programming and can be called to execute a specific block of code at any point in the program's execution.
+5. **Error Handling:** Control flow also includes mechanisms for handling errors and exceptions, such as `try-catch` blocks, which allow the program to recover from errors gracefully.
+
+**Example:**
+```javascript
+function checkAge(age) {
+    if (age >= 18) {
+        console.log("You are an adult.");
+    } else {
+        console.log("You are a minor.");
+    }
+}
+
+checkAge(20); // Output: You are an adult.
+checkAge(15); // Output: You are a minor.
+```
+
+In this example, the `checkAge` function uses a conditional statement (`if-else`) to determine whether the provided age is greater than or equal to 18, and prints a message based on the result.

@@ -1,0 +1,81 @@
+---
+layout: ../../layouts/word.astro
+title: 'Fullstack'
+---
+Fullstack refers to a type of software development that involves both front-end (client-side) and back-end (server-side) development. A fullstack developer is proficient in working with all the layers of a web application, from the user interface and user experience on the client side to the server, database, and application logic on the server side.
+
+Fullstack development requires knowledge and skills in various technologies and tools used for both front-end and back-end development. This includes languages, frameworks, and libraries for creating user interfaces, managing databases, handling server logic, and integrating different parts of a web application. Fullstack developers can build a complete web application from start to finish.
+
+**Examples of Fullstack Development Technologies:**
+- **Front-end:**
+  - HTML, CSS, JavaScript
+  - Front-end frameworks/libraries: React, Angular, Vue.js
+- **Back-end:**
+  - Server-side languages: Node.js, Python, Ruby, Java
+  - Back-end frameworks: Express.js (Node.js), Django (Python), Ruby on Rails (Ruby), Spring Boot (Java)
+- **Databases:**
+  - SQL: MySQL, PostgreSQL
+  - NoSQL: MongoDB, Firebase
+- **Other Tools:**
+  - Version control: Git
+  - Deployment: Docker, Kubernetes, cloud services (AWS, Azure, Google Cloud)
+
+**Use Case:**
+A fullstack developer might work on a project where they create a web application that allows users to sign up, log in, and interact with content. They would handle everything from designing the user interface to setting up the server, creating API endpoints, and managing the database.
+
+**Example: Building a Simple Web Application**
+1. **Front-end (React):**
+   ```javascript
+   // App.js
+   import React, { useState, useEffect } from 'react';
+
+   function App() {
+     const [data, setData] = useState(null);
+
+     useEffect(() => {
+       fetch('/api/data')
+         .then(response => response.json())
+         .then(data => setData(data));
+     }, []);
+
+     return (
+       <div>
+         <h1>My Fullstack App</h1>
+         {data ? <p>{data.message}</p> : <p>Loading...</p>}
+       </div>
+     );
+   }
+
+   export default App;
+   ```
+
+2. **Back-end (Node.js with Express):**
+   ```javascript
+   // server.js
+   const express = require('express');
+   const app = express();
+   const port = 3001;
+
+   app.get('/api/data', (req, res) => {
+     res.json({ message: 'Hello from the server!' });
+   });
+
+   app.listen(port, () => {
+     console.log(`Server is running on http://localhost:${port}`);
+   });
+   ```
+
+3. **Database (MongoDB):**
+   ```javascript
+   // Example of connecting to a MongoDB database
+   const mongoose = require('mongoose');
+   mongoose.connect('mongodb://localhost:27017/myapp', { useNewUrlParser: true, useUnifiedTopology: true });
+
+   const db = mongoose.connection;
+   db.on('error', console.error.bind(console, 'connection error:'));
+   db.once('open', function() {
+     console.log('Connected to MongoDB');
+   });
+   ```
+
+In this example, the fullstack developer sets up a simple React front-end application that fetches data from an Express server. The server could also connect to a MongoDB database to store and retrieve data. This showcases the ability to work across the entire stack of a web application.

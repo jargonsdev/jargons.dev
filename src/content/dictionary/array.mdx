@@ -1,0 +1,32 @@
+---
+layout: ../../layouts/word.astro
+title: "Array"
+---
+An array is a data structure that stores a collection of elements, where each element is identified by an index. Arrays are commonly used in programming to organize and manipulate collections of data. They can hold elements of the same type or of different types, depending on the programming language.
+
+Arrays provide a way to store multiple values in a single variable, making it easier to work with lists of data. Elements in an array are accessed by their index, which represents their position in the array. Arrays can be of fixed size (static array) or resizable (dynamic array), depending on the language and implementation.
+
+**Examples:**
+```javascript
+// Creating an array of numbers
+let numbers = [1, 2, 3, 4, 5];
+
+// Accessing elements in the array
+console.log(numbers[0]); // Output: 1
+console.log(numbers[2]); // Output: 3
+
+// Modifying elements in the array
+numbers[1] = 10;
+console.log(numbers);    // Output: [1, 10, 3, 4, 5]
+
+// Adding elements to the array
+numbers.push(6);
+console.log(numbers);    // Output: [1, 10, 3, 4, 5, 6]
+
+// Removing elements from the array
+let removed = numbers.pop();
+console.log(removed);    // Output: 6
+console.log(numbers);    // Output: [1, 10, 3, 4, 5]
+```
+
+Arrays are a fundamental concept in programming and are used in many different applications. They provide a flexible and efficient way to store and manipulate collections of data.

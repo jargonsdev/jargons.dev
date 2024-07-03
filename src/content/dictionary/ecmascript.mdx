@@ -1,0 +1,55 @@
+---
+layout: ../../layouts/word.astro
+title: "ECMAScript"
+---
+ECMAScript (ES) is a standardized scripting language specification that serves as the foundation for several scripting languages, including JavaScript, JScript, and ActionScript. The standard is maintained by Ecma International, specifically by the TC39 committee.
+
+ECMAScript defines the core features and functionalities of the language, including syntax, types, operators, standard library objects, and methods. It ensures consistency across different implementations and environments, such as web browsers and servers.
+
+**Key Concepts of ECMAScript:**
+1. **Versions:** ECMAScript evolves through different versions, each introducing new features and improvements. Notable versions include ES5, ES6 (also known as ECMAScript 2015), and later versions.
+2. **Syntax and Semantics:** ECMAScript defines the rules for writing code, including keywords, control structures, data types, and operators.
+3. **Standard Library:** ECMAScript provides a standard library of built-in objects and functions, such as `Object`, `Array`, `Math`, `Date`, and others.
+4. **Compatibility:** ECMAScript aims to maintain backward compatibility, ensuring that code written in older versions continues to work in newer versions.
+
+**Example:**
+Consider a simple example that demonstrates some features introduced in ES6:
+
+```javascript
+// Using let and const for block-scoped variables
+let name = 'Alice';
+const age = 30;
+
+// Template literals for string interpolation
+let greeting = `Hello, my name is ${name} and I am ${age} years old.`;
+
+// Arrow functions for concise function syntax
+let add = (a, b) => a + b;
+
+// Default parameters in functions
+function greet(name = 'Guest') {
+    return `Hello, ${name}!`;
+}
+
+// Destructuring assignment for extracting values from objects or arrays
+let person = { name: 'Bob', age: 25 };
+let { name: personName, age: personAge } = person;
+
+// Using the spread operator to copy arrays
+let numbers = [1, 2, 3];
+let moreNumbers = [...numbers, 4, 5];
+
+console.log(greeting); // Output: Hello, my name is Alice and I am 30 years old.
+console.log(add(5, 3)); // Output: 8
+console.log(greet()); // Output: Hello, Guest!
+console.log(personName); // Output: Bob
+console.log(moreNumbers); // Output: [1, 2, 3, 4, 5]
+```
+
+**Explanation of the Example:**
+- **Block-Scoped Variables:** `let` and `const` introduce block-scoped variables, replacing `var` in many cases.
+- **Template Literals:** Template literals (backticks) allow for easy string interpolation and multi-line strings.
+- **Arrow Functions:** Arrow functions provide a shorter syntax for function expressions.
+- **Default Parameters:** Functions can have default parameter values.
+- **Destructuring Assignment:** Destructuring allows for extracting values from objects and arrays in a concise way.
+- **Spread Operator:** The spread operator (`...`) allows for copying arrays and combining multiple arrays.

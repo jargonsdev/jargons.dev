@@ -1,0 +1,84 @@
+---
+layout: ../../layouts/word.astro
+title: "AJAX (Asynchronous JavaScript and XML)"
+---
+Asynchronous JavaScript and XML (AJAX) is a technique for creating fast and dynamic web pages. It allows web pages to be updated asynchronously by exchanging small amounts of data with the server behind the scenes. This means that parts of a web page can be updated without reloading the entire page. Despite its name, AJAX can use various formats, including JSON, HTML, and plain text, not just XML.
+
+**Examples:**
+
+**JavaScript:**
+
+1. **Using XMLHttpRequest:**
+   ```javascript
+   // Create a new XMLHttpRequest object
+   let xhr = new XMLHttpRequest();
+
+   // Configure it: GET-request for the URL /article/.../load
+   xhr.open('GET', '/article/.../load', true);
+
+   // Send the request over the network
+   xhr.send();
+
+   // This will be called after the response is received
+   xhr.onload = function() {
+     if (xhr.status != 200) { // analyze HTTP response status
+       alert(`Error ${xhr.status}: ${xhr.statusText}`); // e.g. 404: Not Found
+     } else { // show the result
+       alert(`Done, got ${xhr.response.length} bytes`); // response is the server
+     }
+   };
+
+   xhr.onerror = function() {
+     alert("Request failed");
+   };
+   ```
+
+2. **Using Fetch API:**
+   ```javascript
+   // Perform a GET request
+   fetch('/article/.../load')
+     .then(response => {
+       if (!response.ok) {
+         throw new Error('Network response was not ok ' + response.statusText);
+       }
+       return response.json();
+     })
+     .then(data => {
+       console.log(data); // Process the data received from the server
+     })
+     .catch(error => {
+       console.error('There has been a problem with your fetch operation:', error);
+     });
+   ```
+
+3. **Sending Data with Fetch:**
+   ```javascript
+   // Data to be sent to the server
+   let userData = {
+     name: 'John Doe',
+     age: 30
+   };
+
+   // Perform a POST request
+   fetch('/submit', {
+     method: 'POST',
+     headers: {
+       'Content-Type': 'application/json'
+     },
+     body: JSON.stringify(userData)
+   })
+     .then(response => {
+       if (!response.ok) {
+         throw new Error('Network response was not ok ' + response.statusText);
+       }
+       return response.json();
+     })
+     .then(data => {
+       console.log(data); // Process the response from the server
+     })
+     .catch(error => {
+       console.error('There has been a problem with your fetch operation:', error);
+     });
+   ```
+
+AJAX is widely used for creating interactive and dynamic web applications, allowing for a smoother and more responsive user experience by enabling parts of a page to update without requiring a full page reload.

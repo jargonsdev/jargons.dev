@@ -1,0 +1,35 @@
+---
+layout: ../../layouts/word.astro
+title: "SCTP"
+---
+SCTP (Stream Control Transmission Protocol) is a transport layer protocol that ensures reliable, message-oriented communication in networks. It is designed to transport Public Switched Telephone Network (PSTN) signaling messages over IP networks, but it can be used for other applications as well.
+
+SCTP is a transport protocol like TCP (Transmission Control Protocol) and UDP (User Datagram Protocol), but it offers features that are particularly useful for applications that require message boundary preservation, multi-streaming, and enhanced reliability.
+
+**Code Example:**
+Below is a Python example demonstrating a simple SCTP server using the `sctp` library. This example showcases how SCTP can be used for message-oriented communication:
+
+```python
+import sctp
+import socket
+
+# Create an SCTP socket
+server_socket = sctp.sctpsocket_tcp(socket.AF_INET)
+server_socket.bind(('0.0.0.0', 12345))
+server_socket.listen(5)
+
+print("SCTP server is listening on port 12345...")
+
+while True:
+    client_socket, client_address = server_socket.accept()
+    print(f"Connection from {client_address}")
+
+    while True:
+        data = client_socket.recv(1024)
+        if not data:
+            break
+        print(f"Received message: {data.decode()}")
+        client_socket.sendall(data)
+
+    client_socket.close()
+```

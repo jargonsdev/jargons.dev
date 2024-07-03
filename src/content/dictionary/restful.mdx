@@ -1,5 +1,94 @@
 ---
 layout: ../../layouts/word.astro
-title: 'RESTful'
+title: "RESTful"
 ---
-A style of software architecture that defines a set of constraints for creating scalable web services. Example: Using HTTP methods like GET, POST, PUT, and DELETE to perform CRUD operations on resources.
+RESTful, or Representational State Transfer, is an architectural style for designing networked applications. It relies on a stateless, client-server communication protocol, typically HTTP, and standard operations (such as GET, POST, PUT, DELETE) to perform actions on resources. RESTful APIs are designed to be simple, lightweight, and scalable, making them ideal for use in web services.
+
+**Examples:**
+
+**JavaScript:**
+
+1. **GET Request:**
+   ```javascript
+   // Fetch data from a RESTful API endpoint
+   fetch('https://api.example.com/products', {
+     method: 'GET',
+     headers: {
+       'Content-Type': 'application/json'
+     }
+   })
+     .then(response => response.json())
+     .then(data => {
+       console.log(data); // Process the data received from the API
+     })
+     .catch(error => {
+       console.error('There has been a problem with your fetch operation:', error);
+     });
+   ```
+
+2. **POST Request:**
+   ```javascript
+   // Create a new resource using a RESTful API endpoint
+   fetch('https://api.example.com/products', {
+     method: 'POST',
+     headers: {
+       'Content-Type': 'application/json'
+     },
+     body: JSON.stringify({
+       name: 'Product Name',
+       price: 99.99
+     })
+   })
+     .then(response => response.json())
+     .then(data => {
+       console.log(data); // Process the response from the API
+     })
+     .catch(error => {
+       console.error('There has been a problem with your fetch operation:', error);
+     });
+   ```
+
+3. **PUT Request:**
+   ```javascript
+   // Update an existing resource using a RESTful API endpoint
+   fetch('https://api.example.com/products/123', {
+     method: 'PUT',
+     headers: {
+       'Content-Type': 'application/json'
+     },
+     body: JSON.stringify({
+       name: 'New Product Name',
+       price: 129.99
+     })
+   })
+     .then(response => response.json())
+     .then(data => {
+       console.log(data); // Process the response from the API
+     })
+     .catch(error => {
+       console.error('There has been a problem with your fetch operation:', error);
+     });
+   ```
+
+4. **DELETE Request:**
+   ```javascript
+   // Delete a resource using a RESTful API endpoint
+   fetch('https://api.example.com/products/123', {
+     method: 'DELETE',
+     headers: {
+       'Content-Type': 'application/json'
+     }
+   })
+     .then(response => {
+       if (response.ok) {
+         console.log('Resource deleted successfully');
+       } else {
+         console.error('Failed to delete resource');
+       }
+     })
+     .catch(error => {
+       console.error('There has been a problem with your fetch operation:', error);
+     });
+   ```
+
+RESTful APIs follow a set of principles that promote scalability, simplicity, and modifiability, making them a popular choice for building web services that can be easily consumed by various clients.

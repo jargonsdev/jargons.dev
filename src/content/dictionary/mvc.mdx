@@ -1,5 +1,11 @@
 ---
 layout: ../../layouts/word.astro
-title: 'MVC (Model-View-Controller)'
+title: "MVC (Model-View-Controller)"
 ---
-A software design pattern for implementing user interfaces. Example: In a web application, the model represents the data, the view displays the data, and the controller handles user input and updates the model.
+MVC is a software architectural pattern commonly used in web development. It divides an application into three interconnected components to separate the internal representations of information from the way information is presented to and accepted from the user.
+
+- **Model:** The Model represents the application's data and business logic. It retrieves data, processes it, and responds to requests for information about its state. It is independent of the user interface (UI) and can send updates to the View for display purposes.
+  
+- **View:** The View is responsible for displaying data to the user and presenting the UI. It receives data from the Model and renders it in a format suitable for interaction. Multiple views can exist for a single model to provide different presentations of the same data.
+  
+- **Controller:** The Controller acts as an intermediary between the Model and the View. It handles user input, updates the Model with new data, and selects the appropriate View to display the response. It is responsible for interpreting user actions and triggering the appropriate responses.

@@ -1,0 +1,21 @@
+---
+layout: ../../layouts/word.astro
+title: "Cookie"
+---
+A cookie is a small piece of data that is stored on the user's computer by the web browser while browsing a website. Cookies are used to store information about the user's interactions with the website, such as login credentials, shopping cart items, and user preferences. They can also be used for tracking and analytics purposes.
+
+Cookies are often used to personalize the user's experience on a website. For example, a website might use a cookie to remember the user's login information so that they don't have to log in every time they visit the site. Cookies can also be used to track the user's browsing behavior across multiple websites, which can be used for targeted advertising.
+
+**Example:**
+```javascript
+// Set a cookie
+document.cookie = "username=John Doe; expires=Thu, 18 Dec 2023 12:00:00 UTC; path=/";
+
+// Get a cookie
+let cookieValue = document.cookie;
+
+// Delete a cookie
+document.cookie = "username=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+```
+
+In this example, a cookie named "username" is set with the value "John Doe" and an expiration date of December 18, 2023. The cookie is then retrieved using `document.cookie`, and finally, the cookie is deleted by setting its expiration date to a past date.

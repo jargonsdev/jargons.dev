@@ -1,0 +1,36 @@
+---
+layout: ../../layouts/word.astro
+title: "Accessibility (A11Y)"
+---
+Accessibility (A11Y) in web development refers to the practice of designing and developing websites and applications that can be used by people of all abilities and disabilities. This includes designing for people with visual, auditory, motor, and cognitive disabilities, as well as those with temporary disabilities or situational limitations.
+
+Accessibility aims to ensure that all users can perceive, understand, navigate, and interact with websites and applications, regardless of their abilities. This involves following standards and guidelines, such as the Web Content Accessibility Guidelines (WCAG), which provide recommendations for making web content more accessible.
+
+**Examples of Accessibility Features:**
+- **Text Alternatives:** Providing alternative text for images and non-text content to assist screen readers.
+- **Keyboard Accessibility:** Ensuring that all functionality can be operated using a keyboard.
+- **Color Contrast:** Using sufficient color contrast to make content readable for users with low vision.
+- **Descriptive Links:** Using descriptive text for hyperlinks to provide context for screen reader users.
+- **Accessible Forms:** Using labels, placeholders, and error messages to help users understand and complete forms.
+
+**Importance of Accessibility:**
+- **Inclusivity:** Accessibility ensures that everyone, including people with disabilities, can access and use the web.
+- **Legal Compliance:** Many countries have laws and regulations that require websites to be accessible to people with disabilities.
+- **User Experience:** Improving accessibility often leads to a better user experience for all users, not just those with disabilities.
+- **SEO Benefits:** Following accessibility best practices can improve search engine optimization (SEO) and make your website more discoverable.
+
+**In JavaScript:**
+```javascript
+// Example: Adding keyboard accessibility to a button
+const button = document.getElementById('myButton');
+
+button.addEventListener('keydown', function(event) {
+  if (event.key === 'Enter' || event.key === 'Space') {
+    event.preventDefault();
+    // Perform button action
+    console.log('Button clicked');
+  }
+});
+```
+
+In this example, the button can be activated using the keyboard by pressing Enter or Space, in addition to being clickable with a mouse. This enhances the accessibility of the button for users who cannot use a mouse.

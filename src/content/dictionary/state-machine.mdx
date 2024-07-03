@@ -1,0 +1,28 @@
+---
+layout: ../../layouts/word.astro
+title: "State Machine"
+---
+A state machine is a computational model used to design algorithms and systems that can be in one of a finite number of states at any given time. It can transition from one state to another in response to external inputs or events, according to predefined rules.
+
+State machines are used to model the behavior of systems by defining:
+- **States:** Distinct modes or conditions that the system can be in.
+- **Transitions:** Rules that define how the system moves from one state to another based on inputs or events.
+- **Events:** Inputs or triggers that cause state transitions.
+- **Actions:** Operations that may be performed during transitions or within states.
+
+State machines can be represented using state diagrams, which visually depict the states, transitions, and events.
+
+**Example (State Machine for a Traffic Light):**
+Consider a simple state machine for a traffic light:
+
+- **States:** Red, Green, Yellow
+- **Transitions:** 
+  - Red to Green after a set time interval
+  - Green to Yellow after a set time interval
+  - Yellow to Red after a set time interval
+
+A state diagram for this traffic light might look like this:
+
+```
+Red -> Green -> Yellow -> Red
+```

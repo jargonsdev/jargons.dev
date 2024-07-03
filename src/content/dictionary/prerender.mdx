@@ -1,0 +1,30 @@
+---
+layout: ../../layouts/word.astro
+title: "Prerender"
+---
+Prerendering is a technique used in web development to generate static HTML files for web pages at build time, instead of rendering them dynamically on the server or client side when requested. These static HTML files can then be served to users, providing faster initial page loads and improved SEO (Search Engine Optimization).
+
+When a website is prerendered, the server generates HTML files for each page of the website during the build process. These static HTML files contain the content of the page as it would appear to a user, including any data fetched from APIs or databases. When a user visits a prerendered page, the server simply serves the pre-generated HTML file, which can lead to faster page load times compared to dynamically generated pages.
+
+**Example:**
+Consider a blog website built using a static site generator like Gatsby or Next.js. During the build process, the static site generator prerenders each blog post as a static HTML file. When a user visits a blog post, the server serves the pre-generated HTML file, resulting in faster page loads.
+
+**Example (Gatsby - React-based static site generator):**
+In Gatsby, pages are prerendered during the build process using React components. Here's an example of a simple Gatsby page component:
+
+```jsx
+// src/pages/about.js
+
+import React from 'react';
+
+const AboutPage = () => (
+    <div>
+        <h1>About Us</h1>
+        <p>This is the about page content.</p>
+    </div>
+);
+
+export default AboutPage;
+```
+
+When you build the Gatsby site (`gatsby build`), Gatsby prerenders the `AboutPage` component to a static HTML file, which can then be served to users when they visit the `/about` URL.

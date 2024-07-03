@@ -1,0 +1,21 @@
+---
+layout: ../../layouts/word.astro
+title: "Request Header"
+---
+A request header is a component of an HTTP request message that contains metadata about the request being made by the client to the server. Request headers are used to provide additional information to the server, such as the type of content being sent, the preferred language of the client, authentication credentials, and more.
+
+Request headers consist of key-value pairs, where the key is the header name and the value is the header's content. There are several types of request headers, including general headers, request headers, and entity headers, each serving a different purpose in the HTTP request. Request headers are sent by the client to the server as part of the HTTP request message and are used by the server to process the request appropriately.
+
+**Example (HTTP Request with Headers):**
+```http
+GET /example HTTP/1.1
+Host: www.example.com
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3
+Accept-Language: en-US,en;q=0.9
+```
+
+**Common Request Headers:**
+- `User-Agent`: Contains information about the user agent (browser or client) making the request.
+- `Accept`: Specifies the media types that are acceptable for the response.
+- `Content-Type`: Indicates the media type of the request body sent to the server.
+- `Authorization`: Contains credentials for authenticating the client with the server.

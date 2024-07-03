@@ -1,0 +1,38 @@
+---
+layout: ../../layouts/word.astro
+title: "OOP (Object-Oriented Programming)"
+---
+Object-Oriented Programming (OOP) is a programming paradigm based on the concept of objects, which are instances of classes. OOP focuses on organizing code around objects rather than actions, and data rather than logic. 
+
+In OOP, objects can contain both data (attributes or properties) and methods (functions or procedures) that operate on the data. The four fundamental principles of OOP are:
+
+1. **Encapsulation:** Bundling the data (attributes) and the methods (functions) that operate on the data into a single unit called an object. This helps in hiding the internal state of the object and only exposing a controlled interface.
+
+2. **Inheritance:** Creating a new class from an existing class. The new class, called the subclass or derived class, inherits attributes and methods from the existing class, called the superclass or base class, allowing for code reuse and extension.
+
+3. **Polymorphism:** The ability of different classes to be treated as instances of the same class through a common interface. It allows for methods to be used interchangeably among different classes that implement the same method.
+
+4. **Abstraction:** Simplifying complex systems by modeling classes appropriate to the problem and working at the most relevant level of inheritance. Abstraction involves hiding the complex implementation details and showing only the necessary features of the object.
+
+**Example (JavaScript):**
+```javascript
+// Example of a simple class and object in JavaScript
+class Animal {
+    constructor(name) {
+        this.name = name;
+    }
+
+    speak() {
+        console.log(`${this.name} makes a noise.`);
+    }
+}
+
+class Dog extends Animal {
+    speak() {
+        console.log(`${this.name} barks.`);
+    }
+}
+
+let dog = new Dog('Rex');
+dog.speak(); // Rex barks.
+```

@@ -1,0 +1,15 @@
+---
+layout: ../../layouts/word.astro
+title: "Pseudo-element"
+---
+In CSS, a pseudo-element is a keyword added to a selector that allows you to style a specific part of an element. Pseudo-elements are used to style elements in ways that can't be achieved using normal selectors. They are preceded by two colons (::).
+
+Pseudo-elements allow you to style parts of an element that are not part of the actual document tree. For example, you can use the `::before` and `::after` pseudo-elements to insert content before and after an element's content, respectively, without adding extra markup to the HTML.
+
+**Example:**
+```css
+/* Adding a double border to the first line of a paragraph */
+p::first-line {
+    border-bottom: 2px double black;
+}
+```

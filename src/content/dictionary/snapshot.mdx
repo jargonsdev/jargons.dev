@@ -1,0 +1,22 @@
+---
+layout: ../../layouts/word.astro
+title: "Snapshot"
+---
+A snapshot is a saved state or image of a system, database, or file at a particular point in time.
+
+In software development and testing, a snapshot is used to capture the exact state of an application or component at a specific moment. This can be useful for comparing changes over time or ensuring that the output of a function or the state of a component remains consistent.
+
+For example, when testing a user interface component, a snapshot can save the rendered output. Future tests can then compare the current output with the saved snapshot to ensure that no unintended changes have occurred.
+
+**Simple Code Example** (JavaScript using Jest):
+```javascript
+import renderer from 'react-test-renderer';
+import MyComponent from './MyComponent';
+
+test('MyComponent renders correctly', () => {
+  const tree = renderer.create(<MyComponent />).toJSON();
+  expect(tree).toMatchSnapshot();
+});
+```
+
+In this example, `renderer.create` renders the `MyComponent` and saves its output as a JSON object. The `toMatchSnapshot` function then compares this output to a previously saved snapshot. If the output has changed, the test will fail, indicating that the component's output is different from what was expected.

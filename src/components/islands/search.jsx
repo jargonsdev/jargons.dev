@@ -142,11 +142,11 @@ function SearchDialog() {
     const resultsCount = searchResult?.length || 0;
     if (resultsCount && e.key === "ArrowUp") {
       e.preventDefault();
-      setCursor(cursor === 0 ? Math.min(resultsCount - 1, 9) : cursor - 1);
+      setCursor(cursor === 0 ? Math.min(resultsCount - 1, resultsCount) : cursor - 1);
     }
     if (resultsCount && e.key === "ArrowDown") {
       e.preventDefault();
-      setCursor(cursor === Math.min(resultsCount - 1, 9) ? 0 : cursor + 1);
+      setCursor(cursor === Math.min(resultsCount - 1, resultsCount) ? 0 : cursor + 1);
     }
     if (resultsCount && e.key === "Enter") {
       e.preventDefault();

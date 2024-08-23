@@ -38,7 +38,7 @@ export async function POST({ request, cookies }) {
   const metadata = JSON.parse(data.get("metadata"));
 
   const userOctokit = app.getUserOctokit({ token: accessToken.value });
-  const devJargonsOctokit = app.octokit;
+  const jargonsdevOctokit = app.octokit;
 
   // Fork repo
   const fork = await forkRepository(userOctokit, PROJECT_REPO_DETAILS);
@@ -87,7 +87,7 @@ export async function POST({ request, cookies }) {
 
     // submit the edit in new pr
     const wordSubmission = await submitWord(
-      devJargonsOctokit, 
+      jargonsdevOctokit, 
       userOctokit, 
       action, 
       PROJECT_REPO_DETAILS, 
@@ -147,7 +147,7 @@ export async function DELETE({ request, cookies }) {
   // const metadata = JSON.parse(data.get("metadata"));
 
   const userOctokit = app.getUserOctokit({ token: accessToken.value });
-  // const devJargonsOctokit = app.octokit;
+  // const jargonsdevOctokit = app.octokit;
 
   // Fork repo
   const fork = await forkRepository(userOctokit, PROJECT_REPO_DETAILS);

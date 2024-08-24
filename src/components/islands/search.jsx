@@ -222,7 +222,7 @@ function SearchResult({ result = [], cursor, searchTerm }) {
   const router = useRouter();
 
   return (
-    <div className="block w-full text-sm md:text-base">
+    <div className="block w-full text-sm md:text-base  max-h-[505px] overflow-y-scroll">
       {result.length < 1 && searchTerm.length >= 1 ? (
         /**
          * @todo add message suggesting adding/contributing the word to dictionary

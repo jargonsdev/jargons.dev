@@ -6,7 +6,7 @@ import registerGitHubApp from "./lib/register-github-app/index.js";
 const appCredentials = await registerGitHubApp({
   // name of your app
   name: "jargons.dev-app-for-",
-  url: "https://github.com/devjargons/jargons.dev/CONTRIBUTING.md",
+  url: "https://github.com/jargonsdev/jargons.dev/CONTRIBUTING.md",
   default_permissions: {
     issues: "write",
   }

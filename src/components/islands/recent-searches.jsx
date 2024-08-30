@@ -12,9 +12,11 @@ export default function RecentSearches() {
     if (savedSearches) {
       $recentSearches.set(savedSearches);
     }
-    setTimeout(()=>{
+    const timer = setTimeout(() => {
       setIsLoading(false);
-    },2000)
+    }, 2000);
+
+    return () => clearTimeout(timer); 
   }, []);
 
   if (isLoading) {

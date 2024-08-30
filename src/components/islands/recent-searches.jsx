@@ -1,32 +1,38 @@
-import { useEffect } from "react";
-import { useStore } from "@nanostores/react";
+import { useEffect, useState } from 'react';
+import { useStore } from '@nanostores/react';
 import { $recentSearches } from "../../lib/stores/search.js";
+import RecentSearchesLoading from './recent-searches-loading';
 
-/**
- * Recent Searches Component - An Island that displays a user's last 5 searches
- * 
- * @todo implement a default list instead of `null` when no `$recentSearch` is found 
- * @todo implement loading component to avoid flickering UI
- */
 export default function RecentSearches() {
   const recentSearches = useStore($recentSearches);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    $recentSearches.set({...JSON.parse(localStorage.getItem("jargons.dev:recent_searches"))})
+    const savedSearches = JSON.parse(localStorage.getItem("jargons.dev:recent_searches"));
+    if (savedSearches) {
+      $recentSearches.set(savedSearches);
+    }
+    setTimeout(()=>{
+      setIsLoading(false);
+    },2000)
   }, []);
+
+  if (isLoading) {
+    return <RecentSearchesLoading recentSearches={recentSearches} />;
+  }
 
   return Object.values(recentSearches).length ? (
     <div className="space-y-3 ml-2 mt-4 md:mt-6">
-			<h2 className="text-2xl md:text-4xl font-black">Recent</h2>
-			<ol className="space-y-1.5 underline">
+      <h2 className="text-2xl md:text-4xl font-black">Recent</h2>
+      <ol className="space-y-1.5 underline">
         {Object.values(recentSearches).slice(0, 5).map((item, i) => (
           <li key={i}>
             <a href={item.url}>
-              { item.word }
+              {item.word}
             </a>
           </li>
         ))}
-			</ol>
-		</div>
+      </ol>
+    </div>
   ) : null;
 }

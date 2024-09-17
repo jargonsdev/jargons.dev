@@ -1,27 +1,22 @@
 import { useEffect, useState } from 'react';
 import { useStore } from '@nanostores/react';
 import { $recentSearches } from "../../lib/stores/search.js";
-import RecentSearchesLoading from './recent-searches-loading';
 
 export default function RecentSearches() {
   const recentSearches = useStore($recentSearches);
-  const [isLoading, setIsLoading] = useState(true);
-
+  
   useEffect(() => {
     const savedSearches = JSON.parse(localStorage.getItem("jargons.dev:recent_searches"));
     if (savedSearches) {
       $recentSearches.set(savedSearches);
     }
-    const timer = setTimeout(() => {
-      setIsLoading(false);
-    }, 2000);
+  
+    const loader = document.querySelector(".loading");
+    if (loader) loader.remove();
 
-    return () => clearTimeout(timer); 
   }, []);
 
-  if (isLoading) {
-    return <RecentSearchesLoading recentSearches={recentSearches} />;
-  }
+
 
   return Object.values(recentSearches).length ? (
     <div className="space-y-3 ml-2 mt-4 md:mt-6">

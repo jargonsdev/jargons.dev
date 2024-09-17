@@ -6,33 +6,35 @@ import RecentSearches from "../components/recent-searches.astro";
 const dictionary = await getCollection("dictionary");
 ---
 
-<BaseLayout 
-	pageTitle="Jargons.dev"
-	subtitle="Simplified Meaning & Definition to Technical Terms"
+<BaseLayout
+  pageTitle="Jargons.dev"
+  subtitle="Simplified Meaning & Definition to Technical Terms"
 >
-	<main class="flex flex-col max-w-screen-lg p-5 justify-center mx-auto min-h-screen">
-		<!-- Title -->
-		<div class="mb-4 md:mb-6">
-			<h1 class="relative text-5xl md:text-7xl lg:text-8xl font-black w-fit">
-				<a href="/" class="absolute font-normal text-[0.6rem] md:text-xs right-0 md:top-1.5 lg:top-3">
-					jargons.dev
-				</a>
-				Dictionary
-			</h1>
-		</div>
-		
-		<!-- Search -->
-		<Search triggerSize="md" dictionary={dictionary} client:load />
-
-		<!-- Browse words -->
-		<div class="ml-2 mt-4 md:mt-6" id="whirl-browse-words">
-      <a href="/browse">
-        Browse Words
-      </a>
+  <main
+    class="flex flex-col max-w-screen-lg p-5 justify-center mx-auto min-h-screen"
+  >
+    <!-- Title -->
+    <div class="mb-4 md:mb-6">
+      <h1 class="relative text-5xl md:text-7xl lg:text-8xl font-black w-fit">
+        <a
+          href="/"
+          class="absolute font-normal text-[0.6rem] md:text-xs right-0 md:top-1.5 lg:top-3"
+        >
+          jargons.dev
+        </a>
+        Dictionary
+      </h1>
     </div>
 
-		<!-- Recent Word Look Up -->
-		<!-- <RecentSearches client:load /> -->
-		 <RecentSearches />
-	</main>
+    <!-- Search -->
+    <Search triggerSize="md" dictionary={dictionary} client:load />
+
+    <!-- Browse words -->
+    <div class="ml-2 mt-4 md:mt-6" id="whirl-browse-words">
+      <a href="/browse"> Browse Words </a>
+    </div>
+
+    <!-- Recent Word Look Up -->
+    <RecentSearches />
+  </main>
 </BaseLayout>

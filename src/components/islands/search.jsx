@@ -164,7 +164,7 @@ function SearchDialog() {
         className="absolute w-full h-full left-0 top-0 z-50 backdrop-blur-sm"
       />
 
-      <div className="flex flex-col bg-white h-fit max-w-5xl w-full shadow-xl z-50 border rounded-lg overflow-hidden"
+      <div className="flex flex-col bg-white h-fit max-w-5xl max-h-full w-full shadow-xl z-50 border rounded-lg overflow-hidden"
         onMouseMove={() => cursor !== -1 && setCursor(-1)}
       >
         {/* Form Field */}
@@ -222,7 +222,7 @@ function SearchResult({ result = [], cursor, searchTerm }) {
   const router = useRouter();
 
   return (
-    <div className="block w-full text-sm md:text-base">
+    <div className="block w-full text-sm md:text-base overflow-y-scroll scrollbar">
       {result.length < 1 && searchTerm.length >= 1 ? (
         /**
          * @todo add message suggesting adding/contributing the word to dictionary

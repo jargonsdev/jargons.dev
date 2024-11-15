@@ -4,6 +4,8 @@ import "@fontsource/ibm-plex-mono";
 import "../base.css";
 import { SITE_META_KEYWORDS, SITE_META_DESCRIPTION } from "../../constants.js";
 
+const MEASUREMENT_ID = import.meta.env.PUBLIC_GOOGLE_ANALYTICS_MEASUREMENT_ID;
+
 const { props, url } = Astro;
 const { 
 	pageTitle, 
@@ -36,9 +38,19 @@ const {
 		<meta name="twitter:description" content={description}>
 		<meta name="twitter:image" content={ogImageUrl}>
 
+		<!-- Google tag (gtag.js) -->
+		<script async src=`https://www.googletagmanager.com/gtag/js?id=${MEASUREMENT_ID}`></script>
+		<script>
+			window.dataLayer = window.dataLayer || [];
+			function gtag(){dataLayer.push(arguments);}
+			gtag('js', new Date());
+
+			gtag('config', MEASUREMENT_ID);
+		</script>
+
 		<title>{ pageTitle } - {subtitle}</title>
 	</head>
 	<body class={list}>
-    <slot />
+    	<slot />
 	</body>
 </html>

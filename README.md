@@ -175,11 +175,12 @@ npm start
 jargons.dev/
 ├── src/
 │   ├── components/    # React components
+|   |__ content/       # Content
 │   ├── layouts/       # Page layouts
+|   |__ Lib/           # Lib
 │   ├── pages/         # Routes
 │   └── styles/        # Global styles
 ├── public/            # Static assets
-├── content/           # Dictionary entries
 └── dev/              # Dev tools
 ```
 

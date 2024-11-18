@@ -1,4 +1,5 @@
-<div align="center" style="margin-top: 12px">
+// README.md
+<div align="center">
   <a href="https://www.jargons.dev">
     <img width="700" alt="jargons.dev" src="https://github.com/jargonsdev/jargons.dev/assets/25631971/5d1db25d-18e0-4544-ac98-9aa4e1097e14">
   </a>
@@ -6,76 +7,282 @@
   <h3>The Software Engineering Dictionary</h3>
 </div>
 
-## About
+# Table of Contents
 
-<tt>jargons.dev</tt> is an open source dictionary curated by contributors providing simplified meaning and definitions to software development, engineering, and general technology terms.
+* [About](#about)
+* [Features](#features)
+* [Getting Started](#getting-started)
+* [Tech Stack](#tech-stack)
+* [Contributing](#contributing)
+* [Support](#support)
 
-## Tech Stack
+## About 🚀
 
-<tt>jargons.dev</tt> is built using the following open source technologies: 
+**jargons.dev** is an open-source dictionary curated by contributors, providing simplified meanings and definitions for software development, engineering, and general technology terms.
 
-- [Astro](https://astro.build/) - Web framework for building content-driven websites
-- [React](https://react.dev) - Library for building web interfaces
-- [Tailwind CSS](https://tailwindcss.com) - A Utility-first CSS Library
+## Features ✨
 
-## Run Project Locally
+- 📚 Comprehensive tech dictionary
+- 🔍 Fast, fuzzy search
+- ✏️ User-friendly contribution editor
+- 📱 Mobile-optimized interface
+- 🎯 Clear, concise definitions
 
-To run the project locally running on your machine, follow these simple steps.
+## Tech Stack 💻
 
-### Prerequisite
+Built with modern, open-source technologies:
 
-To run the project locally, ensure your machine has **Node.js** installed. The project requires **Node.js** version 19 or higher. If you don't have **Node.js** installed, you can download it from the [Node.js website](https://nodejs.org/).
+- [Astro](https://astro.build/) - Lightning-fast web framework
+- [React](https://react.dev) - UI component library
+- [Tailwind CSS](https://tailwindcss.com) - Utility-first styling
 
-### Setup 
+## Getting Started 🌟
 
-To get set-up follow these steps:
+See our [Setup Guide](./SETUP.md) for detailed installation instructions.
 
-1. Clone the repository:
+### Quick Start
 
-   ```sh
-   git clone https://github.com/jargonsdev/jargons.dev.git
-   ```
+```bash
+# Clone repository
+git clone https://github.com/jargonsdev/jargons.dev.git
 
-2. Navigate to the project directory:
+# Navigate to project
+cd jargons.dev
 
-   ```sh
-   cd jargons.dev
-   ```
+# Install dependencies
+npm ci
 
-3. Install dependencies:
+# Run setup
+npm run setup
 
-   ```sh
-   npm ci
-   ```
+# Start development server
+npm start
+```
 
-4. Run the `dev/setup` script and create test repo
+## Contributing 🤝
 
-   This script streamlines the process of creating a GitHub App required to run jargons.dev locally and sets up the environment file (.env) for you; Learn more at [dev/setup](/dev/README.md) 
-   
-   ```sh
-   npm run setup
-   ```
+See our [Contributing Guide](./CONTRIBUTING.md) for details on how to participate.
 
-5. Start the development server:
+## Support ⭐
 
-   ```sh
-   npm start
-   ```
+If you find jargons.dev helpful, please star the repository!
 
-6. Open your browser and visit `http://localhost:4321` to view the project.
+---
 
-## Contributing
+// CONTRIBUTING.md
+# Contributing to jargons.dev
 
-We welcome contributions to jargons.dev! There are two main ways you can contribute to:
+Thank you for your interest in contributing to jargons.dev! 🎉
 
-1. **Dictionary Word Contribution:** 
-  This includes adding new words to the dictionary or editing existing word entries. We highly recommend using our Jargons Editor at [jargons.dev/editor](https://jargons.dev/editor) for this purpose. This user-friendly interface streamlines your contribution allowing it end up as a pull request.
+## Ways to Contribute
 
-2. **Other Contributions:**
-  These are contributions other than adding or editing words in the dictionary, feel free to contribute in other ways such as issue reporting/triaging, code/documentation improvements, bug fixes, or feature enhancements.
+### 1. Dictionary Content 📚
 
-To get started with contributing, please refer to our [Contribution Guide](./CONTRIBUTING.md). Thank you for contributing to the jargons.dev project!
+Use our [Jargons Editor](https://jargons.dev/editor) to:
+- Add new terms
+- Edit existing definitions
+- Improve explanations
 
-## Support 
+### 2. Code Contributions 💻
 
-Do leave the project a star ⭐️
+- Bug fixes
+- Feature enhancements
+- Documentation improvements
+- Performance optimizations
+
+## Contribution Process
+
+1. **Fork & Clone**
+```bash
+git clone https://github.com/your-username/jargons.dev.git
+```
+
+2. **Create Branch**
+```bash
+git checkout -b feature/your-feature
+```
+
+3. **Make Changes**
+- Follow coding standards
+- Add tests where applicable
+- Update documentation
+
+4. **Submit PR**
+- Clear description
+- Reference issues
+- Add screenshots if relevant
+
+## Code Style Guide
+
+- Use ESLint configuration
+- Follow Prettier formatting
+- Write meaningful commit messages
+- Add JSDoc comments for functions
+
+## Content Guidelines
+
+- Clear, concise definitions
+- Include relevant examples
+- Add references when needed
+- Use appropriate categories
+
+---
+
+// SETUP.md
+# Setup Guide
+
+## Prerequisites
+
+- Node.js v19.0.0+
+- Git
+- GitHub account
+
+## Development Setup
+
+1. **Environment Setup**
+
+Create `.env` file:
+```env
+GITHUB_CLIENT_ID=your_client_id
+GITHUB_CLIENT_SECRET=your_client_secret
+GITHUB_APP_ID=your_app_id
+```
+
+2. **GitHub App Configuration**
+
+a. Create GitHub App:
+- Go to GitHub Developer Settings
+- Set homepage: `http://localhost:4321`
+- Callback URL: `http://localhost:4321/api/auth/callback`
+
+b. Save credentials in `.env`
+
+3. **Project Setup**
+
+```bash
+# Install dependencies
+npm ci
+
+# Run setup script
+npm run setup
+
+# Start development
+npm start
+```
+
+## Project Structure
+```
+jargons.dev/
+├── src/
+│   ├── components/    # React components
+│   ├── layouts/       # Page layouts
+│   ├── pages/         # Routes
+│   └── styles/        # Global styles
+├── public/            # Static assets
+├── content/           # Dictionary entries
+└── dev/              # Dev tools
+```
+
+---
+
+// TROUBLESHOOTING.md
+# Troubleshooting Guide
+
+## Common Issues
+
+### Installation Problems
+
+**Issue**: Dependencies fail to install
+
+**Solution**:
+```bash
+# Clear cache
+npm cache clean --force
+
+# Remove modules
+rm -rf node_modules
+
+# Reinstall
+npm ci
+```
+
+### GitHub Authentication
+
+**Issue**: GitHub App authentication fails
+
+**Solution**:
+1. Verify `.env` credentials
+2. Check callback URL
+3. Confirm app permissions
+
+### Development Server
+
+**Issue**: Server won't start
+
+**Solution**:
+1. Check Node.js version
+2. Verify port 4321 is available
+3. Review error logs
+
+## Getting Help
+
+1. Check existing issues
+2. Join Discord community
+3. Post in GitHub Discussions
+
+---
+
+// dev/README.md
+# Development Guide
+
+## Local Development
+
+### Setup Script
+
+The `setup` script handles:
+- GitHub App creation
+- Environment configuration
+- Test repository setup
+- Development environment validation
+
+### Usage
+
+```bash
+npm run setup
+```
+
+## Environment Variables
+
+Required variables:
+```env
+GITHUB_CLIENT_ID=
+GITHUB_CLIENT_SECRET=
+GITHUB_APP_ID=
+```
+
+## Development Tools
+
+- ESLint for linting
+- Prettier for formatting
+- Jest for testing
+- Husky for git hooks
+
+## Build Process
+
+```bash
+# Build project
+npm run build
+
+# Preview build
+npm run preview
+```
+
+## Testing
+
+```bash
+# Run tests
+npm test
+
+# Watch mode
+npm run test:watch
+```

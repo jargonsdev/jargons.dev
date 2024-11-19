@@ -20,6 +20,40 @@ export default function Profile({ isAuthed, userData, authUrl }) {
             <button className="flex items-center justify-center size-10 bg-transparent rounded-full hover:bg-gray-200 hover:border transition-colors duration-700 cursor-pointer">
                 <img class="size-8 rounded-full" loading="lazy" src={userData.avatar_url} alt={userData.login} />
             </button>
+
+            {/* Dropdown */}
+            <div class="z-50 absolute right-0 bg-white border text-sm divide-y divide-gray-100 rounded-lg shadow-lg min-w-60">
+                <div class="flex items-center space-x-2 px-4 py-3 text-sm">
+                    <img class="size-10 rounded-full" loading="lazy" src={userData.avatar_url} alt={userData.login} />
+                    <div>
+                        <div className="line-clamp-1 text-base">{userData.name || userData.login}</div>
+                        <div class="text-xs font-medium truncate">@{userData.login}</div>
+                    </div>
+                </div>
+                <ul className="p-1">
+                    <li>
+                        <a href="/editor" class="no-underline flex items-center space-x-2 px-4 py-2 rounded-sm hover:bg-gray-100">
+                            <svg class="size-6" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                                <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="m14.304 4.844 2.852 2.852M7 7H4a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1v-4.5m2.409-9.91a2.017 2.017 0 0 1 0 2.853l-6.844 6.844L8 14l.713-3.565 6.844-6.844a2.015 2.015 0 0 1 2.852 0Z"/>
+                            </svg>
+                            <span>
+                                Editor
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+                <div>
+                    <a href="#" class="no-underline flex items-center justify-center space-x-2 px-4 py-2 hover:bg-red-100 hover:text-red-900">
+                        <svg class="size-6" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                            <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M20 12H8m12 0-4 4m4-4-4-4M9 4H7a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h2"/>
+                        </svg>
+
+                        <span>
+                            Disconnect
+                        </span>
+                    </a>
+                </div>
+            </div>
         </div>
     );
 }

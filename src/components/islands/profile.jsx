@@ -59,7 +59,7 @@ export default function Profile({ isAuthed, userData, authUrl }) {
             </li>
           </ul>
           <div>
-            <a href="#" class="no-underline flex items-center space-x-2 px-5 py-2 hover:bg-red-100 hover:text-red-900">
+            <a href="/logout" class="no-underline flex items-center space-x-2 px-5 py-2 hover:bg-red-100 hover:text-red-900">
               <svg class="size-6" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                 <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M20 12H8m12 0-4 4m4-4-4-4M9 4H7a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h2"/>
               </svg>

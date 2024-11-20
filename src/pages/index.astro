@@ -7,6 +7,7 @@ import Profile from "../components/islands/profile.jsx";
 import RecentSearches from "../components/islands/recent-searches.jsx";
 
 const { isAuthed, authedData, getAuthUrl } = await doAuth(Astro);
+if (Astro.url.searchParams.get("code")) return Astro.redirect("/");
 
 const dictionary = await getCollection("dictionary");
 ---

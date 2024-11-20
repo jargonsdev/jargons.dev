@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import Markdown from "react-markdown";
 import { useStore } from "@nanostores/react";
 import useRouter from "../../lib/hooks/use-router.js";
@@ -30,15 +30,26 @@ export default function WordEditor({ title = "", content = "", metadata = {}, ac
 /**
  * Detached Editor Submit Button Component - Island
  */
-export function SubmitButton({ children = "Submit" }) {
+export function SubmitButton({ children = "Submit"}) {
   const isSubmitted = useStore($isWordSubmitted);
   const isSubmitLoading = useStore($isWordSubmitLoading);
+  const { title, content } = useWordEditor();
+  const [noValidInput, setNoValidInput] = useState(true);
+
+  useEffect(() => {
+    // Validate input length 
+    const isInputValid = title && content.length >= 50;
+
+    setNoValidInput(
+      !isInputValid 
+    );
+  }, [title, content]);
   
   return (
-    <button className={`flex items-center justify-center no-underline text-white ${isSubmitted ? "bg-green-700" : "bg-gray-900 hover:bg-gray-700"} focus:ring-0 font-medium rounded-lg text-base px-5 py-2.5 text-center`}
+    <button className={`flex items-center justify-center no-underline text-white  ${isSubmitted? "bg-green-700": noValidInput? "bg-gray-400 cursor-not-allowed": "bg-gray-900 hover:bg-gray-700"}  focus:ring-0 font-medium rounded-lg text-base px-5 py-2.5 text-center`}
       type="submit"
       form="jargons.dev:word_editor"
-      disabled={isSubmitLoading || isSubmitted}
+      disabled={isSubmitLoading || isSubmitted || noValidInput}
     >
       { isSubmitLoading ? (
         <div className="flex-none h-4 w-4 md:w-6 md:h-6 rounded-full border-2 border-gray-400 border-b-gray-200 border-r-gray-200 animate-spin" />

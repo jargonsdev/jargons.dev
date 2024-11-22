@@ -9,28 +9,26 @@ import { $recentSearches } from "../../lib/stores/search.js";
  * @todo implement loading component to avoid flickering UI
  */
 export default function RecentSearches() {
-	const recentSearches = useStore($recentSearches);
+  const recentSearches = useStore($recentSearches);
 
-	useEffect(() => {
-		$recentSearches.set({
-			...JSON.parse(localStorage.getItem("jargons.dev:recent_searches")),
-		});
-	}, []);
+  useEffect(() => {
+    $recentSearches.set({...JSON.parse(localStorage.getItem("jargons.dev:recent_searches"))})
+  }, []);
 
-	return Object.values(recentSearches).length ? (
-		<div className="space-y-3 ml-2 mt-4 md:mt-6">
-			<h2 className="text-2xl md:text-4xl font-black">Recent</h2>
-			<ol className="space-y-1.5 underline">
-				{Object.values(recentSearches)
-					.slice(0, 5)
-					.map((item, i) => (
-						<li key={i}>
-							<a href={item.url}>{item.word}</a>
-						</li>
-					))}
-			</ol>
-		</div>
-	) : (
-		<></>
-	);
+  return Object.values(recentSearches).length ? (
+    <div className="space-y-3 ml-2 mt-4 md:mt-6">
+	  <h2 className="text-2xl md:text-4xl font-black">Recent</h2>
+	  <ol className="space-y-1.5 underline">
+        {Object.values(recentSearches).slice(0, 5).map((item, i) => (
+          <li key={i}>
+            <a href={item.url}>
+              { item.word }
+            </a>
+          </li>
+        ))}
+	  </ol>
+	</div>
+  ) : (
+	<></>
+  );
 }

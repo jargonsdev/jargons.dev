@@ -9,7 +9,7 @@ const MEASUREMENT_ID = import.meta.env.PUBLIC_GOOGLE_ANALYTICS_MEASUREMENT_ID;
 const { props, url } = Astro;
 const {
 	pageTitle,
-	class: list,
+	class:list,
 	ogImageUrl = `${url.origin}/og.png`,
 	description = SITE_META_DESCRIPTION,
 	subtitle = "Developer Jargons",
@@ -39,10 +39,7 @@ const {
 		<meta name="twitter:image" content={ogImageUrl} />
 
 		<!-- Google tag (gtag.js) -->
-		<script
-			async
-			src=`https://www.googletagmanager.com/gtag/js?id=${MEASUREMENT_ID}`
-		></script>
+		<script async src=`https://www.googletagmanager.com/gtag/js?id=${MEASUREMENT_ID}`></script>
 		<script define:vars={{ MEASUREMENT_ID }}>
 			window.dataLayer = window.dataLayer || [];
 			function gtag() {

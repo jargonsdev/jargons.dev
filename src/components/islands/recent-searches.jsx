@@ -4,8 +4,8 @@ import { $recentSearches } from "../../lib/stores/search.js";
 
 /**
  * Recent Searches Component - An Island that displays a user's last 5 searches
- * 
- * @todo implement a default list instead of `null` when no `$recentSearch` is found 
+ *
+ * @todo implement a default list instead of `null` when no `$recentSearch` is found
  * @todo implement loading component to avoid flickering UI
  */
 export default function RecentSearches() {
@@ -26,7 +26,9 @@ export default function RecentSearches() {
             </a>
           </li>
         ))}
-			</ol>
-		</div>
-  ) : null;
+	  </ol>
+	</div>
+  ) : (
+	<></>
+  );
 }

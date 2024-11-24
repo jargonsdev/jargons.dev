@@ -14,27 +14,31 @@ export const $recentSearches = map({});
 /**
  * Add search term to recent search history
  * @param {SearchedItem} item 
- * 
- * @todo implement logic to allow holding maximum of 5 words by removing older words when new a one gets added
  */
 export function $addToRecentSearchesFn({ word, url }) {
-  // Re-initialise the state with current localStorage value
-  $recentSearches.set({...JSON.parse(localStorage.getItem("jargons.dev:recent_searches"))});
+  // Re-initialise the state with the current localStorage value
+  const storedSearches = JSON.parse(localStorage.getItem("jargons.dev:recent_searches")) || {};
+  $recentSearches.set({ ...storedSearches });
 
   const lowercaseKey = word.toLowerCase();
   const key = lowercaseKey.includes(" ") ? lowercaseKey.split(" ").join("-") : lowercaseKey;
-  const isInRecentSearch = $recentSearches.get()[key];
 
-  if (!isInRecentSearch) {
-    const recentSearchesCopy = $recentSearches.get();
-    recentSearchesCopy[key] = {
-      word, 
-      url 
-    };
-    $recentSearches.set({...recentSearchesCopy});
-  } else {
-    return;
+  const recentSearchesCopy = $recentSearches.get();
+
+  if (recentSearchesCopy[key]) {
+    delete recentSearchesCopy[key];
   }
-  
-  localStorage.setItem("jargons.dev:recent_searches", JSON.stringify($recentSearches.get()));
+
+  const searchEntries = Object.entries(recentSearchesCopy);
+
+  if (searchEntries.length >= 5) {
+    searchEntries.pop(); 
+  }
+
+  const updatedEntries = [[key, { word, url }], ...searchEntries];
+
+  const updatedSearches = Object.fromEntries(updatedEntries);
+  $recentSearches.set(updatedSearches);
+
+  localStorage.setItem("jargons.dev:recent_searches", JSON.stringify(updatedSearches));
 }

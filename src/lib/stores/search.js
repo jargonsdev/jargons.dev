@@ -14,7 +14,6 @@ export const $recentSearches = map({});
 /**
  * Add search term to recent search history
  * @param {SearchedItem} item 
- * 
  */
 export function $addToRecentSearchesFn({ word, url }) {
   // Re-initialise the state with the current localStorage value

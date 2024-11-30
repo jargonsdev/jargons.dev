@@ -1,0 +1,9 @@
+---
+layout: ../../layouts/word.astro
+title: "Row-Level Security (RLS)"
+---
+Row-Level Security (RLS) is a database feature that controls access to specific rows in a table based on the attributes of the user making the query. It allows fine-grained access control, ensuring that users can only view or manipulate data they are authorized to access.
+
+RLS is commonly used in databases to enforce security policies dynamically. Instead of creating multiple tables or views for different users or roles, RLS applies rules or filters at the row level to restrict access. This is achieved by associating security policies with the table, which are evaluated for each query. 
+
+For example, in a multi-tenant application, RLS can ensure that users only access the rows corresponding to their organization or tenant. Similarly, in an employee database, RLS can restrict employees to only view their own records.

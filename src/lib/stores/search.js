@@ -25,12 +25,15 @@ export function $addToRecentSearchesFn({ word, url }) {
 
   const recentSearchesCopy = $recentSearches.get();
 
+  // Remove Search Entry If it already exists
+
   if (recentSearchesCopy[key]) {
     delete recentSearchesCopy[key];
   }
 
   const searchEntries = Object.entries(recentSearchesCopy);
 
+  // Remove one Search Entry when list reach a count of 5
   if (searchEntries.length >= 5) {
     searchEntries.pop(); 
   }

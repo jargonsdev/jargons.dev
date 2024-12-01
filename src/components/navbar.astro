@@ -6,7 +6,7 @@ const { returnNav = { label: "Back", location: "../" } } = Astro.props;
 
 <nav class="@container flex items-center justify-between px-5 md:px-6 py-4">
   <div class="flex items-center space-x-4 md:space-x-6">
-    <a href={ returnNav.location } class="flex items-center w-6 h-6 justify-center bg-black text-white rounded-full ">
+    <a href={ returnNav.location } class="flex items-center w-6 h-6 justify-center bg-black text-white rounded-full border-2 border-transparent hover:border-white drop-shadow-md drop-shadow-color-white hover:drop-shadow-color-black transition-all ease-in-out duration-400">
       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="3.5" stroke="currentColor" class="w-4 h-4 mx-auto @md:mx-0">
         <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
       </svg> 

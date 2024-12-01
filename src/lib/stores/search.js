@@ -26,7 +26,6 @@ export function $addToRecentSearchesFn({ word, url }) {
   const recentSearchesCopy = $recentSearches.get();
 
   // Remove Search Entry If it already exists
-
   if (recentSearchesCopy[key]) {
     delete recentSearchesCopy[key];
   }

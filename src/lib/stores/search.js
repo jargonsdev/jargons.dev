@@ -1,4 +1,6 @@
 import { atom, map } from "nanostores";
+import { normalizeAsUrl } from "../utils/index.js";
+
 
 export const $isSearchOpen = atom(false);
 
@@ -20,8 +22,8 @@ export function $addToRecentSearchesFn({ word, url }) {
   const storedSearches = JSON.parse(localStorage.getItem("jargons.dev:recent_searches")) || {};
   $recentSearches.set({ ...storedSearches });
 
-  const lowercaseKey = word.toLowerCase();
-  const key = lowercaseKey.includes(" ") ? lowercaseKey.split(" ").join("-") : lowercaseKey;
+  const key = normalizeAsUrl(word);
+
 
   const recentSearchesCopy = $recentSearches.get();
 

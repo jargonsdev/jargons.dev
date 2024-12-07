@@ -4,6 +4,7 @@ import BaseLayout from "../layouts/base.astro";
 import doAuth from "../lib/actions/do-auth.js";
 import Search from "../components/islands/search.jsx";
 import Profile from "../components/islands/profile.jsx";
+import JargonsdevLogo from "../components/jargonsdev-logo.astro";
 import RecentSearches from "../components/islands/recent-searches.jsx";
 
 const { isAuthed, authedData, getAuthUrl } = await doAuth(Astro);
@@ -32,12 +33,7 @@ const dictionary = await getCollection("dictionary");
 	<main class="w-full flex flex-col grow max-w-screen-lg p-5 justify-center mx-auto">
 		<!-- Title -->
 		<div class="mb-4 md:mb-6">
-			<h1 class="relative text-5xl md:text-7xl lg:text-8xl font-black w-fit">
-				<a href="/" class="absolute font-normal text-[0.6rem] md:text-xs right-0 md:top-1.5 lg:top-3">
-					jargons.dev
-				</a>
-				Dictionary
-			</h1>
+			<JargonsdevLogo class="drop-shadow-md drop-shadow-color-black w-[80%] md:w-[60%]"  />
 		</div>
 		
 		<!-- Search -->
@@ -45,10 +41,10 @@ const dictionary = await getCollection("dictionary");
 
 		<!-- Browse words -->
 		<div class="ml-2 mt-4 md:mt-6">
-      <a href="/browse">
-        Browse Words
-      </a>
-    </div>
+			<a href="/browse">
+				Browse Words
+			</a>
+		</div>
 
 		<!-- Recent Word Look Up -->
 		<RecentSearches client:load />

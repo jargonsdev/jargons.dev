@@ -227,7 +227,8 @@ function SearchResult({ result = [], cursor, searchTerm }) {
         /**
          * @todo add message suggesting adding/contributing the word to dictionary
          */
-        <p className="p-2 md:p-4">No Result found</p>
+        // <p className="p-2 md:p-4">No Result found</p>
+        <SearchSuggestionContribution searchTerm={searchTerm}/>
       ) : ( 
         result.map(({ doc }, i) => (
           <a key={i}
@@ -251,5 +252,44 @@ function SearchResult({ result = [], cursor, searchTerm }) {
         ))
       )}
     </div>
+  );
+}
+
+function SearchSuggestionContribution({ searchTerm }){
+  return (
+    <section className="rounded-lg border shadow-sm">
+      <div className="space-y-1.5 p-3 md:p-6 flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+        <div className="space-y-1">
+          <h3 className="font-semibold tracking-tight text-2xl">
+            No Result found for{" "}
+            <span className="font-medium">{searchTerm}</span>
+          </h3>
+          <p className="text-sm">
+            Help add the word <span className="font-medium">{searchTerm}</span>{" "}
+            to jargon.dev.
+          </p>
+        </div>
+        <a
+          className="flex items-center w-fit justify-center no-underline px-4 py-2 rounded-md border border-gray-200 bg-white hover:bg-gray-100 text-sm shadow-sm hover:shadow transition-colors"
+          href="/editor/new"
+        >
+          <span>Start Now</span>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke-width={1.5}
+            stroke="currentColor"
+            className="w-4 h-4"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M4.5 19.5l15-15m0 0H8.25m11.25 0v11.25"
+            />
+          </svg>
+        </a>
+      </div>
+    </section>
   );
 }

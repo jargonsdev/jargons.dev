@@ -22,7 +22,7 @@ export default function Profile({ isAuthed, userData, authUrl }) {
     <div className="relative">
       {/* Profile */}
       <button 
-        className={`${isDropdownOpen && "ring-4"} relative flex items-center justify-center size-10 hover:ring-4 ring-gray-200 overflow-hidden bg-transparent rounded-full transition-colors duration-700 cursor-pointer focus-visible:outline-none`}
+        className={`${isDropdownOpen && "ring-4"} relative bg-gray-200 flex items-center justify-center size-10 hover:ring-4 ring-gray-200 overflow-hidden bg-transparent rounded-full transition-colors duration-700 cursor-pointer focus-visible:outline-none`}
         onClick={() => setIsDropdownOpen(prev => !prev)}
       >
         {/* User Avatar */}

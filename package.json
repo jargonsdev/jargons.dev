@@ -25,7 +25,7 @@
     "@nanostores/react": "^0.7.2",
     "@octokit/auth-oauth-app": "^8.1.0",
     "@octokit/oauth-authorization-url": "^7.1.0",
-    "astro": "^4.16.4",
+    "astro": "^4.16.18",
     "flexsearch": "^0.7.43",
     "gray-matter": "^4.0.3",
     "nanostores": "^0.10.0",

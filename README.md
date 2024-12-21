@@ -10,7 +10,7 @@
 
 <tt>jargons.dev</tt> is an open source dictionary curated by contributors providing simplified meaning and definitions to software development, engineering, and general technology terms.
 
-## Tech Stack and Archictecture
+## Tech Stack and Architecture
 
 <tt>jargons.dev</tt> is built using the following open source technologies: 
 

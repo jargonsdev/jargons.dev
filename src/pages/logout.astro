@@ -1,8 +1,14 @@
 ---
-import doLogout from "../lib/actions/do-logout.js";
+import doAuth from "../lib/actions/do-auth.js";
 
 const { url: { searchParams }, redirect } = Astro;
 
-const { isLoggedOut } = await doLogout(Astro);
-if (isLoggedOut) return redirect(searchParams.get("return_to") || "/");
+const { isAuthed, getAuthUrl } = await doAuth(Astro);
+
+if (isAuthed) {
+  const { isLoggedOut } = await doAuth(Astro, { action: "logout" });
+  if (isLoggedOut) return redirect(searchParams.get("return_to") || "/");
+} else {
+  return redirect(getAuthUrl({ path: "/logout" }));
+}
 ---

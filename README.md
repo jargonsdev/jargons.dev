@@ -10,13 +10,17 @@
 
 <tt>jargons.dev</tt> is an open source dictionary curated by contributors providing simplified meaning and definitions to software development, engineering, and general technology terms.
 
-## Tech Stack
+## Tech Stack and Archictecture
 
 <tt>jargons.dev</tt> is built using the following open source technologies: 
 
 - [Astro](https://astro.build/) - Web framework for building content-driven websites
 - [React](https://react.dev) - Library for building web interfaces
 - [Tailwind CSS](https://tailwindcss.com) - A Utility-first CSS Library
+
+### System Architecture
+
+See https://excalidraw.com/#json=51IqiNvrZiY15ZtjK0WXn,jcpW9rmzMR9OVwM05Zd1LQ
 
 ## Run Project Locally
 

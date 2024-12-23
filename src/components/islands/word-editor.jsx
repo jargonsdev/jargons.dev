@@ -5,12 +5,14 @@ import useRouter from "../../lib/hooks/use-router.js";
 import { capitalizeText } from "../../lib/utils/index.js";
 import useWordEditor from "../../lib/hooks/use-word-editor.js";
 import { $isWordSubmitLoading, $isWordSubmitted, $togglePreview } from "../../lib/stores/dictionary.js";
+import useResizablePanes from "../../lib/hooks/use-resizable-panes.js";
 
 /**
  * Main Word Editor Component - Island
  */
 export default function WordEditor({ title = "", content = "", metadata = {}, action }) {
   const togglePreview = useStore($togglePreview);
+  const { editorWidth, previewWidth, handleMouseDown } = useResizablePanes();
 
   return (
     <div className="w-full flex border rounded-lg">
@@ -20,9 +22,15 @@ export default function WordEditor({ title = "", content = "", metadata = {}, ac
         eContent={content} 
         eMetadata={metadata}
         className={` ${ !togglePreview ? "flex" : "hidden" } w-full h-full lg:!flex flex-col p-5 border-r`}
+        style={{ width: `${editorWidth}%` }}
       />
-      <Preview className="w-full h-full hidden lg:flex flex-col p-5" />
-      <Preview className={`${ togglePreview ? "flex" : "hidden" } w-full h-full lg:!hidden flex-col p-5`} />
+      <div
+        className="resizer"
+        onMouseDown={handleMouseDown}
+        style={{ cursor: "col-resize", width: "5px", backgroundColor: "#ccc" }}
+      />
+      <Preview className="w-full h-full hidden lg:flex flex-col p-5" style={{ width: `${previewWidth}%` }} />
+      <Preview className={`${ togglePreview ? "flex" : "hidden" } w-full h-full lg:!hidden flex-col p-5`} style={{ width: `${previewWidth}%` }} />
     </div>
   );
 }

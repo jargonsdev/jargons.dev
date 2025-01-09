@@ -1,8 +1,8 @@
 import satori from "satori";
 import { html } from "satori-html";
 import { Resvg } from "@resvg/resvg-js";
+import fs from "node:fs";
 import path from "node:path";
-import { readFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { getEntry } from "astro:content";
 
@@ -15,7 +15,6 @@ console.log(__dirname);
  * @param {import("astro").APIContext} context
  */
 export async function GET({ params: { slug } }) {
-  const IBMPlexMonoBuffer = readFileSync('./public/fonts/IBMPlexMono-SemiBold.ttf');
   const word = await getEntry("dictionary", slug);
 
   if (!word) {
@@ -36,8 +35,10 @@ export async function GET({ params: { slug } }) {
     fonts: [
       {
         name: "IBMPlexMono",
-        data: IBMPlexMonoBuffer,
-        style: "black"
+        data: fs.readFileSync(
+          path.join(process.cwd(), "src/fonts/IBMPlexMono-SemiBold.ttf")
+        ),
+        style: "normal"
       },
       // {
       //   name: "Inter",

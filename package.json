@@ -25,6 +25,7 @@
     "@nanostores/react": "^0.7.2",
     "@octokit/auth-oauth-app": "^8.1.0",
     "@octokit/oauth-authorization-url": "^7.1.0",
+    "@resvg/resvg-js": "^2.6.2",
     "astro": "^4.16.18",
     "flexsearch": "^0.7.43",
     "gray-matter": "^4.0.3",
@@ -32,14 +33,16 @@
     "octokit": "^3.1.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-markdown": "^9.0.1"
+    "react-markdown": "^9.0.1",
+    "satori": "^0.12.1",
+    "satori-html": "^0.3.2"
   },
   "devDependencies": {
     "@octokit/request": "^9.1.1",
     "@tailwindcss/container-queries": "^0.1.1",
     "@tailwindcss/typography": "^0.5.10",
     "@types/react": "^18.2.69",
-    "tailwindcss": "^3.4.1",
-    "@types/react-dom": "^18.2.22"
+    "@types/react-dom": "^18.2.22",
+    "tailwindcss": "^3.4.1"
   }
 }

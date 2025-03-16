@@ -9,7 +9,7 @@ import { $isJAIOpen } from "../../lib/stores/jai";
  */
 export default function JAIChatWidget({ word }) {
     const { messages, input, status, handleInputChange, handleSubmit } = useChat({
-        api: 'https://zf9bxtqh-3001.euw.devtunnels.ms/api/chat',
+        api: import.meta.env.PUBLIC_JAI_API_URL,
         onError: (e) => {
             console.log(e)
         }

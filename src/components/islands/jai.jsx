@@ -1,7 +1,6 @@
 import JAILogo from "./jai-logo";
 import { useChat } from "@ai-sdk/react";
 import { useEffect, useRef } from "react";
-import { useStore } from "@nanostores/react";
 import { $isJAIOpen } from "../../lib/stores/jai";
 
 /**
@@ -22,7 +21,7 @@ export default function JAIChatWidget({ word }) {
         if (chatContainer.current) {
             chatContainer.current.scrollTop = chatContainer.current.scrollHeight
         }
-    });
+    }, [messages]);
 
     return (
         <aside className="bg-white relative flex flex-col h-full border border-neutral-200 rounded-e-2xl rounded-s-2xl lg:rounded-e-none ring ring-neutral-100">
@@ -127,7 +126,7 @@ export default function JAIChatWidget({ word }) {
 export function JAIChatWidgetTrigger() {
     return (
         <button 
-            class="rounded-full flex items-center space-x-1.5 bg-black text-neutral-800 px-3 py-1 border border-neutral-300 ring ring-neutral-100 hover:ring-neutral-200 transition-color ease-in-out duration-300"
+            className="rounded-full flex items-center space-x-1.5 bg-black text-neutral-800 px-3 py-1 border border-neutral-300 ring ring-neutral-100 hover:ring-neutral-200 transition-color ease-in-out duration-300"
             onClick={() => $isJAIOpen.set(!$isJAIOpen.value)}
         >
             <span className="text-sm text-white">Ask</span>

@@ -28,7 +28,9 @@ export default function JAIChatWidget({ word }) {
         <aside className="bg-white relative flex flex-col h-full border border-neutral-200 rounded-e-2xl rounded-s-2xl lg:rounded-e-none ring ring-neutral-100">
             {/* Header */}
             <div className="mx-4 my-3 flex items-center justify-between">
-                <JAILogo className="w-16 drop-shadow-md" />
+                {messages.length > 0 && (
+                    <JAILogo className="w-16 drop-shadow-md" />
+                )}
 
                 {/* Close BTN */}
                 <button className="" onClick={() => $isJAIOpen.set(false)}>

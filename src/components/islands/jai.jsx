@@ -1,4 +1,5 @@
 import JAILogo from "./jai-logo";
+import Markdown from "react-markdown";
 import { useChat } from "@ai-sdk/react";
 import { useEffect, useRef } from "react";
 import { $isJAIOpen } from "../../lib/stores/jai";
@@ -64,9 +65,9 @@ export default function JAIChatWidget({ word }) {
                                             </svg>
                                         </div>
                                         <div className="bg-neutral-50 border border-neutral-200 border-opacity-50 rounded-tl-sm rounded-2xl p-5">
-                                            <p className="text-sm">
+                                            <Markdown className="prose prose-sm">
                                                 { message.content }
-                                            </p>
+                                            </Markdown>
                                         </div>
                                     </>
                                 )}

@@ -127,13 +127,18 @@ export default function JAIChatWidget({ word }) {
                     onSubmit={handleSubmit}
                     className="m-4 pt-3 pb-1.5 pe-1.5 ps-3 border border-neutral-200 border-opacity-70 rounded-2xl"
                 >
-                    <input 
+                    <textarea 
                         id="message" 
-                        className="scrollbar block w-full resize-none text-gray-900 focus:ring-0 focus:border-none outline-none" 
+                        rows="1"
+                        className="scrollbar block w-full h-auto resize-none text-gray-900 focus:ring-0 focus:border-none outline-none overflow-hidden"
                         placeholder="Ask anything" 
                         value={input}
-                        onChange={handleInputChange}
-                    />
+                        onChange={(e) => {
+                            e.target.style.height = 'auto';
+                            e.target.style.height = `${e.target.scrollHeight}px`;
+                            handleInputChange(e);
+                        }}
+                    ></textarea>
                     <div className="flex justify-end mt-2">
                         <button type="submit" className="size-9 bg-black text-white flex items-center justify-center rounded-full">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="size-4">

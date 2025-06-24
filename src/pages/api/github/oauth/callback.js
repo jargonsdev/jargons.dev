@@ -13,8 +13,9 @@ export async function GET({ url: { searchParams }, redirect }) {
   const path = state.includes("path") && state.split("|")[0].split(":")[1];
 
   /**
-   * Making sure a statically rendered page is not redirected to;
-   * ...they can't handle server-side operations like using authorization code
+   * `!path.includes("jai=1")` is a workaround for the following:
+   * - When the `path` is a statically rendered page e.g `word.astro` template, 
+   * ...we don't want to redirect to it; they can't handle server-side operations like using authorization code
    */
   if (path && !path.includes("jai=1")) return redirect(`${path}?code=${code}`);
 

@@ -81,7 +81,7 @@ const editUrl = `/editor/edit/${frontmatter.url.split("/")[3].split(".")[0]}`;
    */
   $addToRecentSearchesFn({
     word: document.querySelector("h1").textContent.trim(),
-    url: document.location.href
+    url: document.location.pathname
   });
 
   /** 

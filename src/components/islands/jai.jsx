@@ -11,22 +11,23 @@ import useRouter from "../../lib/hooks/use-router";
  */
 export default function JAIChatWidget({ word }) {
     const chatContainer = useRef(null);
-    const [isLoggedIn, setIsLoggedIn] = useState(undefined);
+    const [user, setUser] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
+    const [isLoggedIn, setIsLoggedIn] = useState(undefined);
 
     // Check if user is logged in
     useEffect(() => {
         const token = Cookies.get("jargonsdevToken");
         if (!token) {
-            console.log("User is not logged in, redirecting to login page...");
             setIsLoggedIn(false);
         } else {
             setIsLoading(true);
             // verify token validity
             fetch("/api/github/oauth/authenticate")
-                .then(response => {
+                .then(async response => {
                     if (response.ok) {
                         setIsLoggedIn(true);
+                        setUser((await response.json()).data);
                     } else {
                         setIsLoggedIn(false);
                     }
@@ -72,10 +73,8 @@ export default function JAIChatWidget({ word }) {
                             <div key={index} className="flex space-x-3">
                                 { message.role === 'user' ? (
                                     <>
-                                        <div className="flex-none flex items-center justify-center rounded-lg size-10 border bg-neutral-100 border-neutral-200 border-opacity-50">
-                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="size-5">
-                                                <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
-                                            </svg>
+                                        <div className="flex-none flex items-center justify-center rounded-lg size-10 border bg-neutral-100 border-neutral-200 border-opacity-50 overflow-hidden">
+                                            <img src={user.avatar_url} alt={user.name} />
                                         </div>
                                         <div className="bg-neutral-50 border border-neutral-200 border-opacity-50 rounded-tl-sm rounded-2xl p-5">
                                             <p className="text-sm">
@@ -128,14 +127,13 @@ export default function JAIChatWidget({ word }) {
                     onSubmit={handleSubmit}
                     className="m-4 pt-3 pb-1.5 pe-1.5 ps-3 border border-neutral-200 border-opacity-70 rounded-2xl"
                 >
-                    <textarea 
+                    <input 
                         id="message" 
-                        rows="2" 
                         className="scrollbar block w-full resize-none text-gray-900 focus:ring-0 focus:border-none outline-none" 
                         placeholder="Ask anything" 
                         value={input}
                         onChange={handleInputChange}
-                    ></textarea>
+                    />
                     <div className="flex justify-end mt-2">
                         <button type="submit" className="size-9 bg-black text-white flex items-center justify-center rounded-full">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="size-4">

@@ -63,7 +63,10 @@ const editUrl = `/editor/edit/${frontmatter.url.split("/")[3].split(".")[0]}`;
 
   <!-- jAI Chat Widget -->
   <div class="jai-wrapper">
-    <JAIChatWidget word={frontmatter.title} client:visible />
+    <JAIChatWidget 
+      word={frontmatter.title}
+      client:visible 
+    />
   </div>
 </BaseLayout>
 
@@ -81,6 +84,19 @@ const editUrl = `/editor/edit/${frontmatter.url.split("/")[3].split(".")[0]}`;
     url: document.location.href
   });
 
+  /** 
+   * Check for 'jai' parameter in URL and activate jAI Chat Widget if present
+   */
+  (() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.has('jai') && urlParams.get('jai') === '1') {
+      $isJAIOpen.set(true);
+    }
+  })();
+
+  /**
+   * Subscribe to the jAI Open state and toggle the visibility of the jAI Chat Widget
+   */
   $isJAIOpen.subscribe((value) => {
     if (value) {
       document.body.classList.add("jai-active");

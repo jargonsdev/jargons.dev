@@ -1,22 +1,46 @@
+import Cookies from "js-cookie";
 import JAILogo from "./jai-logo";
 import Markdown from "react-markdown";
 import { useChat } from "@ai-sdk/react";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { $isJAIOpen } from "../../lib/stores/jai";
+import useRouter from "../../lib/hooks/use-router";
 
 /**
  * jAI Chat Widget Component
  */
 export default function JAIChatWidget({ word }) {
+    const chatContainer = useRef(null);
+    const [isLoggedIn, setIsLoggedIn] = useState(undefined);
+    const [isLoading, setIsLoading] = useState(true);
+
+    // Check if user is logged in
+    useEffect(() => {
+        const token = Cookies.get("jargonsdevToken");
+        if (!token) {
+            console.log("User is not logged in, redirecting to login page...");
+            setIsLoggedIn(false);
+        } else {
+            setIsLoading(true);
+            // verify token validity
+            fetch("/api/github/oauth/authenticate")
+                .then(response => {
+                    if (response.ok) {
+                        setIsLoggedIn(true);
+                    } else {
+                        setIsLoggedIn(false);
+                    }
+                });
+        }
+        setIsLoading(false);
+    }, []);
+
     const { messages, input, status, handleInputChange, handleSubmit } = useChat({
         api: import.meta.env.PUBLIC_JAI_API_URL,
         onError: (e) => {
             console.log(e)
         }
     });
-    console.log(messages);
-
-    const chatContainer = useRef(null);
 
     useEffect(() => {
         if (chatContainer.current) {
@@ -27,7 +51,7 @@ export default function JAIChatWidget({ word }) {
     return (
         <aside className="bg-white relative flex flex-col h-full border border-neutral-200 rounded-e-2xl rounded-s-2xl lg:rounded-e-none ring ring-neutral-100">
             {/* Header */}
-            <div className="mx-4 my-3 flex items-center justify-between">
+            <div className="px-5 py-4 flex items-center justify-between">
                 {messages.length > 0 && (
                     <JAILogo className="w-16 drop-shadow-md" />
                 )}
@@ -40,8 +64,8 @@ export default function JAIChatWidget({ word }) {
                 </button>
             </div>
 
-            {/* Body */}
-            <div ref={chatContainer} className="h-full grow px-5 lg:px-10 pt-4 overflow-y-auto scrollbar scroll-smooth">
+            { /* Body */}
+            <div ref={chatContainer} className="h-full grow px-5 pt-4 overflow-y-auto scrollbar scroll-smooth">
                 {messages.length > 0 ? (
                     <div className="h-full space-y-5">
                         { messages.map((message, index) => (
@@ -94,31 +118,33 @@ export default function JAIChatWidget({ word }) {
                         )}
                     </div>
                 ) : (
-                    <JAIIntro word={word} />
+                    <JAIIntro status={{ isLoggedIn, isLoading }} word={word} />
                 )}
             </div>
 
-            {/* Chat Input Box */}
-            <form 
-                onSubmit={handleSubmit}
-                className="m-4 pt-3 pb-1.5 pe-1.5 ps-3 border border-neutral-200 border-opacity-70 rounded-2xl"
-            >
-                <textarea 
-                    id="message" 
-                    rows="2" 
-                    className="scrollbar block w-full resize-none text-gray-900 focus:ring-0 focus:border-none outline-none" 
-                    placeholder="Ask anything" 
-                    value={input}
-                    onChange={handleInputChange}
-                ></textarea>
-                <div className="flex justify-end mt-2">
-                    <button type="submit" className="size-9 bg-black text-white flex items-center justify-center rounded-full">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="size-4">
-                            <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 10.5 12 3m0 0 7.5 7.5M12 3v18" />
-                        </svg>                       
-                    </button>
-                </div>
-            </form>
+            {/* Chat Input Box */
+            (isLoggedIn && !isLoading) && (
+                <form 
+                    onSubmit={handleSubmit}
+                    className="m-4 pt-3 pb-1.5 pe-1.5 ps-3 border border-neutral-200 border-opacity-70 rounded-2xl"
+                >
+                    <textarea 
+                        id="message" 
+                        rows="2" 
+                        className="scrollbar block w-full resize-none text-gray-900 focus:ring-0 focus:border-none outline-none" 
+                        placeholder="Ask anything" 
+                        value={input}
+                        onChange={handleInputChange}
+                    ></textarea>
+                    <div className="flex justify-end mt-2">
+                        <button type="submit" className="size-9 bg-black text-white flex items-center justify-center rounded-full">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="size-4">
+                                <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 10.5 12 3m0 0 7.5 7.5M12 3v18" />
+                            </svg>                       
+                        </button>
+                    </div>
+                </form>
+            )}
         </aside>
     );
 }
@@ -141,26 +167,58 @@ export function JAIChatWidgetTrigger() {
 /**
  * jAI Intro Screen
  */
-function JAIIntro({ word }) {
+function JAIIntro({ status, word }) {
+    const { pathname } = useRouter();
+    const { isLoggedIn, isLoading } = status;
+
+    if (isLoading || isLoggedIn === undefined) {
+        return (
+            <div className="h-full space-y-8 flex flex-col items-center justify-center -mt-20">
+                <JAILogo className="w-52 drop-shadow-md mx-auto" />
+                <div className="size-8 border-4 border-t-black border-l-black border-r-black rounded-full animate-spin" />
+            </div>
+        )
+    }
+
     return (
         <div className="h-full space-y-4 flex flex-col items-center justify-center -mt-20">
             <JAILogo className="w-52 drop-shadow-md mx-auto" />
-            <p className="text-lg w-10/12 mx-auto text-center">
-                Ask me anything about <span className="underline">{word}</span> or other technical jargon
-            </p>
+
+            { isLoggedIn ? (
+                <p className="text-lg w-10/12 mx-auto text-center">
+                    Ask me anything about <span className="underline">{word}</span> or other technical jargon
+                </p>
+            ) : (
+                <p className="text-lg w-10/12 mx-auto text-center">
+                    Want to dig deeper into <span className="underline">{word}</span>? Log in to ask <strong>jAI</strong> your own follow-up questions and get helpful, context-aware answers—all without leaving the page.
+                    <br /><br />
+                    We’ll take you to the login screen real quick.
+                </p>
+            )}
+
             <div className="mx-auto text-center space-y-4 space-x-4">
-                <button className="bg-neutral-100 border border-neutral-200 rounded-lg px-5 py-2.5">
-                    Can you give me a real-world example?
-                </button>
-                <button className="bg-neutral-100 border border-neutral-200 rounded-lg px-5 py-2.5">
-                    How is this used in practice?
-                </button>
-                <button className="bg-neutral-100 border border-neutral-200 rounded-lg px-5 py-2.5">
-                    How does this relate to other concepts?
-                </button>
-                <button className="bg-neutral-100 border border-neutral-200 rounded-lg px-5 py-2.5">
-                    Are there common misconceptions about this?
-                </button>
+                { isLoggedIn ? (
+                    <>
+                        <button className="bg-neutral-100 border border-neutral-200 rounded-lg px-5 py-2.5">
+                            Can you give me a real-world example?
+                        </button>
+                        <button className="bg-neutral-100 border border-neutral-200 rounded-lg px-5 py-2.5">
+                            How is this used in practice?
+                        </button>
+                        <button className="bg-neutral-100 border border-neutral-200 rounded-lg px-5 py-2.5">
+                            How does this relate to other concepts?
+                        </button>
+                        <button className="bg-neutral-100 border border-neutral-200 rounded-lg px-5 py-2.5">
+                            Are there common misconceptions about this?
+                        </button>
+                    </>
+                ) : (
+                    <a href={`/login?return_to=${pathname}?jai=1`}  className="flex items-center justify-center h-12 mr-3 px-3 text-lg font-medium bg-black text-white border no-underline rounded-lg focus:outline-none hover:shadow-xl">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-5 mr-2">
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0 0 13.5 3h-6a2.25 2.25 0 0 0-2.25 2.25v13.5A2.25 2.25 0 0 0 7.5 21h6a2.25 2.25 0 0 0 2.25-2.25V15M12 9l-3 3m0 0 3 3m-3-3h12.75" />
+                        </svg> Login
+                    </a>
+                )}
             </div>
         </div>
     );

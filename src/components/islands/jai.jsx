@@ -71,7 +71,7 @@ export default function JAIChatWidget({ word }) {
                     <div className="h-full space-y-5">
                         { messages.map((message, index) => (
                             <div key={index} className="flex space-x-3">
-                                { message.role === 'user' ? (
+                                { message.role === "user" ? (
                                     <>
                                         <div className="flex-none flex items-center justify-center rounded-lg size-10 border bg-neutral-100 border-neutral-200 border-opacity-50 overflow-hidden">
                                             <img src={user.avatar_url} alt={user.name} />
@@ -134,9 +134,15 @@ export default function JAIChatWidget({ word }) {
                         placeholder="Ask anything" 
                         value={input}
                         onChange={(e) => {
-                            e.target.style.height = 'auto';
+                            e.target.style.height = "auto";
                             e.target.style.height = `${e.target.scrollHeight}px`;
                             handleInputChange(e);
+                        }}
+                        onKeyDown={(e) => {
+                            if (e.key === "Enter" && !e.shiftKey) {
+                                e.preventDefault();
+                                handleSubmit(e);
+                            }
                         }}
                     ></textarea>
                     <div className="flex justify-end mt-2">

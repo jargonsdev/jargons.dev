@@ -2,7 +2,7 @@ import { LangChainAdapter } from "ai";
 import { RunnableSequence } from "@langchain/core/runnables";
 import { formatDocumentsAsString } from "langchain/util/document";
 import { HttpResponseOutputParser } from "langchain/output_parsers";
-import { jAIPrompt as prompt, model, formatMessage, vectorStore } from "@/apps/jai/index.js"; 
+import { jAIPrompt as prompt, model, formatMessage, vectorStore } from "../../../../apps/jai/index.js"; 
 
 export async function OPTIONS() {
     return Response.json(

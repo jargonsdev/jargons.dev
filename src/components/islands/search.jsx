@@ -61,7 +61,7 @@ function SearchTrigger({ size = "md" }) {
 
   if (size === "sm") return (
     <div onClick={() => $isSearchOpen.set(!isSearchOpen)}>
-      <div className="relative w-56 text-sm hidden md:flex items-center justify-between border pl-2.5 p-1 space-x-2 border-gray-400 rounded-lg cursor-text">
+      <div className="relative w-56 text-sm hidden @lg:flex items-center justify-between border pl-2.5 p-1 space-x-2 border-gray-400 rounded-lg cursor-text">
         <div className="flex items-center text-gray-400 space-x-2">
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-5 h-5">
             <path strokeLinecap="round" strokeLinejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
@@ -76,7 +76,7 @@ function SearchTrigger({ size = "md" }) {
           )}
         </kbd>
       </div>
-      <button className="flex md:hidden font-bold">
+      <button className="flex @lg:hidden font-bold">
 				<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.8" stroke="currentColor" className="w-5 h-5">
 					<path strokeLinecap="round" strokeLinejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
 				</svg>
@@ -158,7 +158,7 @@ function SearchDialog() {
   };
 
   return (
-    <div className="fixed left-0 top-0 z-auto p-5 w-full h-screen flex justify-center bg-gray-100/30">
+    <div className="fixed left-0 top-0 z-50 p-5 w-full h-screen flex justify-center bg-gray-100/30">
       {/* Blur */}
       <div onClick={() => $isSearchOpen.set(!isSearchOpen)}
         className="absolute w-full h-full left-0 top-0 z-50 backdrop-blur-sm"

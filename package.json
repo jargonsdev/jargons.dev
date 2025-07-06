@@ -42,7 +42,7 @@
     "react-markdown": "^9.0.1"
   },
   "devDependencies": {
-    "@octokit/request": "^9.1.1",
+    "@octokit/request": "^9.2.4",
     "@tailwindcss/container-queries": "^0.1.1",
     "@tailwindcss/typography": "^0.5.10",
     "@types/react": "^18.2.69",

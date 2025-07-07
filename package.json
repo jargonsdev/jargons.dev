@@ -17,7 +17,6 @@
   "license": "ISC",
   "dependencies": {
     "@ai-sdk/react": "^1.1.21",
-    "@astrojs/mdx": "^2.2.1",
     "@astrojs/mdx": "^4.3.0",
     "@astrojs/partytown": "^2.1.2",
     "@astrojs/react": "^3.1.0",

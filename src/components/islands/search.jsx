@@ -2,9 +2,10 @@ import Flexsearch from "flexsearch";
 import { useEffect, useState } from "react";
 import { useStore } from "@nanostores/react";
 import useRouter from "../../lib/hooks/use-router.js";
+import { buildWordSlug } from "../../lib/utils/index.js";
 import useIsMacOS from "../../lib/hooks/use-is-mac-os.js";
 import useLockBody from "../../lib/hooks/use-lock-body.js";
-import { $isSearchOpen, $addToRecentSearchesFn } from "../../lib/stores/search.js";
+import { $isSearchOpen } from "../../lib/stores/search.js";
 
 // Create Search Index
 const searchIndex = new Flexsearch.Document({
@@ -27,7 +28,7 @@ export default function Search({ triggerSize, dictionary }) {
     searchIndex.add({
       id: word.id,
       title: word.data.title,
-      slug: word.slug
+      slug: buildWordSlug(word.id)
     });
   }
 
@@ -231,10 +232,7 @@ function SearchResult({ result = [], cursor, searchTerm }) {
       ) : ( 
         result.map(({ doc }, i) => (
           <a key={i}
-            /**
-             * @todo find better ways - don't hardcode `browse` string to the word slug
-             */
-            href={`/browse/${doc.slug}`}  
+            href={doc.slug}  
             onClick={(e) => {
               e.preventDefault();
               router.push(e.currentTarget.href);

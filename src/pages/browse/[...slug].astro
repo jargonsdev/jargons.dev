@@ -3,6 +3,26 @@ import { getCollection, getEntry, render } from "astro:content";
 
 export const prerender = true;
 
+const { slug } = Astro.params;
+
+let Content;
+if (slug) {
+  try {
+    const entry = await getEntry("dictionary", slug);
+    if (entry) {
+      const rendered = await render(entry);
+      Content = rendered.Content;
+    } else {
+      throw new Error(`Entry not found for slug: ${slug}`);
+    }
+  } catch (error) {
+    console.error(`Failed to render entry: ${error.message}`);
+    return Astro.redirect('/404');
+  }
+} else {
+  return Astro.redirect('/404');
+}
+
 export async function getStaticPaths() {
   const dictionary = await getCollection("dictionary");
   return dictionary.map(word => {
@@ -12,10 +32,5 @@ export async function getStaticPaths() {
     });
   });
 }
-
-const { slug } = Astro.params;
-
-const entry = await getEntry("dictionary", slug);
-const { Content } = await render(entry);
 ---
 <Content />

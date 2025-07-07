@@ -1,4 +1,5 @@
 import app from "../octokit/app.js";
+import { decrypt } from "../utils/crypto.js";
 import { getExistingWord } from "../word-editor.js";
 import { PROJECT_REPO_DETAILS } from "../../../constants.js";
 

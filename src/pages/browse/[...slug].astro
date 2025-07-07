@@ -31,8 +31,7 @@ export async function getStaticPaths() {
   const dictionary = await getCollection("dictionary");
   return dictionary.map(word => {
     return ({
-      params: { slug: word.id },
-      props: { entry: word }
+      params: { slug: word.id }
     });
   });
 }

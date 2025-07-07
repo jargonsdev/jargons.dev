@@ -5,6 +5,10 @@ export const prerender = true;
 
 const { slug } = Astro.params;
 
+/**
+ * Logic to ensure that `entry` is valid before passing it to `render()`
+ * This is to prevent the astro [RenderUndefinedEntryError] - https://docs.astro.build/en/reference/errors/render-undefined-entry-error/
+ */
 let Content;
 if (slug) {
   try {

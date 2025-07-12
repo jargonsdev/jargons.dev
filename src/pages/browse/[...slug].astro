@@ -1,8 +1,6 @@
 ---
 import { getCollection, getEntry, render } from "astro:content";
 
-export const prerender = true;
-
 export async function getStaticPaths() {
   const dictionary = await getCollection("dictionary");
   return dictionary.map(word => {

@@ -7,6 +7,8 @@ import doEditWord from "../../../lib/actions/do-edit-word.js";
 import { resolveEditorActionFromPathname } from "../../../lib/utils/index.js";
 import WordEditor, { SubmitButton as WordEditorSubmitButton, TogglePreview } from "../../../components/islands/word-editor.jsx";
 
+export const prerender = false;
+
 const { url: { pathname }, redirect } = Astro;
 
 const { isAuthed, authedData: userData } = await doAuth(Astro);

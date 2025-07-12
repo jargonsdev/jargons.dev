@@ -9,6 +9,8 @@ import { PROJECT_REPO_DETAILS } from "../../../constants.js";
 import doContributionStats from "../../lib/actions/do-contribution-stats.js";
 import ContributionCTA from "../../components/contribution-cta.astro";
 
+export const prerender = false;
+
 const { url: { pathname }, redirect } = Astro;
 
 const { isAuthed, authedData: userData, getAuthUrl } = await doAuth(Astro);

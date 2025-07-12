@@ -3,11 +3,6 @@ import { getCollection, getEntry, render } from "astro:content";
 
 export const prerender = true;
 
-const { slug } = Astro.params;
-
-const entry = await getEntry("dictionary", slug);
-const { Content } = await render(entry);
-
 export async function getStaticPaths() {
   const dictionary = await getCollection("dictionary");
   return dictionary.map(word => {
@@ -16,5 +11,10 @@ export async function getStaticPaths() {
     });
   });
 }
+
+const { slug } = Astro.params;
+
+const entry = await getEntry("dictionary", slug);
+const { Content } = await render(entry);
 ---
 <Content />

@@ -1,6 +1,8 @@
 ---
 import { getCollection, getEntry, render } from "astro:content";
 
+export const prerender = true;
+
 const { slug } = Astro.params;
 
 const entry = await getEntry("dictionary", slug);

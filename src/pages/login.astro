@@ -2,8 +2,6 @@
 import BaseLayout from "../layouts/base.astro";
 import doAuth from "../lib/actions/do-auth.js";
 
-export const prerender = false;
-
 const { url: { searchParams }, redirect } = Astro;
 
 const { getAuthUrl, isAuthed } = await doAuth(Astro);

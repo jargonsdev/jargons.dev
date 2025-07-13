@@ -5,12 +5,11 @@ export const prerender = true;
 
 export async function getStaticPaths() {
   const dictionary = await getCollection("dictionary");
-  return dictionary.map(word => {
-    return ({
+  return dictionary.map(word => ({
       params: { slug: word.id },
       props: { word }
-    });
-  });
+    })
+  );
 }
 
 const { word } = Astro.props;

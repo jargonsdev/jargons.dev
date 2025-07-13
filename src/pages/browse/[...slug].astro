@@ -5,14 +5,13 @@ export async function getStaticPaths() {
   const dictionary = await getCollection("dictionary");
   return dictionary.map(word => {
     return ({
-      params: { slug: word.id }
+      params: { slug: word.id },
+      props: { word }
     });
   });
 }
 
-const { slug } = Astro.params;
-
-const entry = await getEntry("dictionary", slug);
-const { Content } = await render(entry);
+const { word } = Astro.props;
+const { Content } = await render(word);
 ---
 <Content />

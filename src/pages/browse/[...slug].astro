@@ -3,15 +3,11 @@ import { getCollection, render } from "astro:content";
 
 export const prerender = true;
 
-const { slug } = Astro.params;
-
-console.log("Slug:", slug);
-
 export async function getStaticPaths() {
   const dictionary = await getCollection("dictionary");
-  console.log("Dictionary item 1:", dictionary[0]);
   return dictionary.map(word => ({
-      params: { slug: word.id },
+      // @ts-expect-error - `slug` property is not defined in `CollectionEntry` type - see https://github.com/withastro/astro/issues/14070
+      params: { slug: word.slug },
       props: { word }
     })
   );

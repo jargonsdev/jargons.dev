@@ -4,7 +4,7 @@ import { ALPHABETS } from "../../../../constants.js";
 import BaseLayout from "../../../layouts/base.astro";
 import Navbar from "../../../components/navbar.astro";
 import Search from "../../../components/islands/search";
-import { buildWordSlug } from "../../../lib/utils/index.js";
+import { buildWordPathname } from "../../../lib/utils/index.js";
 import ContributionCTA from "../../../components/contribution-cta.astro";
 
 const { page } = Astro.props;
@@ -45,7 +45,7 @@ export async function getStaticPaths({ paginate }) {
     <!-- Words List -->
     <div>
       {page.data.length ? page.data.map(word => (
-        <a href={buildWordSlug(word.slug)}
+        <a href={buildWordPathname(word.slug)}
           class="flex items-center md:text-lg justify-between no-underline w-full p-4 even:bg-gray-100 hover:bg-gray-100/50"
         >
           <span>{ word.data.title }</span>

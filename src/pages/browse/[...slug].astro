@@ -1,4 +1,5 @@
 ---
+import { buildWordSlug } from "../../lib/utils";
 import { getCollection, render } from "astro:content";
 
 export const prerender = true;
@@ -6,8 +7,7 @@ export const prerender = true;
 export async function getStaticPaths() {
   const dictionary = await getCollection("dictionary");
   return dictionary.map(word => ({
-      // @ts-expect-error - `slug` property is not defined in `CollectionEntry` type - see https://github.com/withastro/astro/issues/14070
-      params: { slug: word.slug },
+      params: { slug: buildWordSlug(word.id) },
       props: { word }
     })
   );

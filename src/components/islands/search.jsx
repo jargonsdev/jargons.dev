@@ -2,7 +2,7 @@ import Flexsearch from "flexsearch";
 import { useEffect, useState } from "react";
 import { useStore } from "@nanostores/react";
 import useRouter from "../../lib/hooks/use-router.js";
-import { buildWordSlug } from "../../lib/utils/index.js";
+import { buildWordPathname, buildWordSlug } from "../../lib/utils/index.js";
 import useIsMacOS from "../../lib/hooks/use-is-mac-os.js";
 import useLockBody from "../../lib/hooks/use-lock-body.js";
 import { $isSearchOpen } from "../../lib/stores/search.js";
@@ -26,9 +26,13 @@ export default function Search({ triggerSize, dictionary }) {
 
   for (const word of dictionary) {
     searchIndex.add({
-      id: word.slug,
+      /**
+       * `word.id` could be a `slug` or a `slug` with the `mdx` extension i.e. `word-id.mdx`
+       * @see https://github.com/withastro/astro/issues/14070
+       */
+      id: word.id,
       title: word.data.title,
-      slug: buildWordSlug(word.slug)
+      slug: buildWordPathname(buildWordSlug(word.id))
     });
   }
 

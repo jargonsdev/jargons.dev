@@ -26,9 +26,9 @@ export default function Search({ triggerSize, dictionary }) {
 
   for (const word of dictionary) {
     searchIndex.add({
-      id: word.id,
+      id: word.slug,
       title: word.data.title,
-      slug: buildWordSlug(word.id)
+      slug: buildWordSlug(word.slug)
     });
   }
 

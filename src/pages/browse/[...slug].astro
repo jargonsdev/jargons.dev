@@ -3,8 +3,13 @@ import { getCollection, render } from "astro:content";
 
 export const prerender = true;
 
+const { slug } = Astro.params;
+
+console.log("Slug:", slug);
+
 export async function getStaticPaths() {
   const dictionary = await getCollection("dictionary");
+  console.log("Dictionary item 1:", dictionary[0]);
   return dictionary.map(word => ({
       params: { slug: word.id },
       props: { word }

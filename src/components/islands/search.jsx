@@ -28,7 +28,7 @@ export default function Search({ triggerSize, dictionary }) {
     searchIndex.add({
       /**
        * `word.id` could be a `slug` or a `slug` with the `mdx` extension i.e. `word-id.mdx`
-       * @see https://github.com/withastro/astro/issues/14070
+       * @see https://github.com/withastro/astro/issues/14073
        */
       id: word.id,
       title: word.data.title,

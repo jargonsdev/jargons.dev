@@ -22,7 +22,6 @@ export default async function doAuth(astroGlobal) {
 
   /**
    * Generate OAuth Url to start authorization flow
-   * @todo improvement: store `state` in cookie for later retrieval/comparison with auth `state` in `github/oauth/callback`
    * @param {{ path: string }} state
    */
   function getAuthUrl(state) {
@@ -39,8 +38,14 @@ export default async function doAuth(astroGlobal) {
       if (otherStates.length > 0) parsedState += `|${otherStates}`;
     }
 
-    const { url } = app.oauth.getWebFlowAuthorizationUrl({
+    const { url, state: generatedState } = app.oauth.getWebFlowAuthorizationUrl({
       state: parsedState,
+    });
+
+    cookies.set("oauthState", generatedState, {
+      expires: resolveCookieExpiryDate(600),
+      path: "/",
+      encode: (value) => encrypt(value),
     });
 
     return url;
@@ -58,6 +63,14 @@ export default async function doAuth(astroGlobal) {
           encode: (value) => encrypt(value),
         });
       }
+    }
+
+    const storedState = cookies.get("oauthState", {
+      decode: (value) => decrypt(value),
+    });
+
+    if (storedState !== searchParams.get("state")) {
+      throw new Error("Invalid OAuth state");
     }
 
     const userOctokit = app.getUserOctokit({ token: accessToken.value });

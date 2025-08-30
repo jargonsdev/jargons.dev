@@ -4,8 +4,8 @@ import { ALPHABETS } from "../../../../constants.js";
 import BaseLayout from "../../../layouts/base.astro";
 import Navbar from "../../../components/navbar.astro";
 import Search from "../../../components/islands/search";
-import { buildWordPathname } from "../../../lib/utils/index.js";
 import ContributionCTA from "../../../components/contribution-cta.astro";
+import { buildWordPathname, buildWordSlug } from "../../../lib/utils/index.js";
 
 const { page } = Astro.props;
 const params = Astro.params;
@@ -17,8 +17,7 @@ export const prerender = true;
 export async function getStaticPaths({ paginate }) {
   const dictionary = await getCollection("dictionary");
   return ALPHABETS.flatMap(alpha => {
-    // @ts-expect-error - `slug` property is not defined in `CollectionEntry` type - see https://github.com/withastro/astro/issues/14070
-    const filteredWords = dictionary.filter(word => word.slug[0] === alpha);
+    const filteredWords = dictionary.filter(word => word.id[0] === alpha);
     return paginate(filteredWords, {
       params: { alpha },
       // pageSize: 1
@@ -45,7 +44,7 @@ export async function getStaticPaths({ paginate }) {
     <!-- Words List -->
     <div>
       {page.data.length ? page.data.map(word => (
-        <a href={buildWordPathname(word.slug)}
+        <a href={buildWordPathname(buildWordSlug(word.id))}
           class="flex items-center md:text-lg justify-between no-underline w-full p-4 even:bg-gray-100 hover:bg-gray-100/50"
         >
           <span>{ word.data.title }</span>

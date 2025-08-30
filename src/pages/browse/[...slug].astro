@@ -1,18 +1,19 @@
 ---
-import { getCollection } from "astro:content";
-
-const { entry } = Astro.props;
-
-//@ts-expect-error - `entry` is percieved as "never" type
-const { Content } = await entry.render();
+import { buildWordSlug } from "../../lib/utils";
+import { getCollection, render } from "astro:content";
 
 export const prerender = true;
 
 export async function getStaticPaths() {
   const dictionary = await getCollection("dictionary");
-  return dictionary.map(entry => ({
-    params: { slug: entry.slug }, props: { entry },
-  }));
+  return dictionary.map(word => ({
+      params: { slug: buildWordSlug(word.id) },
+      props: { word }
+    })
+  );
 }
+
+const { word } = Astro.props;
+const { Content } = await render(word);
 ---
 <Content />

@@ -5,7 +5,7 @@ import doAuth from "../../lib/actions/do-auth.js";
 import Navbar from "../../components/navbar.astro";
 import { buildStatsUrl } from "../../lib/utils/index.js";
 import Profile from "../../components/islands/profile.jsx";
-import { PROJECT_REPO_DETAILS } from "../../../constants.js";
+import { PROJECT_REPO_DETAILS, LABELS } from "../../../constants.js";
 import doContributionStats from "../../lib/actions/do-contribution-stats.js";
 import ContributionCTA from "../../components/contribution-cta.astro";
 
@@ -18,8 +18,8 @@ const { newWords, editedWords, pendingWords } = await doContributionStats(Astro)
 const totalWords = {
   count: newWords.count + editedWords.count,
   url: buildStatsUrl(
-    PROJECT_REPO_DETAILS.repoFullname, 
-    `label:":book: edit word",":book: new word" is:pr is:closed is:merged author:@me`
+    PROJECT_REPO_DETAILS.repoFullname,
+    `(label:"${LABELS.EDIT_WORD}" OR label:"${LABELS.NEW_WORD}") is:pr is:closed is:merged author:@me`
   )
 }
 ---

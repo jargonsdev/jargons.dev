@@ -3,6 +3,12 @@ export const PROJECT_REPO_DETAILS = {
   repoMainBranchRef: import.meta.env.PUBLIC_PROJECT_REPO_BRANCH_REF
 }
 
+export const LABELS = {
+  NEW_WORD: "📖new-word",
+  EDIT_WORD: "📖edit-word",
+  VIA_EDITOR: "💻via-jargons-editor",
+};
+
 export const SITE_META_DESCRIPTION = "A community-driven dictionary that simplifies software, engineering and tech terms for all levels. Curated by contributors, jargons.dev offers clear, easy-to-understand definitions."
 
 export const SITE_META_KEYWORDS = [  

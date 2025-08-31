@@ -2,10 +2,19 @@
 layout: ../../layouts/word.astro
 title: "Infinite Loop"
 ---
-An infinite loop is a loop that has no end. A loop that has a terminating condition that can never be met. to some certain conditions it can be useful but most times causes issues when not properly handled.
-Example of an infinite loop in JS is a while loop
+An infinite loop is a loop in programming that **never stops running** because the ending condition is never met (or missing).
 
+**Key idea**:
+
+- Normally, loops run until a condition becomes false.
+- In an infinite loop, that condition always stays true (or there’s no way to exit).
+
+**Example (JavaScript):**
+
+```js
 while (true) {
-    console.log("This will run forever.");
+  console.log("This will run forever!");
 }
+```
 
+This loop will keep printing endlessly until the program is stopped.

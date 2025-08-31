@@ -19,7 +19,7 @@ const totalWords = {
   count: newWords.count + editedWords.count,
   url: buildStatsUrl(
     PROJECT_REPO_DETAILS.repoFullname,
-    `(label:"${LABELS.EDIT_WORD}" OR label:"${LABELS.NEW_WORD}") is:pr is:closed is:merged author:@me`
+    `label:"${LABELS.VIA_EDITOR}" is:pr is:closed is:merged author:@me`
   )
 }
 ---

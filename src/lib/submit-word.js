@@ -1,3 +1,4 @@
+import { LABELS } from "../../constants.js";
 import { getRepoParts } from "./utils/index.js";
 import newWordPRTemp from "./templates/new-word-pr.md.js";
 import editWordPRTemp from "./templates/edit-word-pr.md.js";
@@ -44,8 +45,8 @@ export async function submitWord(jargonsdevOctokit, userOctokit, action, project
     repo: repoName,
     issue_number: response.data.number,
     labels: [
-      `:book: ${action} word`,
-      ":computer: via jargons-editor"
+      action === "new" ? LABELS.NEW_WORD : LABELS.EDIT_WORD,
+      LABELS.VIA_EDITOR
     ]
   });
 

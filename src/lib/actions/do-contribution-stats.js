@@ -1,7 +1,7 @@
 import app from "../octokit/app.js";
 import { decrypt } from "../utils/crypto.js";
 import { buildStatsUrl } from "../utils/index.js";
-import { PROJECT_REPO_DETAILS } from "../../../constants.js";
+import { PROJECT_REPO_DETAILS, LABELS } from "../../../constants.js";
 
 /**
  * Get some jargons contribution stats for current user on the Jargons Editor
@@ -16,49 +16,56 @@ export default async function doContributionStats(astroGlobal) {
   });
   const userOctokit = app.getUserOctokit({ token: accessToken.value });
 
-  /**
-   * @todo Implement narrowed search to project's main branch
-   */
-  const baseQuery = `repo:${repoFullname} is:pull-request type:pr author:@me`;
-  const baseStatsUrlQuery = `is:pr author:@me`;
+  // Build queries using the viewer's login and narrow to main branch if available
+  const { data: me } = await userOctokit.request("GET /user");
+  const viewerLogin = me?.login;
 
-  /**
-   * @todo [thoughts]: would be nice to have all these requests in one, and use a filter to separate by labels
-   * [potential bottleneck]: no way to know whether a PR is "merged" considering that "closed" doesn't mean merged
-   */
-  const { data: newType } = await userOctokit.request("GET /search/issues", {
-    q: `${baseQuery} label:":book: new word" is:merged is:closed`,
+  const branchInfo = repoMainBranchRef ? repoMainBranchRef.split("/").slice(2).join("/") : "";
+
+  const baseQuery = `repo:${repoFullname} is:pull-request type:pr author:${viewerLogin} base:${branchInfo}`;
+  const baseStatsUrlQuery = `is:pr author:@me base:${branchInfo}`;
+
+  const newMergedQuery = `${baseQuery} label:"${LABELS.NEW_WORD}" is:merged is:closed`;
+  const editMergedQuery = `${baseQuery} label:"${LABELS.EDIT_WORD}" is:merged is:closed`;
+  const pendingOpenQuery = `${baseQuery} label:"${LABELS.VIA_EDITOR}" is:open`;
+
+  const data = await userOctokit.graphql(`
+    #graphql
+      query ContributionStats($newMergedQuery: String!, $editMergedQuery: String!, $pendingOpenQuery: String!) {
+        newMerged: search(query: $newMergedQuery, type: ISSUE, first: 1) { issueCount }
+        editMerged: search(query: $editMergedQuery, type: ISSUE, first: 1) { issueCount }
+        pendingOpen: search(query: $pendingOpenQuery, type: ISSUE, first: 1) { issueCount }
+      }
+  `, {
+    newMergedQuery,
+    editMergedQuery,
+    pendingOpenQuery,
   });
-  const { data: editType } = await userOctokit.request("GET /search/issues", {
-    q: `${baseQuery} label:":book: edit word" is:merged is:closed`,
-  });
-  const { data: pendingType } = await userOctokit.request(
-    "GET /search/issues",
-    {
-      q: `${baseQuery} label:":book: edit word",":book: new word" is:unmerged is:open`,
-    }
-  );
+
+  const newCount = data?.newMerged?.issueCount ?? 0;
+  const editCount = data?.editMerged?.issueCount ?? 0;
+  const pendingCount = data?.pendingOpen?.issueCount ?? 0;
 
   return {
     newWords: {
-      count: newType.total_count,
+      count: newCount,
       url: buildStatsUrl(
         repoFullname,
-        `${baseStatsUrlQuery} is:merged is:closed label:":book: new word"`
+        `${baseStatsUrlQuery} is:merged is:closed label:"${LABELS.NEW_WORD}"`
       ),
     },
     editedWords: {
-      count: editType.total_count,
+      count: editCount,
       url: buildStatsUrl(
         repoFullname,
-        `${baseStatsUrlQuery} is:merged is:closed label:":book: edit word"`
+        `${baseStatsUrlQuery} is:merged is:closed label:"${LABELS.EDIT_WORD}"`
       ),
     },
     pendingWords: {
-      count: pendingType.total_count,
+      count: pendingCount,
       url: buildStatsUrl(
         repoFullname,
-        `${baseStatsUrlQuery} is:unmerged is:open`
+        `${baseStatsUrlQuery} is:open label:"${LABELS.VIA_EDITOR}"`
       ),
     },
   };

@@ -4,7 +4,7 @@ import editWordPRTemp from "./templates/edit-word-pr.md.js";
 
 /**
  * Submit word - create a Pull Request to add word to project repository
- * @param {import("octokit").Octokit} devJargonsOctokit 
+ * @param {import("octokit").Octokit} jargonsdevOctokit 
  * @param {import("octokit").Octokit} userOctokit 
  * @param {"new" | "edit"} action 
  * @param {{ repoFullname: string, repoMainBranchRef: string }} projectRepoDetails 
@@ -13,7 +13,7 @@ import editWordPRTemp from "./templates/edit-word-pr.md.js";
  * 
  * @todo implement (submit as) `draft` feature - [idea]
  */
-export async function submitWord(devJargonsOctokit, userOctokit, action, projectRepoDetails, forkedRepoDetails, word) {
+export async function submitWord(jargonsdevOctokit, userOctokit, action, projectRepoDetails, forkedRepoDetails, word) {
   const { repoFullname, repoMainBranchRef } = projectRepoDetails;
   const { repoName, repoOwner } = getRepoParts(repoFullname);
   const { repoOwner: forkedRepoOwner } = getRepoParts(forkedRepoDetails.repoFullname);
@@ -38,8 +38,8 @@ export async function submitWord(devJargonsOctokit, userOctokit, action, project
     maintainers_can_modify: true
   });
 
-  // DevJargons (bot) App adds related labels to PR
-  await devJargonsOctokit.request("POST /repos/{owner}/{repo}/issues/{issue_number}/labels", {
+  // jargons-dev (bot) App adds related labels to PR
+  await jargonsdevOctokit.request("POST /repos/{owner}/{repo}/issues/{issue_number}/labels", {
     owner: repoOwner,
     repo: repoName,
     issue_number: response.data.number,

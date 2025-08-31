@@ -1,6 +1,6 @@
 <div align="center" style="margin-top: 12px">
   <a href="https://www.jargons.dev">
-    <img width="700" alt="jargons.dev" src="https://github.com/devjargons/jargons.dev/assets/25631971/5d1db25d-18e0-4544-ac98-9aa4e1097e14">
+    <img width="700" alt="jargons.dev" src="https://github.com/jargonsdev/jargons.dev/assets/25631971/5d1db25d-18e0-4544-ac98-9aa4e1097e14">
   </a>
   <h1><tt>jargons.dev</tt></h1>
   <h3>The Software Engineering Dictionary</h3>
@@ -10,13 +10,17 @@
 
 <tt>jargons.dev</tt> is an open source dictionary curated by contributors providing simplified meaning and definitions to software development, engineering, and general technology terms.
 
-## Tech Stack
+## Tech Stack and Architecture
 
 <tt>jargons.dev</tt> is built using the following open source technologies: 
 
 - [Astro](https://astro.build/) - Web framework for building content-driven websites
 - [React](https://react.dev) - Library for building web interfaces
 - [Tailwind CSS](https://tailwindcss.com) - A Utility-first CSS Library
+
+### System Architecture
+
+See https://excalidraw.com/#json=51IqiNvrZiY15ZtjK0WXn,jcpW9rmzMR9OVwM05Zd1LQ
 
 ## Run Project Locally
 
@@ -33,7 +37,7 @@ To get set-up follow these steps:
 1. Clone the repository:
 
    ```sh
-   git clone https://github.com/devjargons/jargons.dev.git
+   git clone https://github.com/jargonsdev/jargons.dev.git
    ```
 
 2. Navigate to the project directory:

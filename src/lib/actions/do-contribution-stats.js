@@ -37,9 +37,9 @@ export default async function doContributionStats(astroGlobal) {
         pendingOpen: search(query: $pendingOpenQuery, type: ISSUE, first: 1) { issueCount }
       }
   `, {
-    "newMergedQuery": newMergedQuery,
-    "editMergedQuery": editMergedQuery,
-    "pendingOpenQuery": pendingOpenQuery,
+    newMergedQuery,
+    editMergedQuery,
+    pendingOpenQuery,
   });
 
   const newCount = data?.newMerged?.issueCount ?? 0;

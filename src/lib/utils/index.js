@@ -78,3 +78,21 @@ export function generateBranchName(action, wordTitle) {
 export function buildStatsUrl(repoFullname, queryString) {
   return `https://github.com/${repoFullname}/pulls?q=${encodeURIComponent(queryString)}`;
 }
+
+/** 
+ * Build Word Pathname From Slug
+ * @param {string} slug
+ * @returns {string}
+ */
+export function buildWordPathname(slug) {
+  return `/browse/${slug}`;
+}
+
+/**
+ * Build Word Slug From ID
+ * @param {string} id
+ * @returns {string}
+ */
+export function buildWordSlug(id) {
+  return id.split(".")[0];
+}

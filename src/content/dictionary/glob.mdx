@@ -1,0 +1,22 @@
+---
+layout: ../../layouts/word.astro
+title: "Glob"
+---
+In computing, **glob** (short for *global*) refers to a pattern-matching technique used to specify sets of filenames or paths using wildcard characters.
+
+It’s most common in Unix-like shells (e.g., Bash, Zsh) and many programming languages. Instead of listing each file explicitly, you can use a *glob pattern* to match multiple files at once.
+
+### Common Glob Patterns:
+
+* `*` → matches zero or more characters
+
+  * Example: `*.txt` matches all files ending in `.txt`.
+* `?` → matches exactly one character
+
+  * Example: `file?.csv` matches `file1.csv`, `fileA.csv`, but not `file10.csv`.
+* `[ ]` → matches any one character from inside the brackets
+
+  * Example: `file[0-9].log` matches `file1.log` to `file9.log`.
+* `{ }` → matches a comma-separated list of options (in some shells/languages)
+
+  * Example: `*.{jpg,png}` matches all `.jpg` and `.png` files.

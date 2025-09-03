@@ -27,3 +27,15 @@ a:hover {
 .scrollbar::-webkit-scrollbar {
   width: 5px;
 }
+
+.resizer {
+  cursor: col-resize;
+  width: 5px;
+  background-color: #ccc;
+}
+
+.editor-pane,
+.preview-pane {
+  flex: 1;
+  overflow: auto;
+}

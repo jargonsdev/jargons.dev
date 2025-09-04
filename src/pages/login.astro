@@ -2,7 +2,10 @@
 import BaseLayout from "../layouts/base.astro";
 import doAuth from "../lib/actions/do-auth.js";
 
-const { url: { searchParams }, redirect } = Astro;
+const {
+  url: { searchParams },
+  redirect,
+} = Astro;
 
 const { getAuthUrl, isAuthed } = await doAuth(Astro);
 if (isAuthed) return redirect(searchParams.get("return_to"));
@@ -10,22 +13,76 @@ const authUrl = getAuthUrl({ path: searchParams.get("return_to") });
 ---
 
 <BaseLayout pageTitle="Dictionary">
-	<main class="flex flex-col max-w-screen-lg p-5 justify-center mx-auto min-h-screen">
-    <div class="text-center mx-auto border px-5 py-10 space-y-6 rounded-lg w-full md:w-2/3 shadow">
+  <main
+    class="flex flex-col max-w-screen-lg p-5 justify-center mx-auto min-h-screen"
+  >
+    <div
+      class="text-center mx-auto border px-5 py-10 space-y-6 rounded-lg w-full md:w-2/3 shadow"
+    >
       <div class="flex justify-center">
-        <svg class="w-16 h-16 md:w-28 md:h-28" viewBox="147.235 -1.084 497.288 497.83" width="497.288" height="497.83" xmlns="http://www.w3.org/2000/svg">
-          <rect x="147.235" y="-1.084" width="497.288" height="497.83" style="stroke: rgb(0, 0, 0);" rx="25.488" ry="25.488" transform="matrix(1, 0, 0, 1, 7.105427357601002e-15, 7.105427357601002e-15)"/>
-          <path fill-rule="evenodd" d="M 279.075 53.185 C 257.568 53.185 240.147 70.606 240.147 92.113 L 240.147 384.082 C 240.147 416.336 266.288 442.477 298.542 442.477 L 532.116 442.477 C 547.104 442.477 556.467 426.263 548.973 413.28 C 545.489 407.266 539.066 403.549 532.116 403.549 L 493.188 403.549 L 493.188 364.618 L 532.116 364.618 C 542.86 364.618 551.58 355.898 551.58 345.154 L 551.58 92.113 C 551.58 70.606 534.159 53.185 512.652 53.185 L 356.934 53.185 L 356.934 364.618 L 454.257 364.618 L 454.257 403.549 L 298.542 403.549 C 283.554 403.549 274.19 387.335 281.684 374.351 C 285.169 368.337 291.592 364.618 298.542 364.618 L 318.006 364.618 L 318.006 53.185 L 279.075 53.185 Z" clip-rule="evenodd" style="fill: rgb(255, 255, 255);" transform="matrix(1, 0, 0, 1, 7.105427357601002e-15, 7.105427357601002e-15)"/>
+        <svg
+          class="w-16 h-16 md:w-28 md:h-28"
+          viewBox="147.235 -1.084 497.288 497.83"
+          width="497.288"
+          height="497.83"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <rect
+            x="147.235"
+            y="-1.084"
+            width="497.288"
+            height="497.83"
+            style="stroke: rgb(0, 0, 0);"
+            rx="25.488"
+            ry="25.488"
+            transform="matrix(1, 0, 0, 1, 7.105427357601002e-15, 7.105427357601002e-15)"
+          >
+          </rect>
+          <path
+            fill-rule="evenodd"
+            d="M 279.075 53.185 C 257.568 53.185 240.147 70.606 240.147 92.113 L 240.147 384.082 C 240.147 416.336 266.288 442.477 298.542 442.477 L 532.116 442.477 C 547.104 442.477 556.467 426.263 548.973 413.28 C 545.489 407.266 539.066 403.549 532.116 403.549 L 493.188 403.549 L 493.188 364.618 L 532.116 364.618 C 542.86 364.618 551.58 355.898 551.58 345.154 L 551.58 92.113 C 551.58 70.606 534.159 53.185 512.652 53.185 L 356.934 53.185 L 356.934 364.618 L 454.257 364.618 L 454.257 403.549 L 298.542 403.549 C 283.554 403.549 274.19 387.335 281.684 374.351 C 285.169 368.337 291.592 364.618 298.542 364.618 L 318.006 364.618 L 318.006 53.185 L 279.075 53.185 Z"
+            clip-rule="evenodd"
+            style="fill: rgb(255, 255, 255);"
+            transform="matrix(1, 0, 0, 1, 7.105427357601002e-15, 7.105427357601002e-15)"
+          >
+          </path>
         </svg>
       </div>
       <h1 class="text-5xl md:text-7xl font-black">Authorize Login</h1>
-      <p class="block md:px-4">The Jargons Editor streamlines your word contributions to jargons.dev, it allows you to make your word contributions to the dictionary through an intuitive UI without having to interface with the GitHub UI or any text editor; On your behalf, it takes on the responsibility of remotely creating a fork, branch, committing your changes, and a pull request for your word contribution; these steps are triggered at the click of the "publish" button.</p>
-      <a href={authUrl}  class="flex items-center justify-center h-12 mr-3 px-3 text-lg font-medium bg-black text-white border no-underline rounded-lg focus:outline-none hover:shadow-xl">
-        <svg class="w-5 h-5 mr-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-          <path fill-rule="evenodd" d="M10 .333A9.911 9.911 0 0 0 6.866 19.65c.5.092.678-.215.678-.477 0-.237-.01-1.017-.014-1.845-2.757.6-3.338-1.169-3.338-1.169a2.627 2.627 0 0 0-1.1-1.451c-.9-.615.07-.6.07-.6a2.084 2.084 0 0 1 1.518 1.021 2.11 2.11 0 0 0 2.884.823c.044-.503.268-.973.63-1.325-2.2-.25-4.516-1.1-4.516-4.9A3.832 3.832 0 0 1 4.7 7.068a3.56 3.56 0 0 1 .095-2.623s.832-.266 2.726 1.016a9.409 9.409 0 0 1 4.962 0c1.89-1.282 2.717-1.016 2.717-1.016.366.83.402 1.768.1 2.623a3.827 3.827 0 0 1 1.02 2.659c0 3.807-2.319 4.644-4.525 4.889a2.366 2.366 0 0 1 .673 1.834c0 1.326-.012 2.394-.012 2.72 0 .263.18.572.681.475A9.911 9.911 0 0 0 10 .333Z" clip-rule="evenodd"></path>
+      <p class="block md:px-4">
+        The Jargons Editor streamlines your word contributions to jargons.dev,
+        it allows you to make your word contributions to the dictionary through
+        an intuitive UI without having to interface with the GitHub UI or any
+        text editor; On your behalf, it takes on the responsibility of remotely
+        creating a fork, branch, committing your changes, and a pull request for
+        your word contribution; these steps are triggered at the click of the
+        "publish" button.
+      </p>
+      <a
+        href={authUrl}
+        class="flex items-center justify-center h-12 mr-3 px-3 text-lg font-medium bg-black text-white border no-underline rounded-lg focus:outline-none hover:shadow-xl"
+      >
+        <svg
+          class="w-5 h-5 mr-2"
+          aria-hidden="true"
+          xmlns="http://www.w3.org/2000/svg"
+          fill="currentColor"
+          viewBox="0 0 20 20"
+        >
+          <path
+            fill-rule="evenodd"
+            d="M10 .333A9.911 9.911 0 0 0 6.866 19.65c.5.092.678-.215.678-.477 0-.237-.01-1.017-.014-1.845-2.757.6-3.338-1.169-3.338-1.169a2.627 2.627 0 0 0-1.1-1.451c-.9-.615.07-.6.07-.6a2.084 2.084 0 0 1 1.518 1.021 2.11 2.11 0 0 0 2.884.823c.044-.503.268-.973.63-1.325-2.2-.25-4.516-1.1-4.516-4.9A3.832 3.832 0 0 1 4.7 7.068a3.56 3.56 0 0 1 .095-2.623s.832-.266 2.726 1.016a9.409 9.409 0 0 1 4.962 0c1.89-1.282 2.717-1.016 2.717-1.016.366.83.402 1.768.1 2.623a3.827 3.827 0 0 1 1.02 2.659c0 3.807-2.319 4.644-4.525 4.889a2.366 2.366 0 0 1 .673 1.834c0 1.326-.012 2.394-.012 2.72 0 .263.18.572.681.475A9.911 9.911 0 0 0 10 .333Z"
+            clip-rule="evenodd"
+          >
+          </path>
         </svg> Connect with GitHub
       </a>
-      <small class="block">It's important to note that the permissions granted at authentication are required to generate a token, which is securely stored only on your end. This token is solely used to perform the required contribution actions by you and is not stored anywhere else.</small>
+      <small class="block">
+        It's important to note that the permissions granted at authentication
+        are required to generate a token, which is securely stored only on your
+        end. This token is solely used to perform the required contribution
+        actions by you and is not stored anywhere else.
+      </small>
     </div>
-	</main>
+  </main>
 </BaseLayout>

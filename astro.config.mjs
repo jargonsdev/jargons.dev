@@ -8,15 +8,15 @@ import partytown from "@astrojs/partytown";
 // https://astro.build/config
 export default defineConfig({
   integrations: [
-    mdx(), 
-    react(), 
-    tailwind(), 
+    mdx(),
+    react(),
+    tailwind(),
     partytown({
       config: {
         forward: ["dataLayer.push"],
       },
-    })
+    }),
   ],
   output: "server",
-  adapter: vercel()
+  adapter: vercel(),
 });

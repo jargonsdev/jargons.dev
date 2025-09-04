@@ -21,7 +21,7 @@ export default async function doEditWord(astroGlobal) {
   const response = await getExistingWord(
     userOctokit,
     PROJECT_REPO_DETAILS,
-    word
+    word,
   );
 
   return response;

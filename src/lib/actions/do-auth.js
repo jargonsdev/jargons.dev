@@ -34,7 +34,7 @@ export default async function doAuth(astroGlobal) {
         Object.keys(state)
           .filter((key) => key !== "path")
           .map((key) => key + ":" + state[key])
-          .join("|")
+          .join("|"),
       );
       if (otherStates.length > 0) parsedState += `|${otherStates}`;
     }

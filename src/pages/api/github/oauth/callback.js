@@ -15,5 +15,5 @@ export async function GET({ url: { searchParams }, redirect }) {
   if (path) return redirect(`${path}?code=${code}`);
 
   // Lifeline/Last resort for when the return `path` is NOT specified/found in state
-  return redirect(`/login?return_to=${encodeURIComponent("/")}`)
+  return redirect(`/login?return_to=${encodeURIComponent("/")}`);
 }

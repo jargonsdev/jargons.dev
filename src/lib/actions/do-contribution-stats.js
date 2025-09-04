@@ -20,7 +20,9 @@ export default async function doContributionStats(astroGlobal) {
   const { data: me } = await userOctokit.request("GET /user");
   const viewerLogin = me?.login;
 
-  const branchInfo = repoMainBranchRef ? repoMainBranchRef.split("/").slice(2).join("/") : "";
+  const branchInfo = repoMainBranchRef
+    ? repoMainBranchRef.split("/").slice(2).join("/")
+    : "";
 
   const baseQuery = `repo:${repoFullname} is:pull-request type:pr author:${viewerLogin} base:${branchInfo}`;
   const baseStatsUrlQuery = `is:pr author:@me base:${branchInfo}`;
@@ -29,18 +31,21 @@ export default async function doContributionStats(astroGlobal) {
   const editMergedQuery = `${baseQuery} label:"${LABELS.EDIT_WORD}" is:merged is:closed`;
   const pendingOpenQuery = `${baseQuery} label:"${LABELS.VIA_EDITOR}" is:open`;
 
-  const data = await userOctokit.graphql(`
+  const data = await userOctokit.graphql(
+    `
     #graphql
       query ContributionStats($newMergedQuery: String!, $editMergedQuery: String!, $pendingOpenQuery: String!) {
         newMerged: search(query: $newMergedQuery, type: ISSUE, first: 1) { issueCount }
         editMerged: search(query: $editMergedQuery, type: ISSUE, first: 1) { issueCount }
         pendingOpen: search(query: $pendingOpenQuery, type: ISSUE, first: 1) { issueCount }
       }
-  `, {
-    newMergedQuery,
-    editMergedQuery,
-    pendingOpenQuery,
-  });
+  `,
+    {
+      newMergedQuery,
+      editMergedQuery,
+      pendingOpenQuery,
+    },
+  );
 
   const newCount = data?.newMerged?.issueCount ?? 0;
   const editCount = data?.editMerged?.issueCount ?? 0;
@@ -51,21 +56,21 @@ export default async function doContributionStats(astroGlobal) {
       count: newCount,
       url: buildStatsUrl(
         repoFullname,
-        `${baseStatsUrlQuery} is:merged is:closed label:"${LABELS.NEW_WORD}"`
+        `${baseStatsUrlQuery} is:merged is:closed label:"${LABELS.NEW_WORD}"`,
       ),
     },
     editedWords: {
       count: editCount,
       url: buildStatsUrl(
         repoFullname,
-        `${baseStatsUrlQuery} is:merged is:closed label:"${LABELS.EDIT_WORD}"`
+        `${baseStatsUrlQuery} is:merged is:closed label:"${LABELS.EDIT_WORD}"`,
       ),
     },
     pendingWords: {
       count: pendingCount,
       url: buildStatsUrl(
         repoFullname,
-        `${baseStatsUrlQuery} is:open label:"${LABELS.VIA_EDITOR}"`
+        `${baseStatsUrlQuery} is:open label:"${LABELS.VIA_EDITOR}"`,
       ),
     },
   };

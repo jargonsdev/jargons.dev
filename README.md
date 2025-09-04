@@ -12,7 +12,7 @@
 
 ## Tech Stack and Architecture
 
-<tt>jargons.dev</tt> is built using the following open source technologies: 
+<tt>jargons.dev</tt> is built using the following open source technologies:
 
 - [Astro](https://astro.build/) - Web framework for building content-driven websites
 - [React](https://react.dev) - Library for building web interfaces
@@ -30,7 +30,7 @@ To run the project locally running on your machine, follow these simple steps.
 
 To run the project locally, ensure your machine has **Node.js** installed. The project requires **Node.js** version 19 or higher. If you don't have **Node.js** installed, you can download it from the [Node.js website](https://nodejs.org/).
 
-### Setup 
+### Setup
 
 To get set-up follow these steps:
 
@@ -54,8 +54,8 @@ To get set-up follow these steps:
 
 4. Run the `dev/setup` script and create test repo
 
-   This script streamlines the process of creating a GitHub App required to run jargons.dev locally and sets up the environment file (.env) for you; Learn more at [dev/setup](/dev/README.md) 
-   
+   This script streamlines the process of creating a GitHub App required to run jargons.dev locally and sets up the environment file (.env) for you; Learn more at [dev/setup](/dev/README.md)
+
    ```sh
    npm run setup
    ```
@@ -72,14 +72,14 @@ To get set-up follow these steps:
 
 We welcome contributions to jargons.dev! There are two main ways you can contribute to:
 
-1. **Dictionary Word Contribution:** 
-  This includes adding new words to the dictionary or editing existing word entries. We highly recommend using our Jargons Editor at [jargons.dev/editor](https://jargons.dev/editor) for this purpose. This user-friendly interface streamlines your contribution allowing it end up as a pull request.
+1. **Dictionary Word Contribution:**
+   This includes adding new words to the dictionary or editing existing word entries. We highly recommend using our Jargons Editor at [jargons.dev/editor](https://jargons.dev/editor) for this purpose. This user-friendly interface streamlines your contribution allowing it end up as a pull request.
 
 2. **Other Contributions:**
-  These are contributions other than adding or editing words in the dictionary, feel free to contribute in other ways such as issue reporting/triaging, code/documentation improvements, bug fixes, or feature enhancements.
+   These are contributions other than adding or editing words in the dictionary, feel free to contribute in other ways such as issue reporting/triaging, code/documentation improvements, bug fixes, or feature enhancements.
 
 To get started with contributing, please refer to our [Contribution Guide](./CONTRIBUTING.md). Thank you for contributing to the jargons.dev project!
 
-## Support 
+## Support
 
 Do leave the project a star ⭐️

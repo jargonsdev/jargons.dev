@@ -1,0 +1,25 @@
+# Dependencies
+node_modules/
+
+# Build outputs
+dist/
+.vercel/
+.astro/
+
+# Content directory - no formatting needed for MDX content
+src/content/
+
+# Package files
+package-lock.json
+
+# Environment files
+.env
+.env.*
+
+# IDE files
+.vscode/
+.idea/
+
+# OS files
+.DS_Store
+Thumbs.db

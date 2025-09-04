@@ -32,3 +32,6 @@ src/components/jargonsdev-logo.astro
 
 # Files with parsing issues in inline scripts
 src/layouts/base.astro
+
+# Pull Request Template
+.github/PULL_REQUEST_TEMPLATE.md

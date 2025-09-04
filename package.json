@@ -11,7 +11,8 @@
     "astro": "astro",
     "setup": "node dev/setup.js",
     "format": "prettier --write .",
-    "format:check": "prettier --check ."
+    "format:check": "prettier --check .",
+    "format:staged": "node dev/format-staged.js"
   },
   "keywords": [],
   "author": "",

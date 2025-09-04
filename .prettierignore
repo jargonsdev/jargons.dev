@@ -9,6 +9,9 @@ dist/
 # Content directory - no formatting needed for MDX content
 src/content/
 
+# Dev scripts
+dev/
+
 # Package files
 package-lock.json
 

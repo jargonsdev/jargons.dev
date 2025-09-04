@@ -53,7 +53,7 @@ export async function POST({ request, cookies }) {
         repoFullname: fork,
         repoMainBranchRef: PROJECT_REPO_DETAILS.repoMainBranchRef,
       },
-      generateBranchName(action, title)
+      generateBranchName(action, title),
     );
     console.log("Branch Created: ", branch);
 
@@ -75,7 +75,7 @@ export async function POST({ request, cookies }) {
         },
         {
           env: "node",
-        }
+        },
       );
       console.log("Word updated: ", updatedWord);
     }
@@ -91,7 +91,7 @@ export async function POST({ request, cookies }) {
         },
         {
           env: "node",
-        }
+        },
       );
       console.log("New word added: ", newWord);
     }
@@ -106,7 +106,7 @@ export async function POST({ request, cookies }) {
       {
         title,
         content,
-      }
+      },
     );
     console.log("Word submitted: ", wordSubmission);
 
@@ -125,7 +125,7 @@ export async function POST({ request, cookies }) {
         headers: {
           "Content-type": "application/json",
         },
-      }
+      },
     );
   }
 }
@@ -178,7 +178,7 @@ export async function DELETE({ request, cookies }) {
         headers: {
           "Content-type": "application/json",
         },
-      }
+      },
     );
   } catch (error) {
     return new Response(
@@ -188,7 +188,7 @@ export async function DELETE({ request, cookies }) {
         headers: {
           "Content-type": "application/json",
         },
-      }
+      },
     );
   }
 }

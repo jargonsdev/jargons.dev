@@ -32,7 +32,8 @@ export function encrypt(value) {
  * @returns {string}
  */
 export function decrypt(encryptedValue) {
-  const [encryptedData, encryptionIV, encryptionAuthTag] = encryptedValue.split(":");
+  const [encryptedData, encryptionIV, encryptionAuthTag] =
+    encryptedValue.split(":");
   const key = crypto.scryptSync(cryptoSecretKey, "salt", 32);
 
   const hmac = crypto.createHmac("sha256", key);

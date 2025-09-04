@@ -9,7 +9,7 @@ const appCredentials = await registerGitHubApp({
   url: "https://github.com/jargonsdev/jargons.dev/CONTRIBUTING.md",
   default_permissions: {
     issues: "write",
-  }
+  },
 });
 
 // convert private key to pkcs8 format (recommended for better cross plattform support)
@@ -25,5 +25,8 @@ const singleLinePrivateKey = privateKeyPKCS8.trim().replace(/\n/g, "\\n");
 const envFileTemp = await fs.readFile(".env.example", "utf-8");
 const newEnvFileContent = envFileTemp
   .replace(/^GITHUB_APP_ID=.*$/m, `GITHUB_APP_ID=${appCredentials.id}`)
-  .replace(/^GITHUB_APP_PRIVATE_KEY=.*$/m, `GITHUB_APP_PRIVATE_KEY="${singleLinePrivateKey}"`)
+  .replace(
+    /^GITHUB_APP_PRIVATE_KEY=.*$/m,
+    `GITHUB_APP_PRIVATE_KEY="${singleLinePrivateKey}"`,
+  );
 await fs.writeFile(".env", newEnvFileContent);

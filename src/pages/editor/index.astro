@@ -5,34 +5,39 @@ import doAuth from "../../lib/actions/do-auth.js";
 import Navbar from "../../components/navbar.astro";
 import { buildStatsUrl } from "../../lib/utils/index.js";
 import Profile from "../../components/islands/profile.jsx";
-import { PROJECT_REPO_DETAILS } from "../../../constants.js";
+import { PROJECT_REPO_DETAILS, LABELS } from "../../../constants.js";
 import doContributionStats from "../../lib/actions/do-contribution-stats.js";
 import ContributionCTA from "../../components/contribution-cta.astro";
 
-const { url: { pathname }, redirect } = Astro;
+const {
+  url: { pathname },
+  redirect,
+} = Astro;
 
 const { isAuthed, authedData: userData, getAuthUrl } = await doAuth(Astro);
-if (!isAuthed) return redirect(`/login?return_to=${encodeURIComponent(pathname)}`);
+if (!isAuthed)
+  return redirect(`/login?return_to=${encodeURIComponent(pathname)}`);
 
-const { newWords, editedWords, pendingWords } = await doContributionStats(Astro);
+const { newWords, editedWords, pendingWords } =
+  await doContributionStats(Astro);
 const totalWords = {
   count: newWords.count + editedWords.count,
   url: buildStatsUrl(
-    PROJECT_REPO_DETAILS.repoFullname, 
-    `label:":book: edit word",":book: new word" is:pr is:closed is:merged author:@me`
-  )
-}
+    PROJECT_REPO_DETAILS.repoFullname,
+    `label:"${LABELS.VIA_EDITOR}" is:pr is:closed is:merged author:@me`,
+  ),
+};
 ---
 
-<BaseLayout 
+<BaseLayout
   pageTitle="Jargons Editor"
   class="flex flex-col w-full min-h-screen"
 >
   <Navbar returnNav={{ label: "Back to Dictionary", location: "../" }}>
-    <Profile 
+    <Profile
       isAuthed={isAuthed}
       userData={userData}
-      authUrl={getAuthUrl({path: "/editor"})}
+      authUrl={getAuthUrl({ path: "/editor" })}
       client:load
     />
   </Navbar>
@@ -41,19 +46,25 @@ const totalWords = {
     <!-- Profile Section -->
     <section class="mt-10 flex w-full items-center justify-between md:px-6">
       <div class="flex flex-col space-y-6 justify-center h-full py-6">
-        <span class="relative flex shrink-0 overflow-hidden rounded-full w-20 h-20 border">
-          <Image 
-            src={ userData.avatar_url }
-            alt={ (userData.name || userData.login) ?? "User avatar" }
+        <span
+          class="relative flex shrink-0 overflow-hidden rounded-full w-20 h-20 border"
+        >
+          <Image
+            src={userData.avatar_url}
+            alt={(userData.name || userData.login) ?? "User avatar"}
             width={100}
-            height={100} 
+            height={100}
             loading="eager"
           />
         </span>
         <div class="space-y-2">
-          <h3 class="text-2xl tracking-tight font-semibold">Hey, { userData.login }👋</h3>
-          <p class="text-base text-gray-500">Welcome to the Jargons Editor, we're super excited to see you here.</p>
-        </div>  
+          <h3 class="text-2xl tracking-tight font-semibold">
+            Hey, {userData.login}👋
+          </h3>
+          <p class="text-base text-gray-500">
+            Welcome to the Jargons Editor, we're super excited to see you here.
+          </p>
+        </div>
       </div>
     </section>
 
@@ -63,11 +74,24 @@ const totalWords = {
     <!-- Contribution Stats -->
     <section class="">
       <div class="flex-col space-y-1 p-6 flex">
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          class="w-6 h-6"
+        >
           <path d="M22 12h-4l-3 9L9 3l-3 9H2"></path>
         </svg>
         <div class="">
-          <h3 class="text-2xl font-semibold tracking-tight">Contribution Stats</h3>
+          <h3 class="text-2xl font-semibold tracking-tight">
+            Contribution Stats
+          </h3>
           <p class="text-sm">Your Words contributed to jargons.dev so far...</p>
         </div>
       </div>
@@ -77,21 +101,49 @@ const totalWords = {
         <div class="p-6 space-y-2 rounded-lg border shadow-sm">
           <div class="w-full flex justify-between">
             <div class="text-3xl font-bold tracking-tighter">
-              { totalWords.count }
+              {totalWords.count}
             </div>
-            {!!totalWords.count && (
-              <a class="text-sm" href={totalWords.url}>
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width={1.5} stroke="currentColor" class="w-4 h-4">
-                  <title>See all Words Contributed</title>
-                  <path stroke-linecap="round" stroke-linejoin="round" d="m4.5 19.5 15-15m0 0H8.25m11.25 0v11.25" />
-                </svg> 
-              </a>
-            )}
+            {
+              !!totalWords.count && (
+                <a class="text-sm" href={totalWords.url}>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke-width={1.5}
+                    stroke="currentColor"
+                    class="w-4 h-4"
+                  >
+                    <title>See all Words Contributed</title>
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      d="m4.5 19.5 15-15m0 0H8.25m11.25 0v11.25"
+                    />
+                  </svg>
+                </a>
+              )
+            }
           </div>
           <div class="flex items-center gap-2 text-sm">
-            <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.5 11.5 11 14l4-4m6 2a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/>
-            </svg>            
+            <svg
+              class="w-4 h-4"
+              aria-hidden="true"
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              fill="none"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M8.5 11.5 11 14l4-4m6 2a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+              >
+              </path>
+            </svg>
             <span class="text-gray-500 dark:text-gray-400">
               Contributed Words
             </span>
@@ -102,24 +154,50 @@ const totalWords = {
         <div class="p-6 space-y-2 rounded-lg border shadow-sm">
           <div class="w-full flex justify-between">
             <div class="text-3xl font-bold tracking-tighter">
-              { pendingWords.count }
+              {pendingWords.count}
             </div>
-            {!!pendingWords.count && (
-              <a class="text-sm" href={pendingWords.url}>
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width={1.5} stroke="currentColor" class="w-4 h-4">
-                  <title>See all Pending Word Contribution</title>
-                  <path stroke-linecap="round" stroke-linejoin="round" d="m4.5 19.5 15-15m0 0H8.25m11.25 0v11.25" />
-                </svg> 
-              </a>
-            )}
+            {
+              !!pendingWords.count && (
+                <a class="text-sm" href={pendingWords.url}>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke-width={1.5}
+                    stroke="currentColor"
+                    class="w-4 h-4"
+                  >
+                    <title>See all Pending Word Contribution</title>
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      d="m4.5 19.5 15-15m0 0H8.25m11.25 0v11.25"
+                    />
+                  </svg>
+                </a>
+              )
+            }
           </div>
           <div class="flex items-center gap-2 text-sm">
-            <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/>
-            </svg>            
-            <span class="text-gray-500 dark:text-gray-400">
-              Pending Words
-            </span>
+            <svg
+              class="w-4 h-4"
+              aria-hidden="true"
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              fill="none"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M12 8v4l3 3m6-3a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+              >
+              </path>
+            </svg>
+            <span class="text-gray-500 dark:text-gray-400">Pending Words</span>
           </div>
         </div>
 
@@ -127,21 +205,49 @@ const totalWords = {
         <div class="p-6 space-y-2 rounded-lg border shadow-sm">
           <div class="w-full flex justify-between">
             <div class="text-3xl font-bold tracking-tighter">
-              { newWords.count }
+              {newWords.count}
             </div>
-            {!!newWords.count && (
-              <a class="text-sm" href={newWords.url}>
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width={1.5} stroke="currentColor" class="w-4 h-4">
-                  <title>See all New Words Contributed</title>
-                  <path stroke-linecap="round" stroke-linejoin="round" d="m4.5 19.5 15-15m0 0H8.25m11.25 0v11.25" />
-                </svg> 
-              </a>
-            )}
+            {
+              !!newWords.count && (
+                <a class="text-sm" href={newWords.url}>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke-width={1.5}
+                    stroke="currentColor"
+                    class="w-4 h-4"
+                  >
+                    <title>See all New Words Contributed</title>
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      d="m4.5 19.5 15-15m0 0H8.25m11.25 0v11.25"
+                    />
+                  </svg>
+                </a>
+              )
+            }
           </div>
           <div class="flex items-center gap-2 text-sm">
-            <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 21a9 9 0 1 1 0-18c1.052 0 2.062.18 3 .512M7 9.577l3.923 3.923 8.5-8.5M17 14v6m-3-3h6"/>
-            </svg>            
+            <svg
+              class="w-4 h-4"
+              aria-hidden="true"
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              fill="none"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M12 21a9 9 0 1 1 0-18c1.052 0 2.062.18 3 .512M7 9.577l3.923 3.923 8.5-8.5M17 14v6m-3-3h6"
+              >
+              </path>
+            </svg>
             <span class="text-gray-500 dark:text-gray-400">
               New Words Contributed
             </span>
@@ -152,21 +258,49 @@ const totalWords = {
         <div class="p-6 space-y-2 rounded-lg border shadow-sm">
           <div class="w-full flex justify-between">
             <div class="text-3xl font-bold tracking-tighter">
-              { editedWords.count }
+              {editedWords.count}
             </div>
-            {!!editedWords.count && (
-              <a class="text-sm" href={editedWords.url}>
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width={1.5} stroke="currentColor" class="w-4 h-4">
-                  <title>See all Edited Word Contributed</title>
-                  <path stroke-linecap="round" stroke-linejoin="round" d="m4.5 19.5 15-15m0 0H8.25m11.25 0v11.25" />
-                </svg> 
-              </a>
-            )}
+            {
+              !!editedWords.count && (
+                <a class="text-sm" href={editedWords.url}>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke-width={1.5}
+                    stroke="currentColor"
+                    class="w-4 h-4"
+                  >
+                    <title>See all Edited Word Contributed</title>
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      d="m4.5 19.5 15-15m0 0H8.25m11.25 0v11.25"
+                    />
+                  </svg>
+                </a>
+              )
+            }
           </div>
           <div class="flex items-center gap-2 text-sm">
-            <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m14.304 4.844 2.852 2.852M7 7H4a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1v-4.5m2.409-9.91a2.017 2.017 0 0 1 0 2.853l-6.844 6.844L8 14l.713-3.565 6.844-6.844a2.015 2.015 0 0 1 2.852 0Z"/>
-            </svg>            
+            <svg
+              class="w-4 h-4"
+              aria-hidden="true"
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              fill="none"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="m14.304 4.844 2.852 2.852M7 7H4a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1v-4.5m2.409-9.91a2.017 2.017 0 0 1 0 2.853l-6.844 6.844L8 14l.713-3.565 6.844-6.844a2.015 2.015 0 0 1 2.852 0Z"
+              >
+              </path>
+            </svg>
             <span class="text-gray-500 dark:text-gray-400">
               Edited Words Contribution
             </span>

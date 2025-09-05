@@ -2,7 +2,7 @@ import { atom, map } from "nanostores";
 
 /**
  * [Deprecated] - Stopped using state to share dictionary with islands
- * 
+ *
  * export const $dictionary = atom([]);
  */
 
@@ -10,11 +10,11 @@ import { atom, map } from "nanostores";
  * @typedef {Object} Word
  * @property {string} title
  * @property {string} content
- * @type {import('nanostores').MapStore<Record<string, Word>>} 
+ * @type {import('nanostores').MapStore<Record<string, Word>>}
  */
 export const $wordEditor = map({
   title: "",
-  content: ""
+  content: "",
 });
 
 export const $isWordSubmitLoading = atom(false);

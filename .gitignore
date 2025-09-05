@@ -151,5 +151,9 @@ pnpm-debug.log*
 # macOS-specific files
 .DS_Store
 
+# IDE files
+.vscode/
+.idea/
+
 # Vercel build
 .vercel

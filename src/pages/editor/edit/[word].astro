@@ -5,41 +5,50 @@ import Navbar from "../../../components/navbar.astro";
 import doAuth from "../../../lib/actions/do-auth.js";
 import doEditWord from "../../../lib/actions/do-edit-word.js";
 import { resolveEditorActionFromPathname } from "../../../lib/utils/index.js";
-import WordEditor, { SubmitButton as WordEditorSubmitButton, TogglePreview } from "../../../components/islands/word-editor.jsx";
+import WordEditor, {
+  SubmitButton as WordEditorSubmitButton,
+  TogglePreview,
+} from "../../../components/islands/word-editor.jsx";
 
-const { url: { pathname }, redirect } = Astro;
+const {
+  url: { pathname },
+  redirect,
+} = Astro;
 
 const { isAuthed, authedData: userData } = await doAuth(Astro);
-if (!isAuthed) return redirect(`/login?return_to=${encodeURIComponent(pathname)}`);
+if (!isAuthed)
+  return redirect(`/login?return_to=${encodeURIComponent(pathname)}`);
 
-const {content_decoded, ...wordMetadata} = await doEditWord(Astro);
+const { content_decoded, ...wordMetadata } = await doEditWord(Astro);
 const word = matter(content_decoded);
 const action = resolveEditorActionFromPathname(pathname);
 ---
 
-<BaseLayout 
+<BaseLayout
   pageTitle="Dictionry"
   class="flex flex-col w-full min-h-screen overflow-hidden"
 >
-  <Navbar returnNav={{
-    label: `Return to ${word.data.title}`,
-    location: `/browse/${wordMetadata.title}`
-  }}>
+  <Navbar
+    returnNav={{
+      label: `Return to ${word.data.title}`,
+      location: `/browse/${wordMetadata.title}`,
+    }}
+  >
     <div class="flex space-x-3">
       <TogglePreview client:load />
       <WordEditorSubmitButton client:load />
     </div>
   </Navbar>
-  
+
   <main class="flex grow px-5 md:px-6 pb-4">
     <!-- 
       hahahaha `action` could have easily been "edit" instead of 
       computing with `resolveEditorActionFromPathname`
     -->
     <WordEditor
-      action={action} 
-      title={word.data.title} 
-      content={word.content} 
+      action={action}
+      title={word.data.title}
+      content={word.content}
       metadata={wordMetadata}
       client:load
     />

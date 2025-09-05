@@ -1,6 +1,6 @@
 /**
- * Resolve Datetime value for and from cookie expiry date value 
- * @param {number} expireIn 
+ * Resolve Datetime value for and from cookie expiry date value
+ * @param {number} expireIn
  * @returns {Date}
  */
 export function resolveCookieExpiryDate(expireIn) {
@@ -15,17 +15,17 @@ export function resolveCookieExpiryDate(expireIn) {
  */
 export function getRepoParts(repoFullname) {
   const parts = repoFullname.split("/");
-  const [ repoOwner, repoName ] = [ parts[0], parts[1] ];
+  const [repoOwner, repoName] = [parts[0], parts[1]];
 
   return {
     repoOwner,
-    repoName
-  }
+    repoName,
+  };
 }
 
 /**
  * Normalize a string to something usable in url
- * @param {string} string 
+ * @param {string} string
  * @returns {string}
  */
 export function normalizeAsUrl(string) {
@@ -34,16 +34,16 @@ export function normalizeAsUrl(string) {
 
 /**
  * Checks if a given object is empty
- * @param {object} object 
+ * @param {object} object
  * @returns {boolean}
  */
 export function isObjectEmpty(object) {
-  return JSON.stringify(object) === "{}"
+  return JSON.stringify(object) === "{}";
 }
 
 /**
  * Resolve action (`new` or `edit` word) being perfored in Word editor from pathanme
- * @param {string} pathname 
+ * @param {string} pathname
  * @returns {"new" | "edit"}
  */
 export function resolveEditorActionFromPathname(pathname) {
@@ -52,17 +52,20 @@ export function resolveEditorActionFromPathname(pathname) {
 
 /**
  * Capitalize text
- * @param {string} text 
+ * @param {string} text
  * @returns {string}
  */
 export function capitalizeText(text) {
-  return text.split(" ").map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(" ");
+  return text
+    .split(" ")
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(" ");
 }
 
 /**
  * Generate branch name
- * @param {string} action 
- * @param {string} wordTitle 
+ * @param {string} action
+ * @param {string} wordTitle
  * @returns {string}
  */
 export function generateBranchName(action, wordTitle) {
@@ -71,15 +74,15 @@ export function generateBranchName(action, wordTitle) {
 
 /**
  * Build URL to the Pull Request list on the project's Repo
- * @param {string} repoFullname 
- * @param {string} queryString 
+ * @param {string} repoFullname
+ * @param {string} queryString
  * @returns {string}
  */
 export function buildStatsUrl(repoFullname, queryString) {
   return `https://github.com/${repoFullname}/pulls?q=${encodeURIComponent(queryString)}`;
 }
 
-/** 
+/**
  * Build Word Pathname From Slug
  * @param {string} slug
  * @returns {string}

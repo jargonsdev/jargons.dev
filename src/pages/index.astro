@@ -13,40 +13,52 @@ if (Astro.url.searchParams.get("code")) return Astro.redirect("/");
 const dictionary = await getCollection("dictionary");
 ---
 
-<BaseLayout 
-	pageTitle="Jargons.dev"
-	subtitle="Simplified Meaning & Definition to Technical Terms"
-	class:list="min-h-screen flex flex-col"
+<BaseLayout
+  pageTitle="Jargons.dev"
+  subtitle="Simplified Meaning & Definition to Technical Terms"
+  class:list="min-h-screen flex flex-col"
 >
-	<nav class="@container flex items-center justify-end px-5 md:px-6 py-4 space-x-4">
-		<div class="mr-3">
-			<iframe src="https://ghbtns.com/github-btn.html?user=jargonsdev&repo=jargons.dev&type=watch&count=true&size=large" frameborder="0" scrolling="0" width="120" height="30" title="GitHub"></iframe>
-		</div>
-		<Profile 
-			isAuthed={isAuthed}
-			userData={authedData}
-			authUrl={getAuthUrl({path: "/"})}
-			client:load 
-		/>
-	</nav>
+  <nav
+    class="@container flex items-center justify-end px-5 md:px-6 py-4 space-x-4"
+  >
+    <div class="mr-3">
+      <iframe
+        src="https://ghbtns.com/github-btn.html?user=jargonsdev&repo=jargons.dev&type=watch&count=true&size=large"
+        frameborder="0"
+        scrolling="0"
+        width="120"
+        height="30"
+        title="GitHub"
+      >
+      </iframe>
+    </div>
+    <Profile
+      isAuthed={isAuthed}
+      userData={authedData}
+      authUrl={getAuthUrl({ path: "/" })}
+      client:load
+    />
+  </nav>
 
-	<main class="w-full flex flex-col grow max-w-screen-lg p-5 justify-center mx-auto">
-		<!-- Title -->
-		<div class="mb-4 md:mb-6">
-			<JargonsdevLogo class="drop-shadow-md drop-shadow-color-black w-[80%] md:w-[60%]"  />
-		</div>
-		
-		<!-- Search -->
-		<Search triggerSize="md" dictionary={dictionary} client:load />
+  <main
+    class="w-full flex flex-col grow max-w-screen-lg p-5 justify-center mx-auto"
+  >
+    <!-- Title -->
+    <div class="mb-4 md:mb-6">
+      <JargonsdevLogo
+        class="drop-shadow-md drop-shadow-color-black w-[80%] md:w-[60%]"
+      />
+    </div>
 
-		<!-- Browse words -->
-		<div class="ml-2 mt-4 md:mt-6">
-			<a href="/browse">
-				Browse Words
-			</a>
-		</div>
+    <!-- Search -->
+    <Search triggerSize="md" dictionary={dictionary} client:load />
 
-		<!-- Recent Word Look Up -->
-		<RecentSearches client:load />
-	</main>
+    <!-- Browse words -->
+    <div class="ml-2 mt-4 md:mt-6">
+      <a href="/browse">Browse Words</a>
+    </div>
+
+    <!-- Recent Word Look Up -->
+    <RecentSearches client:load />
+  </main>
 </BaseLayout>

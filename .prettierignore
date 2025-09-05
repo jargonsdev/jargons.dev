@@ -1,0 +1,41 @@
+# Dependencies
+node_modules/
+
+# Build outputs
+dist/
+.vercel/
+.astro/
+
+# Content directory - no formatting needed for MDX content
+src/content/
+
+# Dev scripts
+dev/
+
+# Test files and coverage
+# tests/
+coverage/
+
+# Package files
+package-lock.json
+
+# Environment files
+.env
+.env.*
+
+# IDE files
+.vscode/
+.idea/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# SVG files with CDATA that cause parsing issues
+src/components/jargonsdev-logo.astro
+
+# Files with parsing issues in inline scripts
+src/layouts/base.astro
+
+# Pull Request Template
+.github/PULL_REQUEST_TEMPLATE.md

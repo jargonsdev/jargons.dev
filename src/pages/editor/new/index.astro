@@ -3,17 +3,24 @@ import BaseLayout from "../../../layouts/base.astro";
 import doAuth from "../../../lib/actions/do-auth.js";
 import Navbar from "../../../components/navbar.astro";
 import { resolveEditorActionFromPathname } from "../../../lib/utils/index.js";
-import WordEditor, { SubmitButton as WordEditorSubmitButton, TogglePreview } from "../../../components/islands/word-editor.jsx";
+import WordEditor, {
+  SubmitButton as WordEditorSubmitButton,
+  TogglePreview,
+} from "../../../components/islands/word-editor.jsx";
 
-const { url: { pathname }, redirect } = Astro;
+const {
+  url: { pathname },
+  redirect,
+} = Astro;
 
 const { isAuthed, authedData: userData } = await doAuth(Astro);
-if (!isAuthed) return redirect(`/login?return_to=${encodeURIComponent(pathname)}`);
+if (!isAuthed)
+  return redirect(`/login?return_to=${encodeURIComponent(pathname)}`);
 
 const action = resolveEditorActionFromPathname(pathname);
 ---
 
-<BaseLayout 
+<BaseLayout
   pageTitle="Dictionry"
   class="flex flex-col w-full min-h-screen overflow-hidden"
 >
@@ -25,7 +32,7 @@ const action = resolveEditorActionFromPathname(pathname);
        * @link https://github.com/babblebey/jargons.dev/pull/60/commits/6e1ccf74f31c6b8da4b42bc1ffdc0efbf16b19ac
        */
       label: "Back to Jargons Editor",
-      location: "/editor"
+      location: "/editor",
     }}
   >
     <div class="flex space-x-3">

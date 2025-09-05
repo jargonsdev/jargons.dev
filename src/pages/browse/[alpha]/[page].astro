@@ -16,8 +16,8 @@ export const prerender = true;
 
 export async function getStaticPaths({ paginate }) {
   const dictionary = await getCollection("dictionary");
-  return ALPHABETS.flatMap(alpha => {
-    const filteredWords = dictionary.filter(word => word.id[0] === alpha);
+  return ALPHABETS.flatMap((alpha) => {
+    const filteredWords = dictionary.filter((word) => word.id[0] === alpha);
     return paginate(filteredWords, {
       params: { alpha },
       // pageSize: 1
@@ -26,7 +26,7 @@ export async function getStaticPaths({ paginate }) {
 }
 ---
 
-<BaseLayout 
+<BaseLayout
   pageTitle={`Browse jargons.dev`}
   subtitle={`Words Starting With "${params.alpha.toUpperCase()}" (Page ${page.currentPage})`}
   class="min-h-screen flex flex-col"
@@ -34,55 +34,88 @@ export async function getStaticPaths({ paginate }) {
   <Navbar>
     <Search triggerSize="sm" dictionary={dictionary} client:load />
   </Navbar>
-  
-  <main class="w-full max-w-screen-lg grow flex flex-col p-5 md:mt-10 mx-auto space-y-6">
+
+  <main
+    class="w-full max-w-screen-lg grow flex flex-col p-5 md:mt-10 mx-auto space-y-6"
+  >
     <!-- Page Title -->
     <h1 class="text-3xl md:text-5xl font-black">
-      Browse: Letter { params.alpha.toUpperCase() }
+      Browse: Letter {params.alpha.toUpperCase()}
     </h1>
 
     <!-- Words List -->
     <div>
-      {page.data.length ? page.data.map(word => (
-        <a href={buildWordPathname(buildWordSlug(word.id))}
-          class="flex items-center md:text-lg justify-between no-underline w-full p-4 even:bg-gray-100 hover:bg-gray-100/50"
-        >
-          <span>{ word.data.title }</span>
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
-            <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5"></path>
-          </svg>
-        </a>
-      )) : (
-        <div class="mt-10 space-y-6">
-          <p>
-            Looks like this alphabet is feeling a bit lonely! 🤔 Why not be the first to add a word and give it some company?
-          </p>  
-          <ContributionCTA />
-        </div>
-      )}
+      {
+        page.data.length ? (
+          page.data.map((word) => (
+            <a
+              href={buildWordPathname(buildWordSlug(word.id))}
+              class="flex items-center md:text-lg justify-between no-underline w-full p-4 even:bg-gray-100 hover:bg-gray-100/50"
+            >
+              <span>{word.data.title}</span>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke-width="1.5"
+                stroke="currentColor"
+                class="w-4 h-4"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="m8.25 4.5 7.5 7.5-7.5 7.5"
+                />
+              </svg>
+            </a>
+          ))
+        ) : (
+          <div class="mt-10 space-y-6">
+            <p>
+              Looks like this alphabet is feeling a bit lonely! 🤔 Why not be
+              the first to add a word and give it some company?
+            </p>
+            <ContributionCTA />
+          </div>
+        )
+      }
     </div>
 
     <!-- Pagination -->
-    {(page.url.next || page.url.prev) ? (
-      <div class="w-full flex !mt-auto">
-        <div class="mx-auto flex items-center space-x-4">
-          {page.url.prev ? ( 
-            <a href={page.url.prev} class="bg-black text-white no-underline rounded py-1 px-2">Previous</a>
-          ) : (
-            <span class="bg-gray-100 text-gray-400 cursor-not-allowed no-underline rounded py-1 px-2">Previous</span>
-          )}
-  
-          <span>
-            Page { page.currentPage }
-          </span>
-  
-          {page.url.next ? ( 
-            <a href={page.url.next} class="bg-black text-white no-underline rounded py-1 px-2">Next</a>
-          ) : (
-            <span class="bg-gray-100 text-gray-400 cursor-not-allowed no-underline rounded py-1 px-2">Next</span>
-          )}
+    {
+      page.url.next || page.url.prev ? (
+        <div class="w-full flex !mt-auto">
+          <div class="mx-auto flex items-center space-x-4">
+            {page.url.prev ? (
+              <a
+                href={page.url.prev}
+                class="bg-black text-white no-underline rounded py-1 px-2"
+              >
+                Previous
+              </a>
+            ) : (
+              <span class="bg-gray-100 text-gray-400 cursor-not-allowed no-underline rounded py-1 px-2">
+                Previous
+              </span>
+            )}
+
+            <span>Page {page.currentPage}</span>
+
+            {page.url.next ? (
+              <a
+                href={page.url.next}
+                class="bg-black text-white no-underline rounded py-1 px-2"
+              >
+                Next
+              </a>
+            ) : (
+              <span class="bg-gray-100 text-gray-400 cursor-not-allowed no-underline rounded py-1 px-2">
+                Next
+              </span>
+            )}
+          </div>
         </div>
-      </div>
-    ) : null}
+      ) : null
+    }
   </main>
 </BaseLayout>

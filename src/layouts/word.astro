@@ -120,6 +120,11 @@ const editUrl = `/editor/edit/${frontmatter.url.split("/")[3].split(".")[0]}`;
       (
         document.body.querySelector(".jai-wrapper") as HTMLElement
       ).style.display = "none";
+
+      // Remove 'jai' parameter from URL without reloading the page
+      const url = new URL(window.location.href);
+      url.searchParams.delete("jai");
+      window.history.replaceState({}, document.title, url.toString());
     }
   });
 </script>

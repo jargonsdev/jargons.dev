@@ -22,6 +22,19 @@
 
 See https://excalidraw.com/#json=51IqiNvrZiY15ZtjK0WXn,jcpW9rmzMR9OVwM05Zd1LQ
 
+## Testing
+
+<tt>jargons.dev</tt> implements comprehensive testing to ensure code quality and reliability.
+
+### Quick Start
+
+```sh
+npm run test          # Run tests in watch mode
+npm run test:coverage # Generate coverage report
+```
+
+**[View detailed testing documentation](./tests/README.md)** for test structure, writing guidelines, and phase-based testing strategy.
+
 ## Run Project Locally
 
 To run the project locally running on your machine, follow these simple steps.

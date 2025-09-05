@@ -4,7 +4,9 @@ import JargonsdevLogo from "./jargonsdev-logo.astro";
 const { returnNav = { label: "Back", location: "../" } } = Astro.props;
 ---
 
-<nav class="@container sticky top-0 z-40 bg-white flex items-center justify-between px-5 md:px-6 py-4">
+<nav
+  class="@container sticky top-0 z-40 bg-white flex items-center justify-between px-5 md:px-6 py-4"
+>
   <div class="flex items-center space-x-4 md:space-x-6">
     <a
       href={returnNav.location}

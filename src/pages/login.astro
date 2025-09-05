@@ -94,7 +94,7 @@ const authUrl = getAuthUrl({ path: searchParams.get("return_to") || "/" });
    */
   (() => {
     const urlParams = new URLSearchParams(window.location.search);
-    if (urlParams.has('code')) {
+    if (urlParams.has("code")) {
       window.location.reload();
     }
   })();

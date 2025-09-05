@@ -6,7 +6,9 @@ import BaseLayout from "./base.astro";
 import { getCollection } from "astro:content";
 import Navbar from "../components/navbar.astro";
 import Search from "../components/islands/search.jsx";
-import JAIChatWidget, { JAIChatWidgetTrigger } from "../components/islands/jai.jsx";
+import JAIChatWidget, {
+  JAIChatWidgetTrigger,
+} from "../components/islands/jai.jsx";
 
 const { frontmatter } = Astro.props;
 const dictionary = await getCollection("dictionary");
@@ -18,7 +20,7 @@ const dictionary = await getCollection("dictionary");
 const editUrl = `/editor/edit/${frontmatter.url.split("/")[3].split(".")[0]}`;
 ---
 
-<BaseLayout pageTitle={ frontmatter.title }}>
+<BaseLayout pageTitle={frontmatter.title} }>
   <div class="main-wrapper">
     <Navbar>
       <Search triggerSize="sm" dictionary={dictionary} client:load />
@@ -27,7 +29,7 @@ const editUrl = `/editor/edit/${frontmatter.url.split("/")[3].split(".")[0]}`;
     <main class="max-w-screen-lg p-5 md:mt-10 mx-auto min-h-screen space-y-6">
       <div class="w-full">
         <h1 class="text-3xl md:text-7xl font-black">
-          { frontmatter.title }
+          {frontmatter.title}
         </h1>
         <!-- Metatab -->
         <div class="flex mt-6 justify-between">
@@ -35,37 +37,48 @@ const editUrl = `/editor/edit/${frontmatter.url.split("/")[3].split(".")[0]}`;
           <div class="grow flex items-center space-x-2">
             <!-- Word Follow-up Chat -->
             <JAIChatWidgetTrigger client:visible />
-            
+
             <!-- <div class="w-2/5 h-3 bg-neutral-100 rounded-lg" /> -->
           </div>
-          
+
           <!-- Edit Button -->
-          <a href={editUrl}
-            class="flex items-center space-x-0.5 text-xs"
-          >
-            <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
-              <path fill-rule="evenodd" d="M11.32 6.176H5c-1.105 0-2 .949-2 2.118v10.588C3 20.052 3.895 21 5 21h11c1.105 0 2-.948 2-2.118v-7.75l-3.914 4.144A2.46 2.46 0 0 1 12.81 16l-2.681.568c-1.75.37-3.292-1.263-2.942-3.115l.536-2.839c.097-.512.335-.983.684-1.352l2.914-3.086Z" clip-rule="evenodd"/>
-              <path fill-rule="evenodd" d="M19.846 4.318a2.148 2.148 0 0 0-.437-.692 2.014 2.014 0 0 0-.654-.463 1.92 1.92 0 0 0-1.544 0 2.014 2.014 0 0 0-.654.463l-.546.578 2.852 3.02.546-.579a2.14 2.14 0 0 0 .437-.692 2.244 2.244 0 0 0 0-1.635ZM17.45 8.721 14.597 5.7 9.82 10.76a.54.54 0 0 0-.137.27l-.536 2.84c-.07.37.239.696.588.622l2.682-.567a.492.492 0 0 0 .255-.145l4.778-5.06Z" clip-rule="evenodd"/>
+          <a href={editUrl} class="flex items-center space-x-0.5 text-xs">
+            <svg
+              class="w-4 h-4"
+              aria-hidden="true"
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              fill="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                fill-rule="evenodd"
+                d="M11.32 6.176H5c-1.105 0-2 .949-2 2.118v10.588C3 20.052 3.895 21 5 21h11c1.105 0 2-.948 2-2.118v-7.75l-3.914 4.144A2.46 2.46 0 0 1 12.81 16l-2.681.568c-1.75.37-3.292-1.263-2.942-3.115l.536-2.839c.097-.512.335-.983.684-1.352l2.914-3.086Z"
+                clip-rule="evenodd"
+              >
+              </path>
+              <path
+                fill-rule="evenodd"
+                d="M19.846 4.318a2.148 2.148 0 0 0-.437-.692 2.014 2.014 0 0 0-.654-.463 1.92 1.92 0 0 0-1.544 0 2.014 2.014 0 0 0-.654.463l-.546.578 2.852 3.02.546-.579a2.14 2.14 0 0 0 .437-.692 2.244 2.244 0 0 0 0-1.635ZM17.45 8.721 14.597 5.7 9.82 10.76a.54.54 0 0 0-.137.27l-.536 2.84c-.07.37.239.696.588.622l2.682-.567a.492.492 0 0 0 .255-.145l4.778-5.06Z"
+                clip-rule="evenodd"
+              >
+              </path>
             </svg>
-            <span>
-              Suggest Improvement
-            </span>          
+            <span>Suggest Improvement</span>
           </a>
         </div>
       </div>
       <!-- Meaning -->
       <article class="w-full max-w-screen-lg prose">
-        <slot /> 
+        <slot />
       </article>
-    </main>      
+    </main>
   </div>
 
   <!-- jAI Chat Widget -->
   <div class="jai-wrapper">
-    <JAIChatWidget 
-      word={frontmatter.title}
-      client:visible 
-    />
+    <JAIChatWidget word={frontmatter.title} client:visible />
   </div>
 </BaseLayout>
 
@@ -80,15 +93,15 @@ const editUrl = `/editor/edit/${frontmatter.url.split("/")[3].split(".")[0]}`;
    */
   $addToRecentSearchesFn({
     word: document.querySelector("h1").textContent.trim(),
-    url: document.location.pathname
+    url: document.location.pathname,
   });
 
-  /** 
+  /**
    * Check for 'jai' parameter in URL and activate jAI Chat Widget if present
    */
   (() => {
     const urlParams = new URLSearchParams(window.location.search);
-    if (urlParams.has('jai') && urlParams.get('jai') === '1') {
+    if (urlParams.has("jai") && urlParams.get("jai") === "1") {
       $isJAIOpen.set(true);
     }
   })();
@@ -99,10 +112,14 @@ const editUrl = `/editor/edit/${frontmatter.url.split("/")[3].split(".")[0]}`;
   $isJAIOpen.subscribe((value) => {
     if (value) {
       document.body.classList.add("jai-active");
-      (document.body.querySelector(".jai-wrapper") as HTMLElement).style.display = "block";
+      (
+        document.body.querySelector(".jai-wrapper") as HTMLElement
+      ).style.display = "block";
     } else {
       document.body.classList.remove("jai-active");
-      (document.body.querySelector(".jai-wrapper") as HTMLElement).style.display = "none";
+      (
+        document.body.querySelector(".jai-wrapper") as HTMLElement
+      ).style.display = "none";
     }
   });
 </script>

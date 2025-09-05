@@ -14,11 +14,13 @@ export async function GET({ url: { searchParams }, redirect }) {
 
   /**
    * `!path.includes("jai=1")` is a workaround for the following:
-   * - When the `path` is a statically rendered page e.g `word.astro` template, 
+   * - When the `path` is a statically rendered page e.g `word.astro` template,
    * ...we don't want to redirect to it; they can't handle server-side operations like using authorization code
    */
   if (path && !path.includes("jai=1")) return redirect(`${path}?code=${code}`);
 
   // Lifeline/Last resort for when the return `path` is NOT specified/found in state
-  return redirect(`/login?return_to=${encodeURIComponent(path || "/")}&code=${code}`);
+  return redirect(
+    `/login?return_to=${encodeURIComponent(path || "/")}&code=${code}`,
+  );
 }

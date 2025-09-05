@@ -21,8 +21,8 @@ Comprehensive testing strategy for jargons.dev ensuring code quality and reliabi
 ## Available Commands
 
 ```sh
-npm run test          # Run tests in watch mode
-npm run test:run      # Run tests once
+npm run test          # Run all tests
+npm run test:watch    # Run tests in watch mode
 npm run test:ui       # Open Vitest UI interface
 npm run test:coverage # Generate detailed coverage report
 ```

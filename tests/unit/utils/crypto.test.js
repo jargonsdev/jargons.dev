@@ -91,8 +91,12 @@ describe("Crypto Functions", () => {
       const original = "sensitive data";
       const encrypted = encrypt(original);
 
-      // Tamper with the encrypted data
-      const tampered = encrypted.replace("a", "b");
+      // Tamper with the encrypted data by flipping the first hex character
+      // Always change the first character to a different valid hex character
+      const tampered =
+        encrypted[0] === "a"
+          ? "b" + encrypted.slice(1)
+          : "a" + encrypted.slice(1);
 
       expect(() => decrypt(tampered)).toThrow("Authentication failed!");
     });

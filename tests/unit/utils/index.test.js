@@ -119,7 +119,7 @@ describe("isObjectEmpty", () => {
 
   it("should return false for object with null/undefined values", () => {
     expect(isObjectEmpty({ key: null })).toBe(false);
-    // Note: JSON.stringify removes undefined properties, so { key: undefined } becomes {}
+    // In this test, objects with only undefined values are considered empty.
     expect(isObjectEmpty({ key: undefined })).toBe(true);
   });
 

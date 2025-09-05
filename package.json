@@ -15,7 +15,7 @@
     "test": "vitest run",
     "test:ui": "vitest --ui",
     "test:watch": "vitest",
-    "test:coverage": "vitest run --coverage"
+    "test:coverage": "vitest run --coverage",
     "setup": "node dev/setup.js",
     "seed-jai": "node --env-file=.env dev/seed-vector-store.js"
   },

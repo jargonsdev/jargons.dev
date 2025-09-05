@@ -12,6 +12,10 @@ src/content/
 # Dev scripts
 dev/
 
+# Test files and coverage
+# tests/
+coverage/
+
 # Package files
 package-lock.json
 

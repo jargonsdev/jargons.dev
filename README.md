@@ -68,6 +68,19 @@ To get set-up follow these steps:
 
 6. Open your browser and visit `http://localhost:4321` to view the project.
 
+## Testing
+
+<tt>jargons.dev</tt> implements comprehensive testing to ensure code quality and reliability.
+
+### Quick Start
+
+```sh
+npm run test          # Run all tests
+npm run test:coverage # Generate coverage report
+```
+
+**[View detailed testing documentation](./tests/README.md)** for test structure, writing guidelines, and phase-based testing strategy.
+
 ## Contributing
 
 We welcome contributions to jargons.dev! There are two main ways you can contribute to:

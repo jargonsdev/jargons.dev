@@ -47,32 +47,38 @@ export async function submitWord(
           .replace("$word_title", word.title)
           .replace("$word_content", word.content);
 
-  const response = await userOctokit.request(
-    "POST /repos/{owner}/{repo}/pulls",
-    {
-      owner: repoOwner,
-      repo: repoName,
-      head: `${forkedRepoOwner}:${headBranch}`,
-      base: baseBranch,
-      title,
-      body,
-      maintainers_can_modify: true,
-    },
-  );
+  try {
+    const response = await userOctokit.request(
+      "POST /repos/{owner}/{repo}/pulls",
+      {
+        owner: repoOwner,
+        repo: repoName,
+        head: `${forkedRepoOwner}:${headBranch}`,
+        base: baseBranch,
+        title,
+        body,
+        maintainers_can_modify: true,
+      },
+    );
 
-  // jargons-dev (bot) App adds related labels to PR
-  await jargonsdevOctokit.request(
-    "POST /repos/{owner}/{repo}/issues/{issue_number}/labels",
-    {
-      owner: repoOwner,
-      repo: repoName,
-      issue_number: response.data.number,
-      labels: [
-        action === "new" ? LABELS.NEW_WORD : LABELS.EDIT_WORD,
-        LABELS.VIA_EDITOR,
-      ],
-    },
-  );
+    // jargons-dev (bot) App adds related labels to PR
+    await jargonsdevOctokit.request(
+      "POST /repos/{owner}/{repo}/issues/{issue_number}/labels",
+      {
+        owner: repoOwner,
+        repo: repoName,
+        issue_number: response.data.number,
+        labels: [
+          action === "new" ? LABELS.NEW_WORD : LABELS.EDIT_WORD,
+          LABELS.VIA_EDITOR,
+        ],
+      },
+    );
 
-  return response.data;
+    return response.data;
+  } catch (error) {
+    throw new Error(`Error occurred while submitting word "${word.title}"`, {
+      cause: error,
+    });
+  }
 }

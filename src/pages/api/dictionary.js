@@ -168,7 +168,7 @@ export async function DELETE({ request, cookies }) {
   try {
     await deleteBranch(userOctokit, fork, generateBranchName(action, title));
 
-    return new Response({
+    return new Response(null, {
       status: 204,
       headers: {
         "Content-type": "application/json",

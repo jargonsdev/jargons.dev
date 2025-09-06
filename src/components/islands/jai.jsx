@@ -49,7 +49,7 @@ export default function JAIChatWidget({ word }) {
    * Initialize useChat hook - handles chat state and interactions
    */
   const { messages, input, status, handleInputChange, handleSubmit, append } = useChat({
-    api: "/api/jai",
+    api: "/api/jai/follow-up-chat",
     onError: (e) => {
       console.error(e);
     },

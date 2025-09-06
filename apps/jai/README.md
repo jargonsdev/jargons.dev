@@ -2,7 +2,7 @@
   <a href="https://www.jargons.dev">
     <img width="300" alt="jargons.dev AI" src="https://github.com/user-attachments/assets/5459f7e3-2e23-43bf-b52b-2f198c1dd413">
   </a>
-  <h1><tt>✨jAI</tt></h1>
+  <h1><tt>jargons.dev AI (jAI)</tt></h1>
   <h3>The AI-Powered Assistant for jargons.dev</h3>
 </div>
 
@@ -20,8 +20,8 @@ Unlike standalone AI applications, ✨jAI is deeply integrated into the jargons.
 
 ✨jAI is built using the following technologies:
 
-- [OpenAI API](https://openai.com/api/) - Platform for building AI experiences powered by industry-leading models and tools
-- [Qdrant](https://qdrant.tech/) - Vector database and similarity search engine for AI applications
+- [OpenAI API](https://openai.com/api/) - Platform for building AI experiences powered by industry-leading models and tools. Powers AI chat responses and generates embeddings for semantic search
+- [Qdrant](https://qdrant.tech/) - Vector database and similarity search engine for AI applications. Stores and searches vector embeddings of dictionary content for context retrieval
 - [LangChain](https://langchain.com/) - Framework for developing applications powered by large language models (LLMs)
 
 ## Module Structure

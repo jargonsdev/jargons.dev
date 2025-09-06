@@ -37,8 +37,10 @@ const batchSize = 100;
 for (let i = 0; i < allSplits.length; i += batchSize) {
   const batch = allSplits.slice(i, i + batchSize);
   await vectorStore.addDocuments(batch);
+  const batchNum = Math.floor(i / batchSize) + 1;
+  const totalBatches = Math.ceil(allSplits.length / batchSize);
   console.log(
-    `Added batch ${i / batchSize + 1} (${batch.length} documents) to the vector store`,
+    `Added batch ${batchNum} of ${totalBatches} (${batch.length} documents) to the vector store`,
   );
 }
 console.log(`Added ${allSplits.length} splits to the vector store`);

@@ -175,8 +175,10 @@ export async function DELETE({ request, cookies }) {
       },
     });
   } catch (error) {
-    return new Response(JSON.stringify({ message: error.cause.message }), {
-      status: error.cause.status,
+    const message = error.cause?.message ?? error.message ?? "An error occurred";
+    const status = error.cause?.status ?? 500;
+    return new Response(JSON.stringify({ message }), {
+      status,
       headers: {
         "Content-type": "application/json",
       },

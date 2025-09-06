@@ -1,6 +1,7 @@
 import "@testing-library/jest-dom";
 import { setupServer } from "msw/node";
 import { githubHandlers } from "./mocks/github-api.js";
+import { beforeAll, afterAll, afterEach } from "vitest";
 
 // Mock environment variables for tests
 process.env.CRYPTO_SECRET_KEY = "test-secret-key-for-testing-only-32-chars";

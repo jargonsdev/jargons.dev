@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeEach } from "vitest";
+import { describe, it, expect, beforeEach, vi } from "vitest";
 import { submitWord } from "../../../src/lib/submit-word.js";
 import { LABELS } from "../../../constants.js";
 import {

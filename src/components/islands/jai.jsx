@@ -45,6 +45,9 @@ export default function JAIChatWidget({ word }) {
     setIsLoading(false);
   }, []);
 
+  /**
+   * Initialize useChat hook - handles chat state and interactions
+   */
   const { messages, input, status, handleInputChange, handleSubmit, append } = useChat({
     api: "/api/jai",
     onError: (e) => {
@@ -65,6 +68,9 @@ export default function JAIChatWidget({ word }) {
     });
   };
 
+  /**
+   * Scroll to the bottom of the chat container when new messages arrive
+   */
   useEffect(() => {
     if (chatContainer.current) {
       chatContainer.current.scrollTop = chatContainer.current.scrollHeight;

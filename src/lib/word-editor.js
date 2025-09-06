@@ -32,8 +32,8 @@ export async function writeNewWord(
 
     return response.data;
   } catch (error) {
-    throw new Error(`error committing new word ${title} to dictionary`, {
-      cause: error.message,
+    throw new Error(`Error committing new word ${title} to dictionary`, {
+      cause: error,
     });
   }
 }
@@ -71,8 +71,8 @@ export async function updateExistingWord(
 
     return response.data;
   } catch (error) {
-    throw new Error(`error committing edit to "${title}"`, {
-      cause: error.message,
+    throw new Error(`Error committing edit to "${title}"`, {
+      cause: error,
     });
   }
 }
@@ -107,8 +107,8 @@ export async function getExistingWord(userOctokit, repoDetails, wordTitle) {
       ...responseData,
     };
   } catch (error) {
-    throw new Error(`error getting "${wordTitle}" from dictionary`, {
-      cause: error.message,
+    throw new Error(`Error getting "${wordTitle}" from dictionary`, {
+      cause: error,
     });
   }
 }

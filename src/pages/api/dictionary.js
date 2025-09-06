@@ -177,7 +177,8 @@ export async function DELETE({ request, cookies }) {
       },
     });
   } catch (error) {
-    const message = error.cause?.message ?? error.message ?? "An error occurred";
+    const message =
+      error.cause?.message ?? error.message ?? "An error occurred";
     const status = error.cause?.status ?? 500;
     return new Response(JSON.stringify({ message }), {
       status,

@@ -136,7 +136,10 @@ function Editor({ eTitle, eContent, eMetadata, className, action, ...props }) {
        */
       const data = await response.json();
       $isWordSubmitLoading.set(false);
-      if (data.message === "Reference already exists") {
+      if (
+        response.status === 422 &&
+        data.message.includes("Reference already exists")
+      ) {
         if (
           confirm(
             "It appears you have an existing reference for the current word, do you wish to clear that reference?",

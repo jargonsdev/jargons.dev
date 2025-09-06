@@ -117,16 +117,13 @@ export async function POST({ request, cookies }) {
       },
     });
   } catch (error) {
-    console.log(error);
-    return new Response(
-      JSON.stringify({ message: error.response.data.message }),
-      {
-        status: error.response.status,
-        headers: {
-          "Content-type": "application/json",
-        },
+    console.log(error.cause);
+    return new Response(JSON.stringify({ message: error.cause.message }), {
+      status: error.cause.status,
+      headers: {
+        "Content-type": "application/json",
       },
-    );
+    });
   }
 }
 
@@ -136,7 +133,7 @@ export async function POST({ request, cookies }) {
  */
 export async function DELETE({ request, cookies }) {
   const data = await request.formData();
-  const accessToken = cookies.get("jargons.dev:token", {
+  const accessToken = cookies.get("jargonsdevToken", {
     decode: (value) => decrypt(value),
   });
 
@@ -171,24 +168,18 @@ export async function DELETE({ request, cookies }) {
   try {
     await deleteBranch(userOctokit, fork, generateBranchName(action, title));
 
-    return new Response(
-      JSON.stringify({ message: "reference deleted successfully" }),
-      {
-        status: 204,
-        headers: {
-          "Content-type": "application/json",
-        },
+    return new Response({
+      status: 204,
+      headers: {
+        "Content-type": "application/json",
       },
-    );
+    });
   } catch (error) {
-    return new Response(
-      JSON.stringify({ message: error.response.data.message }),
-      {
-        status: error.response.status,
-        headers: {
-          "Content-type": "application/json",
-        },
+    return new Response(JSON.stringify({ message: error.cause.message }), {
+      status: error.cause.status,
+      headers: {
+        "Content-type": "application/json",
       },
-    );
+    });
   }
 }

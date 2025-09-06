@@ -9,23 +9,9 @@ import {
   vectorStore,
 } from "../../../../apps/jai/index.js";
 
-export async function OPTIONS() {
-  return Response.json(
-    {},
-    {
-      status: 200,
-      headers: {
-        "Access-Control-Allow-Origin": import.meta.env.ALLOWED_ORIGIN || "*",
-        "Access-Control-Allow-Methods": "POST, OPTIONS",
-        "Access-Control-Allow-Headers": "Content-Type, Authorization",
-      },
-    },
-  );
-}
-
 export async function POST({ request }) {
   const corsHeaders = {
-    "Access-Control-Allow-Origin": import.meta.env.ALLOWED_ORIGIN || "*",
+    "Access-Control-Allow-Origin": "same-origin",
     "Access-Control-Allow-Methods": "POST, OPTIONS",
     "Access-Control-Allow-Headers": "Content-Type, Authorization",
   };

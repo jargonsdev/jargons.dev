@@ -68,6 +68,22 @@ To get set-up follow these steps:
 
 6. Open your browser and visit `http://localhost:4321` to view the project.
 
+## AI Features - Powering ✨jAI
+
+<tt>jargons.dev</tt> includes **✨jAI** (jargons.dev AI) - an intelligent assistant that helps users explore and understand software engineering terms through AI-powered interactions.
+
+### Setup ✨jAI
+
+To enable ✨jAI, you need to seed the vector store with dictionary content that ✨jAI uses for its knowledge base:
+
+```sh
+npm run seed:jai
+```
+
+This script prepares the vector store with processed dictionary content, enabling ✨jAI to provide intelligent responses and semantic search capabilities.
+
+**[Learn more about ✨jAI setup](./dev/README.md#seed-vector-store-script)** for detailed configuration and usage instructions.
+
 ## Testing
 
 <tt>jargons.dev</tt> implements comprehensive testing to ensure code quality and reliability.

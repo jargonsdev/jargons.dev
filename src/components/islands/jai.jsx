@@ -11,7 +11,7 @@ const DEFAULT_QUESTIONS = [
   "Can you give me a real-world example of {word}?",
   "How is {word} used in practice?",
   "How does {word} relate to other concepts?",
-  "Are there common misconceptions about {word}?"
+  "Are there common misconceptions about {word}?",
 ];
 
 /**
@@ -48,12 +48,13 @@ export default function JAIChatWidget({ word }) {
   /**
    * Initialize useChat hook - handles chat state and interactions
    */
-  const { messages, input, status, handleInputChange, handleSubmit, append } = useChat({
-    api: "/api/jai/follow-up-chat",
-    onError: (e) => {
-      console.error(e);
-    },
-  });
+  const { messages, input, status, handleInputChange, handleSubmit, append } =
+    useChat({
+      api: "/api/jai/follow-up-chat",
+      onError: (e) => {
+        console.error(e);
+      },
+    });
 
   /**
    * Handle clicking on default questions
@@ -63,8 +64,8 @@ export default function JAIChatWidget({ word }) {
     const formattedQuestion = formatQuestion(questionTemplate, word);
     // Use append to directly add the message without needing form submission
     append({
-      role: 'user',
-      content: formattedQuestion
+      role: "user",
+      content: formattedQuestion,
     });
   };
 
@@ -137,9 +138,7 @@ export default function JAIChatWidget({ word }) {
                       </svg>
                     </div>
                     <div className="bg-neutral-50 border border-neutral-200 border-opacity-50 rounded-tl-sm rounded-2xl p-5">
-                      <Markdown className="prose">
-                        {message.content}
-                      </Markdown>
+                      <Markdown className="prose">{message.content}</Markdown>
                     </div>
                   </>
                 )}
@@ -173,9 +172,9 @@ export default function JAIChatWidget({ word }) {
             )}
           </div>
         ) : (
-          <JAIIntro 
-            status={{ isLoggedIn, isLoading }} 
-            word={word} 
+          <JAIIntro
+            status={{ isLoggedIn, isLoading }}
+            word={word}
             onQuestionClick={handleQuestionClick}
           />
         )}
@@ -289,7 +288,7 @@ function JAIIntro({ status, word, onQuestionClick }) {
         {isLoggedIn ? (
           <>
             {DEFAULT_QUESTIONS.map((questionTemplate, index) => (
-              <button 
+              <button
                 key={index}
                 onClick={() => onQuestionClick(questionTemplate)}
                 className="bg-neutral-100 border border-neutral-200 rounded-lg px-5 py-2.5 hover:bg-neutral-200 transition-colors duration-200 cursor-pointer"
@@ -331,6 +330,6 @@ function JAIIntro({ status, word, onQuestionClick }) {
  * @param {string} word - The word to replace the placeholder with
  * @returns {string} Formatted question
  */
-function formatQuestion (questionTemplate, word) {
-  return questionTemplate.replace('{word}', word);
-};
+function formatQuestion(questionTemplate, word) {
+  return questionTemplate.replace("{word}", word);
+}

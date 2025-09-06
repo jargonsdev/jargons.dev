@@ -22,6 +22,90 @@ This script streamlines the process of creating a GitHub App required to run jar
 
 This script simplifies the setup process for running <tt>jargons.dev</tt> locally and ensures that your GitHub App is configured correctly. If you encounter any issues during setup, please reach out or craeting an issue.
 
+## Seed Vector Store Script
+
+This script prepares the knowledge base for **✨jAI** (jargons.dev AI) by populating the vector store with dictionary content. jAI uses this processed data to provide intelligent responses and semantic understanding of software engineering terms.
+
+### Features
+
+- **API Integration**: Fetches live dictionary data from jargons.dev API
+- **Document Processing**: Uses LangChain for intelligent text splitting and chunking
+- **Batch Processing**: Efficiently handles large datasets with configurable batch sizes
+- **Automatic Cleanup**: Removes temporary files after processing
+- **Progress Tracking**: Provides detailed console output for monitoring
+
+### When to Use
+
+Run this script when you need to:
+- Initialize ✨jAI's knowledge base for the first time
+- Update ✨jAI with the latest dictionary content
+- Rebuild ✨jAI's vector store after making changes to the AI system
+- Prepare ✨jAI for development or testing of AI-powered features
+
+### Prerequisites
+
+Before running this script, ensure you have:
+- All dependencies installed (`npm ci`)
+- OPENAI and QDRANT environment variables properly configured in your `.env` file
+- Network access to fetch from jargons.dev API
+- Sufficient disk space for temporary dictionary file
+
+### Usage
+
+```bash
+npm run seed:jai
+```
+
+### How It Works
+
+The script performs these steps to prepare ✨jAI's knowledge base:
+
+1. **Data Fetching**: Downloads the complete dictionary from `https://jargons.dev/api/v1/browse`
+2. **File Processing**: Saves data locally and loads it using LangChain's JSONLoader
+3. **Document Splitting**: Breaks content into optimally-sized chunks (1000 chars with 200 overlap)
+4. **Vector Store Population**: Adds processed documents to ✨jAI's vector store in batches of 100
+5. **Cleanup**: Removes temporary files and provides completion summary
+
+### Technical Implementation
+
+The script leverages several key technologies:
+
+- **LangChain JSONLoader**: Extracts title and content fields from dictionary entries
+- **RecursiveCharacterTextSplitter**: Intelligently splits text while preserving context
+- **Batch Processing**: Prevents memory issues and provides progress feedback
+- **File System Operations**: Handles temporary file creation and cleanup
+
+### Configuration Options
+
+Key parameters that can be adjusted:
+
+- **Chunk Size**: Currently 1000 characters (optimal for most search queries)
+- **Chunk Overlap**: 200 characters (ensures context preservation)
+- **Batch Size**: 100 documents per batch (balances performance and memory usage)
+
+### Error Handling
+
+The script includes robust error handling for:
+- Network connectivity issues during API calls
+- File system errors during temporary file operations
+- Vector store connection problems
+- Memory management during large batch processing
+
+### Example Output
+
+```
+Saved the dictionary file to /path/to/dev/dictionary.json
+Loaded 500 documents
+Split 1250 documents
+Added batch 1 of 13 (100 documents) to the vector store
+Added batch 2 of 13 (100 documents) to the vector store
+...
+Added 1250 splits to the vector store
+Cleaned up the dictionary file at /path/to/dev/dictionary.json
+```
+
+Once completed, ✨jAI will have access to the processed dictionary content and can provide intelligent responses about software engineering terms.
+
 ## Format-Staged Script
 
 This script provides a cross-platform solution for formatting only the files that are staged in Git, making it perfect for pre-commit workflows without requiring external dependencies like Husky or lint-staged.

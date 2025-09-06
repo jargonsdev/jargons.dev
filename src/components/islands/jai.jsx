@@ -40,7 +40,7 @@ export default function JAIChatWidget({ word }) {
   const { messages, input, status, handleInputChange, handleSubmit } = useChat({
     api: "/api/jai",
     onError: (e) => {
-      console.log(e);
+      console.error(e);
     },
   });
 
@@ -54,7 +54,7 @@ export default function JAIChatWidget({ word }) {
     <aside className="bg-white relative flex flex-col h-full border border-neutral-200 rounded-e-2xl rounded-s-2xl lg:rounded-e-none ring ring-neutral-100">
       {/* Header */}
       <div className="px-5 py-4 flex items-center justify-between">
-        {messages.length > 0 && <JAILogo className="w-16 drop-shadow-md" />}
+        {messages.length > 0 && <JAILogo className="w-20 drop-shadow-md" />}
 
         {/* Close BTN */}
         <button className="" onClick={() => $isJAIOpen.set(false)}>
@@ -88,7 +88,7 @@ export default function JAIChatWidget({ word }) {
                       <img src={user.avatar_url} alt={user.name} />
                     </div>
                     <div className="bg-neutral-50 border border-neutral-200 border-opacity-50 rounded-tl-sm rounded-2xl p-5">
-                      <p className="text-sm">{message.content}</p>
+                      <p>{message.content}</p>
                     </div>
                   </>
                 ) : (
@@ -110,7 +110,7 @@ export default function JAIChatWidget({ word }) {
                       </svg>
                     </div>
                     <div className="bg-neutral-50 border border-neutral-200 border-opacity-50 rounded-tl-sm rounded-2xl p-5">
-                      <Markdown className="prose prose-sm">
+                      <Markdown className="prose">
                         {message.content}
                       </Markdown>
                     </div>

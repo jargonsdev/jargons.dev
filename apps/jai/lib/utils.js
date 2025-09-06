@@ -1,4 +1,4 @@
-import type { Message } from "ai";
+import { Message } from "ai";
 
 /**
  * Formats a message into a string

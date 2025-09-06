@@ -11,6 +11,7 @@
 ✨jAI is a Retrieval-Augmented Generation (RAG) application that integrates the `jargons.dev` dictionary as its core knowledge base. This module serves as the AI utilities layer for the main jargons.dev application, providing intelligent assistance and semantic search capabilities throughout the platform.
 
 Unlike standalone AI applications, ✨jAI is deeply integrated into the jargons.dev ecosystem, powering features like:
+
 - Intelligent word explanations and follow-up conversations
 - Semantic search across the dictionary
 - Context-aware responses based on the curated dictionary content
@@ -41,31 +42,40 @@ apps/jai/
 ### Core Components
 
 #### `index.js`
+
 Main module interface that exports all ✨jAI utilities:
+
 ```javascript
 export { jAIPrompt, formatMessage, model, vectorStore };
 ```
 
 #### `lib/jai-prompt.js`
+
 Defines ✨jAI's personality and conversation templates. The AI assistant is designed to:
+
 - Explain technical jargon clearly and concisely
 - Use relatable analogies and developer-friendly examples
 - Maintain a friendly, witty personality
 - Encourage follow-up questions and deeper exploration
 
 #### `lib/model.js`
+
 Configures the OpenAI ChatGPT model with optimized settings for technical explanations:
+
 - Streaming responses for real-time interaction
 - Temperature tuned for consistent, helpful responses
 - Token limits optimized for concise explanations
 
 #### `lib/vector-store.js`
+
 Manages the Qdrant vector database integration:
+
 - Semantic search across dictionary content
 - OpenAI embeddings for high-quality similarity matching
 - Production-ready vector store connection
 
 #### `lib/utils.js`
+
 Utility functions for message processing and formatting.
 
 ## Environment Variables
@@ -121,6 +131,7 @@ Imports all four core utilities (`jAIPrompt`, `model`, `formatMessage`, `vectorS
 ## Development
 
 ### Local Development
+
 ✨jAI runs as part of the main jargons.dev development environment:
 
 ```bash
@@ -128,6 +139,7 @@ npm start  # Starts the development server with ✨jAI enabled
 ```
 
 ### Testing
+
 AI functionality is tested as part of the main project's test suite:
 
 ```bash
@@ -140,6 +152,7 @@ npm run test:coverage # Generate coverage report
 Contributions to ✨jAI are welcome! Please refer to the main project's [Contribution Guide](../../CONTRIBUTING.md) for guidelines.
 
 When contributing to ✨jAI specifically:
+
 - Follow the modular structure for new utilities
 - Maintain the friendly, developer-focused AI personality
 - Test AI responses for accuracy and helpfulness

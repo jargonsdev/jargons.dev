@@ -83,16 +83,16 @@ export function TogglePreview() {
   const togglePreview = useStore($togglePreview);
 
   return (
-    <label class="inline-flex lg:hidden items-center cursor-pointer border-r pr-2.5 mr-2.5">
-      <span class="me-3 text-sm font-medium text-gray-900 dark:text-gray-300">
+    <label className="inline-flex lg:hidden items-center cursor-pointer border-r pr-2.5 mr-2.5">
+      <span className="me-3 text-sm font-medium text-gray-900 dark:text-gray-300">
         Preview
       </span>
       <input
         type="checkbox"
-        class="sr-only peer"
+        className="sr-only peer"
         onChange={() => $togglePreview.set(!togglePreview)}
       />
-      <div class="relative w-8 h-5 bg-gray-400 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-[75%] rtl:peer-checked:after:-translate-x-[75%] peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all dark:border-gray-600 peer-checked:bg-black"></div>
+      <div className="relative w-8 h-5 bg-gray-400 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-[75%] rtl:peer-checked:after:-translate-x-[75%] peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all dark:border-gray-600 peer-checked:bg-black"></div>
     </label>
   );
 }
@@ -136,7 +136,10 @@ function Editor({ eTitle, eContent, eMetadata, className, action, ...props }) {
        */
       const data = await response.json();
       $isWordSubmitLoading.set(false);
-      if (data.message === "Reference already exists") {
+      if (
+        response.status === 422 &&
+        data.message.includes("Reference already exists")
+      ) {
         if (
           confirm(
             "It appears you have an existing reference for the current word, do you wish to clear that reference?",

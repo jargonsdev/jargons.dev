@@ -29,7 +29,9 @@ export async function createBranch(userOctokit, repoDetails, newBranchName) {
 
     return response.data;
   } catch (error) {
-    throw error;
+    throw new Error("Error occurred while creating new branch", {
+      cause: error,
+    });
   }
 }
 
@@ -45,16 +47,22 @@ export async function getBranch(userOctokit, repoFullname, ref) {
   const formattedRef =
     ref.split("/")[0] === "refs" ? ref.split("/").slice(1).join("/") : ref;
 
-  const response = await userOctokit.request(
-    "GET /repos/{owner}/{repo}/git/ref/{ref}",
-    {
-      owner: repoOwner,
-      repo: repoName,
-      ref: formattedRef,
-    },
-  );
+  try {
+    const response = await userOctokit.request(
+      "GET /repos/{owner}/{repo}/git/ref/{ref}",
+      {
+        owner: repoOwner,
+        repo: repoName,
+        ref: formattedRef,
+      },
+    );
 
-  return response.data;
+    return response.data;
+  } catch (error) {
+    throw new Error(`Error occurred while getting branch ${ref}`, {
+      cause: error,
+    });
+  }
 }
 
 /**
@@ -79,6 +87,8 @@ export async function deleteBranch(userOctokit, repoFullname, branchName) {
 
     return response.status;
   } catch (error) {
-    throw error;
+    throw new Error("Error occurred while deleting branch", {
+      cause: error,
+    });
   }
 }

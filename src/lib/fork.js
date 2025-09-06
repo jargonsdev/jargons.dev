@@ -21,7 +21,7 @@ export async function forkRepository(userOctokit, projectRepoDetails) {
     );
 
     if (fork) {
-      console.log("Repo is already forked!");
+      // console.log("Repo is already forked!");
 
       const { isUpdated, updateSHA } = await isRepositoryForkUpdated(
         userOctokit,
@@ -30,7 +30,7 @@ export async function forkRepository(userOctokit, projectRepoDetails) {
       );
 
       if (!isUpdated) {
-        console.log("Repo is outdated!");
+        // console.log("Repo is outdated!");
 
         await updateRepositoryFork(userOctokit, fork, {
           ref: repoMainBranchRef,
@@ -52,7 +52,9 @@ export async function forkRepository(userOctokit, projectRepoDetails) {
 
     return response.data.full_name;
   } catch (error) {
-    console.log("Error occurred while forking repository:", error);
+    throw new Error("Error occurred while forking repository", {
+      cause: error,
+    });
   }
 }
 
@@ -80,10 +82,12 @@ async function updateRepositoryFork(
       sha,
     });
 
-    console.log("Fork is now updated and in-sync with upstream");
+    // console.log("Fork is now updated and in-sync with upstream");
   } catch (error) {
-    console.error("Error syncing with upstream:", error.message);
-    throw error;
+    // console.error("Error syncing with upstream:", error.message);
+    throw new Error("Error occurred while updating fork", {
+      cause: error,
+    });
   }
 }
 
@@ -101,23 +105,29 @@ async function isRepositoryForkUpdated(
 ) {
   const { repoFullname, repoMainBranchRef } = projectRepoDetails;
 
-  // `repoMainBranchRef` because the forked repo's main should be compared again project's same main repo
-  const forkedRepoMainBranch = await getBranch(
-    userOctokit,
-    forkedRepoFullname,
-    repoMainBranchRef,
-  );
-  const projectRepoMainBranch = await getBranch(
-    userOctokit,
-    repoFullname,
-    repoMainBranchRef,
-  );
+  try {
+    // `repoMainBranchRef` because the forked repo's main should be compared again project's same main repo
+    const forkedRepoMainBranch = await getBranch(
+      userOctokit,
+      forkedRepoFullname,
+      repoMainBranchRef,
+    );
+    const projectRepoMainBranch = await getBranch(
+      userOctokit,
+      repoFullname,
+      repoMainBranchRef,
+    );
 
-  return {
-    isUpdated:
-      forkedRepoMainBranch.object.sha === projectRepoMainBranch.object.sha,
-    updateSHA: projectRepoMainBranch.object.sha,
-  };
+    return {
+      isUpdated:
+        forkedRepoMainBranch.object.sha === projectRepoMainBranch.object.sha,
+      updateSHA: projectRepoMainBranch.object.sha,
+    };
+  } catch (error) {
+    throw new Error("Error occurred while checking fork update status", {
+      cause: error,
+    });
+  }
 }
 
 /**
@@ -171,6 +181,8 @@ async function isRepositoryForked(userOctokit, repoFullname, userLogin) {
       ? matchingFork.owner.login + "/" + matchingFork.name
       : null;
   } catch (error) {
-    console.log("Error occurred while checking repo fork: ", error);
+    throw new Error("Error occurred while checking repo fork", {
+      cause: error,
+    });
   }
 }

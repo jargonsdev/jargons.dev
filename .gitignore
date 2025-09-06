@@ -157,3 +157,6 @@ pnpm-debug.log*
 
 # Vercel build
 .vercel
+
+# dev/dictionary.json temporary files
+dev/dictionary.json

@@ -6,6 +6,14 @@ import { useEffect, useRef, useState } from "react";
 import { $isJAIOpen } from "../../lib/stores/jai";
 import useRouter from "../../lib/hooks/use-router";
 
+// Default question templates
+const DEFAULT_QUESTIONS = [
+  "Can you give me a real-world example of {word}?",
+  "How is {word} used in practice?",
+  "How does {word} relate to other concepts?",
+  "Are there common misconceptions about {word}?"
+];
+
 /**
  * jAI Chat Widget Component
  */
@@ -37,12 +45,25 @@ export default function JAIChatWidget({ word }) {
     setIsLoading(false);
   }, []);
 
-  const { messages, input, status, handleInputChange, handleSubmit } = useChat({
+  const { messages, input, status, handleInputChange, handleSubmit, append } = useChat({
     api: "/api/jai",
     onError: (e) => {
       console.error(e);
     },
   });
+
+  /**
+   * Handle clicking on default questions
+   * @param {string} questionTemplate - The question template to send
+   */
+  const handleQuestionClick = (questionTemplate) => {
+    const formattedQuestion = formatQuestion(questionTemplate, word);
+    // Use append to directly add the message without needing form submission
+    append({
+      role: 'user',
+      content: formattedQuestion
+    });
+  };
 
   useEffect(() => {
     if (chatContainer.current) {
@@ -146,7 +167,11 @@ export default function JAIChatWidget({ word }) {
             )}
           </div>
         ) : (
-          <JAIIntro status={{ isLoggedIn, isLoading }} word={word} />
+          <JAIIntro 
+            status={{ isLoggedIn, isLoading }} 
+            word={word} 
+            onQuestionClick={handleQuestionClick}
+          />
         )}
       </div>
 
@@ -221,7 +246,7 @@ export function JAIChatWidgetTrigger() {
 /**
  * jAI Intro Screen
  */
-function JAIIntro({ status, word }) {
+function JAIIntro({ status, word, onQuestionClick }) {
   const { pathname } = useRouter();
   const { isLoggedIn, isLoading } = status;
 
@@ -257,18 +282,15 @@ function JAIIntro({ status, word }) {
       <div className="mx-auto text-center space-y-4 space-x-4">
         {isLoggedIn ? (
           <>
-            <button className="bg-neutral-100 border border-neutral-200 rounded-lg px-5 py-2.5">
-              Can you give me a real-world example?
-            </button>
-            <button className="bg-neutral-100 border border-neutral-200 rounded-lg px-5 py-2.5">
-              How is this used in practice?
-            </button>
-            <button className="bg-neutral-100 border border-neutral-200 rounded-lg px-5 py-2.5">
-              How does this relate to other concepts?
-            </button>
-            <button className="bg-neutral-100 border border-neutral-200 rounded-lg px-5 py-2.5">
-              Are there common misconceptions about this?
-            </button>
+            {DEFAULT_QUESTIONS.map((questionTemplate, index) => (
+              <button 
+                key={index}
+                onClick={() => onQuestionClick(questionTemplate)}
+                className="bg-neutral-100 border border-neutral-200 rounded-lg px-5 py-2.5 hover:bg-neutral-200 transition-colors duration-200 cursor-pointer"
+              >
+                {formatQuestion(questionTemplate, word)}
+              </button>
+            ))}
           </>
         ) : (
           <a
@@ -296,3 +318,13 @@ function JAIIntro({ status, word }) {
     </div>
   );
 }
+
+/**
+ * Format question template with the current word
+ * @param {string} questionTemplate - Template with {word} placeholder
+ * @param {string} word - The word to replace the placeholder with
+ * @returns {string} Formatted question
+ */
+function formatQuestion (questionTemplate, word) {
+  return questionTemplate.replace('{word}', word);
+};

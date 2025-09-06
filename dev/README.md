@@ -26,14 +26,6 @@ This script simplifies the setup process for running <tt>jargons.dev</tt> locall
 
 This script prepares the knowledge base for **✨jAI** (jargons.dev AI) by populating the vector store with dictionary content. jAI uses this processed data to provide intelligent responses and semantic understanding of software engineering terms.
 
-### Features
-
-- **API Integration**: Fetches live dictionary data from jargons.dev API
-- **Document Processing**: Uses LangChain for intelligent text splitting and chunking
-- **Batch Processing**: Efficiently handles large datasets with configurable batch sizes
-- **Automatic Cleanup**: Removes temporary files after processing
-- **Progress Tracking**: Provides detailed console output for monitoring
-
 ### When to Use
 
 Run this script when you need to:

@@ -8,18 +8,18 @@ export const prCreationResponse = {
   html_url: "https://github.com/jargonsdev/jargons.dev/pull/456",
   user: {
     login: "testuser",
-    id: 987654321
+    id: 987654321,
   },
   head: {
     ref: "add-word-api",
-    sha: "abc123def456"
+    sha: "abc123def456",
   },
   base: {
     ref: "main",
-    sha: "def456ghi789"
+    sha: "def456ghi789",
   },
   created_at: "2025-09-06T10:00:00Z",
-  updated_at: "2025-09-06T10:00:00Z"
+  updated_at: "2025-09-06T10:00:00Z",
 };
 
 export const editPrCreationResponse = {
@@ -31,18 +31,18 @@ export const editPrCreationResponse = {
   html_url: "https://github.com/jargonsdev/jargons.dev/pull/457",
   user: {
     login: "testuser",
-    id: 987654321
+    id: 987654321,
   },
   head: {
     ref: "edit-word-api",
-    sha: "ghi789jkl012"
+    sha: "ghi789jkl012",
   },
   base: {
     ref: "main",
-    sha: "def456ghi789"
+    sha: "def456ghi789",
   },
   created_at: "2025-09-06T10:05:00Z",
-  updated_at: "2025-09-06T10:05:00Z"
+  updated_at: "2025-09-06T10:05:00Z",
 };
 
 export const labelResponse = {
@@ -51,7 +51,7 @@ export const labelResponse = {
   name: "🆕 new-word",
   color: "0366d6",
   default: false,
-  description: "New word addition"
+  description: "New word addition",
 };
 
 export const branchCreationResponse = {
@@ -61,8 +61,8 @@ export const branchCreationResponse = {
   object: {
     sha: "abc123def456",
     type: "commit",
-    url: "https://api.github.com/repos/testuser/jargons.dev/git/commits/abc123def456"
-  }
+    url: "https://api.github.com/repos/testuser/jargons.dev/git/commits/abc123def456",
+  },
 };
 
 export const branchGetResponse = {
@@ -72,8 +72,8 @@ export const branchGetResponse = {
   object: {
     sha: "def456ghi789",
     type: "commit",
-    url: "https://api.github.com/repos/testuser/jargons.dev/git/commits/def456ghi789"
-  }
+    url: "https://api.github.com/repos/testuser/jargons.dev/git/commits/def456ghi789",
+  },
 };
 
 export const contentCreationResponse = {
@@ -83,15 +83,18 @@ export const contentCreationResponse = {
     sha: "jkl012mno345",
     size: 1234,
     url: "https://api.github.com/repos/testuser/jargons.dev/contents/src/content/dictionary/api.mdx",
-    html_url: "https://github.com/testuser/jargons.dev/blob/add-word-api/src/content/dictionary/api.mdx",
-    git_url: "https://api.github.com/repos/testuser/jargons.dev/git/blobs/jkl012mno345",
-    download_url: "https://raw.githubusercontent.com/testuser/jargons.dev/add-word-api/src/content/dictionary/api.mdx",
-    type: "file"
+    html_url:
+      "https://github.com/testuser/jargons.dev/blob/add-word-api/src/content/dictionary/api.mdx",
+    git_url:
+      "https://api.github.com/repos/testuser/jargons.dev/git/blobs/jkl012mno345",
+    download_url:
+      "https://raw.githubusercontent.com/testuser/jargons.dev/add-word-api/src/content/dictionary/api.mdx",
+    type: "file",
   },
   commit: {
     sha: "mno345pqr678",
-    message: 'word: commit to "API"'
-  }
+    message: 'word: commit to "API"',
+  },
 };
 
 export const contentUpdateResponse = {
@@ -101,15 +104,18 @@ export const contentUpdateResponse = {
     sha: "pqr678stu901",
     size: 1456,
     url: "https://api.github.com/repos/testuser/jargons.dev/contents/src/content/dictionary/api.mdx",
-    html_url: "https://github.com/testuser/jargons.dev/blob/edit-word-api/src/content/dictionary/api.mdx",
-    git_url: "https://api.github.com/repos/testuser/jargons.dev/git/blobs/pqr678stu901",
-    download_url: "https://raw.githubusercontent.com/testuser/jargons.dev/edit-word-api/src/content/dictionary/api.mdx",
-    type: "file"
+    html_url:
+      "https://github.com/testuser/jargons.dev/blob/edit-word-api/src/content/dictionary/api.mdx",
+    git_url:
+      "https://api.github.com/repos/testuser/jargons.dev/git/blobs/pqr678stu901",
+    download_url:
+      "https://raw.githubusercontent.com/testuser/jargons.dev/edit-word-api/src/content/dictionary/api.mdx",
+    type: "file",
   },
   commit: {
     sha: "stu901vwx234",
-    message: 'word: edit commit to "API"'
-  }
+    message: 'word: edit commit to "API"',
+  },
 };
 
 export const contentGetResponse = {
@@ -118,12 +124,16 @@ export const contentGetResponse = {
   sha: "vwx234yza567",
   size: 1234,
   url: "https://api.github.com/repos/testuser/jargons.dev/contents/src/content/dictionary/api.mdx",
-  html_url: "https://github.com/testuser/jargons.dev/blob/main/src/content/dictionary/api.mdx",
-  git_url: "https://api.github.com/repos/testuser/jargons.dev/git/blobs/vwx234yza567",
-  download_url: "https://raw.githubusercontent.com/testuser/jargons.dev/main/src/content/dictionary/api.mdx",
+  html_url:
+    "https://github.com/testuser/jargons.dev/blob/main/src/content/dictionary/api.mdx",
+  git_url:
+    "https://api.github.com/repos/testuser/jargons.dev/git/blobs/vwx234yza567",
+  download_url:
+    "https://raw.githubusercontent.com/testuser/jargons.dev/main/src/content/dictionary/api.mdx",
   type: "file",
-  content: "LS0tCnRpdGxlOiAiQVBJIgotLS0KCkFwcGxpY2F0aW9uIFByb2dyYW1taW5nIEludGVyZmFjZSAoQVBJKSBpcyBhIHNldCBvZiBwcm90b2NvbHMsIHJvdXRpbmVzLCBhbmQgdG9vbHMgZm9yIGJ1aWxkaW5nIHNvZnR3YXJlIGFwcGxpY2F0aW9ucy4=",
-  encoding: "base64"
+  content:
+    "LS0tCnRpdGxlOiAiQVBJIgotLS0KCkFwcGxpY2F0aW9uIFByb2dyYW1taW5nIEludGVyZmFjZSAoQVBJKSBpcyBhIHNldCBvZiBwcm90b2NvbHMsIHJvdXRpbmVzLCBhbmQgdG9vbHMgZm9yIGJ1aWxkaW5nIHNvZnR3YXJlIGFwcGxpY2F0aW9ucy4=",
+  encoding: "base64",
 };
 
 export const forkCreationResponse = {
@@ -132,7 +142,7 @@ export const forkCreationResponse = {
   full_name: "testuser/jargons.dev",
   owner: {
     login: "testuser",
-    id: 987654321
+    id: 987654321,
   },
   private: false,
   fork: true,
@@ -142,18 +152,18 @@ export const forkCreationResponse = {
     full_name: "jargonsdev/jargons.dev",
     owner: {
       login: "jargonsdev",
-      id: 456789012
-    }
+      id: 456789012,
+    },
   },
   created_at: "2025-09-06T10:00:00Z",
-  updated_at: "2025-09-06T10:00:00Z"
+  updated_at: "2025-09-06T10:00:00Z",
 };
 
 export const userResponse = {
   login: "testuser",
   id: 987654321,
   name: "Test User",
-  email: "test@example.com"
+  email: "test@example.com",
 };
 
 export const graphqlForksResponse = {
@@ -163,16 +173,16 @@ export const graphqlForksResponse = {
         {
           name: "jargons.dev",
           owner: {
-            login: "testuser"
+            login: "testuser",
           },
           parent: {
             name: "jargons.dev",
             owner: {
-              login: "jargonsdev"
-            }
-          }
-        }
-      ]
-    }
-  }
+              login: "jargonsdev",
+            },
+          },
+        },
+      ],
+    },
+  },
 };

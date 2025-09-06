@@ -1,6 +1,6 @@
 import "@testing-library/jest-dom";
-import { setupServer } from 'msw/node';
-import { githubHandlers } from './mocks/github-api.js';
+import { setupServer } from "msw/node";
+import { githubHandlers } from "./mocks/github-api.js";
 
 // Mock environment variables for tests
 process.env.CRYPTO_SECRET_KEY = "test-secret-key-for-testing-only-32-chars";
@@ -13,7 +13,7 @@ export const server = setupServer(...githubHandlers);
 // Start server before all tests
 beforeAll(() => {
   server.listen({
-    onUnhandledRequest: 'error'
+    onUnhandledRequest: "error",
   });
 });
 

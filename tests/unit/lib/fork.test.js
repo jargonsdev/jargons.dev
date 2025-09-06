@@ -1,21 +1,21 @@
-import { describe, it, expect, beforeEach, vi } from 'vitest';
-import { forkRepository } from '../../../src/lib/fork.js';
-import { sampleRepoDetails } from '../../fixtures/test-data/index.js';
+import { describe, it, expect, beforeEach, vi } from "vitest";
+import { forkRepository } from "../../../src/lib/fork.js";
+import { sampleRepoDetails } from "../../fixtures/test-data/index.js";
 
 // Mock the branch.js module
-vi.mock('../../../src/lib/branch.js', () => ({
-  getBranch: vi.fn()
+vi.mock("../../../src/lib/branch.js", () => ({
+  getBranch: vi.fn(),
 }));
 
-import { getBranch } from '../../../src/lib/branch.js';
+import { getBranch } from "../../../src/lib/branch.js";
 
 // Mock Octokit instance
 const createMockOctokit = () => ({
   request: vi.fn(),
-  graphql: vi.fn()
+  graphql: vi.fn(),
 });
 
-describe('fork.js', () => {
+describe("fork.js", () => {
   let userOctokit;
   let projectRepoDetails;
 
@@ -25,506 +25,539 @@ describe('fork.js', () => {
     vi.clearAllMocks();
   });
 
-  describe('forkRepository', () => {
-    it('should create new fork when repository is not already forked', async () => {
-      const userData = { login: 'testuser', id: 12345 };
-      const newForkData = { 
-        full_name: 'testuser/jargons.dev',
-        name: 'jargons.dev',
-        owner: { login: 'testuser' }
+  describe("forkRepository", () => {
+    it("should create new fork when repository is not already forked", async () => {
+      const userData = { login: "testuser", id: 12345 };
+      const newForkData = {
+        full_name: "testuser/jargons.dev",
+        name: "jargons.dev",
+        owner: { login: "testuser" },
       };
 
       // Mock user data
       userOctokit.request.mockResolvedValueOnce({
-        data: userData
+        data: userData,
       });
 
       // Mock isRepositoryForked (no existing fork)
       userOctokit.graphql.mockResolvedValueOnce({
         user: {
           repositories: {
-            nodes: []
-          }
-        }
+            nodes: [],
+          },
+        },
       });
 
       // Mock fork creation
       userOctokit.request.mockResolvedValueOnce({
-        data: newForkData
+        data: newForkData,
       });
 
       const result = await forkRepository(userOctokit, projectRepoDetails);
 
-      expect(userOctokit.request).toHaveBeenNthCalledWith(1, 'GET /user');
-      
+      expect(userOctokit.request).toHaveBeenNthCalledWith(1, "GET /user");
+
       expect(userOctokit.graphql).toHaveBeenCalledWith(
-        expect.stringContaining('query forks'),
-        { login: 'testuser' }
+        expect.stringContaining("query forks"),
+        { login: "testuser" },
       );
 
-      expect(userOctokit.request).toHaveBeenNthCalledWith(2,
-        'POST /repos/{owner}/{repo}/forks',
+      expect(userOctokit.request).toHaveBeenNthCalledWith(
+        2,
+        "POST /repos/{owner}/{repo}/forks",
         {
-          owner: 'jargonsdev',
-          repo: 'jargons.dev',
-          default_branch_only: true
-        }
+          owner: "jargonsdev",
+          repo: "jargons.dev",
+          default_branch_only: true,
+        },
       );
 
-      expect(result).toBe('testuser/jargons.dev');
+      expect(result).toBe("testuser/jargons.dev");
     });
 
-    it('should return existing fork when repository is already forked and up-to-date', async () => {
-      const userData = { login: 'testuser', id: 12345 };
-      const existingFork = 'testuser/jargons.dev';
-      const mainBranchSha = 'same-sha-123';
+    it("should return existing fork when repository is already forked and up-to-date", async () => {
+      const userData = { login: "testuser", id: 12345 };
+      const existingFork = "testuser/jargons.dev";
+      const mainBranchSha = "same-sha-123";
 
       // Mock user data
       userOctokit.request.mockResolvedValueOnce({
-        data: userData
+        data: userData,
       });
 
       // Mock isRepositoryForked (existing fork found)
       userOctokit.graphql.mockResolvedValueOnce({
         user: {
           repositories: {
-            nodes: [{
-              name: 'jargons.dev',
-              owner: { login: 'testuser' },
-              parent: {
-                name: 'jargons.dev',
-                owner: { login: 'jargonsdev' }
-              }
-            }]
-          }
-        }
+            nodes: [
+              {
+                name: "jargons.dev",
+                owner: { login: "testuser" },
+                parent: {
+                  name: "jargons.dev",
+                  owner: { login: "jargonsdev" },
+                },
+              },
+            ],
+          },
+        },
       });
 
       // Mock getBranch calls for sync check (up-to-date)
       getBranch
         .mockResolvedValueOnce({
           object: { sha: mainBranchSha },
-          ref: 'refs/heads/main'
+          ref: "refs/heads/main",
         })
         .mockResolvedValueOnce({
           object: { sha: mainBranchSha },
-          ref: 'refs/heads/main'
+          ref: "refs/heads/main",
         });
 
       const result = await forkRepository(userOctokit, projectRepoDetails);
 
       expect(getBranch).toHaveBeenCalledTimes(2);
-      expect(getBranch).toHaveBeenNthCalledWith(1, userOctokit, existingFork, 'refs/heads/main');
-      expect(getBranch).toHaveBeenNthCalledWith(2, userOctokit, 'jargonsdev/jargons.dev', 'refs/heads/main');
+      expect(getBranch).toHaveBeenNthCalledWith(
+        1,
+        userOctokit,
+        existingFork,
+        "refs/heads/main",
+      );
+      expect(getBranch).toHaveBeenNthCalledWith(
+        2,
+        userOctokit,
+        "jargonsdev/jargons.dev",
+        "refs/heads/main",
+      );
 
       expect(result).toBe(existingFork);
     });
 
-    it('should update existing fork when repository is already forked but outdated', async () => {
-      const userData = { login: 'testuser', id: 12345 };
-      const existingFork = 'testuser/jargons.dev';
-      const outdatedSha = 'old-sha-123';
-      const latestSha = 'new-sha-456';
+    it("should update existing fork when repository is already forked but outdated", async () => {
+      const userData = { login: "testuser", id: 12345 };
+      const existingFork = "testuser/jargons.dev";
+      const outdatedSha = "old-sha-123";
+      const latestSha = "new-sha-456";
 
       // Mock user data
       userOctokit.request.mockResolvedValueOnce({
-        data: userData
+        data: userData,
       });
 
       // Mock isRepositoryForked (existing fork found)
       userOctokit.graphql.mockResolvedValueOnce({
         user: {
           repositories: {
-            nodes: [{
-              name: 'jargons.dev',
-              owner: { login: 'testuser' },
-              parent: {
-                name: 'jargons.dev',
-                owner: { login: 'jargonsdev' }
-              }
-            }]
-          }
-        }
+            nodes: [
+              {
+                name: "jargons.dev",
+                owner: { login: "testuser" },
+                parent: {
+                  name: "jargons.dev",
+                  owner: { login: "jargonsdev" },
+                },
+              },
+            ],
+          },
+        },
       });
 
       // Mock getBranch calls for sync check (outdated)
       getBranch
         .mockResolvedValueOnce({
           object: { sha: outdatedSha },
-          ref: 'refs/heads/main'
+          ref: "refs/heads/main",
         })
         .mockResolvedValueOnce({
           object: { sha: latestSha },
-          ref: 'refs/heads/main'
+          ref: "refs/heads/main",
         });
 
       // Mock fork update
       userOctokit.request.mockResolvedValueOnce({
-        status: 200
+        status: 200,
       });
 
       const result = await forkRepository(userOctokit, projectRepoDetails);
 
-      expect(userOctokit.request).toHaveBeenNthCalledWith(2,
-        'PATCH /repos/{owner}/{repo}/git/refs/{ref}',
+      expect(userOctokit.request).toHaveBeenNthCalledWith(
+        2,
+        "PATCH /repos/{owner}/{repo}/git/refs/{ref}",
         {
-          owner: 'testuser',
-          repo: 'jargons.dev',
-          ref: 'heads/main',
-          sha: latestSha
-        }
+          owner: "testuser",
+          repo: "jargons.dev",
+          ref: "heads/main",
+          sha: latestSha,
+        },
       );
 
       expect(result).toBe(existingFork);
     });
 
-    it('should handle repository details parsing correctly', async () => {
+    it("should handle repository details parsing correctly", async () => {
       const customRepoDetails = {
-        repoFullname: 'organization/custom-project',
-        repoMainBranchRef: 'refs/heads/development'
+        repoFullname: "organization/custom-project",
+        repoMainBranchRef: "refs/heads/development",
       };
 
-      const userData = { login: 'testuser', id: 12345 };
+      const userData = { login: "testuser", id: 12345 };
 
       userOctokit.request.mockResolvedValueOnce({
-        data: userData
+        data: userData,
       });
 
       userOctokit.graphql.mockResolvedValueOnce({
-        user: { repositories: { nodes: [] } }
+        user: { repositories: { nodes: [] } },
       });
 
       userOctokit.request.mockResolvedValueOnce({
-        data: { full_name: 'testuser/custom-project' }
+        data: { full_name: "testuser/custom-project" },
       });
 
       await forkRepository(userOctokit, customRepoDetails);
 
       expect(userOctokit.request).toHaveBeenCalledWith(
-        'POST /repos/{owner}/{repo}/forks',
+        "POST /repos/{owner}/{repo}/forks",
         expect.objectContaining({
-          owner: 'organization',
-          repo: 'custom-project'
-        })
+          owner: "organization",
+          repo: "custom-project",
+        }),
       );
     });
 
-    it('should handle multiple existing forks and find correct match', async () => {
-      const userData = { login: 'testuser', id: 12345 };
+    it("should handle multiple existing forks and find correct match", async () => {
+      const userData = { login: "testuser", id: 12345 };
 
       userOctokit.request.mockResolvedValueOnce({
-        data: userData
+        data: userData,
       });
 
       // Mock multiple forks, with one matching our target repo
       userOctokit.graphql.mockResolvedValueOnce({
         user: {
           repositories: {
-            nodes: [{
-              name: 'other-project',
-              owner: { login: 'testuser' },
-              parent: {
-                name: 'other-project',
-                owner: { login: 'someowner' }
-              }
-            }, {
-              name: 'jargons.dev',
-              owner: { login: 'testuser' },
-              parent: {
-                name: 'jargons.dev',
-                owner: { login: 'jargonsdev' }
-              }
-            }]
-          }
-        }
+            nodes: [
+              {
+                name: "other-project",
+                owner: { login: "testuser" },
+                parent: {
+                  name: "other-project",
+                  owner: { login: "someowner" },
+                },
+              },
+              {
+                name: "jargons.dev",
+                owner: { login: "testuser" },
+                parent: {
+                  name: "jargons.dev",
+                  owner: { login: "jargonsdev" },
+                },
+              },
+            ],
+          },
+        },
       });
 
       getBranch
         .mockResolvedValueOnce({
-          object: { sha: 'same-sha' }
+          object: { sha: "same-sha" },
         })
         .mockResolvedValueOnce({
-          object: { sha: 'same-sha' }
+          object: { sha: "same-sha" },
         });
 
       const result = await forkRepository(userOctokit, projectRepoDetails);
 
-      expect(result).toBe('testuser/jargons.dev');
+      expect(result).toBe("testuser/jargons.dev");
     });
 
-    it('should handle complex branch reference formats during sync', async () => {
+    it("should handle complex branch reference formats during sync", async () => {
       const customRepoDetails = {
-        repoFullname: 'owner/repo',
-        repoMainBranchRef: 'refs/heads/feature/main-branch'
+        repoFullname: "owner/repo",
+        repoMainBranchRef: "refs/heads/feature/main-branch",
       };
 
-      const userData = { login: 'testuser', id: 12345 };
+      const userData = { login: "testuser", id: 12345 };
 
       userOctokit.request.mockResolvedValueOnce({
-        data: userData
+        data: userData,
       });
 
       userOctokit.graphql.mockResolvedValueOnce({
         user: {
           repositories: {
-            nodes: [{
-              name: 'repo',
-              owner: { login: 'testuser' },
-              parent: {
-                name: 'repo',
-                owner: { login: 'owner' }
-              }
-            }]
-          }
-        }
+            nodes: [
+              {
+                name: "repo",
+                owner: { login: "testuser" },
+                parent: {
+                  name: "repo",
+                  owner: { login: "owner" },
+                },
+              },
+            ],
+          },
+        },
       });
 
       getBranch
         .mockResolvedValueOnce({
-          object: { sha: 'old-sha' }
+          object: { sha: "old-sha" },
         })
         .mockResolvedValueOnce({
-          object: { sha: 'new-sha' }
+          object: { sha: "new-sha" },
         });
 
       userOctokit.request.mockResolvedValueOnce({
-        status: 200
+        status: 200,
       });
 
       await forkRepository(userOctokit, customRepoDetails);
 
       expect(userOctokit.request).toHaveBeenCalledWith(
-        'PATCH /repos/{owner}/{repo}/git/refs/{ref}',
+        "PATCH /repos/{owner}/{repo}/git/refs/{ref}",
         expect.objectContaining({
-          ref: 'heads/feature/main-branch'
-        })
+          ref: "heads/feature/main-branch",
+        }),
       );
     });
 
-    it('should throw wrapped error on user data fetch failure', async () => {
-      userOctokit.request.mockRejectedValueOnce(new Error('Unauthorized'));
+    it("should throw wrapped error on user data fetch failure", async () => {
+      userOctokit.request.mockRejectedValueOnce(new Error("Unauthorized"));
 
       await expect(
-        forkRepository(userOctokit, projectRepoDetails)
-      ).rejects.toThrow('Error occurred while forking repository');
+        forkRepository(userOctokit, projectRepoDetails),
+      ).rejects.toThrow("Error occurred while forking repository");
     });
 
-    it('should throw wrapped error on GraphQL query failure', async () => {
+    it("should throw wrapped error on GraphQL query failure", async () => {
       userOctokit.request.mockResolvedValueOnce({
-        data: { login: 'testuser' }
+        data: { login: "testuser" },
       });
 
-      userOctokit.graphql.mockRejectedValueOnce(new Error('GraphQL Error'));
+      userOctokit.graphql.mockRejectedValueOnce(new Error("GraphQL Error"));
 
       await expect(
-        forkRepository(userOctokit, projectRepoDetails)
-      ).rejects.toThrow('Error occurred while forking repository');
+        forkRepository(userOctokit, projectRepoDetails),
+      ).rejects.toThrow("Error occurred while forking repository");
     });
 
-    it('should throw wrapped error on fork creation failure', async () => {
+    it("should throw wrapped error on fork creation failure", async () => {
       userOctokit.request.mockResolvedValueOnce({
-        data: { login: 'testuser' }
+        data: { login: "testuser" },
       });
 
       userOctokit.graphql.mockResolvedValueOnce({
-        user: { repositories: { nodes: [] } }
+        user: { repositories: { nodes: [] } },
       });
 
-      userOctokit.request.mockRejectedValueOnce(new Error('Fork creation failed'));
+      userOctokit.request.mockRejectedValueOnce(
+        new Error("Fork creation failed"),
+      );
 
       await expect(
-        forkRepository(userOctokit, projectRepoDetails)
-      ).rejects.toThrow('Error occurred while forking repository');
+        forkRepository(userOctokit, projectRepoDetails),
+      ).rejects.toThrow("Error occurred while forking repository");
     });
 
-    it('should throw wrapped error on sync status check failure', async () => {
+    it("should throw wrapped error on sync status check failure", async () => {
       userOctokit.request.mockResolvedValueOnce({
-        data: { login: 'testuser' }
-      });
-
-      userOctokit.graphql.mockResolvedValueOnce({
-        user: {
-          repositories: {
-            nodes: [{
-              name: 'jargons.dev',
-              owner: { login: 'testuser' },
-              parent: {
-                name: 'jargons.dev',
-                owner: { login: 'jargonsdev' }
-              }
-            }]
-          }
-        }
-      });
-
-      getBranch.mockRejectedValueOnce(new Error('Branch not found'));
-
-      await expect(
-        forkRepository(userOctokit, projectRepoDetails)
-      ).rejects.toThrow('Error occurred while forking repository');
-    });
-
-    it('should propagate sync update errors', async () => {
-      userOctokit.request.mockResolvedValueOnce({
-        data: { login: 'testuser' }
+        data: { login: "testuser" },
       });
 
       userOctokit.graphql.mockResolvedValueOnce({
         user: {
           repositories: {
-            nodes: [{
-              name: 'jargons.dev',
-              owner: { login: 'testuser' },
-              parent: {
-                name: 'jargons.dev',
-                owner: { login: 'jargonsdev' }
-              }
-            }]
-          }
-        }
+            nodes: [
+              {
+                name: "jargons.dev",
+                owner: { login: "testuser" },
+                parent: {
+                  name: "jargons.dev",
+                  owner: { login: "jargonsdev" },
+                },
+              },
+            ],
+          },
+        },
+      });
+
+      getBranch.mockRejectedValueOnce(new Error("Branch not found"));
+
+      await expect(
+        forkRepository(userOctokit, projectRepoDetails),
+      ).rejects.toThrow("Error occurred while forking repository");
+    });
+
+    it("should propagate sync update errors", async () => {
+      userOctokit.request.mockResolvedValueOnce({
+        data: { login: "testuser" },
+      });
+
+      userOctokit.graphql.mockResolvedValueOnce({
+        user: {
+          repositories: {
+            nodes: [
+              {
+                name: "jargons.dev",
+                owner: { login: "testuser" },
+                parent: {
+                  name: "jargons.dev",
+                  owner: { login: "jargonsdev" },
+                },
+              },
+            ],
+          },
+        },
       });
 
       getBranch
         .mockResolvedValueOnce({
-          object: { sha: 'old-sha' }
+          object: { sha: "old-sha" },
         })
         .mockResolvedValueOnce({
-          object: { sha: 'new-sha' }
+          object: { sha: "new-sha" },
         });
 
-      userOctokit.request.mockRejectedValueOnce(new Error('Update failed'));
+      userOctokit.request.mockRejectedValueOnce(new Error("Update failed"));
 
       await expect(
-        forkRepository(userOctokit, projectRepoDetails)
-      ).rejects.toThrow('Error occurred while forking repository');
+        forkRepository(userOctokit, projectRepoDetails),
+      ).rejects.toThrow("Error occurred while forking repository");
     });
   });
 
-  describe('GraphQL Query Structure', () => {
-    it('should use correct GraphQL query for checking forks', async () => {
-      const userData = { login: 'testuser', id: 12345 };
+  describe("GraphQL Query Structure", () => {
+    it("should use correct GraphQL query for checking forks", async () => {
+      const userData = { login: "testuser", id: 12345 };
 
       userOctokit.request.mockResolvedValueOnce({
-        data: userData
+        data: userData,
       });
 
       userOctokit.graphql.mockResolvedValueOnce({
-        user: { repositories: { nodes: [] } }
+        user: { repositories: { nodes: [] } },
       });
 
       userOctokit.request.mockResolvedValueOnce({
-        data: { full_name: 'testuser/jargons.dev' }
+        data: { full_name: "testuser/jargons.dev" },
       });
 
       await forkRepository(userOctokit, projectRepoDetails);
 
       expect(userOctokit.graphql).toHaveBeenCalledWith(
-        expect.stringContaining('query forks'),
-        { login: 'testuser' }
+        expect.stringContaining("query forks"),
+        { login: "testuser" },
       );
 
       const graphqlCall = userOctokit.graphql.mock.calls[0];
       const query = graphqlCall[0];
-      
-      expect(query).toContain('user (login: $login)');
-      expect(query).toContain('repositories(first: 100, isFork: true)');
-      expect(query).toContain('parent');
+
+      expect(query).toContain("user (login: $login)");
+      expect(query).toContain("repositories(first: 100, isFork: true)");
+      expect(query).toContain("parent");
     });
 
-    it('should handle empty GraphQL response', async () => {
+    it("should handle empty GraphQL response", async () => {
       userOctokit.request.mockResolvedValueOnce({
-        data: { login: 'testuser' }
+        data: { login: "testuser" },
       });
 
       userOctokit.graphql.mockResolvedValueOnce({
         user: {
           repositories: {
-            nodes: []
-          }
-        }
+            nodes: [],
+          },
+        },
       });
 
       userOctokit.request.mockResolvedValueOnce({
-        data: { full_name: 'testuser/jargons.dev' }
+        data: { full_name: "testuser/jargons.dev" },
       });
 
       const result = await forkRepository(userOctokit, projectRepoDetails);
 
-      expect(result).toBe('testuser/jargons.dev');
+      expect(result).toBe("testuser/jargons.dev");
     });
 
-    it('should handle null parent in GraphQL response', async () => {
+    it("should handle null parent in GraphQL response", async () => {
       userOctokit.request.mockResolvedValueOnce({
-        data: { login: 'testuser' }
+        data: { login: "testuser" },
       });
 
       userOctokit.graphql.mockResolvedValueOnce({
         user: {
           repositories: {
-            nodes: [{
-              name: 'not-a-fork',
-              owner: { login: 'testuser' },
-              parent: null
-            }]
-          }
-        }
+            nodes: [
+              {
+                name: "not-a-fork",
+                owner: { login: "testuser" },
+                parent: null,
+              },
+            ],
+          },
+        },
       });
 
       userOctokit.request.mockResolvedValueOnce({
-        data: { full_name: 'testuser/jargons.dev' }
+        data: { full_name: "testuser/jargons.dev" },
       });
 
       const result = await forkRepository(userOctokit, projectRepoDetails);
 
-      expect(result).toBe('testuser/jargons.dev');
+      expect(result).toBe("testuser/jargons.dev");
     });
   });
 
-  describe('Error Propagation', () => {
-    it('should preserve original error information in main wrapper', async () => {
-      const originalError = new Error('API Rate Limit Exceeded');
+  describe("Error Propagation", () => {
+    it("should preserve original error information in main wrapper", async () => {
+      const originalError = new Error("API Rate Limit Exceeded");
       originalError.status = 403;
-      originalError.response = { data: { message: 'Rate limited' } };
+      originalError.response = { data: { message: "Rate limited" } };
 
       userOctokit.request.mockRejectedValueOnce(originalError);
 
       try {
         await forkRepository(userOctokit, projectRepoDetails);
       } catch (error) {
-        expect(error.message).toBe('Error occurred while forking repository');
+        expect(error.message).toBe("Error occurred while forking repository");
         expect(error.cause).toBe(originalError);
       }
     });
 
-    it('should preserve error information from getBranch calls', async () => {
+    it("should preserve error information from getBranch calls", async () => {
       userOctokit.request.mockResolvedValueOnce({
-        data: { login: 'testuser' }
+        data: { login: "testuser" },
       });
 
       userOctokit.graphql.mockResolvedValueOnce({
         user: {
           repositories: {
-            nodes: [{
-              name: 'jargons.dev',
-              owner: { login: 'testuser' },
-              parent: {
-                name: 'jargons.dev',
-                owner: { login: 'jargonsdev' }
-              }
-            }]
-          }
-        }
+            nodes: [
+              {
+                name: "jargons.dev",
+                owner: { login: "testuser" },
+                parent: {
+                  name: "jargons.dev",
+                  owner: { login: "jargonsdev" },
+                },
+              },
+            ],
+          },
+        },
       });
 
-      const branchError = new Error('Branch access denied');
+      const branchError = new Error("Branch access denied");
       branchError.status = 403;
       getBranch.mockRejectedValueOnce(branchError);
 
       try {
         await forkRepository(userOctokit, projectRepoDetails);
       } catch (error) {
-        expect(error.message).toBe('Error occurred while forking repository');
-        expect(error.cause.message).toBe('Error occurred while checking fork update status');
+        expect(error.message).toBe("Error occurred while forking repository");
+        expect(error.cause.message).toBe(
+          "Error occurred while checking fork update status",
+        );
         expect(error.cause.cause).toBe(branchError);
       }
     });

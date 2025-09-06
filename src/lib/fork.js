@@ -52,7 +52,9 @@ export async function forkRepository(userOctokit, projectRepoDetails) {
 
     return response.data.full_name;
   } catch (error) {
-    console.log("Error occurred while forking repository:", error);
+    throw new Error("Error occurred while forking repository", {
+      cause: error,
+    });
   }
 }
 
@@ -101,23 +103,29 @@ async function isRepositoryForkUpdated(
 ) {
   const { repoFullname, repoMainBranchRef } = projectRepoDetails;
 
-  // `repoMainBranchRef` because the forked repo's main should be compared again project's same main repo
-  const forkedRepoMainBranch = await getBranch(
-    userOctokit,
-    forkedRepoFullname,
-    repoMainBranchRef,
-  );
-  const projectRepoMainBranch = await getBranch(
-    userOctokit,
-    repoFullname,
-    repoMainBranchRef,
-  );
+  try {
+    // `repoMainBranchRef` because the forked repo's main should be compared again project's same main repo
+    const forkedRepoMainBranch = await getBranch(
+      userOctokit,
+      forkedRepoFullname,
+      repoMainBranchRef,
+    );
+    const projectRepoMainBranch = await getBranch(
+      userOctokit,
+      repoFullname,
+      repoMainBranchRef,
+    );
 
-  return {
-    isUpdated:
-      forkedRepoMainBranch.object.sha === projectRepoMainBranch.object.sha,
-    updateSHA: projectRepoMainBranch.object.sha,
-  };
+    return {
+      isUpdated:
+        forkedRepoMainBranch.object.sha === projectRepoMainBranch.object.sha,
+      updateSHA: projectRepoMainBranch.object.sha,
+    };
+  } catch (error) {
+    throw new Error("Error occurred while checking fork update status", {
+      cause: error,
+    });
+  }
 }
 
 /**
@@ -171,6 +179,8 @@ async function isRepositoryForked(userOctokit, repoFullname, userLogin) {
       ? matchingFork.owner.login + "/" + matchingFork.name
       : null;
   } catch (error) {
-    console.log("Error occurred while checking repo fork: ", error);
+    throw new Error("Error occurred while checking repo fork", {
+      cause: error,
+    });
   }
 }

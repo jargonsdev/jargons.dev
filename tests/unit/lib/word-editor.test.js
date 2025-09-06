@@ -3,10 +3,7 @@ import { writeNewWord, updateExistingWord, getExistingWord } from '../../../src/
 import { 
   sampleWords, 
   sampleRepoDetails, 
-  sampleFilePaths,
-  sampleCommitMessages,
   sampleBase64Content,
-  sampleDecodedContent
 } from '../../fixtures/test-data/index.js';
 
 // Mock Octokit instance

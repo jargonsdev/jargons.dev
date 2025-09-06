@@ -1,6 +1,5 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { createBranch, getBranch, deleteBranch } from '../../../src/lib/branch.js';
-import { sampleRepoDetails } from '../../fixtures/test-data/index.js';
 
 // Mock Octokit instance
 const createMockOctokit = () => ({

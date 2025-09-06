@@ -15,7 +15,9 @@ export default function JAIChatWidget({ word }) {
   const [isLoading, setIsLoading] = useState(true);
   const [isLoggedIn, setIsLoggedIn] = useState(undefined);
 
-  // Check if user is logged in
+  /**
+   * Check if user is logged in
+   */
   useEffect(() => {
     const token = Cookies.get("jargonsdevToken");
     if (!token) {
@@ -36,7 +38,7 @@ export default function JAIChatWidget({ word }) {
   }, []);
 
   const { messages, input, status, handleInputChange, handleSubmit } = useChat({
-    api: import.meta.env.PUBLIC_JAI_API_URL,
+    api: "/api/jai",
     onError: (e) => {
       console.log(e);
     },

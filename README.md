@@ -70,7 +70,7 @@ To get set-up follow these steps:
 
 ## AI Features - Powering ✨jAI
 
-<tt>jargons.dev</tt> includes **✨jAI** (jargons.dev AI) - an intelligent assistant that helps users explore and understand software engineering terms through AI-powered interactions.
+<tt>jargons.dev</tt> includes **✨jAI** (jargons.dev AI) - an intelligent assistant that helps users explore and understand software engineering terms through AI-powered interactions. Learn more in the **[app/jai](./apps/jai/README.md)** module.
 
 ### Setup ✨jAI
 

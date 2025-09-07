@@ -10,7 +10,7 @@ const model = new ChatOpenAI({
   frequencyPenalty: 0,
   presencePenalty: 0,
   streaming: true,
-  verbose: true,
+  verbose: process.env.NODE_ENV !== "production",
 });
 
 export { model as default };

@@ -25,7 +25,7 @@
   "dependencies": {
     "@astrojs/mdx": "^4.3.0",
     "@astrojs/partytown": "^2.1.2",
-    "@astrojs/react": "^3.1.0",
+    "@astrojs/react": "^3.6.3",
     "@astrojs/tailwind": "^5.1.5",
     "@astrojs/vercel": "^8.2.1",
     "@fontsource/ibm-plex-mono": "^5.0.12",

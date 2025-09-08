@@ -31,9 +31,6 @@ package-lock.json
 .DS_Store
 Thumbs.db
 
-# SVG files with CDATA that cause parsing issues
-src/components/jargonsdev-logo.astro
-
 # Files with parsing issues in inline scripts
 src/layouts/base.astro
 

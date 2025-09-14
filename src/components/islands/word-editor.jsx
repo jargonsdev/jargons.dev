@@ -109,8 +109,6 @@ function Editor({ eTitle, eContent, eMetadata, className, action, ...props }) {
     setTitle,
     content,
     setContent,
-    initialTitle,
-    setInitialTitle,
     initialContent,
     setInitialContent,
   } = useWordEditor();
@@ -120,7 +118,6 @@ function Editor({ eTitle, eContent, eMetadata, className, action, ...props }) {
   useEffect(() => {
     setTitle(eTitle);
     setContent(eContent);
-    setInitialTitle(eTitle);
     setInitialContent(eContent);
   }, []);
 
@@ -131,7 +128,7 @@ function Editor({ eTitle, eContent, eMetadata, className, action, ...props }) {
    * @todo handle error for when submission isn't successful
    */
   async function handleSubmit(e) {
-    const hasWordChanged = title !== initialTitle || content !== initialContent;
+    const hasWordChanged = content !== initialContent;
     if (!hasWordChanged) {
       alert(
         "No changes detected. Please update the content before submitting.",

@@ -16,10 +16,6 @@ export default function useWordEditor() {
     $wordEditor.setKey("content", content);
   }
 
-  function setInitialTitle(title) {
-    $wordEditor.setKey("initialTitle", title);
-  }
-
   function setInitialContent(content) {
     $wordEditor.setKey("initialContent", content);
   }
@@ -27,11 +23,9 @@ export default function useWordEditor() {
   return {
     title: word.title,
     content: word.content,
-    initialTitle: word.initialTitle,
     initialContent: word.initialContent,
     setTitle,
     setContent,
-    setInitialTitle,
     setInitialContent,
   };
 }

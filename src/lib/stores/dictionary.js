@@ -9,7 +9,6 @@ import { atom, map } from "nanostores";
 /**
  * @typedef {Object} Word
  * @property {string} title
- * @property {string} initialTitle
  * @property {string} content
  * @property {string} initialContent
  * @type {import('nanostores').MapStore<Record<string, Word>>}
@@ -17,7 +16,6 @@ import { atom, map } from "nanostores";
 export const $wordEditor = map({
   title: "",
   content: "",
-  initialTitle: "",
   inititalContent: "",
 });
 

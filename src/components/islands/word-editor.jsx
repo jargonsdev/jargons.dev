@@ -104,13 +104,21 @@ function Editor({ eTitle, eContent, eMetadata, className, action, ...props }) {
   const router = useRouter();
   const isSubmitted = useStore($isWordSubmitted);
   const isSubmitLoading = useStore($isWordSubmitLoading);
-  const { title, setTitle, content, setContent } = useWordEditor();
+  const {
+    title,
+    setTitle,
+    content,
+    setContent,
+    initialContent,
+    setInitialContent,
+  } = useWordEditor();
 
   const isDone = isSubmitLoading || isSubmitted;
 
   useEffect(() => {
     setTitle(eTitle);
     setContent(eContent);
+    setInitialContent(eContent);
   }, []);
 
   /**
@@ -120,6 +128,14 @@ function Editor({ eTitle, eContent, eMetadata, className, action, ...props }) {
    * @todo handle error for when submission isn't successful
    */
   async function handleSubmit(e) {
+    const hasWordChanged = content !== initialContent;
+    if (!hasWordChanged) {
+      alert(
+        "No changes detected. Please update the content before submitting.",
+      );
+      return;
+    }
+
     $isWordSubmitLoading.set(true);
     const formData = new FormData(e.target);
     const response = await fetch("/api/dictionary", {

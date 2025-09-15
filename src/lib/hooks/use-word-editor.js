@@ -16,10 +16,16 @@ export default function useWordEditor() {
     $wordEditor.setKey("content", content);
   }
 
+  function setInitialContent(content) {
+    $wordEditor.setKey("inititalContent", content);
+  }
+
   return {
     title: word.title,
     content: word.content,
+    initialContent: word.inititalContent,
     setTitle,
     setContent,
+    setInitialContent,
   };
 }

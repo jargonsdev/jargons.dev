@@ -16,7 +16,7 @@ import { atom, map } from "nanostores";
 export const $wordEditor = map({
   title: "",
   content: "",
-  inititalContent: "",
+  initialContent: "",
 });
 
 export const $isWordSubmitLoading = atom(false);

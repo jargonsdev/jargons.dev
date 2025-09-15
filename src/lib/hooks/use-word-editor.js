@@ -17,13 +17,13 @@ export default function useWordEditor() {
   }
 
   function setInitialContent(content) {
-    $wordEditor.setKey("initialContent", content);
+    $wordEditor.setKey("inititalContent", content);
   }
 
   return {
     title: word.title,
     content: word.content,
-    initialContent: word.initialContent,
+    initialContent: word.inititalContent,
     setTitle,
     setContent,
     setInitialContent,

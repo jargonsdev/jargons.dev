@@ -18,7 +18,8 @@
     "test:coverage": "vitest run --coverage",
     "setup": "node dev/setup.js",
     "seed:jai": "node --env-file=.env dev/seed-vector-store.js",
-    "ping:qdrant": "node --env-file=.env dev/ping-qdrant-cluster.js"
+    "ping:qdrant": "node --env-file=.env dev/ping-qdrant-cluster.js",
+    "ping:qdrant:ci": "node dev/ping-qdrant-cluster.js"
   },
   "keywords": [],
   "author": "",

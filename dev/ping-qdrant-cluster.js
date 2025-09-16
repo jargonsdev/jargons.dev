@@ -7,7 +7,7 @@
  * This keeps the cluster active and prevents automatic deletion due to inactivity.
  */
 const QDRANT_URL = process.env.QDRANT_URL;
-const QDRANT_API_KEY = process.env.QDRANT_API_KEY
+const QDRANT_API_KEY = process.env.QDRANT_API_KEY;
 const COLLECTION_NAME = "dictionary";
 
 console.log("🚀 Starting Vector Store (Qdrant) cluster ping...");

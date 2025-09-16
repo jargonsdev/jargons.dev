@@ -38,7 +38,7 @@ Run this script when you need to:
 
 Before running this script, ensure you have:
 - All dependencies installed (`npm ci`)
-- OPENAI and QDRANT environment variables properly configured in your `.env` file
+- `OPENAI_API_KEY`, `QDRANT_URL`  and `QDRANT_API_KEY` environment variables properly configured in your `.env` file
 - Network access to fetch from jargons.dev API
 - Sufficient disk space for temporary dictionary file
 
@@ -68,6 +68,12 @@ The script leverages several key technologies:
 - **File System Operations**: Handles temporary file creation and cleanup
 
 ### Configuration Options
+
+Required environment variables:
+
+- **QDRANT_URL**: Your Qdrant cluster endpoint (e.g., `https://your-cluster.gcp.cloud.qdrant.io`)
+- **QDRANT_API_KEY**: Your Qdrant cluster API key for authentication
+- **OPENAI_API_KEY**: Your OpenAI API Key with appopriate chat and embedding models (value specified in `OPENAI_CHAT_MODEL` and `OPENAI_EMBEDDINGS_MODEL`)  allowed
 
 Key parameters that can be adjusted:
 
@@ -113,7 +119,7 @@ Run this script when you need to:
 ### Prerequisites
 
 Before running this script, ensure you have:
-- QDRANT_URL and QDRANT_API_KEY environment variables configured
+- `QDRANT_URL` and `QDRANT_API_KEY` environment variables configured
 - Network access to your Qdrant cluster
 - The 'dictionary' collection exists in your Qdrant instance
 

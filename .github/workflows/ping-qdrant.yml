@@ -29,7 +29,7 @@ jobs:
         env:
           QDRANT_URL: ${{ secrets.QDRANT_URL }}
           QDRANT_API_KEY: ${{ secrets.QDRANT_API_KEY }}
-        run: npm run ping:qdrant
+        run: npm run ping:qdrant:ci
 
       - name: Ping successful
         run: echo "✅ Qdrant cluster ping completed successfully"

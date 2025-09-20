@@ -1,0 +1,11 @@
+---
+layout: ../../layouts/word.astro
+title: "Module Federation"
+---
+Module Federation is a feature in **Webpack 5** that allows independently built and deployed JavaScript applications or modules to share code and dependencies at runtime.
+
+It enables multiple projects to work together as a single application without needing to bundle everything upfront. This approach is commonly used in **micro-frontend architectures**, where different teams build and deploy separate parts of an application while still being able to load each other’s components dynamically.
+
+**Example**
+
+* A dashboard app dynamically loads a charting component from another app’s build instead of bundling its own copy, reducing duplication and improving maintainability.

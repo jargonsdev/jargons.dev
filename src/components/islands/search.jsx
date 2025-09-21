@@ -206,6 +206,14 @@ function SearchDialog() {
     }
   }
 
+  // Update search term state on input change and reset cursor
+  function handleSearchTermChange(e) {
+    setSearchTerm(e.target.value);
+    setCursor(-1);
+  }
+
+  console.log(cursor);
+
   return (
     <div className="fixed left-0 top-0 z-auto p-5 w-full h-screen flex justify-center bg-gray-100/30">
       {/* Blur */}
@@ -242,7 +250,7 @@ function SearchDialog() {
             type="text"
             value={searchTerm}
             onKeyDown={handleKeyboardCtrl}
-            onChange={(e) => setSearchTerm(e.target.value)}
+            onChange={handleSearchTermChange}
             className="block w-full bg-transparent text-gray-600 focus:outline-none text-base md:text-lg"
           />
           <kbd

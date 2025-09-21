@@ -15,7 +15,7 @@ if (!word) return Astro.redirect("/");
 const title = capitalizeText(word);
 ---
 
-<BaseLayout pageTitle={title}>
+<BaseLayout pageTitle={`${title} - ✨jAI Generated Meaning`}>
   <Navbar>
     <Search triggerSize="sm" dictionary={dictionary} client:load />
   </Navbar>

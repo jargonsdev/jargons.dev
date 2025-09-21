@@ -283,10 +283,10 @@ const SearchInfo = () => (
 /**
  * Search Using AskJAI
  */
-const SearchWithAskJAI = ({ word }) => (
+const SearchWithAskJAI = ({ word, cursor }) => (
   <a
     href={`/browse/ask-jai?word=${word}`}
-    className="relative flex items-center justify-between no-underline w-full p-2 md:p-4 hover:bg-gray-100"
+    className={`${cursor === 0 && "bg-gray-100 _cursor"} relative flex items-center justify-between no-underline w-full p-2 md:p-4 hover:bg-gray-100`}
   >
     <span>
       {capitalizeText(word)}
@@ -311,7 +311,7 @@ function SearchResult({ result = [], cursor, searchTerm }) {
         /**
          * @todo add message suggesting adding/contributing the word to dictionary
          */
-        <SearchWithAskJAI word={searchTerm} />
+        <SearchWithAskJAI word={searchTerm} cursor={cursor} />
       ) : (
         result.map(({ doc }, i) => (
           <a

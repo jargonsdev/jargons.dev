@@ -1,3 +1,8 @@
+import {
+  buildWordPathname,
+  buildWordSlug,
+  capitalizeText,
+} from "../../lib/utils/index.js";
 import Flexsearch from "flexsearch";
 import JAILogo from "./jai-logo.jsx";
 import { useEffect, useState } from "react";
@@ -6,7 +11,6 @@ import useRouter from "../../lib/hooks/use-router.js";
 import useIsMacOS from "../../lib/hooks/use-is-mac-os.js";
 import useLockBody from "../../lib/hooks/use-lock-body.js";
 import { $isSearchOpen } from "../../lib/stores/search.js";
-import { buildWordPathname, buildWordSlug, capitalizeText } from "../../lib/utils/index.js";
 
 // Create Search Index
 const searchIndex = new Flexsearch.Document({
@@ -185,7 +189,8 @@ function SearchDialog() {
   // Arrow Up/Down & Enter - keybind
   function handleKeyboardCtrl(e) {
     // Results count - if no results, but search term exists, allow AskJAI search option cursor navigation
-    const resultsCount = searchResult?.length || (searchTerm.length >= 1 ? 1 : 0);
+    const resultsCount =
+      searchResult?.length || (searchTerm.length >= 1 ? 1 : 0);
     if (resultsCount && e.key === "ArrowUp") {
       e.preventDefault();
       setCursor(
@@ -297,9 +302,7 @@ const SearchWithJAI = ({ word, cursor }) => (
     href={`/browse/with-jai?word=${word}`}
     className={`${cursor === 0 && "bg-gray-100 _cursor"} relative flex items-center justify-between no-underline w-full p-2 md:p-4 hover:bg-gray-100`}
   >
-    <span>
-      {capitalizeText(word)}
-    </span>
+    <span>{capitalizeText(word)}</span>
     <span className="absolute right-0 mr-2 md:mr-4 flex items-center gap-2">
       <span>Search with</span>
       <JAILogo className="w-14 drop-shadow-md" />
@@ -317,9 +320,6 @@ function SearchResult({ result = [], cursor, searchTerm }) {
   return (
     <div className="block w-full text-sm md:text-base overflow-y-auto scrollbar">
       {result.length < 1 && searchTerm.length >= 1 ? (
-        /**
-         * @todo add message suggesting adding/contributing the word to dictionary
-         */
         <SearchWithJAI word={searchTerm} cursor={cursor} />
       ) : (
         result.map(({ doc }, i) => (

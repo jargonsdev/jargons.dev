@@ -184,7 +184,8 @@ function SearchDialog() {
 
   // Arrow Up/Down & Enter - keybind
   function handleKeyboardCtrl(e) {
-    const resultsCount = searchResult?.length || 0;
+    // Results count - if no results, but search term exists, allow AskJAI search option cursor navigation
+    const resultsCount = searchResult?.length || (searchTerm.length >= 1 ? 1 : 0);
     if (resultsCount && e.key === "ArrowUp") {
       e.preventDefault();
       setCursor(

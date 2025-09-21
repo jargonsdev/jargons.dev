@@ -3,10 +3,10 @@ import JAILogo from "./jai-logo.jsx";
 import { useEffect, useState } from "react";
 import { useStore } from "@nanostores/react";
 import useRouter from "../../lib/hooks/use-router.js";
-import { buildWordPathname, buildWordSlug } from "../../lib/utils/index.js";
 import useIsMacOS from "../../lib/hooks/use-is-mac-os.js";
 import useLockBody from "../../lib/hooks/use-lock-body.js";
 import { $isSearchOpen } from "../../lib/stores/search.js";
+import { buildWordPathname, buildWordSlug, capitalizeText } from "../../lib/utils/index.js";
 
 // Create Search Index
 const searchIndex = new Flexsearch.Document({
@@ -289,7 +289,7 @@ const SearchWithAskJAI = ({ word }) => (
     className="relative flex items-center justify-between no-underline w-full p-2 md:p-4 hover:bg-gray-100"
   >
     <span>
-      {word}
+      {capitalizeText(word)}
     </span>
     <span className="absolute right-0 mr-2 md:mr-4 flex items-center gap-2">
       <span>Search with</span>

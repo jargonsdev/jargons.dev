@@ -1,4 +1,5 @@
 import Flexsearch from "flexsearch";
+import JAILogo from "./jai-logo.jsx";
 import { useEffect, useState } from "react";
 import { useStore } from "@nanostores/react";
 import useRouter from "../../lib/hooks/use-router.js";
@@ -285,9 +286,15 @@ const SearchInfo = () => (
 const SearchWithAskJAI = ({ word }) => (
   <a
     href={`/browse/ask-jai?word=${word}`}
-    className="flex items-center justify-between no-underline w-full p-2 md:p-4 hover:bg-gray-100"
+    className="relative flex items-center justify-between no-underline w-full p-2 md:p-4 hover:bg-gray-100"
   >
-    <span>Search with ✨jAI</span>
+    <span>
+      {word}
+    </span>
+    <span className="absolute right-0 mr-2 md:mr-4 flex items-center gap-2">
+      <span>Search with</span>
+      <JAILogo className="w-14 drop-shadow-md" />
+    </span>
   </a>
 );
 
@@ -304,7 +311,7 @@ function SearchResult({ result = [], cursor, searchTerm }) {
         /**
          * @todo add message suggesting adding/contributing the word to dictionary
          */
-        <p className="p-2 md:p-4">No Result found</p>
+        <SearchWithAskJAI word={searchTerm} />
       ) : (
         result.map(({ doc }, i) => (
           <a

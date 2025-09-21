@@ -71,4 +71,4 @@ jAI:`;
 export const jAIPrompt = {
   PERSONALITY: PromptTemplate.fromTemplate(PERSONALITY),
   ASK: PromptTemplate.fromTemplate(ASK),
-}
+};

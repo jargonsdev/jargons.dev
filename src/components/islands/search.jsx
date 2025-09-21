@@ -280,6 +280,18 @@ const SearchInfo = () => (
 );
 
 /**
+ * Search Using AskJAI
+ */
+const SearchWithAskJAI = ({ word }) => (
+  <a
+    href={`/browse/ask-jai?word=${word}`}
+    className="flex items-center justify-between no-underline w-full p-2 md:p-4 hover:bg-gray-100"
+  >
+    <span>Search with ✨jAI</span>
+  </a>
+);
+
+/**
  * Search result
  * @param {{ result: Array<{ id: number, doc: { title: string, slug: string }, searchTerm: string }> }} props
  */

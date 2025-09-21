@@ -2,12 +2,12 @@ import { useEffect } from "react";
 import Markdown from "react-markdown";
 import { useChat } from "@ai-sdk/react";
 
-export default function JAIWord({ word }) {
+export default function JAIWordSearch({ word }) {
   /**
    * Initialize useChat hook
    */
   const { messages, status, append } = useChat({
-    api: "/api/jai/ask",
+    api: "/api/jai/search",
     onError: (e) => {
       console.error(e);
     },

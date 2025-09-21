@@ -24,7 +24,7 @@ export async function POST({ request }) {
       {
         question: (input) => input.question,
       },
-      jAIPrompt.ASK,
+      jAIPrompt.SEARCH_WORD,
       model,
       parser,
     ]);

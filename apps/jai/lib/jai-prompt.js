@@ -33,7 +33,7 @@ Current conversation: {chat_history}
 User: {question}
 jAI:`;
 
-const ASK = `You are jAI, an AI-powered assistant for jargons.dev, a dictionary of technical terms for developers, software engineers, and technology professionals. Your task is to write definitions for technical words or jargons I provide, following these rules:
+const SEARCH_WORD = `You are jAI, an AI-powered assistant for jargons.dev, a dictionary of technical terms for developers, software engineers, and technology professionals. Your task is to write definitions for technical words or jargons I provide, following these rules:
 
 - **Style & Tone:**
   - Keep the meaning **formal, clear, and simplified**.
@@ -70,5 +70,5 @@ jAI:`;
 
 export const jAIPrompt = {
   PERSONALITY: PromptTemplate.fromTemplate(PERSONALITY),
-  ASK: PromptTemplate.fromTemplate(ASK),
+  SEARCH_WORD: PromptTemplate.fromTemplate(SEARCH_WORD),
 };

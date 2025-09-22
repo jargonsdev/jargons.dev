@@ -218,8 +218,6 @@ function SearchDialog() {
     setCursor(-1);
   }
 
-  console.log(cursor);
-
   return (
     <div className="fixed left-0 top-0 z-auto p-5 w-full h-screen flex justify-center bg-gray-100/30">
       {/* Blur */}

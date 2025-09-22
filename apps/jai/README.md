@@ -85,7 +85,7 @@ Utility functions for message processing and formatting.
 ```bash
 # OpenAI Configuration
 OPENAI_API_KEY=your_openai_api_key
-OPENAI_CHAT_MODEL=gpt-4-turbo-preview  # or your preferred model
+OPENAI_CHAT_MODEL=gpt-4.1-mini  # or your preferred model
 OPENAI_EMBEDDINGS_MODEL=text-embedding-3-small
 
 # Qdrant Vector Database

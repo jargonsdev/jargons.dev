@@ -36,7 +36,11 @@ export default function JAIWordSearch({ word }) {
       </div>
     );
 
-  return messages.map((msg, index) => (
-    <Markdown key={index}>{msg.role !== "user" && msg.content}</Markdown>
-  ));
+  return messages.map((msg, index) =>
+    msg.role !== "user" ? (
+      <Markdown key={index}>{msg.content}</Markdown>
+    ) : (
+      <></>
+    ),
+  );
 }

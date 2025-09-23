@@ -1,7 +1,15 @@
 import { useEffect, useState } from "react";
 import Markdown from "react-markdown";
 import { useChat } from "@ai-sdk/react";
+import JAILogo from "./logo.jsx";
+import { capitalizeText } from "../../../src/lib/utils/index.js";
 
+/**
+ * JAI Word Search Component
+ * @param {Object} props
+ * @param {string} props.word - The word to search
+ * @returns {JSX.Element}
+ */
 export default function JAIWordSearch({ word }) {
   const [error, setError] = useState(null);
 
@@ -29,7 +37,7 @@ export default function JAIWordSearch({ word }) {
   /**
    * Loading State
    */
-  if (status === "submitted" || (status === "ready" && messages.length === 0))
+  if (true)
     return (
       <div className="space-y-4">
         <div className="h-6 w-full animate-pulse bg-gray-200 rounded-md" />
@@ -76,3 +84,24 @@ export default function JAIWordSearch({ word }) {
     ),
   );
 }
+
+/**
+ * JAI Word Search Trigger Component
+ * @param {Object} props
+ * @param {string} props.word - The word to search
+ * @param {number} props.cursor - The cursor position for keyboard navigation
+ * @returns {JSX.Element}
+ */
+export const JAIWordSearchTrigger = ({ word, cursor }) => (
+  <a
+    href={`/browse/with-jai?word=${word}`}
+    className={`${cursor === 0 && "bg-gray-100 _cursor"} relative flex items-center justify-between no-underline w-full p-2 md:p-4 hover:bg-gray-100`}
+  >
+    <span>{capitalizeText(word)}</span>
+    <span className="absolute right-0 mr-2 md:mr-4 flex items-center gap-2">
+      <span>Search with</span>
+      <JAILogo className="w-14 drop-shadow-md" />
+    </span>
+  </a>
+);
+

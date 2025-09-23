@@ -1,16 +1,15 @@
 import {
   buildWordPathname,
   buildWordSlug,
-  capitalizeText,
 } from "../../lib/utils/index.js";
 import Flexsearch from "flexsearch";
-import JAILogo from "./jai-logo.jsx";
 import { useEffect, useState } from "react";
 import { useStore } from "@nanostores/react";
 import useRouter from "../../lib/hooks/use-router.js";
 import useIsMacOS from "../../lib/hooks/use-is-mac-os.js";
 import useLockBody from "../../lib/hooks/use-lock-body.js";
 import { $isSearchOpen } from "../../lib/stores/search.js";
+import { JAIWordSearchTrigger as SearchWithJAI } from "../../../apps/jai/components/word-search.jsx";
 
 // Create Search Index
 const searchIndex = new Flexsearch.Document({
@@ -290,22 +289,6 @@ const SearchInfo = () => (
   <p className="block w-full text-sm md:text-base px-2 py-1 md:px-4 md:py-2 text-slate-500 font-normal leading-6">
     Type a word to search
   </p>
-);
-
-/**
- * Search Using JAI
- */
-const SearchWithJAI = ({ word, cursor }) => (
-  <a
-    href={`/browse/with-jai?word=${word}`}
-    className={`${cursor === 0 && "bg-gray-100 _cursor"} relative flex items-center justify-between no-underline w-full p-2 md:p-4 hover:bg-gray-100`}
-  >
-    <span>{capitalizeText(word)}</span>
-    <span className="absolute right-0 mr-2 md:mr-4 flex items-center gap-2">
-      <span>Search with</span>
-      <JAILogo className="w-14 drop-shadow-md" />
-    </span>
-  </a>
 );
 
 /**

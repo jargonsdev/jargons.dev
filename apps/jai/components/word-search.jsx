@@ -100,7 +100,7 @@ export const JAIWordSearchTrigger = ({ word, cursor }) => (
     <span>{capitalizeText(word)}</span>
     <span className="absolute right-0 mr-2 md:mr-4 flex items-center gap-2">
       <span>Search with</span>
-      <JAILogo className="w-14 drop-shadow-md" />
+      <JAILogo className="w-11 md:w-14 drop-shadow-md" />
     </span>
   </a>
 );

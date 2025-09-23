@@ -1,7 +1,4 @@
-import {
-  buildWordPathname,
-  buildWordSlug,
-} from "../../lib/utils/index.js";
+import { buildWordPathname, buildWordSlug } from "../../lib/utils/index.js";
 import Flexsearch from "flexsearch";
 import { useEffect, useState } from "react";
 import { useStore } from "@nanostores/react";

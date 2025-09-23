@@ -104,4 +104,3 @@ export const JAIWordSearchTrigger = ({ word, cursor }) => (
     </span>
   </a>
 );
-

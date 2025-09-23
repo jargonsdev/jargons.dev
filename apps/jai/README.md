@@ -33,9 +33,9 @@ The ✨jAI module is organized into focused utility files:
 ```
 apps/jai/
 ├── index.js               # Main exports and module interface
-├── components/            # React components for UI/feature integration 
+├── components/            # React components for UI/feature integration
 │   ├── logo.jsx           # jAI Logo
-│   └── word-search.jsx    # jAI Word Search feature 
+│   └── word-search.jsx    # jAI Word Search feature
 └── lib/
     ├── jai-prompts.js      # AI personality and prompt templates
     ├── model.js           # OpenAI model configuration

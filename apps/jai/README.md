@@ -137,11 +137,7 @@ This command processes all dictionary entries and creates embeddings for semanti
 
 Uses the `vectorStore` utility to populate the database with dictionary content. The script fetches dictionary entries from the jargons.dev API, processes them into document chunks, and creates vector embeddings for semantic search capabilities.
 
-### 2. Follow-up Chat API (`src/pages/api/jai/follow-up-chat.js`)
-
-Imports all four core utilities (`jAIPrompt`, `model`, `formatMessage`, `vectorStore`) for real-time AI interactions. Powers the follow-up chat feature with semantic search for relevant context, conversation history management, and streaming AI response generation.
-
-### 3. Word Search API (`src/pages/api/jai/search.js`)
+### 2. Word Search API (`src/pages/api/jai/search.js`)
 
 Dedicated endpoint for AI-powered word definitions that:
 
@@ -149,6 +145,10 @@ Dedicated endpoint for AI-powered word definitions that:
 - Streams AI-generated definitions in real-time
 - Provides fallback definitions for terms not yet in the dictionary
 - Powers the `/browse/with-jai` page and word search components
+
+<!-- ### 3. Follow-up Chat API (`src/pages/api/jai/follow-up-chat.js`)
+
+Imports all four core utilities (`jAIPrompt`, `model`, `formatMessage`, `vectorStore`) for real-time AI interactions. Powers the follow-up chat feature with semantic search for relevant context, conversation history management, and streaming AI response generation. -->
 
 ### Integration Flow
 

@@ -37,7 +37,7 @@ apps/jai/
 │   ├── logo.jsx           # jAI Logo
 │   └── word-search.jsx    # jAI Word Search feature 
 └── lib/
-    ├── jai-prompt.js      # AI personality and prompt templates
+    ├── jai-prompts.js      # AI personality and prompt templates
     ├── model.js           # OpenAI model configuration
     ├── utils.js           # Utility functions for message formatting
     └── vector-store.js    # Qdrant vector store integration
@@ -53,7 +53,7 @@ Main module interface that exports all ✨jAI utilities:
 export { jAIPrompt, formatMessage, model, vectorStore };
 ```
 
-#### `lib/jai-prompt.js`
+#### `lib/jai-prompts.js`
 
 Defines ✨jAI's personality and conversation templates. The AI assistant is designed to:
 

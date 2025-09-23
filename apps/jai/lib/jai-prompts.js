@@ -68,7 +68,7 @@ const SEARCH_WORD = `You are jAI, an AI-powered assistant for jargons.dev, a dic
 User: {question}
 jAI:`;
 
-export const jAIPrompt = {
+export const jAIPrompts = {
   PERSONALITY: PromptTemplate.fromTemplate(PERSONALITY),
   SEARCH_WORD: PromptTemplate.fromTemplate(SEARCH_WORD),
 };

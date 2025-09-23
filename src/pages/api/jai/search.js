@@ -1,6 +1,6 @@
 import { LangChainAdapter } from "ai";
 import { RunnableSequence } from "@langchain/core/runnables";
-import { jAIPrompt, model } from "../../../../apps/jai/index.js";
+import { jAIPrompts, model } from "../../../../apps/jai/index.js";
 import { HttpResponseOutputParser } from "langchain/output_parsers";
 
 export async function POST({ request }) {
@@ -24,7 +24,7 @@ export async function POST({ request }) {
       {
         question: (input) => input.question,
       },
-      jAIPrompt.SEARCH_WORD,
+      jAIPrompts.SEARCH_WORD,
       model,
       parser,
     ]);

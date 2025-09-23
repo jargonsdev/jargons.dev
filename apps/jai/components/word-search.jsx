@@ -37,7 +37,7 @@ export default function JAIWordSearch({ word }) {
   /**
    * Loading State
    */
-  if (true)
+  if (status === "submitted" || (status === "ready" && messages.length === 0))
     return (
       <div className="space-y-4">
         <div className="h-6 w-full animate-pulse bg-gray-200 rounded-md" />

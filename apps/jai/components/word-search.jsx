@@ -78,9 +78,7 @@ export default function JAIWordSearch({ word }) {
 
   return messages
     .filter((msg) => msg.role !== "user")
-    .map((msg, index) => (
-      <Markdown key={index}>{msg.content}</Markdown>
-    ));
+    .map((msg, index) => <Markdown key={index}>{msg.content}</Markdown>);
 }
 
 /**

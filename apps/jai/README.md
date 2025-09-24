@@ -50,7 +50,7 @@ apps/jai/
 Main module interface that exports all ✨jAI utilities:
 
 ```javascript
-export { jAIPrompt, formatMessage, model, vectorStore };
+export { jAIPrompts, formatMessage, model, vectorStore };
 ```
 
 #### `lib/jai-prompts.js`
@@ -148,7 +148,7 @@ Dedicated endpoint for AI-powered word definitions that:
 
 <!-- ### 3. Follow-up Chat API (`src/pages/api/jai/follow-up-chat.js`)
 
-Imports all four core utilities (`jAIPrompt`, `model`, `formatMessage`, `vectorStore`) for real-time AI interactions. Powers the follow-up chat feature with semantic search for relevant context, conversation history management, and streaming AI response generation. -->
+Imports all four core utilities (`jAIPrompts`, `model`, `formatMessage`, `vectorStore`) for real-time AI interactions. Powers the follow-up chat feature with semantic search for relevant context, conversation history management, and streaming AI response generation. -->
 
 ### Integration Flow
 

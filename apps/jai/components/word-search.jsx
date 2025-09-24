@@ -1,3 +1,9 @@
+/**
+ * JAI Word Search Feature Components
+ * @exports JAIWordSearch - Fetches and displays AI-generated word definitions with loading and error states
+ * @exports JAIWordSearchTrigger - Link component to initiate a word search with jAI
+ */
+
 import { useEffect, useState } from "react";
 import Markdown from "react-markdown";
 import { useChat } from "@ai-sdk/react";

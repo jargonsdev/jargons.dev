@@ -1,11 +1,12 @@
+import { buildWordPathname, buildWordSlug } from "../../lib/utils/index.js";
 import Flexsearch from "flexsearch";
 import { useEffect, useState } from "react";
 import { useStore } from "@nanostores/react";
 import useRouter from "../../lib/hooks/use-router.js";
-import { buildWordPathname, buildWordSlug } from "../../lib/utils/index.js";
 import useIsMacOS from "../../lib/hooks/use-is-mac-os.js";
 import useLockBody from "../../lib/hooks/use-lock-body.js";
 import { $isSearchOpen } from "../../lib/stores/search.js";
+import { JAIWordSearchTrigger as SearchWithJAI } from "../../../apps/jai/components/word-search.jsx";
 
 // Create Search Index
 const searchIndex = new Flexsearch.Document({
@@ -183,7 +184,9 @@ function SearchDialog() {
 
   // Arrow Up/Down & Enter - keybind
   function handleKeyboardCtrl(e) {
-    const resultsCount = searchResult?.length || 0;
+    // Results count - if no results, but search term exists, allow AskJAI search option cursor navigation
+    const resultsCount =
+      searchResult?.length || (searchTerm.length >= 1 ? 1 : 0);
     if (resultsCount && e.key === "ArrowUp") {
       e.preventDefault();
       setCursor(
@@ -203,6 +206,12 @@ function SearchDialog() {
         router.push(word.href);
       }
     }
+  }
+
+  // Update search term state on input change and reset cursor
+  function handleSearchTermChange(e) {
+    setSearchTerm(e.target.value);
+    setCursor(-1);
   }
 
   return (
@@ -241,7 +250,7 @@ function SearchDialog() {
             type="text"
             value={searchTerm}
             onKeyDown={handleKeyboardCtrl}
-            onChange={(e) => setSearchTerm(e.target.value)}
+            onChange={handleSearchTermChange}
             className="block w-full bg-transparent text-gray-600 focus:outline-none text-base md:text-lg"
           />
           <kbd
@@ -289,10 +298,7 @@ function SearchResult({ result = [], cursor, searchTerm }) {
   return (
     <div className="block w-full text-sm md:text-base overflow-y-auto scrollbar">
       {result.length < 1 && searchTerm.length >= 1 ? (
-        /**
-         * @todo add message suggesting adding/contributing the word to dictionary
-         */
-        <p className="p-2 md:p-4">No Result found</p>
+        <SearchWithJAI word={searchTerm} cursor={cursor} />
       ) : (
         result.map(({ doc }, i) => (
           <a

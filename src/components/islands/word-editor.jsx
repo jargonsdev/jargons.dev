@@ -1,3 +1,10 @@
+/**
+ * Word Editor Component System - Dictionary Content Creation & Editing
+ * @exports WordEditor - Main editor with live preview, form validation, and GitHub integration for dictionary contributions
+ * @exports SubmitButton - Detached submit button with loading states and success indicators
+ * @exports TogglePreview - Mobile preview toggle for responsive editor experience
+ */
+
 import { useEffect } from "react";
 import Markdown from "react-markdown";
 import { useStore } from "@nanostores/react";

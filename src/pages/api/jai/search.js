@@ -11,10 +11,41 @@ export async function POST({ request }) {
   };
 
   try {
-    // Extract the `messages` from the body of the request
-    const { messages } = await request.json();
+    // Validate request body
+    let body;
+    try {
+      body = await request.json();
+    } catch (e) {
+      return Response.json(
+        { error: 'Invalid JSON in request body' },
+        { status: 400, headers: corsHeaders }
+      );
+    }
+
+    // Validate messages array
+    const { messages } = body;
+    if (!messages || !Array.isArray(messages)) {
+      return Response.json(
+        { error: 'Messages array is required' },
+        { status: 400, headers: corsHeaders }
+      );
+    }
+
+    if (messages.length === 0) {
+      return Response.json(
+        { error: 'At least one message is required' },
+        { status: 400, headers: corsHeaders }
+      );
+    }
 
     const currentMessageContent = messages[messages.length - 1].content;
+    
+    if (!currentMessageContent || typeof currentMessageContent !== 'string') {
+      return Response.json(
+        { error: 'Message content must be a non-empty string' },
+        { status: 400, headers: corsHeaders }
+      );
+    }
 
     // Create the parser - parses the response from the model into http-friendly format
     const parser = new HttpResponseOutputParser();

@@ -1,7 +1,7 @@
 {
   "name": "jargons.dev",
   "version": "1.0.0",
-  "description": "",
+  "description": "An open source dictionary curated by contributors providing simplified meaning and definitions to software development, engineering, and general technology terms",
   "type": "module",
   "scripts": {
     "dev": "astro dev",

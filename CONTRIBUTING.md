@@ -65,6 +65,19 @@ If you wish to work on an open issue, please ask for it to be assigned to you an
 
 In case you get stuck while working on an issue you've been assigned, feel free to ask question openly in the comment.
 
+#### Labels Closed to Community Pickup
+
+Some issues are intentionally not open for general contributor assignment:
+
+- `maintainers-only`: Requires core team context, elevated permissions (infra, secrets, deployment), or involves architectural refactors in progress. Do not ask to be assigned or open a PR unless a maintainer explicitly invites help.
+- `wontfix`: We are not taking action on this (currently or possibly ever) due to priority, scope, strategy, or technical constraints. Constructive discussion is welcome, but please do not submit a PR “just fixing it” while this label remains.
+
+Guidelines:
+
+1. If an issue has one of the above labels, treat it as unavailable even if it is unassigned.
+2. You may (once) ask politely for clarification if the rationale isn’t clear—keep it concise and respectful.
+3. If you think there is a smaller or alternative angle worth exploring, open a new issue or discussion rather than overriding the label.
+
 Please follow our [Code of Conduct](./code-of-conduct.md) in all your interactions with the project and its contributors.
 
 ### Pull Requests (PR)

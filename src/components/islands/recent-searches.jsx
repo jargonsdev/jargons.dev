@@ -1,3 +1,7 @@
+/**
+ * Recent Searches Component - User Search History Display
+ * @exports RecentSearches - Displays user's recent search history from localStorage with links to previously searched terms
+ */
 import { useEffect } from "react";
 import { useStore } from "@nanostores/react";
 import { $recentSearches } from "../../lib/stores/search.js";

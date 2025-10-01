@@ -6,9 +6,10 @@
 import { useState } from "react";
 
 /**
- * Profile Menu Island
- * @param {{ isAuthed: boolean, userData: {}, authUrl: string }} props
- */
+  * Profile Menu Island
+  * @param {{ isAuthed: boolean, userData: {}, authUrl: string }} props
+  */
+
 export default function Profile({ isAuthed, userData, authUrl }) {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 

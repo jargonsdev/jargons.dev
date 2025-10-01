@@ -75,7 +75,7 @@ export default function JAIWordSearch({ word }) {
             />
           </svg>
           <p className="font-medium text-red-800">
-            An Error Occured while generating the definition for{" "}
+            An Error Occurred while generating the definition for{" "}
             <span className="font-bold">{word}</span>.
           </p>
         </div>

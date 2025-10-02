@@ -3,6 +3,16 @@ import { RunnableSequence } from "@langchain/core/runnables";
 import { jAIPrompts, model } from "../../../../apps/jai/index.js";
 import { HttpResponseOutputParser } from "langchain/output_parsers";
 
+export async function OPTIONS() {
+  const corsHeaders = {
+    "Access-Control-Allow-Origin": "same-origin",
+    "Access-Control-Allow-Methods": "POST, OPTIONS",
+    "Access-Control-Allow-Headers": "Content-Type, Authorization",
+  };
+
+  return new Response(null, { status: 204, headers: corsHeaders });
+}
+
 export async function POST({ request }) {
   const corsHeaders = {
     "Access-Control-Allow-Origin": "same-origin",
@@ -13,6 +23,13 @@ export async function POST({ request }) {
   try {
     // Extract the `messages` from the body of the request
     const { messages } = await request.json();
+
+    if (!messages || !Array.isArray(messages)) {
+      return Response.json(
+        { error: "Invalid request body" },
+        { status: 400, headers: corsHeaders },
+      );
+    }
 
     const currentMessageContent = messages[messages.length - 1].content;
 

@@ -7,7 +7,6 @@ import partytown from "@astrojs/partytown";
 
 // https://astro.build/config
 export default defineConfig({
- 
   integrations: [
     mdx(),
     react(),

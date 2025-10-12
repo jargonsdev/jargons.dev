@@ -3,22 +3,37 @@ import { RunnableSequence } from "@langchain/core/runnables";
 import { jAIPrompts, model } from "../../../../apps/jai/index.js";
 import { HttpResponseOutputParser } from "langchain/output_parsers";
 
-export async function OPTIONS() {
-  const corsHeaders = {
-    "Access-Control-Allow-Origin": "same-origin",
+const allowedOrigins = [
+  "https://www.jargons.dev",   // production
+  "http://localhost:4321",     // local dev (default Next.js port)
+  // add other allowed preview URLs if needed
+];
+
+function getCorsHeaders(origin) {
+  const headers = {
     "Access-Control-Allow-Methods": "POST, OPTIONS",
     "Access-Control-Allow-Headers": "Content-Type, Authorization",
+    "Access-Control-Allow-Credentials": "true",
   };
+
+  // Allow known origins and Vercel preview deployments
+  if (allowedOrigins.includes(origin) || (origin && origin.endsWith("-jargonsdev.vercel.app"))) {
+    headers["Access-Control-Allow-Origin"] = origin;
+  }
+
+  return headers;
+}
+
+export async function OPTIONS({ request }) {
+  const origin = request.headers.get("origin");
+  const corsHeaders = getCorsHeaders(origin);
 
   return new Response(null, { status: 204, headers: corsHeaders });
 }
 
 export async function POST({ request }) {
-  const corsHeaders = {
-    "Access-Control-Allow-Origin": "same-origin",
-    "Access-Control-Allow-Methods": "POST, OPTIONS",
-    "Access-Control-Allow-Headers": "Content-Type, Authorization",
-  };
+  const origin = request.headers.get("origin");
+  const corsHeaders = getCorsHeaders(origin);
 
   try {
     // Extract the `messages` from the body of the request

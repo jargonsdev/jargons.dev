@@ -4,8 +4,8 @@ import { jAIPrompts, model } from "../../../../apps/jai/index.js";
 import { HttpResponseOutputParser } from "langchain/output_parsers";
 
 const allowedOrigins = [
-  "https://www.jargons.dev",   // production
-  "http://localhost:4321",     // local dev (default Next.js port)
+  "https://www.jargons.dev", // production
+  "http://localhost:4321", // local dev (default Next.js port)
   // add other allowed preview URLs if needed
 ];
 
@@ -17,7 +17,10 @@ function getCorsHeaders(origin) {
   };
 
   // Allow known origins and Vercel preview deployments
-  if (allowedOrigins.includes(origin) || (origin && origin.endsWith("-jargonsdev.vercel.app"))) {
+  if (
+    allowedOrigins.includes(origin) ||
+    (origin && origin.endsWith("-jargonsdev.vercel.app"))
+  ) {
     headers["Access-Control-Allow-Origin"] = origin;
   }
 

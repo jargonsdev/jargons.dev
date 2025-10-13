@@ -17,6 +17,9 @@ import useIsMacOS from "../../lib/hooks/use-is-mac-os.js";
 import useLockBody from "../../lib/hooks/use-lock-body.js";
 import { $isSearchOpen } from "../../lib/stores/search.js";
 import { JAIWordSearchTrigger as SearchWithJAI } from "../../../apps/jai/components/word-search.jsx";
+import { MdSubdirectoryArrowLeft } from "react-icons/md";
+import { HiArrowNarrowUp, HiArrowNarrowDown } from "react-icons/hi";
+
 
 // Create Search Index
 const searchIndex = new Flexsearch.Document({
@@ -320,9 +323,21 @@ function SearchDialog() {
  * @todo Implement recent search term list
  */
 const SearchInfo = () => (
-  <p className="block w-full text-sm md:text-base px-2 py-1 md:px-4 md:py-2 text-slate-500 font-normal leading-6">
+  <div>
+     <p className="block w-full text-sm md:text-base  px-2 py-1 md:px-4 md:py-2 text-slate-500 font-normal leading-6">
     Type a word to search
   </p>
+  <div className="flex flex-row items-center gap-2 w-full text-sm md:text-base px-2 py-1 md:px-4 md:py-2 text-slate-500 font-normal leading-6">
+   <MdSubdirectoryArrowLeft className="bg-slate-200 w-5 h-5 p-1 "/>
+   <p className="text-sm">to select</p>
+   <HiArrowNarrowDown className="bg-slate-200 w-5 h-5 p-1 "/>
+  <HiArrowNarrowUp className="bg-slate-200 w-5 h-5 p-1 "/>
+   <p className="text-sm">to navigate </p>
+   <p className="bg-slate-200 text-[12px] px-1">esc</p>
+   <p className="text-sm">to close</p>
+  </div>
+  </div>
+ 
 );
 
 /**
@@ -354,7 +369,7 @@ function SearchResult({ result = [], cursor, searchTerm }) {
               e.preventDefault();
               router.push(e.currentTarget.href);
             }}
-            className={`${cursor === i && "bg-gray-100 _cursor"} flex items-center justify-between no-underline w-full p-2 md:p-4 hover:bg-gray-100`}
+            className={`${cursor === i && "bg-gray-100 _cursor"} flex items-center justify-between no-underline w-full p-2 md:p-[14px] hover:bg-gray-100`}
           >
             <span>{doc.title}</span>
             <span>
@@ -376,6 +391,15 @@ function SearchResult({ result = [], cursor, searchTerm }) {
           </a>
         ))
       )}
+  <div className="sticky bottom-0  bg-white border-t flex flex-row items-center gap-2 w-full text-sm md:text-base px-2 py-1 md:px-4 md:py-2 text-slate-500 font-normal leading-6">
+   <MdSubdirectoryArrowLeft className="bg-slate-200 w-5 h-5 p-1 "/>
+   <p className="text-sm">to select</p>
+   <HiArrowNarrowDown className="bg-slate-200 w-5 h-5 p-1 "/>
+  <HiArrowNarrowUp className="bg-slate-200 w-5 h-5 p-1 "/>
+   <p className="text-sm">to navigate </p>
+   <p className="bg-slate-200 text-[12px] px-1">esc</p>
+   <p className="text-sm">to close</p>
+  </div>
     </div>
   );
 }

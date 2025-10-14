@@ -5,7 +5,7 @@ import { HttpResponseOutputParser } from "langchain/output_parsers";
 
 const allowedOrigins = [
   "https://www.jargons.dev", // production
-  "http://localhost:4321", // local dev (default Next.js port)
+  "http://localhost:4321", // local dev (default Astro port)
   // add other allowed preview URLs if needed
 ];
 

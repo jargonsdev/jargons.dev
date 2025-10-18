@@ -38,7 +38,7 @@ Run this script when you need to:
 
 Before running this script, ensure you have:
 - All dependencies installed (`npm ci`)
-- OPENAI and QDRANT environment variables properly configured in your `.env` file
+- `OPENAI_API_KEY`, `QDRANT_URL`  and `QDRANT_API_KEY` environment variables properly configured in your `.env` file
 - Network access to fetch from jargons.dev API
 - Sufficient disk space for temporary dictionary file
 
@@ -69,6 +69,12 @@ The script leverages several key technologies:
 
 ### Configuration Options
 
+Required environment variables:
+
+- **QDRANT_URL**: Your Qdrant cluster endpoint (e.g., `https://your-cluster.gcp.cloud.qdrant.io`)
+- **QDRANT_API_KEY**: Your Qdrant cluster API key for authentication
+- **OPENAI_API_KEY**: Your OpenAI API Key with appopriate chat and embedding models (value specified in `OPENAI_CHAT_MODEL` and `OPENAI_EMBEDDINGS_MODEL`)  allowed
+
 Key parameters that can be adjusted:
 
 - **Chunk Size**: Currently 1000 characters (optimal for most search queries)
@@ -97,6 +103,104 @@ Cleaned up the dictionary file at /path/to/dev/dictionary.json
 ```
 
 Once completed, ✨jAI will have access to the processed dictionary content and can provide intelligent responses about software engineering terms.
+
+## Vector Store Cluster Ping Script
+
+This script performs a lightweight health check on the Vector Store (Qdrant) cluster to keep it active and prevent automatic deletion due to inactivity. It's designed to be run both locally for testing and automatically via GitHub Actions.
+
+### When to Use
+
+Run this script when you need to:
+- Test Qdrant cluster connectivity and collection status
+- Keep the cluster active to prevent auto-deletion from inactivity
+- Verify that the 'dictionary' collection exists and is accessible
+- Debug vector store connection issues during development
+
+### Prerequisites
+
+Before running this script, ensure you have:
+- `QDRANT_URL` and `QDRANT_API_KEY` environment variables configured
+- Network access to your Qdrant cluster
+- The 'dictionary' collection exists in your Qdrant instance
+
+### Usage
+
+**Local Development:**
+```bash
+npm run ping:qdrant
+```
+
+**CI/CD (without .env file):**
+```bash
+npm run ping:qdrant:ci
+```
+
+### How It Works
+
+The script performs these health checks:
+
+1. **Environment Validation**: Verifies required environment variables are set
+2. **Basic Connectivity**: Tests the cluster endpoint with a health check request
+3. **Collections Check**: Retrieves and validates the existence of the 'dictionary' collection
+4. **Status Reporting**: Provides detailed success/failure feedback with helpful error hints
+
+### Technical Implementation
+
+The script uses several key approaches:
+
+- **Direct REST API Calls**: Uses native fetch() for lightweight, dependency-free requests
+- **Comprehensive Error Handling**: Provides specific error messages and troubleshooting hints
+- **Environment Variable Validation**: Checks configuration before attempting connections
+- **Collection Verification**: Ensures the required 'dictionary' collection exists
+
+### Configuration
+
+Required environment variables:
+
+- **QDRANT_URL**: Your Qdrant cluster endpoint (e.g., `https://your-cluster.gcp.cloud.qdrant.io`)
+- **QDRANT_API_KEY**: Your Qdrant cluster API key for authentication
+- **COLLECTION_NAME**: Hardcoded to "dictionary" (the collection ✨jAI uses)
+
+### Automated Scheduling
+
+The script is automatically run via GitHub Actions:
+- **Schedule**: Every Sunday at 2 AM UTC
+- **Manual Trigger**: Can be run manually from GitHub Actions tab
+- **Purpose**: Prevents cluster deletion due to inactivity
+
+### Error Handling
+
+The script includes detailed error handling for:
+- Missing or invalid environment variables
+- Network connectivity issues
+- Authentication failures (401 Unauthorized)
+- Missing collections
+- API response parsing errors
+
+### Example Output
+
+**Successful Run:**
+```
+🚀 Starting Vector Store (Qdrant) cluster ping...
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+🔍 Checking Vector Store (Qdrant) cluster connectivity...
+✅ Cluster is accessible
+✅ SUCCESS: 'dictionary' collection exists
+📊 Total collections: 1
+🎯 Cluster ping completed successfully at 2025-09-16T10:30:00.000Z
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+🎉 Cluster ping completed successfully!
+```
+
+**Error Example:**
+```
+🚀 Starting Vector Store (Qdrant) cluster ping...
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+❌ ERROR: QDRANT_URL environment variable is not set
+💡 Make sure QDRANT_URL is configured in your environment or GitHub secrets
+```
+
+This script ensures your Qdrant cluster remains active and accessible for ✨jAI's vector search functionality.
 
 ## Format-Staged Script
 

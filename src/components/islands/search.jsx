@@ -1,11 +1,22 @@
+/**
+ * Search Component - Dictionary Search Interface with Keyboard Navigation
+ *
+ * @exports Search - Main search component with FlexSearch integration, modal state, and dictionary indexing
+ * @exports SearchTrigger - Trigger button/input with responsive variants and keyboard shortcut hints
+ * @exports SearchDialog - Modal search interface with input field, keyboard navigation, and live results
+ * @exports SearchInfo - Default placeholder component when no input is provided
+ * @exports SearchResult - Search results list with cursor navigation and jAI fallback
+ */
+
+import { buildWordPathname, buildWordSlug } from "../../lib/utils/index.js";
 import Flexsearch from "flexsearch";
 import { useEffect, useState } from "react";
 import { useStore } from "@nanostores/react";
 import useRouter from "../../lib/hooks/use-router.js";
-import { buildWordPathname, buildWordSlug } from "../../lib/utils/index.js";
 import useIsMacOS from "../../lib/hooks/use-is-mac-os.js";
 import useLockBody from "../../lib/hooks/use-lock-body.js";
 import { $isSearchOpen } from "../../lib/stores/search.js";
+import { JAIWordSearchTrigger as SearchWithJAI } from "../../../apps/jai/components/word-search.jsx";
 
 // Create Search Index
 const searchIndex = new Flexsearch.Document({
@@ -18,8 +29,15 @@ const searchIndex = new Flexsearch.Document({
 });
 
 /**
- * Search Component Island
- * @param {{ triggerSize: "sm" | "md", dictionary: MarkdownInstance<Record<string, any>>[] }} props
+ * Main Search Component Island
+ * Integrates FlexSearch indexing with dictionary entries,
+ * controls modal state, and renders trigger + dialog.
+ *
+ * @component
+ * @param {Object} props
+ * @param {"sm" | "md"} props.triggerSize - Size of the search trigger
+ * @param {MarkdownInstance<Record<string, any>>[]} props.dictionary - Words to index and search
+ * @returns {JSX.Element}
  */
 export default function Search({ triggerSize, dictionary }) {
   const isSearchOpen = useStore($isSearchOpen);
@@ -45,8 +63,15 @@ export default function Search({ triggerSize, dictionary }) {
 }
 
 /**
- * Search Trigger
- * @param {{size: "sm" | "md"}} props
+ * Search Trigger Component
+ *
+ * Responsive trigger button/input that opens the search dialog.
+ * Displays keyboard shortcut hint (Ctrl+K or ⌘K).
+ *
+ * @component
+ * @param {Object} props
+ * @param {"sm" | "md"} [props.size="md"] - Trigger size variant
+ * @returns {JSX.Element}
  */
 function SearchTrigger({ size = "md" }) {
   const isSearchOpen = useStore($isSearchOpen);
@@ -152,9 +177,16 @@ function SearchTrigger({ size = "md" }) {
 }
 
 /**
- * Search Dialog
- * @todo implement search term debouncing
- * @todo implement visual que buttons (↑ ↓ ↵) for keyboard navigation on search dialog component
+ * Search Dialog Component
+ *
+ * Full-screen modal interface with search input,
+ * FlexSearch results, AI fallback, and keyboard navigation.
+ *
+ * @component
+ * @returns {JSX.Element}
+ *
+ * @todo Implement search term debouncing
+ * @todo Implement visual que buttons (↑ ↓ ↵) for keyboard navigation on search dialog component
  */
 function SearchDialog() {
   useLockBody();
@@ -183,7 +215,9 @@ function SearchDialog() {
 
   // Arrow Up/Down & Enter - keybind
   function handleKeyboardCtrl(e) {
-    const resultsCount = searchResult?.length || 0;
+    // Results count - if no results, but search term exists, allow AskJAI search option cursor navigation
+    const resultsCount =
+      searchResult?.length || (searchTerm.length >= 1 ? 1 : 0);
     if (resultsCount && e.key === "ArrowUp") {
       e.preventDefault();
       setCursor(
@@ -203,6 +237,12 @@ function SearchDialog() {
         router.push(word.href);
       }
     }
+  }
+
+  // Update search term state on input change and reset cursor
+  function handleSearchTermChange(e) {
+    setSearchTerm(e.target.value);
+    setCursor(-1);
   }
 
   return (
@@ -241,7 +281,7 @@ function SearchDialog() {
             type="text"
             value={searchTerm}
             onKeyDown={handleKeyboardCtrl}
-            onChange={(e) => setSearchTerm(e.target.value)}
+            onChange={handleSearchTermChange}
             className="block w-full bg-transparent text-gray-600 focus:outline-none text-base md:text-lg"
           />
           <kbd
@@ -270,8 +310,14 @@ function SearchDialog() {
 }
 
 /**
- * Default Search Text Placeholder
- * @todo implement recent search term list
+ * Search Info Component
+ *
+ * Placeholder text shown when no search term is entered.
+ *
+ * @component
+ * @returns {JSX.Element}
+ *
+ * @todo Implement recent search term list
  */
 const SearchInfo = () => (
   <p className="block w-full text-sm md:text-base px-2 py-1 md:px-4 md:py-2 text-slate-500 font-normal leading-6">
@@ -280,8 +326,17 @@ const SearchInfo = () => (
 );
 
 /**
- * Search result
- * @param {{ result: Array<{ id: number, doc: { title: string, slug: string }, searchTerm: string }> }} props
+ * Search Result Component
+ *
+ * Displays FlexSearch results or jAI fallback when no matches are found.
+ * Supports cursor-based keyboard navigation.
+ *
+ * @component
+ * @param {Object} props
+ * @param {Array<{ id: number, doc: { title: string, slug: string } }>} props.result - Search results
+ * @param {number} props.cursor - Current cursor index for keyboard navigation
+ * @param {string} props.searchTerm - Current search input
+ * @returns {JSX.Element}
  */
 function SearchResult({ result = [], cursor, searchTerm }) {
   const router = useRouter();
@@ -289,10 +344,7 @@ function SearchResult({ result = [], cursor, searchTerm }) {
   return (
     <div className="block w-full text-sm md:text-base overflow-y-auto scrollbar">
       {result.length < 1 && searchTerm.length >= 1 ? (
-        /**
-         * @todo add message suggesting adding/contributing the word to dictionary
-         */
-        <p className="p-2 md:p-4">No Result found</p>
+        <SearchWithJAI word={searchTerm} cursor={cursor} />
       ) : (
         result.map(({ doc }, i) => (
           <a

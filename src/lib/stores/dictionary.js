@@ -10,11 +10,13 @@ import { atom, map } from "nanostores";
  * @typedef {Object} Word
  * @property {string} title
  * @property {string} content
+ * @property {string} initialContent
  * @type {import('nanostores').MapStore<Record<string, Word>>}
  */
 export const $wordEditor = map({
   title: "",
   content: "",
+  initialContent: "",
 });
 
 export const $isWordSubmitLoading = atom(false);

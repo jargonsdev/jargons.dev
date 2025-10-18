@@ -1,7 +1,7 @@
 {
   "name": "jargons.dev",
   "version": "1.0.0",
-  "description": "",
+  "description": "A community-driven open source dictionary that provides clear, simplified definitions of software engineering concepts, development jargon, and general technology terms",
   "type": "module",
   "scripts": {
     "dev": "astro dev",
@@ -17,16 +17,27 @@
     "test:watch": "vitest",
     "test:coverage": "vitest run --coverage",
     "setup": "node dev/setup.js",
-    "seed:jai": "node --env-file=.env dev/seed-vector-store.js"
+    "seed:jai": "node --env-file=.env dev/seed-vector-store.js",
+    "ping:qdrant": "node --env-file=.env dev/ping-qdrant-cluster.js",
+    "ping:qdrant:ci": "node dev/ping-qdrant-cluster.js"
   },
-  "keywords": [],
+  "keywords": [
+    "dictionary",
+    "software",
+    "engineering",
+    "jargon",
+    "tech-terms",
+    "opensource",
+    "ai",
+    "development"
+  ],
   "author": "",
   "license": "ISC",
   "dependencies": {
     "@ai-sdk/react": "^1.1.21",
     "@astrojs/mdx": "^4.3.0",
     "@astrojs/partytown": "^2.1.2",
-    "@astrojs/react": "^3.6.3",
+    "@astrojs/react": "^4.3.0",
     "@astrojs/tailwind": "^5.1.5",
     "@astrojs/vercel": "^8.2.1",
     "@fontsource/ibm-plex-mono": "^5.0.12",

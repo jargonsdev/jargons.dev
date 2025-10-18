@@ -1,0 +1,35 @@
+name: Ping Vector Store (Qdrant) Cluster
+
+on:
+  # Run weekly on Sundays at 2 AM UTC to keep the cluster active
+  schedule:
+    - cron: "0 2 * * 0"
+
+  # Allow manual triggering for testing
+  workflow_dispatch:
+
+jobs:
+  ping-cluster:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Ping Qdrant cluster
+        env:
+          QDRANT_URL: ${{ secrets.QDRANT_URL }}
+          QDRANT_API_KEY: ${{ secrets.QDRANT_API_KEY }}
+        run: npm run ping:qdrant:ci
+
+      - name: Ping successful
+        run: echo "✅ Qdrant cluster ping completed successfully"

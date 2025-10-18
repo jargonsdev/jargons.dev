@@ -1,3 +1,8 @@
+/**
+ * Profile Component - User Authentication and Menu
+ * @exports Profile - Main profile component that handles user authentication state and dropdown menu
+ */
+
 import { useState } from "react";
 
 /**

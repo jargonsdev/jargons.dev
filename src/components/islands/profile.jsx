@@ -11,6 +11,10 @@ import { useState } from "react";
  */
 export default function Profile({ isAuthed, userData, authUrl }) {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [isImgLoading, setIsImgLoading] = useState(true);
+  const [imgSrc, setImgSrc] = useState(
+    userData?.avatar_url || "/fallback-avatar.svg"
+  );
 
   // User is not logged in - not connected with GitHub
   if (!isAuthed) {
@@ -39,20 +43,61 @@ export default function Profile({ isAuthed, userData, authUrl }) {
 
   return (
     <div className="relative">
-      {/* Profile */}
+      {/* Profile Button */}
       <button
-        className={`${isDropdownOpen && "ring-4"} relative bg-gray-200 flex items-center justify-center size-10 hover:ring-4 ring-gray-200 overflow-hidden bg-transparent rounded-full transition-colors duration-700 cursor-pointer focus-visible:outline-none`}
+        className={`${
+          isDropdownOpen && "ring-4"
+        } relative bg-gray-200 flex items-center justify-center size-10 hover:ring-4 ring-gray-200 overflow-hidden bg-transparent rounded-full transition-colors duration-700 cursor-pointer focus-visible:outline-none`}
         onClick={() => setIsDropdownOpen((prev) => !prev)}
       >
+        {/* Skeleton Placeholder while image loads */}
+        {isImgLoading && (
+          <div className="absolute inset-0 animate-pulse bg-gray-300 rounded-full" />
+        )}
+
         {/* User Avatar */}
         <img
-          className="size-10 rounded-full"
+          className={`size-10 rounded-full transition-opacity duration-500 ${
+            isImgLoading ? "opacity-0" : "opacity-100"
+          }`}
           loading="lazy"
-          src={userData.avatar_url}
+          src={imgSrc}
           alt={userData.login}
+          onLoad={() => setIsImgLoading(false)}
+          onError={() => {
+            if (imgSrc !== "/fallback-avatar.svg")
+              setImgSrc("/fallback-avatar.svg");
+            setIsImgLoading(false);
+          }}
         />
 
-        {/* Display Close Visual Cue */}
+        {/* Spinner Overlay */}
+        {isImgLoading && (
+          <div className="absolute inset-0 flex items-center justify-center size-full rounded-full bg-black/10">
+            <svg
+              className="animate-spin w-6 h-6 text-gray-600"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+            >
+              <circle
+                className="opacity-25"
+                cx="12"
+                cy="12"
+                r="10"
+                stroke="currentColor"
+                strokeWidth="4"
+              ></circle>
+              <path
+                className="opacity-75"
+                fill="currentColor"
+                d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"
+              ></path>
+            </svg>
+          </div>
+        )}
+
+        {/* X Icon when open */}
         {isDropdownOpen && (
           <div className="absolute flex items-center justify-center text-white backdrop-blur-sm size-full rounded-full">
             <svg
@@ -77,18 +122,25 @@ export default function Profile({ isAuthed, userData, authUrl }) {
 
       {/* Dropdown */}
       <div
-        className={`${!isDropdownOpen && "hidden"} z-50 absolute overflow-hidden mt-2 right-0 bg-white border text-sm divide-y divide-gray-100 rounded-lg shadow-lg min-w-64`}
+        className={`absolute right-0 mt-2 min-w-64 z-50 bg-white border text-sm divide-y divide-gray-100 rounded-lg shadow-lg transform transition-all duration-200 ease-out ${
+          isDropdownOpen
+            ? "opacity-100 scale-100"
+            : "opacity-0 scale-95 pointer-events-none"
+        }`}
       >
         <div className="flex items-center space-x-2 px-4 py-3 text-sm">
-          {/* User Avatar */}
+          {/* User Avatar in dropdown */}
           <img
             className="size-10 rounded-full"
             loading="lazy"
-            src={userData.avatar_url}
+            src={imgSrc}
             alt={userData.login}
+            onError={() => {
+              if (imgSrc !== "/fallback-avatar.svg")
+                setImgSrc("/fallback-avatar.svg");
+            }}
           />
 
-          {/* User Name & Login */}
           <div>
             <div className="line-clamp-1 break-all text-base">
               {userData.name || userData.login}
@@ -128,7 +180,7 @@ export default function Profile({ isAuthed, userData, authUrl }) {
           </li>
         </ul>
 
-        {/* Logout/Disconnect */}
+        {/* Logout */}
         <div>
           <a
             href="/logout"

@@ -114,9 +114,12 @@ const authUrl = getAuthUrl({ path: searchParams.get("return_to") || "/" });
    * Adds a click event listener to the authentication link.
    * When clicked, it sets the authentication loading state to true.
    */
-  document.getElementById("auth-link").addEventListener("click", () => {
-    $isAuthLoading.set(true);
-  });
+  const authLink = document.getElementById("auth-link");
+  if (authLink) {
+    authLink.addEventListener("click", () => {
+      $isAuthLoading.set(true);
+    });
+  }
 
   /**
    * Subscribes to the authentication loading state and updates the UI accordingly.

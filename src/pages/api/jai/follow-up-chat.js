@@ -34,7 +34,6 @@ function getCorsHeaders(origin) {
 }
 
 export async function POST({ request }) {
-  console.log(request.headers);
   const corsHeaders = getCorsHeaders(request.headers.get("origin"));
 
   try {
@@ -58,7 +57,7 @@ export async function POST({ request }) {
         chat_history: (input) => input.chat_history,
         context: () => formatDocumentsAsString(similarDocs),
       },
-      jAIPrompts.PERSONALITY,
+      jAIPrompts.FOLLOW_UP_CHAT,
       model,
       parser,
     ]);

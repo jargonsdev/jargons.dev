@@ -6,9 +6,9 @@ import BaseLayout from "./base.astro";
 import { getCollection } from "astro:content";
 import Navbar from "../components/navbar.astro";
 import Search from "../components/islands/search.jsx";
-import JAIChatWidget, {
-  JAIChatWidgetTrigger,
-} from "../components/islands/jai.jsx";
+import JAIFollowUpChatWidget, {
+  JAIFollowUpChatWidgetTrigger,
+} from "../../apps/jai/components/follow-up-chat.jsx";
 
 const { frontmatter } = Astro.props;
 const dictionary = await getCollection("dictionary");
@@ -36,7 +36,7 @@ const editUrl = `/editor/edit/${frontmatter.url.split("/")[3].split(".")[0]}`;
           <!-- Meta Features -->
           <div class="grow flex items-center space-x-2">
             <!-- Word Follow-up Chat -->
-            <JAIChatWidgetTrigger client:visible />
+            <JAIFollowUpChatWidgetTrigger client:visible />
 
             <!-- <div class="w-2/5 h-3 bg-neutral-100 rounded-lg" /> -->
           </div>
@@ -76,9 +76,9 @@ const editUrl = `/editor/edit/${frontmatter.url.split("/")[3].split(".")[0]}`;
     </main>
   </div>
 
-  <!-- jAI Chat Widget -->
+  <!-- jAI FollowUp Chat Widget -->
   <div class="jai-wrapper">
-    <JAIChatWidget word={frontmatter.title} client:visible />
+    <JAIFollowUpChatWidget word={frontmatter.title} client:visible />
   </div>
 </BaseLayout>
 

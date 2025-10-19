@@ -3,18 +3,39 @@ import { RunnableSequence } from "@langchain/core/runnables";
 import { formatDocumentsAsString } from "langchain/util/document";
 import { HttpResponseOutputParser } from "langchain/output_parsers";
 import {
-  jAIPrompt as prompt,
+  jAIPrompts,
   model,
   formatMessage,
   vectorStore,
 } from "../../../../apps/jai/index.js";
 
-export async function POST({ request }) {
-  const corsHeaders = {
-    "Access-Control-Allow-Origin": "same-origin",
+const allowedOrigins = [
+  "https://www.jargons.dev", // production
+  "http://localhost:4321", // local dev (default Astro port)
+  // add other allowed preview URLs if needed
+];
+
+function getCorsHeaders(origin) {
+  const headers = {
     "Access-Control-Allow-Methods": "POST, OPTIONS",
     "Access-Control-Allow-Headers": "Content-Type, Authorization",
+    "Access-Control-Allow-Credentials": "true",
   };
+
+  // Allow known origins and Vercel preview deployments
+  if (
+    allowedOrigins.includes(origin) ||
+    (origin && origin.endsWith("-jargonsdev.vercel.app"))
+  ) {
+    headers["Access-Control-Allow-Origin"] = origin;
+  }
+
+  return headers;
+}
+
+export async function POST({ request }) {
+  console.log(request.headers);
+  const corsHeaders = getCorsHeaders(request.headers.get("origin"));
 
   try {
     // Extract the `messages` from the body of the request
@@ -37,7 +58,7 @@ export async function POST({ request }) {
         chat_history: (input) => input.chat_history,
         context: () => formatDocumentsAsString(similarDocs),
       },
-      prompt,
+      jAIPrompts.PERSONALITY,
       model,
       parser,
     ]);

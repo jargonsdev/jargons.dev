@@ -36,7 +36,12 @@ const editUrl = `/editor/edit/${frontmatter.url.split("/")[3].split(".")[0]}`;
           <!-- Meta Features -->
           <div class="grow flex items-center space-x-2">
             <!-- Word Follow-up Chat -->
-            <JAIFollowUpChatWidgetTrigger client:visible />
+            <span class="flex items-center">
+              <span class="text-sm mr-2 hidden md:block">
+                Got a follow-up question?
+              </span>
+              <JAIFollowUpChatWidgetTrigger client:visible />
+            </span>
 
             <!-- <div class="w-2/5 h-3 bg-neutral-100 rounded-lg" /> -->
           </div>

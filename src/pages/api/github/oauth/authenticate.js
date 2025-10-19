@@ -27,7 +27,6 @@ export async function GET({ cookies }) {
     const userOctokit = app.getUserOctokit({ token: accessToken.value });
     const { data } = await userOctokit.request("GET /user");
 
-    console.log("Authenticated user data:", data);
 
     // Token is valid, grant session access and send user data
     return new Response(

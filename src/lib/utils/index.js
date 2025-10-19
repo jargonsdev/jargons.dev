@@ -54,8 +54,6 @@ export function resolveEditorActionFromPathname(pathname) {
  * Capitalize the first letter of each word in a text string
  * @param {string} text - The text to capitalize
  * @returns {string} Text with each word's first letter capitalized
- * @example
- * capitalizeText("hello world") // Returns "Hello World"
  */
 export function capitalizeText(text) {
   return text

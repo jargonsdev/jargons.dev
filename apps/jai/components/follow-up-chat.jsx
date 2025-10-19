@@ -279,10 +279,10 @@ function JAIIntro({ status, word, onQuestionClick }) {
 
   return (
     <div className="h-full space-y-4 flex flex-col items-center justify-center -mt-20">
-      <JAILogo className="w-52 drop-shadow-md mx-auto" />
+      <JAILogo className="w-36 md:w-52 drop-shadow-md mx-auto" />
 
       {isLoggedIn ? (
-        <p className="text-lg w-10/12 mx-auto text-center">
+        <p className="md:text-lg w-10/12 mx-auto text-center">
           Ask me anything about <span className="underline">{word}</span> or
           other technical jargon
         </p>
@@ -304,7 +304,7 @@ function JAIIntro({ status, word, onQuestionClick }) {
               <button
                 key={index}
                 onClick={() => onQuestionClick(questionTemplate)}
-                className="bg-neutral-100 border border-neutral-200 rounded-lg px-5 py-2.5 hover:bg-neutral-200 transition-colors duration-200 cursor-pointer"
+                className="bg-neutral-100 border border-neutral-200 rounded-lg text-sm md:text-base px-4 py-1.5 md:px-5 md:py-2.5 hover:bg-neutral-200 transition-colors duration-200 cursor-pointer"
               >
                 {formatQuestion(questionTemplate, word)}
               </button>

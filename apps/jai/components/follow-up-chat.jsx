@@ -39,14 +39,19 @@ export default function JAIFollowUpChatWidget({ word }) {
     } else {
       setIsLoading(true);
       // verify token validity
-      fetch("/api/github/oauth/authenticate").then(async (response) => {
-        if (response.ok) {
-          setIsLoggedIn(true);
-          setUser((await response.json()).data);
-        } else {
+      fetch("/api/github/oauth/authenticate")
+        .then(async (response) => {
+          if (response.ok) {
+            setIsLoggedIn(true);
+            setUser((await response.json()).data);
+          } else {
+            setIsLoggedIn(false);
+          }
+        })
+        .catch((e) => {
+          // TODO: handle error
           setIsLoggedIn(false);
-        }
-      });
+        });
     }
     setIsLoading(false);
   }, []);

@@ -307,7 +307,7 @@ function JAIIntro({ status, word, onQuestionClick }) {
           </>
         ) : (
           <a
-            href={`/login?return_to=${encodeURIComponent(pathname)}?jai=1`}
+            href={`/login?return_to=${encodeURIComponent(pathname + (pathname.includes('?') ? '&' : '?') + 'jai=1')}`}
             className="flex items-center justify-center h-12 mr-3 px-3 text-lg font-medium bg-black text-white border no-underline rounded-lg focus:outline-none hover:shadow-xl"
           >
             <svg

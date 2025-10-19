@@ -31,3 +31,17 @@ a:hover {
 .scrollbar::-webkit-scrollbar {
   width: 5px;
 }
+.scrollbar-hidden {
+  scrollbar-width: none;
+}
+.scrollbar-hidden::-webkit-scrollbar {
+  display: none;
+}
+
+/* jAI */
+body.jai-active .main-wrapper {
+  @apply fixed top-0 left-0 lg:z-50 w-full lg:w-7/12 h-full grow overflow-auto scrollbar-hidden;
+}
+body.jai-active .jai-wrapper {
+  @apply overflow-hidden py-1 lg:py-0.5 ps-1 pe-1 lg:pe-0 fixed top-0 right-0 w-full lg:w-5/12 h-full transition-all ease-in-out duration-1000 animate-slide-in-from-right;
+}

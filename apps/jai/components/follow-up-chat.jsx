@@ -121,7 +121,7 @@ export default function JAIFollowUpChatWidget({ word }) {
                     <div className="flex-none flex items-center justify-center rounded-lg size-10 border bg-neutral-100 border-neutral-200 border-opacity-50 overflow-hidden">
                       <img src={user.avatar_url} alt={user.name} />
                     </div>
-                    <div className="w-1flex-1 bg-neutral-50 border border-neutral-200 border-opacity-50 rounded-tl-sm rounded-2xl p-5">
+                    <div className="w-1 flex-1 bg-neutral-50 border border-neutral-200 border-opacity-50 rounded-tl-sm rounded-2xl p-5">
                       <p>{message.content}</p>
                     </div>
                   </>

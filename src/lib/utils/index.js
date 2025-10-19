@@ -1,6 +1,6 @@
 /**
  * Resolve Datetime value for and from cookie expiry date value
- * @param {number} expireIn
+ * @param {number} expireIn - Time in seconds until cookie expires
  * @returns {Date}
  */
 export function resolveCookieExpiryDate(expireIn) {
@@ -10,8 +10,8 @@ export function resolveCookieExpiryDate(expireIn) {
 
 /**
  * Get repository Owner and Name from fullname
- * @param {string} repoFullname
- * @returns an object with `repoOwner` and `repoName`
+ * @param {string} repoFullname - Full repository name in format "owner/repo"
+ * @returns {{ repoOwner: string, repoName: string }} Object containing repository owner and name
  */
 export function getRepoParts(repoFullname) {
   const parts = repoFullname.split("/");
@@ -25,7 +25,7 @@ export function getRepoParts(repoFullname) {
 
 /**
  * Normalize a string to something usable in url
- * @param {string} string
+ * @param {string} string - The string to normalize for URL usage
  * @returns {string}
  */
 export function normalizeAsUrl(string) {
@@ -34,7 +34,7 @@ export function normalizeAsUrl(string) {
 
 /**
  * Checks if a given object is empty
- * @param {object} object
+ * @param {object} object - The object to check for emptiness
  * @returns {boolean}
  */
 export function isObjectEmpty(object) {
@@ -43,7 +43,7 @@ export function isObjectEmpty(object) {
 
 /**
  * Resolve action (`new` or `edit` word) being perfored in Word editor from pathanme
- * @param {string} pathname
+ * @param {string} pathname - The pathname to extract action from
  * @returns {"new" | "edit"}
  */
 export function resolveEditorActionFromPathname(pathname) {
@@ -51,9 +51,9 @@ export function resolveEditorActionFromPathname(pathname) {
 }
 
 /**
- * Capitalize text
- * @param {string} text
- * @returns {string}
+ * Capitalize the first letter of each word in a text string
+ * @param {string} text - The text to capitalize
+ * @returns {string} Text with each word's first letter capitalized
  */
 export function capitalizeText(text) {
   return text
@@ -64,8 +64,8 @@ export function capitalizeText(text) {
 
 /**
  * Generate branch name
- * @param {string} action
- * @param {string} wordTitle
+ * @param {string} action - The action type (e.g., "new" or "edit")
+ * @param {string} wordTitle - The title of the word
  * @returns {string}
  */
 export function generateBranchName(action, wordTitle) {
@@ -74,8 +74,8 @@ export function generateBranchName(action, wordTitle) {
 
 /**
  * Build URL to the Pull Request list on the project's Repo
- * @param {string} repoFullname
- * @param {string} queryString
+ * @param {string} repoFullname - Full repository name in format "owner/repo"
+ * @param {string} queryString - Query string to filter pull requests
  * @returns {string}
  */
 export function buildStatsUrl(repoFullname, queryString) {
@@ -84,7 +84,7 @@ export function buildStatsUrl(repoFullname, queryString) {
 
 /**
  * Build Word Pathname From Slug
- * @param {string} slug
+ * @param {string} slug - The word slug to build pathname from
  * @returns {string}
  */
 export function buildWordPathname(slug) {
@@ -93,7 +93,7 @@ export function buildWordPathname(slug) {
 
 /**
  * Build Word Slug From ID
- * @param {string} id
+ * @param {string} id - The word ID to extract slug from
  * @returns {string}
  */
 export function buildWordSlug(id) {

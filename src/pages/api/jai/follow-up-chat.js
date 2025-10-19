@@ -7,7 +7,7 @@ import {
   model,
   formatMessage,
   vectorStore,
-} from "../../../../apps/jai/index.js";
+} from "@/apps/jai/index.js";
 
 const allowedOrigins = [
   "https://www.jargons.dev", // production

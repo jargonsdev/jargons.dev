@@ -9,8 +9,8 @@ import JAILogo from "./logo";
 import Markdown from "react-markdown";
 import { useChat } from "@ai-sdk/react";
 import { useEffect, useRef, useState } from "react";
-import { $isJAIOpen } from "../../../src/lib/stores/jai";
-import useRouter from "../../../src/lib/hooks/use-router";
+import { $isJAIOpen } from "@/src/lib/stores/jai";
+import useRouter from "@/src/lib/hooks/use-router";
 
 // Default question templates
 const DEFAULT_QUESTIONS = [

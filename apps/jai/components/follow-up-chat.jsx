@@ -1,10 +1,10 @@
 import Cookies from "js-cookie";
-import JAILogo from "./jai-logo";
+import JAILogo from "./logo";
 import Markdown from "react-markdown";
 import { useChat } from "@ai-sdk/react";
 import { useEffect, useRef, useState } from "react";
-import { $isJAIOpen } from "../../lib/stores/jai";
-import useRouter from "../../lib/hooks/use-router";
+import { $isJAIOpen } from "../../../src/lib/stores/jai";
+import useRouter from "../../../src/lib/hooks/use-router";
 
 // Default question templates
 const DEFAULT_QUESTIONS = [
@@ -15,9 +15,9 @@ const DEFAULT_QUESTIONS = [
 ];
 
 /**
- * jAI Chat Widget Component
+ * jAI FollowUp Chat Widget Component
  */
-export default function JAIChatWidget({ word }) {
+export default function JAIFollowUpChatWidget({ word }) {
   const chatContainer = useRef(null);
   const [user, setUser] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -104,10 +104,10 @@ export default function JAIChatWidget({ word }) {
       {/* Body */}
       <div
         ref={chatContainer}
-        className="h-full grow px-5 pt-4 overflow-y-auto scrollbar scroll-smooth"
+        className="h-full space-y-5 grow px-5 pt-4 overflow-x-hidden overflow-y-auto scrollbar scroll-smooth"
       >
         {messages.length > 0 ? (
-          <div className="h-full space-y-5">
+          <>
             {messages.map((message, index) => (
               <div key={index} className="flex space-x-3">
                 {message.role === "user" ? (
@@ -115,7 +115,7 @@ export default function JAIChatWidget({ word }) {
                     <div className="flex-none flex items-center justify-center rounded-lg size-10 border bg-neutral-100 border-neutral-200 border-opacity-50 overflow-hidden">
                       <img src={user.avatar_url} alt={user.name} />
                     </div>
-                    <div className="bg-neutral-50 border border-neutral-200 border-opacity-50 rounded-tl-sm rounded-2xl p-5">
+                    <div className="w-1flex-1 bg-neutral-50 border border-neutral-200 border-opacity-50 rounded-tl-sm rounded-2xl p-5">
                       <p>{message.content}</p>
                     </div>
                   </>
@@ -137,8 +137,10 @@ export default function JAIChatWidget({ word }) {
                         />
                       </svg>
                     </div>
-                    <div className="bg-neutral-50 border border-neutral-200 border-opacity-50 rounded-tl-sm rounded-2xl p-5">
-                      <Markdown className="prose">{message.content}</Markdown>
+                    <div className="w-1 flex-1 bg-neutral-50 border border-neutral-200 border-opacity-50 rounded-tl-sm rounded-2xl p-5">
+                      <Markdown className="prose max-w-max">
+                        {message.content}
+                      </Markdown>
                     </div>
                   </>
                 )}
@@ -170,7 +172,7 @@ export default function JAIChatWidget({ word }) {
                 </div>
               </div>
             )}
-          </div>
+          </>
         ) : (
           <JAIIntro
             status={{ isLoggedIn, isLoading }}
@@ -234,9 +236,9 @@ export default function JAIChatWidget({ word }) {
 }
 
 /**
- * jAI Chat Widget Trigger Button
+ * jAI FollowUp Chat Widget Trigger Button
  */
-export function JAIChatWidgetTrigger() {
+export function JAIFollowUpChatWidgetTrigger() {
   return (
     <button
       className="rounded-full flex items-center space-x-1.5 bg-black text-neutral-800 px-3 py-1 border border-neutral-300 ring ring-neutral-100 hover:ring-neutral-200 transition-color ease-in-out duration-300"

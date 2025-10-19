@@ -1,3 +1,9 @@
+/**
+ * JAI Word FollowUp Chat Feature Components
+ * @exports JAIWordFollowUpChatWidget - Follow-up chat widget for asking jAI context-aware questions
+ * @exports JAIWordFollowUpChatWidgetTrigger - Trigger button for opening the jAI follow-up chat widget
+ */
+
 import Cookies from "js-cookie";
 import JAILogo from "./logo";
 import Markdown from "react-markdown";

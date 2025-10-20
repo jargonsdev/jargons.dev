@@ -99,3 +99,12 @@ export function buildWordPathname(slug) {
 export function buildWordSlug(id) {
   return id.split(".")[0];
 }
+
+/**
+ * Get branch name from branch ref
+ * @param {string} branchRef
+ * @returns {string}
+ */
+export function getBranchNameFromRef(branchRef) {
+  return branchRef.split("/").slice(2).join("/");
+}

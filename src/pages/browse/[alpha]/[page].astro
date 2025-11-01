@@ -20,7 +20,6 @@ export async function getStaticPaths({ paginate }) {
     const filteredWords = dictionary.filter((word) => word.id[0] === alpha);
     return paginate(filteredWords, {
       params: { alpha },
-      // pageSize: 1
     });
   });
 }
@@ -81,41 +80,161 @@ export async function getStaticPaths({ paginate }) {
       }
     </div>
 
-    <!-- Pagination -->
+    {/* Pagination */}
+
     {
-      page.url.next || page.url.prev ? (
-        <div class="w-full flex !mt-auto">
-          <div class="mx-auto flex items-center space-x-4">
+      page.lastPage > 1 && (
+        <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center border-t border-gray-200 pt-6 mt-10 text-gray-700 text-lg space-y-4 sm:space-y-0">
+          {/* Left Info */}
+
+          <div class="text-center sm:text-left">
+            Showing{" "}
+            <span class="font-semibold">
+              {(page.currentPage - 1) * page.size + 1} –
+              {Math.min(page.currentPage * page.size, page.total)}
+            </span>{" "}
+            of {page.total} highlights
+          </div>
+
+          {/*Center Controls */}
+          <div class="flex justify-center items-center space-x-8 sm:space-x-12">
+            {/*Previous */}
             {page.url.prev ? (
-              <a
-                href={page.url.prev}
-                class="bg-black text-white no-underline rounded py-1 px-2"
-              >
-                Previous
+              <a href={page.url.prev} class="p-1 hover:text-black">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke-width="3"
+                  stroke="currentColor"
+                  class="w-4 h-4 sm:w-5 sm:h-5 font-bold"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M15 19.5L8.25 12 15 4.5"
+                  />
+                </svg>
               </a>
             ) : (
-              <span class="bg-gray-100 text-gray-400 cursor-not-allowed no-underline rounded py-1 px-2">
-                Previous
+              <span class="p-1 text-gray-300 cursor-not-allowed">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke-width="3"
+                  stroke="currentColor"
+                  class="w-4 h-4 sm:w-5 sm:h-5 font-bold"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M15 19.5L8.25 12 15 4.5"
+                  />
+                </svg>
               </span>
             )}
 
-            <span>Page {page.currentPage}</span>
+            {/*Next*/}
 
             {page.url.next ? (
-              <a
-                href={page.url.next}
-                class="bg-black text-white no-underline rounded py-1 px-2"
-              >
-                Next
+              <a href={page.url.next} class="p-1 hover:text-black">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke-width="3"
+                  stroke="currentColor"
+                  class="w-4 h-4 sm:w-5 sm:h-5 font-bold"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M9 4.5l6.75 7.5L9 19.5"
+                  />
+                </svg>
               </a>
             ) : (
-              <span class="bg-gray-100 text-gray-400 cursor-not-allowed no-underline rounded py-1 px-2">
-                Next
+              <span class="p-1 text-gray-300 cursor-not-allowed">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke-width="3"
+                  stroke="currentColor"
+                  class="w-4 h-4 sm:w-5 sm:h-5 font-bold"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M9 4.5l6.75 7.5L9 19.5"
+                  />
+                </svg>
               </span>
             )}
           </div>
+
+          {/*Right Info + Go To Page */}
+          <div class="flex flex-col sm:flex-row justify-center sm:justify-end items-center space-y-2 sm:space-y-0 sm:space-x-3 text-center">
+            <span>Total {page.lastPage} pages</span>
+            <span class="hidden sm:inline-block h-5 w-px bg-gray-300" />
+
+            <div class="flex items-center justify-center space-x-2">
+              <input
+                type="number"
+                id="pageInput"
+                min="1"
+                max={page.lastPage}
+                placeholder="Page"
+                class="w-14 sm:w-16 border border-gray-300 rounded text-center py-1 text-lg"
+                aria-label="Enter page number"
+                aria-describedby="pageInputHelp"
+              />
+              <button
+                type="button"
+                id="goToPageBtn"
+                class="bg-black text-white font-medium rounded px-4 py-1 text-lg hover:bg-gray-700"
+                aria-label="Go to the page number entered in the input field"
+              >
+                Go to page
+              </button>
+            </div>
+          </div>
         </div>
-      ) : null
+      )
     }
   </main>
 </BaseLayout>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const pageInput = document.getElementById("pageInput");
+    const goToPageBtn = document.getElementById("goToPageBtn");
+
+    if (pageInput && goToPageBtn) {
+      const currentPath = window.location.pathname;
+      const pathParts = currentPath.split("/");
+      const alpha = pathParts[2];
+      const lastPage = parseInt(pageInput.getAttribute("max"));
+
+      function goToPage(alpha, lastPage) {
+        const pageNum = parseInt(pageInput.value);
+        if (!isNaN(pageNum) && pageNum >= 1 && pageNum <= lastPage) {
+          const targetUrl = `/browse/${alpha}/${pageNum}`;
+          window.location.href = targetUrl;
+        } else {
+          pageInput.value = "";
+          pageInput.placeholder = "Invalid page";
+          setTimeout(() => {
+            pageInput.placeholder = "Page";
+          }, 2000);
+        }
+      }
+
+      goToPageBtn.addEventListener("click", () => goToPage(alpha, lastPage));
+      pageInput.addEventListener("keypress", (e) => {
+        if (e.key === "Enter") goToPage(alpha, lastPage);
+      });
+    }
+  });
+</script>

@@ -187,11 +187,14 @@ export async function getStaticPaths({ paginate }) {
                 max={page.lastPage}
                 placeholder="Page"
                 class="w-14 sm:w-16 border border-gray-300 rounded text-center py-1 text-lg"
+                aria-label="Enter page number"
+                aria-describedby="pageInputHelp"
               />
               <button
                 type="button"
                 id="goToPageBtn"
                 class="bg-black text-white font-medium rounded px-4 py-1 text-lg hover:bg-gray-700"
+                aria-label="Go to the page number entered in the input field"
               >
                 Go to page
               </button>

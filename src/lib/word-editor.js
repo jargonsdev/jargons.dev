@@ -1,5 +1,9 @@
 import wordFileTemplate from "./templates/word.md.js";
-import { getRepoParts, normalizeAsUrl } from "./utils/index.js";
+import {
+  getBranchNameFromRef,
+  getRepoParts,
+  normalizeAsUrl,
+} from "./utils/index.js";
 
 /**
  * Write and add a new word to user's forked dictionary
@@ -14,7 +18,7 @@ export async function writeNewWord(
 ) {
   const { repoFullname, repoChangeBranchRef } = forkedRepoDetails;
   const { repoOwner, repoName } = getRepoParts(repoFullname);
-  const branch = repoChangeBranchRef.split("/").slice(2).join("/");
+  const branch = getBranchNameFromRef(repoChangeBranchRef);
   const wordFileContent = writeWordFileContent(title, content);
 
   try {
@@ -52,7 +56,7 @@ export async function updateExistingWord(
 ) {
   const { repoFullname, repoChangeBranchRef } = forkedRepoDetails;
   const { repoOwner, repoName } = getRepoParts(repoFullname);
-  const branch = repoChangeBranchRef.split("/").slice(2).join("/");
+  const branch = getBranchNameFromRef(repoChangeBranchRef);
   const wordFileContent = writeWordFileContent(title, content);
 
   try {

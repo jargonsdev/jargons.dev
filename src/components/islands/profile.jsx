@@ -49,7 +49,7 @@ export default function Profile({ isAuthed, userData, authUrl }) {
     <div className="relative">
       {/* Profile */}
       <button
-        className={`${isDropdownOpen && "ring-4"} relative bg-gray-200 flex items-center justify-center size-10 hover:ring-4 ring-gray-200 overflow-hidden bg-transparent rounded-full transition-colors duration-700 cursor-pointer focus-visible:outline-none`}
+        className={`${isDropdownOpen ? "ring-gray-200" : "ring-gray-100"} relative bg-gray-100 ring-4 flex items-center justify-center hover:ring-gray-200 overflow-hidden rounded-full transition-colors duration-700 cursor-pointer focus-visible:outline-none`}
         onClick={() => setIsDropdownOpen((prev) => !prev)}
       >
         {/* User Avatar */}
@@ -61,8 +61,8 @@ export default function Profile({ isAuthed, userData, authUrl }) {
         />
 
         {/* Display Close Visual Cue */}
-        {isDropdownOpen && (
-          <div className="absolute flex items-center justify-center text-white backdrop-blur-sm size-full rounded-full">
+        <div className="size-10 flex items-center justify-center backdrop-blur-sm rounded-full">
+          {isDropdownOpen ? (
             <svg
               aria-hidden="true"
               xmlns="http://www.w3.org/2000/svg"
@@ -79,8 +79,23 @@ export default function Profile({ isAuthed, userData, authUrl }) {
                 d="M6 18 17.94 6M18 18 6.06 6"
               />
             </svg>
-          </div>
-        )}
+          ) : (
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth="2"
+              stroke="currentColor"
+              className="size-6"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M3.75 9h16.5m-16.5 6.75h16.5"
+              />
+            </svg>
+          )}
+        </div>
       </button>
 
       {/* Dropdown */}

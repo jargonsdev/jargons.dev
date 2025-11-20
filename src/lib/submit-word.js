@@ -1,7 +1,7 @@
 import { LABELS } from "../../constants.js";
-import { getRepoParts } from "./utils/index.js";
-import newWordPRTemp from "./templates/new-word-pr.md.js";
 import editWordPRTemp from "./templates/edit-word-pr.md.js";
+import newWordPRTemp from "./templates/new-word-pr.md.js";
+import { getBranchNameFromRef, getRepoParts } from "./utils/index.js";
 
 /**
  * Submit word - create a Pull Request to add word to project repository
@@ -27,11 +27,10 @@ export async function submitWord(
   const { repoOwner: forkedRepoOwner } = getRepoParts(
     forkedRepoDetails.repoFullname,
   );
-  const baseBranch = repoMainBranchRef.split("/").slice(2).join("/");
-  const headBranch = forkedRepoDetails.repoChangeBranchRef
-    .split("/")
-    .slice(2)
-    .join("/");
+  const baseBranch = getBranchNameFromRef(repoMainBranchRef);
+  const headBranch = getBranchNameFromRef(
+    forkedRepoDetails.repoChangeBranchRef,
+  );
 
   const title =
     action === "new"

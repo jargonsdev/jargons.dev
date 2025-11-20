@@ -34,6 +34,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@ai-sdk/react": "^1.1.21",
     "@astrojs/mdx": "^4.3.0",
     "@astrojs/partytown": "^2.1.2",
     "@astrojs/react": "^4.3.0",
@@ -50,6 +51,7 @@
     "astro": "^5.13.5",
     "flexsearch": "^0.7.43",
     "gray-matter": "^4.0.3",
+    "js-cookie": "^3.0.5",
     "langchain": "^0.3.29",
     "nanostores": "^0.10.0",
     "octokit": "^3.1.2",

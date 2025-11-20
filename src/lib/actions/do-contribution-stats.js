@@ -1,7 +1,7 @@
+import { LABELS, PROJECT_REPO_DETAILS } from "../../../constants.js";
 import app from "../octokit/app.js";
 import { decrypt } from "../utils/crypto.js";
-import { buildStatsUrl } from "../utils/index.js";
-import { PROJECT_REPO_DETAILS, LABELS } from "../../../constants.js";
+import { buildStatsUrl, getBranchNameFromRef } from "../utils/index.js";
 
 /**
  * Get some jargons contribution stats for current user on the Jargons Editor
@@ -21,7 +21,7 @@ export default async function doContributionStats(astroGlobal) {
   const viewerLogin = me?.login;
 
   const branchInfo = repoMainBranchRef
-    ? repoMainBranchRef.split("/").slice(2).join("/")
+    ? getBranchNameFromRef(repoMainBranchRef)
     : "";
 
   const baseQuery = `repo:${repoFullname} is:pull-request type:pr author:${viewerLogin} base:${branchInfo}`;

@@ -23,7 +23,7 @@ export async function forkRepository(userOctokit, projectRepoDetails) {
     if (fork) {
       // console.log("Repo is already forked!");
 
-      const { isUpdated, updateSHA } = await isRepositoryForkUpdated(
+      const { isUpdated } = await isRepositoryForkUpdated(
         userOctokit,
         projectRepoDetails,
         fork,
@@ -94,7 +94,7 @@ async function updateRepositoryFork(
  * @param {import("octokit").Octokit} userOctokit
  * @param {{ repoFullname: string, repoMainBranchRef: string }} projectRepoDetails
  * @param {string} forkedRepoFullname
- * @returns {Promise<{ isUpdated: boolean, updateSHA: string }>}
+ * @returns {Promise<{ isUpdated: boolean }>}
  */
 async function isRepositoryForkUpdated(
   userOctokit,
@@ -119,7 +119,6 @@ async function isRepositoryForkUpdated(
     return {
       isUpdated:
         forkedRepoMainBranch.object.sha === projectRepoMainBranch.object.sha,
-      updateSHA: projectRepoMainBranch.object.sha,
     };
   } catch (error) {
     throw new Error("Error occurred while checking fork update status", {

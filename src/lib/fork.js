@@ -34,7 +34,6 @@ export async function forkRepository(userOctokit, projectRepoDetails) {
 
         await updateRepositoryFork(userOctokit, fork, {
           ref: repoMainBranchRef,
-          sha: updateSHA,
         });
       }
 
@@ -62,7 +61,7 @@ export async function forkRepository(userOctokit, projectRepoDetails) {
  * Update (Sync) repository to state of main (head) repository
  * @param {import("octokit").Octokit} userOctokit
  * @param {string} forkedRepoFullname
- * @param {{ ref: string, sha: string }} headRepoRef
+ * @param {{ ref: string }} headRepoRef
  */
 async function updateRepositoryFork(
   userOctokit,
@@ -70,16 +69,15 @@ async function updateRepositoryFork(
   headRepoRef,
 ) {
   const { repoOwner, repoName } = getRepoParts(forkedRepoFullname);
-  const { ref, sha } = headRepoRef;
-  const formattedRef =
-    ref.split("/")[0] === "refs" ? ref.split("/").slice(1).join("/") : ref;
+  const { ref } = headRepoRef;
+  // Extract branch name from ref (e.g., "refs/heads/main" -> "main" or "heads/main" -> "main")
+  const branchName = ref.replace(/^refs\//, "").replace(/^heads\//, "");
 
   try {
-    await userOctokit.request("PATCH /repos/{owner}/{repo}/git/refs/{ref}", {
+    await userOctokit.request("POST /repos/{owner}/{repo}/merge-upstream", {
       owner: repoOwner,
       repo: repoName,
-      ref: formattedRef, //-> `heads/${branchToSync}`
-      sha,
+      branch: branchName,
     });
 
     // console.log("Fork is now updated and in-sync with upstream");

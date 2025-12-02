@@ -12,9 +12,17 @@ if (Astro.url.searchParams.get("code")) return Astro.redirect("/");
 
 const dictionary = await getCollection("dictionary");
 
-const { stargazers_count } = await fetch(
-  "https://api.github.com/repos/jargons-dev/jargons.dev",
-).then((res) => res.json());
+let stargazers_count = 0;
+try {
+  const response = await fetch(
+    "https://api.github.com/repos/jargonsdev/jargons.dev",
+  );
+  if (response.ok) {
+    ({ stargazers_count } = await response.json());
+  }
+} catch (error) {
+  console.error("Failed to fetch stargazers count:", error);
+}
 ---
 
 <BaseLayout
@@ -28,8 +36,9 @@ const { stargazers_count } = await fetch(
     <!-- GitHub Repo and Stargazers -->
     <div class="mr-3 flex">
       <a
-        href="https://github.com/jargons-dev/jargons.dev"
+        href="https://github.com/jargonsdev/jargons.dev"
         target="_blank"
+        rel="noopener noreferrer"
         class="flex items-center no-underline border border-r-0 border-gray-200 shadow px-2 py-1.5 md:px-3 md:py-2 text-sm md:text-base rounded-l-xl hover:bg-gray-100 transition-colors"
       >
         <svg
@@ -51,6 +60,8 @@ const { stargazers_count } = await fetch(
       <a
         href="https://github.com/jargonsdev/jargons.dev/stargazers"
         target="_blank"
+        rel="noopener noreferrer"
+        aria-label="GitHub stargazers count"
         class="flex items-center no-underline border border-gray-200 shadow px-2 py-1.5 md:px-3 md:py-2 text-sm md:text-base rounded-r-xl hover:bg-gray-100 transition-colors"
       >
         {stargazers_count}

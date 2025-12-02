@@ -61,7 +61,7 @@ export default function Profile({ isAuthed, userData, authUrl }) {
         />
 
         {/* Display Close Visual Cue */}
-        <div className="w-10 flex items-center justify-center backdrop-blur-sm rounded-full">
+        <div className="w-8 md:w-10 flex items-center justify-center backdrop-blur-sm rounded-full">
           {isDropdownOpen ? (
             <svg
               aria-hidden="true"

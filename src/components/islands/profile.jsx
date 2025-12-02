@@ -22,7 +22,7 @@ export default function Profile({ isAuthed, userData, authUrl }) {
         onClick={() => setIsAuthLoading(true)}
       >
         {isAuthLoading ? (
-          <div className="size-4 md:size-5 border-2 border-t-white border-l-white border-r-white border-b-black rounded-full animate-spin" />
+          <div className="size-5 md:size-6 border-2 border-t-white border-l-white border-r-white border-b-black rounded-full animate-spin" />
         ) : (
           <span className="flex items-center">
             <svg

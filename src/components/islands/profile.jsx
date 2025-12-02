@@ -22,7 +22,7 @@ export default function Profile({ isAuthed, userData, authUrl }) {
         onClick={() => setIsAuthLoading(true)}
       >
         {isAuthLoading ? (
-          <div className="size-4 md:size-5 border-2 border-t-white border-l-white border-r-white border-b-black rounded-full animate-spin" />
+          <div className="size-5 md:size-6 border-2 border-t-white border-l-white border-r-white border-b-black rounded-full animate-spin" />
         ) : (
           <span className="flex items-center">
             <svg
@@ -61,7 +61,7 @@ export default function Profile({ isAuthed, userData, authUrl }) {
         />
 
         {/* Display Close Visual Cue */}
-        <div className="w-10 flex items-center justify-center backdrop-blur-sm rounded-full">
+        <div className="w-8 md:w-10 flex items-center justify-center backdrop-blur-sm rounded-full">
           {isDropdownOpen ? (
             <svg
               aria-hidden="true"

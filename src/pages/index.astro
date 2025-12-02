@@ -11,6 +11,10 @@ const { isAuthed, authedData, getAuthUrl } = await doAuth(Astro);
 if (Astro.url.searchParams.get("code")) return Astro.redirect("/");
 
 const dictionary = await getCollection("dictionary");
+
+const { stargazers_count } = await fetch(
+  "https://api.github.com/repos/jargons-dev/jargons.dev",
+).then((res) => res.json());
 ---
 
 <BaseLayout
@@ -21,16 +25,36 @@ const dictionary = await getCollection("dictionary");
   <nav
     class="@container flex items-center justify-end px-5 md:px-6 py-4 space-x-4"
   >
-    <div class="mr-3">
-      <iframe
-        src="https://ghbtns.com/github-btn.html?user=jargonsdev&repo=jargons.dev&type=watch&count=true&size=large"
-        frameborder="0"
-        scrolling="0"
-        width="120"
-        height="30"
-        title="Star jargons.dev on GitHub"
+    <!-- GitHub Repo and Stargazers -->
+    <div class="mr-3 flex">
+      <a
+        href="https://github.com/jargons-dev/jargons.dev"
+        target="_blank"
+        class="flex items-center no-underline border border-r-0 border-gray-200 shadow px-2 py-1.5 md:px-3 md:py-2 text-sm md:text-base rounded-l-xl hover:bg-gray-100 transition-colors"
       >
-      </iframe>
+        <svg
+          class="size-4 md:size-5 mr-2"
+          aria-hidden="true"
+          xmlns="http://www.w3.org/2000/svg"
+          fill="currentColor"
+          viewBox="0 0 20 20"
+        >
+          <path
+            fill-rule="evenodd"
+            d="M10 .333A9.911 9.911 0 0 0 6.866 19.65c.5.092.678-.215.678-.477 0-.237-.01-1.017-.014-1.845-2.757.6-3.338-1.169-3.338-1.169a2.627 2.627 0 0 0-1.1-1.451c-.9-.615.07-.6.07-.6a2.084 2.084 0 0 1 1.518 1.021 2.11 2.11 0 0 0 2.884.823c.044-.503.268-.973.63-1.325-2.2-.25-4.516-1.1-4.516-4.9A3.832 3.832 0 0 1 4.7 7.068a3.56 3.56 0 0 1 .095-2.623s.832-.266 2.726 1.016a9.409 9.409 0 0 1 4.962 0c1.89-1.282 2.717-1.016 2.717-1.016.366.83.402 1.768.1 2.623a3.827 3.827 0 0 1 1.02 2.659c0 3.807-2.319 4.644-4.525 4.889a2.366 2.366 0 0 1 .673 1.834c0 1.326-.012 2.394-.012 2.72 0 .263.18.572.681.475A9.911 9.911 0 0 0 10 .333Z"
+            clip-rule="evenodd"
+          >
+          </path>
+        </svg>
+        GitHub
+      </a>
+      <a
+        href="https://github.com/jargonsdev/jargons.dev/stargazers"
+        target="_blank"
+        class="flex items-center no-underline border border-gray-200 shadow px-2 py-1.5 md:px-3 md:py-2 text-sm md:text-base rounded-r-xl hover:bg-gray-100 transition-colors"
+      >
+        {stargazers_count}
+      </a>
     </div>
     <Profile
       isAuthed={isAuthed}

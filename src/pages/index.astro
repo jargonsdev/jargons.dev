@@ -14,7 +14,9 @@ const dictionary = await getCollection("dictionary");
 
 // Simple in-memory cache for stargazers count (1 hour TTL)
 const CACHE_TTL = 60 * 60 * 1000; // 1 hour in milliseconds
-const cache = globalThis.__stargazersCache || (globalThis.__stargazersCache = { count: 0, timestamp: 0 });
+const cache =
+  globalThis.__stargazersCache ||
+  (globalThis.__stargazersCache = { count: 0, timestamp: 0 });
 
 let stargazers_count = cache.count;
 const now = Date.now();

@@ -301,7 +301,7 @@ const DummyPreviewNavbar = () => (
             </svg>
             <span className="focus:outline-none truncate">Search word</span>
           </div>
-          <kbd className="text-gray-600 py-1 px-2 rounded-md border border-gray-400 ml-auto bg-gray-100">
+          <kbd className="text-gray-600 py-1 px-2 rounded-lg border border-gray-400 ml-auto bg-gray-100">
             <>
               <span className="text-sm mr-0.5">⌘</span>K
             </>

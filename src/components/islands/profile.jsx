@@ -49,7 +49,7 @@ export default function Profile({ isAuthed, userData, authUrl }) {
     <div className="relative">
       {/* Profile */}
       <button
-        className={`${isDropdownOpen && "ring-2 ring-gray-200"} relative border p-0.5 border-gray-200 shadow flex items-center justify-center hover:bg-gray-100 overflow-hidden rounded-full transition-colors duration-700 cursor-pointer focus-visible:outline-none`}
+        className={`${isDropdownOpen && "ring-2 ring-gray-200"} relative border p-0.5 border-gray-200 shadow flex items-center justify-center hover:bg-gray-100 overflow-hidden rounded-r-xl rounded-l-3xl transition-colors duration-700 cursor-pointer focus-visible:outline-none`}
         onClick={() => setIsDropdownOpen((prev) => !prev)}
       >
         {/* User Avatar */}
@@ -99,7 +99,7 @@ export default function Profile({ isAuthed, userData, authUrl }) {
 
       {/* Dropdown */}
       <div
-        className={`${!isDropdownOpen && "hidden"} z-50 absolute overflow-hidden mt-2 right-0 bg-white border text-sm divide-y divide-gray-100 rounded-lg shadow-lg min-w-64`}
+        className={`${!isDropdownOpen && "hidden"} z-50 absolute overflow-hidden mt-2 right-0 bg-white border text-sm divide-y divide-gray-100 rounded-xl shadow-lg min-w-64`}
       >
         <div className="flex items-center space-x-2 px-4 py-3 text-sm">
           {/* User Avatar */}

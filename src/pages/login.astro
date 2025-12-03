@@ -17,7 +17,7 @@ const authUrl = getAuthUrl({ path: searchParams.get("return_to") || "/" });
     class="flex flex-col max-w-screen-lg p-5 justify-center mx-auto min-h-screen"
   >
     <div
-      class="text-center mx-auto border px-5 py-10 space-y-6 rounded-lg w-full md:w-2/3 shadow"
+      class="text-center mx-auto border px-5 py-10 space-y-6 rounded-xl w-full md:w-2/3 shadow"
     >
       <div class="flex justify-center">
         <svg
@@ -61,7 +61,7 @@ const authUrl = getAuthUrl({ path: searchParams.get("return_to") || "/" });
       <a
         href={authUrl}
         id="auth-link"
-        class="flex items-center justify-center h-12 mr-3 px-3 text-lg font-medium bg-black text-white border no-underline rounded-lg focus:outline-none hover:shadow-xl"
+        class="flex items-center justify-center h-12 mr-3 px-3 text-lg font-medium bg-black text-white border no-underline rounded-xl focus:outline-none hover:shadow-xl"
       >
         <div
           id="loading"

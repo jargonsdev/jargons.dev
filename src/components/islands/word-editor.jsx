@@ -29,7 +29,7 @@ export default function WordEditor({
   const togglePreview = useStore($togglePreview);
 
   return (
-    <div className="w-full flex border rounded-lg">
+    <div className="w-full flex border rounded-xl">
       <Editor
         action={action}
         eTitle={title}
@@ -54,7 +54,7 @@ export function SubmitButton({ children = "Submit" }) {
 
   return (
     <button
-      className={`flex items-center justify-center no-underline text-white ${isSubmitted ? "bg-green-700" : "bg-gray-900 hover:bg-gray-700"} focus:ring-0 font-medium rounded-lg text-base px-5 py-2.5 text-center`}
+      className={`flex items-center justify-center no-underline text-white ${isSubmitted ? "bg-green-700" : "bg-gray-900 hover:bg-gray-700"} focus:ring-0 font-medium rounded-xl text-base px-5 py-2.5 text-center`}
       type="submit"
       form="jargons.dev:word_editor"
       disabled={isSubmitLoading || isSubmitted}
@@ -237,7 +237,7 @@ function Preview({ className, ...props }) {
 
   return (
     <div className={`${className} select-none`} {...props}>
-      <div className="h-1 grow overflow-auto rounded-lg border p-5 shadow-lg scrollbar">
+      <div className="h-1 grow overflow-auto rounded-xl border p-5 shadow-lg scrollbar">
         <DummyPreviewNavbar />
 
         <div className="max-w-4xl space-y-8 mx-auto">
@@ -283,7 +283,7 @@ const DummyPreviewNavbar = () => (
       </span>
 
       <div className="cursor-not-allowed">
-        <div className="relative w-56 text-sm hidden @md:flex items-center justify-between border pl-2.5 p-1 space-x-2 border-gray-400 rounded-lg">
+        <div className="relative w-56 text-sm hidden @md:flex items-center justify-between border pl-2.5 p-1 space-x-2 border-gray-400 rounded-xl">
           <div className="flex items-center text-gray-400 space-x-2">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -301,7 +301,7 @@ const DummyPreviewNavbar = () => (
             </svg>
             <span className="focus:outline-none truncate">Search word</span>
           </div>
-          <kbd className="text-gray-600 py-1 px-2 rounded-md border border-gray-400 ml-auto bg-gray-100">
+          <kbd className="text-gray-600 py-1 px-2 rounded-lg border border-gray-400 ml-auto bg-gray-100">
             <>
               <span className="text-sm mr-0.5">⌘</span>K
             </>

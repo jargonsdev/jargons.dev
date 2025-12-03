@@ -173,7 +173,7 @@ function Editor({ eTitle, eContent, eMetadata, className, action, ...props }) {
             method: "DELETE",
             body: formData,
           });
-          if (response.status === 200) {
+          if (response.status === 204) {
             $isWordSubmitLoading.set(false);
             alert(
               "Reference cleared successfully! Kindly publish your contribution again!",

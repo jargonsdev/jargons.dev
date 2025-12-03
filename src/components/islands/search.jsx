@@ -110,7 +110,7 @@ function SearchTrigger({ size = "md" }) {
             </svg>
             <span className="focus:outline-none truncate">Search word</span>
           </div>
-          <kbd className="text-gray-600 py-1 px-2 rounded-md border border-gray-400 ml-auto bg-gray-100">
+          <kbd className="text-gray-600 py-1 px-2 rounded-lg border border-gray-400 ml-auto bg-gray-100">
             {isMacOS ? (
               <>
                 <span className="text-sm mr-0.5">⌘</span>K
@@ -163,7 +163,7 @@ function SearchTrigger({ size = "md" }) {
           Search words
         </span>
       </div>
-      <kbd className="text-gray-600 rounded-md p-1 md:px-4 md:py-2 text-sm sm:text-base border border-gray-400 bg-gray-100">
+      <kbd className="text-gray-600 rounded-lg p-1 md:px-4 md:py-2 text-sm sm:text-base border border-gray-400 bg-gray-100">
         {isMacOS ? (
           <>
             <span className="text-sm mr-0.5">⌘</span>K
@@ -286,7 +286,7 @@ function SearchDialog() {
           />
           <kbd
             onClick={() => $isSearchOpen.set(!isSearchOpen)}
-            className="text-gray-600 rounded-md px-2 py-1 md:px-4 md:py-2 text-sm sm:text-base border bg-gray-100 cursor-pointer"
+            className="text-gray-600 rounded-lg px-2 py-1 md:px-4 md:py-2 text-sm sm:text-base border bg-gray-100 cursor-pointer"
           >
             ESC
           </kbd>

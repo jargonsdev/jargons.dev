@@ -173,21 +173,24 @@ describe("fork.js", () => {
           ref: "refs/heads/main",
         });
 
-      // Mock fork update
+      // Mock fork update using merge-upstream
       userOctokit.request.mockResolvedValueOnce({
-        status: 200,
+        data: {
+          message: "Successfully fetched and fast-forwarded from upstream.",
+          merge_type: "fast-forward",
+          base_branch: "main",
+        },
       });
 
       const result = await forkRepository(userOctokit, projectRepoDetails);
 
       expect(userOctokit.request).toHaveBeenNthCalledWith(
         2,
-        "PATCH /repos/{owner}/{repo}/git/refs/{ref}",
+        "POST /repos/{owner}/{repo}/merge-upstream",
         {
           owner: "testuser",
           repo: "jargons.dev",
-          ref: "heads/main",
-          sha: latestSha,
+          branch: "main",
         },
       );
 
@@ -309,15 +312,19 @@ describe("fork.js", () => {
         });
 
       userOctokit.request.mockResolvedValueOnce({
-        status: 200,
+        data: {
+          message: "Successfully fetched and fast-forwarded from upstream.",
+          merge_type: "fast-forward",
+          base_branch: "feature/main-branch",
+        },
       });
 
       await forkRepository(userOctokit, customRepoDetails);
 
       expect(userOctokit.request).toHaveBeenCalledWith(
-        "PATCH /repos/{owner}/{repo}/git/refs/{ref}",
+        "POST /repos/{owner}/{repo}/merge-upstream",
         expect.objectContaining({
-          ref: "heads/feature/main-branch",
+          branch: "feature/main-branch",
         }),
       );
     });

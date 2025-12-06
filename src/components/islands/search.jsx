@@ -92,7 +92,7 @@ function SearchTrigger({ size = "md" }) {
   if (size === "sm")
     return (
       <div onClick={() => $isSearchOpen.set(!isSearchOpen)}>
-        <div className="relative w-56 text-sm hidden @lg:flex items-center justify-between border pl-2.5 p-1 space-x-2 border-gray-400 rounded-lg cursor-text">
+        <div className="relative w-56 text-sm hidden @lg:flex items-center justify-between border pl-2.5 p-1 space-x-2 border-gray-400 rounded-xl cursor-text">
           <div className="flex items-center text-gray-400 space-x-2">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -110,7 +110,7 @@ function SearchTrigger({ size = "md" }) {
             </svg>
             <span className="focus:outline-none truncate">Search word</span>
           </div>
-          <kbd className="text-gray-600 py-1 px-2 rounded-md border border-gray-400 ml-auto bg-gray-100">
+          <kbd className="text-gray-600 py-1 px-2 rounded-lg border border-gray-400 ml-auto bg-gray-100">
             {isMacOS ? (
               <>
                 <span className="text-sm mr-0.5">⌘</span>K
@@ -142,7 +142,7 @@ function SearchTrigger({ size = "md" }) {
   return (
     <div
       onClick={() => $isSearchOpen.set(!isSearchOpen)}
-      className="relative flex items-center justify-between mt-2 border pl-3 p-1 md:pl-5 md:pr-2 md:py-2 space-x-3 border-gray-400 rounded-lg hover:shadow cursor-text"
+      className="relative flex items-center justify-between mt-2 border pl-3 p-1 md:pl-5 md:pr-2 md:py-2 space-x-3 border-gray-400 rounded-xl hover:shadow cursor-text"
     >
       <div className="flex items-center text-gray-400 space-x-3">
         <svg
@@ -163,7 +163,7 @@ function SearchTrigger({ size = "md" }) {
           Search words
         </span>
       </div>
-      <kbd className="text-gray-600 rounded-md p-1 md:px-4 md:py-2 text-sm sm:text-base border border-gray-400 bg-gray-100">
+      <kbd className="text-gray-600 rounded-lg p-1 md:px-4 md:py-2 text-sm sm:text-base border border-gray-400 bg-gray-100">
         {isMacOS ? (
           <>
             <span className="text-sm mr-0.5">⌘</span>K
@@ -254,7 +254,7 @@ function SearchDialog() {
       />
 
       <div
-        className="flex flex-col bg-white h-fit max-w-5xl max-h-full w-full shadow-xl z-50 border rounded-lg overflow-hidden"
+        className="flex flex-col bg-white h-fit max-w-5xl max-h-full w-full shadow-xl z-50 border rounded-xl overflow-hidden"
         onMouseMove={() => cursor !== -1 && setCursor(-1)}
       >
         {/* Form Field */}
@@ -286,7 +286,7 @@ function SearchDialog() {
           />
           <kbd
             onClick={() => $isSearchOpen.set(!isSearchOpen)}
-            className="text-gray-600 rounded-md px-2 py-1 md:px-4 md:py-2 text-sm sm:text-base border bg-gray-100 cursor-pointer"
+            className="text-gray-600 rounded-lg px-2 py-1 md:px-4 md:py-2 text-sm sm:text-base border bg-gray-100 cursor-pointer"
           >
             ESC
           </kbd>

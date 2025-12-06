@@ -18,11 +18,11 @@ export default function Profile({ isAuthed, userData, authUrl }) {
     return (
       <a
         href={authUrl}
-        className="flex items-center justify-center px-2 py-1.5 md:px-3 md:py-2 text-sm md:text-base font-medium bg-black text-white border no-underline rounded-lg focus:outline-none hover:shadow-lg"
+        className="flex items-center justify-center px-2 py-1.5 md:px-3 md:py-2 text-sm md:text-base font-medium bg-black text-white border no-underline rounded-xl focus:outline-none hover:shadow-lg"
         onClick={() => setIsAuthLoading(true)}
       >
         {isAuthLoading ? (
-          <div className="size-4 md:size-5 border-2 border-t-white border-l-white border-r-white border-b-black rounded-full animate-spin" />
+          <div className="size-5 md:size-6 border-2 border-t-white border-l-white border-r-white border-b-black rounded-full animate-spin" />
         ) : (
           <span className="flex items-center">
             <svg
@@ -49,25 +49,24 @@ export default function Profile({ isAuthed, userData, authUrl }) {
     <div className="relative">
       {/* Profile */}
       <button
-        className={`${isDropdownOpen && "ring-4"} relative bg-gray-200 flex items-center justify-center size-10 hover:ring-4 ring-gray-200 overflow-hidden rounded-full transition-colors duration-700 cursor-pointer focus-visible:outline-none`}
+        className={`${isDropdownOpen && "ring-2 ring-gray-200"} relative border p-0.5 border-gray-200 shadow flex items-center justify-center hover:bg-gray-100 overflow-hidden rounded-r-xl rounded-l-3xl transition-colors duration-700 cursor-pointer focus-visible:outline-none`}
         onClick={() => setIsDropdownOpen((prev) => !prev)}
       >
         {/* User Avatar */}
         <img
-          className="size-10 rounded-full"
+          className="size-8 md:size-10 rounded-full"
           loading="lazy"
           src={userData.avatar_url}
           alt={userData.login}
         />
 
         {/* Display Close Visual Cue */}
-        {isDropdownOpen && (
-          <div className="absolute flex items-center justify-center text-white backdrop-blur-sm size-full rounded-full">
+        <div className="w-8 md:w-10 flex items-center justify-center backdrop-blur-sm rounded-full">
+          {isDropdownOpen ? (
             <svg
               aria-hidden="true"
               xmlns="http://www.w3.org/2000/svg"
-              width="24"
-              height="24"
+              className="size-6"
               fill="none"
               viewBox="0 0 24 24"
             >
@@ -79,13 +78,28 @@ export default function Profile({ isAuthed, userData, authUrl }) {
                 d="M6 18 17.94 6M18 18 6.06 6"
               />
             </svg>
-          </div>
-        )}
+          ) : (
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth="2"
+              stroke="currentColor"
+              className="size-6"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M3.75 9h16.5m-16.5 6.75h16.5"
+              />
+            </svg>
+          )}
+        </div>
       </button>
 
       {/* Dropdown */}
       <div
-        className={`${!isDropdownOpen && "hidden"} z-50 absolute overflow-hidden mt-2 right-0 bg-white border text-sm divide-y divide-gray-100 rounded-lg shadow-lg min-w-64`}
+        className={`${!isDropdownOpen && "hidden"} z-50 absolute overflow-hidden mt-2 right-0 bg-white border text-sm divide-y divide-gray-100 rounded-xl shadow-lg min-w-64`}
       >
         <div className="flex items-center space-x-2 px-4 py-3 text-sm">
           {/* User Avatar */}

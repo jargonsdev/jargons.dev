@@ -48,7 +48,7 @@
     "@octokit/auth-oauth-app": "^8.1.0",
     "@octokit/oauth-authorization-url": "^7.1.0",
     "ai": "^4.3.16",
-    "astro": "^5.13.5",
+    "astro": "^5.16.6",
     "flexsearch": "^0.7.43",
     "gray-matter": "^4.0.3",
     "js-cookie": "^3.0.5",

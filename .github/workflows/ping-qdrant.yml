@@ -1,9 +1,11 @@
 name: Ping Vector Store (Qdrant) Cluster
 
 on:
-  # Run weekly on Sundays at 2 AM UTC to keep the cluster active
   schedule:
-    - cron: "0 2 * * 0"
+    # Run at 00:00 UTC on Sunday
+    - cron: "0 0 * * 0"
+    # Run at 00:00 UTC on Wednesday (approx. 3 days later)
+    - cron: "0 0 * * 3"
 
   # Allow manual triggering for testing
   workflow_dispatch:

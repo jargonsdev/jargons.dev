@@ -1,0 +1,31 @@
+---
+layout: ../../layouts/word.astro
+title: "SaaS"
+---
+
+SaaS (**Software as a Service**) is a cloud-based software delivery model where applications are hosted and maintained by a provider and made available to users over the internet.
+Instead of installing or updating software locally, users access it through a web browser, reducing setup time and maintenance costs.
+
+### How It Works
+- The service provider hosts and manages the software and underlying infrastructure.
+- Updates, backups, and security are handled automatically by the provider.
+- Users subscribe to the service on a **pay-as-you-go** or **subscription** basis.
+
+### Examples
+- **Google Workspace**: Cloud-based productivity and collaboration tools.
+- **Salesforce**: Customer relationship management (CRM) platform.
+- **Slack**: Team communication and collaboration platform.
+- **Dropbox**: Cloud storage and file-sharing service.
+
+### Example Code
+Accessing a SaaS API with JavaScript:
+
+```javascript
+fetch("https://api.example-saas.com/data", {
+  method: "GET",
+  headers: {
+    "Authorization": "Bearer YOUR_API_KEY"
+  }
+})
+  .then(response => response.json())
+  .then(data => console.log(data));

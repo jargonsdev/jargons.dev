@@ -4,7 +4,7 @@ import BaseLayout from "../layouts/base.astro";
 import doAuth from "../lib/actions/do-auth.js";
 import Search from "../components/islands/search.jsx";
 import Profile from "../components/islands/profile.jsx";
-import JargonsdevHolidayLogo from "../components/jargonsdev-holiday-25-logo.astro";
+import JargonsdevLogo from "../components/jargonsdev-logo.astro";
 import RecentSearches from "../components/islands/recent-searches.jsx";
 
 const { isAuthed, authedData, getAuthUrl } = await doAuth(Astro);
@@ -94,8 +94,8 @@ if (now - cache.timestamp > CACHE_TTL || cache.count === 0) {
   >
     <!-- Title -->
     <div class="mb-4 md:mb-6">
-      <JargonsdevHolidayLogo
-        class="-ml-2 md:-ml-3 lg:-ml-4 -mb-6 w-[84%] md:w-[64%]"
+      <JargonsdevLogo
+        class="drop-shadow-md drop-shadow-color-black w-[80%] md:w-[60%]"
       />
     </div>
 

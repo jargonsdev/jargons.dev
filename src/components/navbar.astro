@@ -1,5 +1,5 @@
 ---
-import JargonsdevHolidayLogo from "./jargonsdev-holiday-25-logo.astro";
+import JargonsdevLogo from "./jargonsdev-logo.astro";
 
 const { returnNav = { label: "Back", location: "../" } } = Astro.props;
 ---
@@ -31,7 +31,7 @@ const { returnNav = { label: "Back", location: "../" } } = Astro.props;
         {returnNav.label}
       </span>
     </a>
-    <JargonsdevHolidayLogo class="-ml-6 -my-2 h-14 md:h-20" />
+    <JargonsdevLogo class="drop-shadow drop-shadow-color-black h-10 md:h-12" />
   </div>
   <slot />
 </nav>

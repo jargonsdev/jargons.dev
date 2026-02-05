@@ -1,6 +1,6 @@
 import crypto from "node:crypto";
 import fs from "node:fs/promises";
-import registerGitHubApp from "./lib/register-github-app/index.js";
+import registerGitHubApp from "./lib/index.js";
 
 // register app and retrieve credentials
 const appCredentials = await registerGitHubApp({

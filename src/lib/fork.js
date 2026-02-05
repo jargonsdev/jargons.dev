@@ -21,7 +21,6 @@ export async function forkRepository(userOctokit, projectRepoDetails) {
     );
 
     if (fork) {
-      // console.log("Repo is already forked!");
 
       const { isUpdated } = await isRepositoryForkUpdated(
         userOctokit,
@@ -30,7 +29,6 @@ export async function forkRepository(userOctokit, projectRepoDetails) {
       );
 
       if (!isUpdated) {
-        // console.log("Repo is outdated!");
 
         await updateRepositoryFork(userOctokit, fork, {
           ref: repoMainBranchRef,
@@ -80,7 +78,6 @@ async function updateRepositoryFork(
       branch: branchName,
     });
 
-    // console.log("Fork is now updated and in-sync with upstream");
   } catch (error) {
     // console.error("Error syncing with upstream:", error.message);
     throw new Error("Error occurred while updating fork", {

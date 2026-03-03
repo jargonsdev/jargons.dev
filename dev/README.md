@@ -179,7 +179,8 @@ The **Update Vector Store** workflow (`.github/workflows/update-vector-store.yml
 - **Change Detection**: Diffs `HEAD~1` to identify added, modified, or deleted `.mdx` files in `src/content/dictionary/`
 - **Skip Logic**: Exits early if no dictionary files were changed in the commit
 - **Manual Trigger**: Can also be run manually from the GitHub Actions tab with custom `upsert_slugs` and `delete_slugs` inputs
-- **Required Secrets**: `OPENAI_API_KEY`, `OPENAI_EMBEDDINGS_MODEL`, `QDRANT_URL`, `QDRANT_API_KEY`
+- **Required Secrets**: `OPENAI_API_KEY`, `QDRANT_URL`, `QDRANT_API_KEY`
+- **Required Variables**:  `OPENAI_EMBEDDINGS_MODEL`
 
 ### Error Handling
 

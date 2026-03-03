@@ -115,7 +115,7 @@ jobs:
         if: steps.resolve-slugs.outputs.skip != 'true'
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-          OPENAI_EMBEDDINGS_MODEL: ${{ secrets.OPENAI_EMBEDDINGS_MODEL }}
+          OPENAI_EMBEDDINGS_MODEL: ${{ vars.OPENAI_EMBEDDINGS_MODEL }}
           QDRANT_URL: ${{ secrets.QDRANT_URL }}
           QDRANT_API_KEY: ${{ secrets.QDRANT_API_KEY }}
         run: |

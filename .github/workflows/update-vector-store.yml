@@ -26,93 +26,126 @@ jobs:
       )
 
     steps:
+      # ── Gate: Check that the merged PR has a dictionary label ──────────
+      - name: Check PR labels
+        if: github.event_name != 'workflow_dispatch'
+        id: pr-check
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const sha = context.payload.deployment.sha;
+
+            // Find PRs associated with this deployment commit
+            const { data: prs } = await github.rest.repos.listPullRequestsAssociatedWithCommit({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              commit_sha: sha,
+            });
+
+            // Find the merged PR targeting main
+            const mergedPR = prs.find(pr => pr.merged_at && pr.base.ref === 'main');
+
+            if (!mergedPR) {
+              core.info('No merged PR found for this deployment. Skipping.');
+              core.setOutput('should_continue', 'false');
+              return;
+            }
+
+            const labels = mergedPR.labels.map(l => l.name);
+            core.info(`PR #${mergedPR.number}: ${mergedPR.title}`);
+            core.info(`Labels: ${labels.join(', ')}`);
+
+            const requiredLabels = ['📖edit-word', '📖new-word'];
+            const hasRequiredLabel = labels.some(l => requiredLabels.includes(l));
+
+            if (!hasRequiredLabel) {
+              core.info(`PR does not have required labels (${requiredLabels.join(', ')}). Skipping.`);
+              core.setOutput('should_continue', 'false');
+              return;
+            }
+
+            core.info('✅ PR has required label. Proceeding with update.');
+            core.setOutput('should_continue', 'true');
+
+      - name: Skip — PR lacks required labels
+        if: github.event_name != 'workflow_dispatch' && steps.pr-check.outputs.should_continue != 'true'
+        run: |
+          echo "⏭️ Skipping: deployment is not from a 📖new-word or 📖edit-word PR."
+
+      # ── Checkout & detect changed dictionary files ─────────────────────
       - name: Checkout repository
+        if: github.event_name == 'workflow_dispatch' || steps.pr-check.outputs.should_continue == 'true'
         uses: actions/checkout@v4
         with:
-          # Fetch enough history to diff against the previous commit
+          ref: ${{ github.event.deployment.sha || github.sha }}
           fetch-depth: 2
 
       - name: Detect changed dictionary files
-        id: detect-changes
-        if: github.event_name != 'workflow_dispatch'
+        if: github.event_name == 'workflow_dispatch' || steps.pr-check.outputs.should_continue == 'true'
+        id: detect
         run: |
-          echo "Detecting dictionary file changes..."
+          # For manual triggers, use the provided inputs directly
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            UPSERT="${{ github.event.inputs.upsert_slugs }}"
+            DELETE="${{ github.event.inputs.delete_slugs }}"
 
+            if [ -z "$UPSERT" ] && [ -z "$DELETE" ]; then
+              echo "has_changes=false" >> "$GITHUB_OUTPUT"
+              echo "No slugs provided for manual trigger."
+            else
+              echo "upsert=$UPSERT" >> "$GITHUB_OUTPUT"
+              echo "delete=$DELETE" >> "$GITHUB_OUTPUT"
+              echo "has_changes=true" >> "$GITHUB_OUTPUT"
+            fi
+            exit 0
+          fi
+
+          # For deployment triggers, diff against the parent commit
+          echo "Detecting dictionary file changes..."
           UPSERT_SLUGS=""
           DELETE_SLUGS=""
 
-          # Compare HEAD with its parent to find changed dictionary files
           while IFS=$'\t' read -r status file; do
-            # Only process files in src/content/dictionary/
             if [[ "$file" == src/content/dictionary/*.mdx ]]; then
-              # Extract slug from filename (e.g. src/content/dictionary/api.mdx -> api)
               slug=$(basename "$file" .mdx)
 
               if [[ "$status" == "D" ]]; then
-                # File was deleted
-                if [ -n "$DELETE_SLUGS" ]; then
-                  DELETE_SLUGS="$DELETE_SLUGS,$slug"
-                else
-                  DELETE_SLUGS="$slug"
-                fi
+                DELETE_SLUGS="${DELETE_SLUGS:+$DELETE_SLUGS,}$slug"
               else
-                # File was added (A), modified (M), or renamed (R*)
-                if [ -n "$UPSERT_SLUGS" ]; then
-                  UPSERT_SLUGS="$UPSERT_SLUGS,$slug"
-                else
-                  UPSERT_SLUGS="$slug"
-                fi
+                UPSERT_SLUGS="${UPSERT_SLUGS:+$UPSERT_SLUGS,}$slug"
               fi
             fi
           done < <(git diff --name-status HEAD~1 -- src/content/dictionary/)
 
-          echo "upsert_slugs=$UPSERT_SLUGS" >> "$GITHUB_OUTPUT"
-          echo "delete_slugs=$DELETE_SLUGS" >> "$GITHUB_OUTPUT"
-
           if [ -z "$UPSERT_SLUGS" ] && [ -z "$DELETE_SLUGS" ]; then
             echo "has_changes=false" >> "$GITHUB_OUTPUT"
-            echo "No dictionary changes detected. Skipping update."
+            echo "No dictionary file changes detected. Skipping update."
           else
+            echo "upsert=$UPSERT_SLUGS" >> "$GITHUB_OUTPUT"
+            echo "delete=$DELETE_SLUGS" >> "$GITHUB_OUTPUT"
             echo "has_changes=true" >> "$GITHUB_OUTPUT"
             echo "Upsert slugs: $UPSERT_SLUGS"
             echo "Delete slugs: $DELETE_SLUGS"
           fi
 
-      - name: Resolve slugs
-        id: resolve-slugs
-        run: |
-          if [ "${{ github.event_name }}" == "workflow_dispatch" ]; then
-            echo "upsert=${{ github.event.inputs.upsert_slugs }}" >> "$GITHUB_OUTPUT"
-            echo "delete=${{ github.event.inputs.delete_slugs }}" >> "$GITHUB_OUTPUT"
+      - name: Skip — no dictionary changes
+        if: steps.detect.outputs.has_changes != 'true' && (github.event_name == 'workflow_dispatch' || steps.pr-check.outputs.should_continue == 'true')
+        run: echo "⏭️ No dictionary changes to process. Skipping."
 
-            if [ -z "${{ github.event.inputs.upsert_slugs }}" ] && [ -z "${{ github.event.inputs.delete_slugs }}" ]; then
-              echo "skip=true" >> "$GITHUB_OUTPUT"
-            else
-              echo "skip=false" >> "$GITHUB_OUTPUT"
-            fi
-          else
-            echo "upsert=${{ steps.detect-changes.outputs.upsert_slugs }}" >> "$GITHUB_OUTPUT"
-            echo "delete=${{ steps.detect-changes.outputs.delete_slugs }}" >> "$GITHUB_OUTPUT"
-            echo "skip=${{ steps.detect-changes.outputs.has_changes != 'true' }}" >> "$GITHUB_OUTPUT"
-          fi
-
-      - name: Skip if no changes
-        if: steps.resolve-slugs.outputs.skip == 'true'
-        run: echo "✅ No dictionary changes to process. Skipping."
-
+      # ── Run the incremental update ─────────────────────────────────────
       - name: Setup Node.js
-        if: steps.resolve-slugs.outputs.skip != 'true'
+        if: steps.detect.outputs.has_changes == 'true'
         uses: actions/setup-node@v4
         with:
           node-version: "20"
           cache: "npm"
 
       - name: Install dependencies
-        if: steps.resolve-slugs.outputs.skip != 'true'
+        if: steps.detect.outputs.has_changes == 'true'
         run: npm ci
 
       - name: Update vector store
-        if: steps.resolve-slugs.outputs.skip != 'true'
+        if: steps.detect.outputs.has_changes == 'true'
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
           OPENAI_EMBEDDINGS_MODEL: ${{ vars.OPENAI_EMBEDDINGS_MODEL }}
@@ -121,17 +154,17 @@ jobs:
         run: |
           ARGS=""
 
-          if [ -n "${{ steps.resolve-slugs.outputs.upsert }}" ]; then
-            ARGS="$ARGS --upsert ${{ steps.resolve-slugs.outputs.upsert }}"
+          if [ -n "${{ steps.detect.outputs.upsert }}" ]; then
+            ARGS="$ARGS --upsert ${{ steps.detect.outputs.upsert }}"
           fi
 
-          if [ -n "${{ steps.resolve-slugs.outputs.delete }}" ]; then
-            ARGS="$ARGS --delete ${{ steps.resolve-slugs.outputs.delete }}"
+          if [ -n "${{ steps.detect.outputs.delete }}" ]; then
+            ARGS="$ARGS --delete ${{ steps.detect.outputs.delete }}"
           fi
 
           echo "Running: npm run update:jai:ci -- $ARGS"
           npm run update:jai:ci -- $ARGS
 
       - name: Update successful
-        if: steps.resolve-slugs.outputs.skip != 'true'
+        if: steps.detect.outputs.has_changes == 'true'
         run: echo "✅ Vector store update completed successfully"

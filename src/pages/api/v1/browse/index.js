@@ -12,7 +12,7 @@ export async function GET() {
   const dictionary = await getCollection("dictionary");
   const response = dictionary.map((word) => {
     return {
-      slug: word.slug,
+      slug: word.id,
       title: word.data.title,
       content: word.body,
     };

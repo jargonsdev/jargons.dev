@@ -34,7 +34,16 @@ function parseArgs(argv) {
   const deleteSlugs = [];
 
   for (let i = 0; i < args.length; i++) {
-    if (args[i] === "--upsert" && args[i + 1]) {
+    if (args[i] === "--upsert") {
+      if (!args[i + 1] || args[i + 1].startsWith("--")) {
+        console.error(
+          "❌ Error: --upsert flag requires a comma-separated list of slugs.",
+        );
+        console.error(
+          "Usage: node dev/update-vector-store.js --upsert slug1,slug2 --delete slug3,slug4",
+        );
+        process.exit(1);
+      }
       upsertSlugs.push(
         ...args[i + 1]
           .split(",")
@@ -42,7 +51,16 @@ function parseArgs(argv) {
           .filter(Boolean),
       );
       i++;
-    } else if (args[i] === "--delete" && args[i + 1]) {
+    } else if (args[i] === "--delete") {
+      if (!args[i + 1] || args[i + 1].startsWith("--")) {
+        console.error(
+          "❌ Error: --delete flag requires a comma-separated list of slugs.",
+        );
+        console.error(
+          "Usage: node dev/update-vector-store.js --upsert slug1,slug2 --delete slug3,slug4",
+        );
+        process.exit(1);
+      }
       deleteSlugs.push(
         ...args[i + 1]
           .split(",")
@@ -50,6 +68,12 @@ function parseArgs(argv) {
           .filter(Boolean),
       );
       i++;
+    } else {
+      console.error(`❌ Error: Unknown argument "${args[i]}".`);
+      console.error(
+        "Usage: node dev/update-vector-store.js --upsert slug1,slug2 --delete slug3,slug4",
+      );
+      process.exit(1);
     }
   }
 

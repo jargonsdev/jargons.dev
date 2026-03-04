@@ -186,7 +186,8 @@ The **Update Vector Store** workflow (`.github/workflows/update-vector-store.yml
 ### Error Handling
 
 The script includes robust error handling for:
-- Missing or invalid CLI arguments (prints usage and exits gracefully)
+- Unknown flags or flags missing required values (prints an error with usage instructions and exits with code 1)
+- No slugs provided (prints usage and exits gracefully with code 0)
 - Words not found on the production API (404 — warns and continues with remaining slugs)
 - Network connectivity issues
 - Vector store connection and deletion failures

@@ -1,0 +1,170 @@
+name: Update Vector Store (Qdrant)
+
+on:
+  deployment_status:
+
+  # Allow manual triggering with custom slugs
+  workflow_dispatch:
+    inputs:
+      upsert_slugs:
+        description: "Comma-separated slugs to upsert (e.g. api,closure)"
+        required: false
+      delete_slugs:
+        description: "Comma-separated slugs to delete (e.g. old-term)"
+        required: false
+
+jobs:
+  update-vector-store:
+    runs-on: ubuntu-latest
+
+    # Only run on successful production deployments (or manual trigger)
+    if: >
+      github.event_name == 'workflow_dispatch' ||
+      (
+        github.event.deployment_status.state == 'success' &&
+        github.event.deployment.environment == 'Production'
+      )
+
+    steps:
+      # ── Gate: Check that the merged PR has a dictionary label ──────────
+      - name: Check PR labels
+        if: github.event_name != 'workflow_dispatch'
+        id: pr-check
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const sha = context.payload.deployment.sha;
+
+            // Find PRs associated with this deployment commit
+            const { data: prs } = await github.rest.repos.listPullRequestsAssociatedWithCommit({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              commit_sha: sha,
+            });
+
+            // Find the merged PR targeting main
+            const mergedPR = prs.find(pr => pr.merged_at && pr.base.ref === 'main');
+
+            if (!mergedPR) {
+              core.info('No merged PR found for this deployment. Skipping.');
+              core.setOutput('should_continue', 'false');
+              return;
+            }
+
+            const labels = mergedPR.labels.map(l => l.name);
+            core.info(`PR #${mergedPR.number}: ${mergedPR.title}`);
+            core.info(`Labels: ${labels.join(', ')}`);
+
+            const requiredLabels = ['📖edit-word', '📖new-word'];
+            const hasRequiredLabel = labels.some(l => requiredLabels.includes(l));
+
+            if (!hasRequiredLabel) {
+              core.info(`PR does not have required labels (${requiredLabels.join(', ')}). Skipping.`);
+              core.setOutput('should_continue', 'false');
+              return;
+            }
+
+            core.info('✅ PR has required label. Proceeding with update.');
+            core.setOutput('should_continue', 'true');
+
+      - name: Skip — PR lacks required labels
+        if: github.event_name != 'workflow_dispatch' && steps.pr-check.outputs.should_continue != 'true'
+        run: |
+          echo "⏭️ Skipping: deployment is not from a 📖new-word or 📖edit-word PR."
+
+      # ── Checkout & detect changed dictionary files ─────────────────────
+      - name: Checkout repository
+        if: github.event_name == 'workflow_dispatch' || steps.pr-check.outputs.should_continue == 'true'
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.deployment.sha || github.sha }}
+          fetch-depth: 2
+
+      - name: Detect changed dictionary files
+        if: github.event_name == 'workflow_dispatch' || steps.pr-check.outputs.should_continue == 'true'
+        id: detect
+        run: |
+          # For manual triggers, use the provided inputs directly
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            UPSERT="${{ github.event.inputs.upsert_slugs }}"
+            DELETE="${{ github.event.inputs.delete_slugs }}"
+
+            if [ -z "$UPSERT" ] && [ -z "$DELETE" ]; then
+              echo "has_changes=false" >> "$GITHUB_OUTPUT"
+              echo "No slugs provided for manual trigger."
+            else
+              echo "upsert=$UPSERT" >> "$GITHUB_OUTPUT"
+              echo "delete=$DELETE" >> "$GITHUB_OUTPUT"
+              echo "has_changes=true" >> "$GITHUB_OUTPUT"
+            fi
+            exit 0
+          fi
+
+          # For deployment triggers, diff against the parent commit
+          echo "Detecting dictionary file changes..."
+          UPSERT_SLUGS=""
+          DELETE_SLUGS=""
+
+          while IFS=$'\t' read -r status file; do
+            if [[ "$file" == src/content/dictionary/*.mdx ]]; then
+              slug=$(basename "$file" .mdx)
+
+              if [[ "$status" == "D" ]]; then
+                DELETE_SLUGS="${DELETE_SLUGS:+$DELETE_SLUGS,}$slug"
+              else
+                UPSERT_SLUGS="${UPSERT_SLUGS:+$UPSERT_SLUGS,}$slug"
+              fi
+            fi
+          done < <(git diff --name-status HEAD~1 -- src/content/dictionary/)
+
+          if [ -z "$UPSERT_SLUGS" ] && [ -z "$DELETE_SLUGS" ]; then
+            echo "has_changes=false" >> "$GITHUB_OUTPUT"
+            echo "No dictionary file changes detected. Skipping update."
+          else
+            echo "upsert=$UPSERT_SLUGS" >> "$GITHUB_OUTPUT"
+            echo "delete=$DELETE_SLUGS" >> "$GITHUB_OUTPUT"
+            echo "has_changes=true" >> "$GITHUB_OUTPUT"
+            echo "Upsert slugs: $UPSERT_SLUGS"
+            echo "Delete slugs: $DELETE_SLUGS"
+          fi
+
+      - name: Skip — no dictionary changes
+        if: steps.detect.outputs.has_changes != 'true' && (github.event_name == 'workflow_dispatch' || steps.pr-check.outputs.should_continue == 'true')
+        run: echo "⏭️ No dictionary changes to process. Skipping."
+
+      # ── Run the incremental update ─────────────────────────────────────
+      - name: Setup Node.js
+        if: steps.detect.outputs.has_changes == 'true'
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+
+      - name: Install dependencies
+        if: steps.detect.outputs.has_changes == 'true'
+        run: npm ci
+
+      - name: Update vector store
+        if: steps.detect.outputs.has_changes == 'true'
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          OPENAI_EMBEDDINGS_MODEL: ${{ vars.OPENAI_EMBEDDINGS_MODEL }}
+          QDRANT_URL: ${{ secrets.QDRANT_URL }}
+          QDRANT_API_KEY: ${{ secrets.QDRANT_API_KEY }}
+        run: |
+          ARGS=""
+
+          if [ -n "${{ steps.detect.outputs.upsert }}" ]; then
+            ARGS="$ARGS --upsert ${{ steps.detect.outputs.upsert }}"
+          fi
+
+          if [ -n "${{ steps.detect.outputs.delete }}" ]; then
+            ARGS="$ARGS --delete ${{ steps.detect.outputs.delete }}"
+          fi
+
+          echo "Running: npm run update:jai:ci -- $ARGS"
+          npm run update:jai:ci -- $ARGS
+
+      - name: Update successful
+        if: steps.detect.outputs.has_changes == 'true'
+        run: echo "✅ Vector store update completed successfully"

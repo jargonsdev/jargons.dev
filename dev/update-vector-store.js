@@ -131,28 +131,29 @@ for (const slug of upsertSlugs) {
   try {
     console.log(`\n🔄 Processing upsert for "${slug}"...`);
 
-    // 1. Remove any existing chunks for this word
-    console.log(`   Deleting old chunks for "${slug}"...`);
-    await deletePointsBySlug(slug);
-
-    // 2. Fetch the latest content from the deployed site
+    // 1. Fetch the latest content from the deployed site
     const word = await fetchWord(slug);
     if (!word) {
-      console.warn(`   ⚠️  Word "${slug}" not found in production API, skipping.`);
+      console.warn(
+        `   ⚠️  Word "${slug}" not found in production API, skipping without deleting existing vectors.`,
+      );
       failedCount++;
       continue;
     }
 
-    // 3. Create a LangChain Document with slug metadata
+    // 2. Create a LangChain Document with slug metadata
     const doc = new Document({
       pageContent: `${word.title}\n\n${word.content}`,
       metadata: { slug: word.slug },
     });
 
-    // 4. Split into chunks (preserving metadata on each chunk)
+    // 3. Split into chunks (preserving metadata on each chunk)
     const chunks = await splitter.splitDocuments([doc]);
     console.log(`   Split into ${chunks.length} chunk(s).`);
 
+    // 4. Remove any existing chunks for this word, now that new chunks are ready
+    console.log(`   Deleting old chunks for "${slug}"...`);
+    await deletePointsBySlug(slug);
     // 5. Add to vector store
     await vectorStore.addDocuments(chunks);
     console.log(`   ✅ Upserted "${slug}" (${chunks.length} chunks)`);

@@ -8,7 +8,7 @@ const appCredentials = await registerGitHubApp({
   name: "jargons.dev-app-for-",
   url: "https://github.com/jargonsdev/jargons.dev/CONTRIBUTING.md",
   default_permissions: {
-    issues: "write",
+    pull_requests: "write"
   },
 });
 

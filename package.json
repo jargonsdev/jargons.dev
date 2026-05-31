@@ -53,7 +53,7 @@
     "astro": "^5.16.11",
     "flexsearch": "^0.7.43",
     "gray-matter": "^4.0.3",
-    "js-cookie": "^3.0.5",
+    "js-cookie": "^3.0.7",
     "langchain": "^0.3.37",
     "nanostores": "^0.10.0",
     "octokit": "^3.1.2",

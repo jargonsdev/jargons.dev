@@ -41,7 +41,7 @@
     "@astrojs/partytown": "^2.1.2",
     "@astrojs/react": "^4.3.0",
     "@astrojs/tailwind": "^5.1.5",
-    "@astrojs/vercel": "^8.2.1",
+    "@astrojs/vercel": "^10.0.2",
     "@fontsource/ibm-plex-mono": "^5.0.12",
     "@fontsource/inter": "^5.0.17",
     "@langchain/openai": "^0.5.18",

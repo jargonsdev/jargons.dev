@@ -1,13 +1,13 @@
 /**
- * Register a GitHub App using the manifest flow
- * @see https://github.com/gr2m/register-github-app
+ * Register a GitHub App via a local server and the GitHub App Manifest flow
+ * @uses https://github.com/gr2m/register-github-app
  *
  * @ts-check
  */
 
 import { createServer } from "node:http";
-
 import { request as octokitRequest } from "@octokit/request";
+import { getStartPage, getNextStepPage } from "./content.html.js";
 
 const DEFAULT_MANIFEST = {
   url: "https://github.com",
@@ -19,9 +19,9 @@ const DEFAULT_META_OPTIONS = {
 };
 
 /**
- * @param {import('./index').Manifest} manifest
- * @param {import('./index').MetaOptions} metaOptions
- * @returns {Promise<import('./index').AppCredentials>}
+ * @param {import('../index').Manifest} manifest
+ * @param {import('../index').MetaOptions} metaOptions
+ * @returns {Promise<import('../index').AppCredentials>}
  */
 export default async function registerGitHubApp(
   { org, ...manifest } = DEFAULT_MANIFEST,
@@ -55,7 +55,7 @@ export default async function registerGitHubApp(
       // @ts-expect-error - I have yet to see a usecase when `server.address()` can be a string
       server.address().port;
 
-    log(`Open http://localhost:${port}`);
+    log(`Open http://localhost:${port} in the browser to get started`);
 
     server.on("error", (error) => {
       reject(new Error("A server error occured", { cause: error }));
@@ -75,30 +75,7 @@ export default async function registerGitHubApp(
         console.log(appCredentials);
 
         response.writeHead(200, { "Content-Type": "text/html" });
-        response.end(`
-          <meta charset="utf-8">
-          <h1>GitHub App registered successfully</h1>
-          <p>
-            Now follow this steps below..
-            <ul>
-              <li>
-                Create a new github repository with name "jargons.dev-test" at <a target="_blank" href="https://github.com/new">https://github.com/new</a>
-              </li>
-              <li>
-                Copy and paste the repo name in full as value to the "PUBLIC_PROJECT_REPO" in the newly created .env; 
-                <br>
-                Example: (assuming you chose the suggested name)
-                <br>
-                <code>
-                  PUBLIC_PROJECT_REPO="${appCredentials.owner.login}/jargons.dev-test"
-                </code>
-              </li>
-              <li>
-                Then follow this link to install the app on the repo <a href="${appCredentials.html_url}">${appCredentials.html_url}</a>. 
-              </li>
-            </ul>
-          </p>
-        `);
+        response.end(getNextStepPage(appCredentials));
 
         resolve(appCredentials);
 
@@ -115,25 +92,7 @@ export default async function registerGitHubApp(
       });
 
       response.writeHead(200, { "Content-Type": "text/html" });
-      response.end(`
-        <meta charset="utf-8">
-        <h1>Registering GitHub App</h1>
-        <form action="${registerUrl}" method="post">
-          <input type="hidden" name="manifest" id="manifest">
-          <input type="submit" value="Submit" id="submit">
-        </form>
-
-        <p>
-          You will be redirected automatically …
-        </p>
-
-        <script>
-          const input = document.getElementById("manifest")
-          input.value = \`${manifestJson}\`
-
-          document.getElementById("submit").click()
-        </script>
-      `);
+      response.end(getStartPage(registerUrl, manifestJson));
     });
   });
 }

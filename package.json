@@ -16,7 +16,7 @@
     "test:ui": "vitest --ui",
     "test:watch": "vitest",
     "test:coverage": "vitest run --coverage",
-    "setup": "node dev/setup.js",
+    "setup": "node dev/setup/index.js",
     "seed:jai": "node --env-file=.env dev/seed-vector-store.js",
     "update:jai": "node --env-file=.env dev/update-vector-store.js",
     "update:jai:ci": "node dev/update-vector-store.js",

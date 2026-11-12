@@ -30,7 +30,7 @@ jobs:
       - name: Check PR labels
         if: github.event_name != 'workflow_dispatch'
         id: pr-check
-        uses: actions/github-script@v7
+        uses: actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b # v7
         with:
           script: |
             const sha = context.payload.deployment.sha;
@@ -75,7 +75,7 @@ jobs:
       # ── Checkout & detect changed dictionary files ─────────────────────
       - name: Checkout repository
         if: github.event_name == 'workflow_dispatch' || steps.pr-check.outputs.should_continue == 'true'
-        uses: actions/checkout@v4
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           ref: ${{ github.event.deployment.sha || github.sha }}
           fetch-depth: 2
@@ -135,7 +135,7 @@ jobs:
       # ── Run the incremental update ─────────────────────────────────────
       - name: Setup Node.js
         if: steps.detect.outputs.has_changes == 'true'
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
         with:
           node-version: "22"
           cache: "npm"

@@ -6,9 +6,11 @@
 
 import { useEffect, useState } from "react";
 import Markdown from "react-markdown";
+import { TextStreamChatTransport } from "ai";
 import { useChat } from "@ai-sdk/react";
 import JAILogo from "./logo.jsx";
 import { capitalizeText } from "../../../src/lib/utils/index.js";
+import { getMessageText } from "../lib/utils.js";
 
 /**
  * JAI Word Search Component
@@ -22,8 +24,10 @@ export default function JAIWordSearch({ word }) {
   /**
    * Initialize useChat hook
    */
-  const { messages, status, append } = useChat({
-    api: "/api/jai/search",
+  const { messages, status, sendMessage } = useChat({
+    transport: new TextStreamChatTransport({
+      api: "/api/jai/search",
+    }),
     onError: (e) => {
       setError(JSON.parse(e.message));
       console.error(e);
@@ -34,10 +38,7 @@ export default function JAIWordSearch({ word }) {
    * Handle Asking jAI for the word definition
    */
   useEffect(() => {
-    append({
-      role: "user",
-      content: `define ${word}`,
-    });
+    sendMessage({ text: `define ${word}` });
   }, [word]);
 
   /**
@@ -46,10 +47,10 @@ export default function JAIWordSearch({ word }) {
   if (status === "submitted" || (status === "ready" && messages.length === 0))
     return (
       <div className="space-y-4">
-        <div className="h-6 w-full animate-pulse bg-gray-200 rounded-md" />
-        <div className="h-6 w-3/4 animate-pulse bg-gray-200 rounded-md" />
-        <div className="h-6 w-4/5 animate-pulse bg-gray-200 rounded-md" />
-        <div className="h-6 w-3/5 animate-pulse bg-gray-200 rounded-md" />
+        <div className="h-6 w-full animate-pulse bg-gray-200 rounded-lg" />
+        <div className="h-6 w-3/4 animate-pulse bg-gray-200 rounded-lg" />
+        <div className="h-6 w-4/5 animate-pulse bg-gray-200 rounded-lg" />
+        <div className="h-6 w-3/5 animate-pulse bg-gray-200 rounded-lg" />
       </div>
     );
 
@@ -58,7 +59,7 @@ export default function JAIWordSearch({ word }) {
    */
   if (error)
     return (
-      <div className="rounded-md bg-red-50 p-4">
+      <div className="rounded-lg bg-red-50 p-4">
         <div className="flex items-center gap-2">
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -84,7 +85,9 @@ export default function JAIWordSearch({ word }) {
 
   return messages
     .filter((msg) => msg.role !== "user")
-    .map((msg, index) => <Markdown key={index}>{msg.content}</Markdown>);
+    .map((msg, index) => (
+      <Markdown key={index}>{getMessageText(msg)}</Markdown>
+    ));
 }
 
 /**

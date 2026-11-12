@@ -1,7 +1,10 @@
-import { LangChainAdapter } from "ai";
 import { RunnableSequence } from "@langchain/core/runnables";
-import { jAIPrompts, model } from "../../../../apps/jai/index.js";
-import { HttpResponseOutputParser } from "langchain/output_parsers";
+import {
+  getMessageText,
+  jAIPrompts,
+  model,
+} from "../../../../apps/jai/index.js";
+import { HttpResponseOutputParser } from "@langchain/classic/output_parsers";
 
 const allowedOrigins = [
   "https://www.jargons.dev", // production
@@ -49,7 +52,7 @@ export async function POST({ request }) {
       );
     }
 
-    const currentMessageContent = messages[messages.length - 1].content;
+    const currentMessageContent = getMessageText(messages[messages.length - 1]);
 
     // Create the parser - parses the response from the model into http-friendly format
     const parser = new HttpResponseOutputParser();
@@ -69,25 +72,26 @@ export async function POST({ request }) {
       question: currentMessageContent,
     });
 
-    // Convert Uint8Array stream to string stream before returning
-    const textStream = new ReadableStream({
+    const responseStream = new ReadableStream({
       async start(controller) {
-        const decoder = new TextDecoder();
-        for await (const chunk of stream) {
-          controller.enqueue(decoder.decode(chunk));
+        try {
+          for await (const chunk of stream) {
+            controller.enqueue(chunk);
+          }
+          controller.close();
+        } catch (error) {
+          controller.error(error);
         }
-        controller.close();
       },
     });
 
-    const response = LangChainAdapter.toDataStreamResponse(textStream);
-
-    // Add CORS headers to the response
-    Object.entries(corsHeaders).forEach(([key, value]) => {
-      response.headers.set(key, value);
+    return new Response(responseStream, {
+      headers: {
+        ...corsHeaders,
+        "Cache-Control": "no-cache",
+        "Content-Type": "text/plain; charset=utf-8",
+      },
     });
-
-    return response;
   } catch (e) {
     return Response.json(
       { error: e.message },

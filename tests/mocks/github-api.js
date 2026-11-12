@@ -171,9 +171,13 @@ export const githubHandlers = [
     return HttpResponse.json(forkCreationResponse);
   }),
 
-  // Update fork (sync with upstream)
-  http.patch(`${GITHUB_API_BASE}/repos/:owner/:repo/git/refs/:ref`, () => {
-    return new HttpResponse(null, { status: 200 });
+  // Update fork (sync with upstream using merge-upstream)
+  http.post(`${GITHUB_API_BASE}/repos/:owner/:repo/merge-upstream`, () => {
+    return HttpResponse.json({
+      message: "Successfully fetched and fast-forwarded from upstream.",
+      merge_type: "fast-forward",
+      base_branch: "main",
+    });
   }),
 
   // GraphQL endpoint for fork detection

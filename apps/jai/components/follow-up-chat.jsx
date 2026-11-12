@@ -7,10 +7,12 @@
 import Cookies from "js-cookie";
 import JAILogo from "./logo";
 import Markdown from "react-markdown";
+import { TextStreamChatTransport } from "ai";
 import { useChat } from "@ai-sdk/react";
 import { useEffect, useRef, useState } from "react";
 import { $isJAIOpen } from "@/src/lib/stores/jai";
 import useRouter from "@/src/lib/hooks/use-router";
+import { getMessageText } from "../lib/utils.js";
 
 // Default question templates
 const DEFAULT_QUESTIONS = [
@@ -59,13 +61,24 @@ export default function JAIFollowUpChatWidget({ word }) {
   /**
    * Initialize useChat hook - handles chat state and interactions
    */
-  const { messages, input, status, handleInputChange, handleSubmit, append } =
-    useChat({
+  const [input, setInput] = useState("");
+  const { messages, status, sendMessage } = useChat({
+    transport: new TextStreamChatTransport({
       api: "/api/jai/follow-up-chat",
-      onError: (e) => {
-        console.error(e);
-      },
-    });
+    }),
+    onError: (e) => {
+      console.error(e);
+    },
+  });
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    const text = input.trim();
+    if (!text || status !== "ready") return;
+
+    sendMessage({ text });
+    setInput("");
+  };
 
   /**
    * Handle clicking on default questions
@@ -73,11 +86,7 @@ export default function JAIFollowUpChatWidget({ word }) {
    */
   const handleQuestionClick = (questionTemplate) => {
     const formattedQuestion = formatQuestion(questionTemplate, word);
-    // Use append to directly add the message without needing form submission
-    append({
-      role: "user",
-      content: formattedQuestion,
-    });
+    sendMessage({ text: formattedQuestion });
   };
 
   /**
@@ -123,16 +132,16 @@ export default function JAIFollowUpChatWidget({ word }) {
               <div key={index} className="flex space-x-3">
                 {message.role === "user" ? (
                   <>
-                    <div className="flex-none flex items-center justify-center rounded-lg size-10 border bg-neutral-100 border-neutral-200 border-opacity-50 overflow-hidden">
+                    <div className="flex-none flex items-center justify-center rounded-xl size-10 border bg-neutral-100 border-neutral-200 border-opacity-50 overflow-hidden">
                       <img src={user.avatar_url} alt={user.name} />
                     </div>
                     <div className="w-1 flex-1 bg-neutral-50 border border-neutral-200 border-opacity-50 rounded-tl-sm rounded-2xl p-5">
-                      <p>{message.content}</p>
+                      <p>{getMessageText(message)}</p>
                     </div>
                   </>
                 ) : (
                   <>
-                    <div className="flex-none flex items-center justify-center rounded-lg size-10 border bg-black border-black border-opacity-50">
+                    <div className="flex-none flex items-center justify-center rounded-xl size-10 border bg-black border-black border-opacity-50">
                       <svg
                         width="19"
                         height="18"
@@ -150,7 +159,7 @@ export default function JAIFollowUpChatWidget({ word }) {
                     </div>
                     <div className="w-1 flex-1 bg-neutral-50 border border-neutral-200 border-opacity-50 rounded-tl-sm rounded-2xl p-5">
                       <Markdown className="prose max-w-max">
-                        {message.content}
+                        {getMessageText(message)}
                       </Markdown>
                     </div>
                   </>
@@ -161,7 +170,7 @@ export default function JAIFollowUpChatWidget({ word }) {
             {/* jAI Loading */}
             {status === "submitted" && (
               <div className="flex space-x-3">
-                <div className="flex-none flex items-center justify-center rounded-lg size-10 border bg-black border-black border-opacity-50">
+                <div className="flex-none flex items-center justify-center rounded-xl size-10 border bg-black border-black border-opacity-50">
                   <svg
                     width="19"
                     height="18"
@@ -209,11 +218,10 @@ export default function JAIFollowUpChatWidget({ word }) {
               onChange={(e) => {
                 e.target.style.height = "auto";
                 e.target.style.height = `${e.target.scrollHeight}px`;
-                handleInputChange(e);
+                setInput(e.target.value);
               }}
               onKeyDown={(e) => {
                 if (e.key === "Enter" && !e.shiftKey) {
-                  e.preventDefault();
                   handleSubmit(e);
                 }
               }}
@@ -221,6 +229,7 @@ export default function JAIFollowUpChatWidget({ word }) {
             <div className="flex justify-end mt-2">
               <button
                 type="submit"
+                disabled={status !== "ready" || !input.trim()}
                 className="size-9 bg-black text-white flex items-center justify-center rounded-full"
               >
                 <svg
@@ -304,7 +313,7 @@ function JAIIntro({ status, word, onQuestionClick }) {
               <button
                 key={index}
                 onClick={() => onQuestionClick(questionTemplate)}
-                className="bg-neutral-100 border border-neutral-200 rounded-lg text-sm md:text-base px-4 py-1.5 md:px-5 md:py-2.5 hover:bg-neutral-200 transition-colors duration-200 cursor-pointer"
+                className="bg-neutral-100 border border-neutral-200 rounded-xl text-sm md:text-base px-4 py-1.5 md:px-5 md:py-2.5 hover:bg-neutral-200 transition-colors duration-200 cursor-pointer"
               >
                 {formatQuestion(questionTemplate, word)}
               </button>
@@ -313,7 +322,7 @@ function JAIIntro({ status, word, onQuestionClick }) {
         ) : (
           <a
             href={`/login?return_to=${encodeURIComponent(pathname + (pathname.includes("?") ? "&" : "?") + "jai=1")}`}
-            className="flex items-center justify-center h-12 mr-3 px-3 text-lg font-medium bg-black text-white border no-underline rounded-lg focus:outline-none hover:shadow-xl"
+            className="flex items-center justify-center h-12 mr-3 px-3 text-lg font-medium bg-black text-white border no-underline rounded-xl focus:outline-none hover:shadow-xl"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"

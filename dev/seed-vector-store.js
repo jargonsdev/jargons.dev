@@ -1,7 +1,9 @@
 import fetch from "node-fetch";
 import { Document } from "@langchain/classic/document";
 import { RecursiveCharacterTextSplitter } from "@langchain/classic/text_splitter";
-import { vectorStore } from "../apps/jai/index.js";
+import vectorStore, {
+  ensureSlugPayloadIndex,
+} from "../apps/jai/lib/vector-store.js";
 
 // Load the dictionary from the jargons.dev API
 const response = await fetch("https://jargons.dev/api/v1/browse");
@@ -29,6 +31,8 @@ const allSplits = await splitter.splitDocuments(docs);
 console.log(`Split into ${allSplits.length} chunks`);
 
 // Add the splits to the vector store in batches
+await ensureSlugPayloadIndex();
+
 const batchSize = 100;
 for (let i = 0; i < allSplits.length; i += batchSize) {
   const batch = allSplits.slice(i, i + batchSize);

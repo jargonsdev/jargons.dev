@@ -21,4 +21,27 @@ const vectorStore = await QdrantVectorStore.fromExistingCollection(embeddings, {
   collectionName: "dictionary",
 });
 
+export async function ensureSlugPayloadIndex() {
+  const fieldName = "metadata.slug";
+  const hasKeywordIndex = async () => {
+    const collection = await vectorStore.client.getCollection(
+      vectorStore.collectionName,
+    );
+    return collection.payload_schema?.[fieldName]?.data_type === "keyword";
+  };
+
+  if (await hasKeywordIndex()) return;
+
+  try {
+    await vectorStore.client.createPayloadIndex(vectorStore.collectionName, {
+      field_name: fieldName,
+      field_schema: "keyword",
+      wait: true,
+    });
+  } catch (error) {
+    if (await hasKeywordIndex()) return;
+    throw error;
+  }
+}
+
 export { vectorStore as default };

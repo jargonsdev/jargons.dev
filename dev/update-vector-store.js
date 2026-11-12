@@ -20,7 +20,9 @@
 import fetch from "node-fetch";
 import { Document } from "@langchain/classic/document";
 import { RecursiveCharacterTextSplitter } from "@langchain/classic/text_splitter";
-import { vectorStore } from "../apps/jai/index.js";
+import vectorStore, {
+  ensureSlugPayloadIndex,
+} from "../apps/jai/lib/vector-store.js";
 
 const PRODUCTION_API_BASE = "https://jargons.dev/api/v1/browse";
 const SLUG_PATTERN = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
@@ -134,6 +136,8 @@ if (upsertSlugs.length === 0 && deleteSlugs.length === 0) {
   process.exit(0);
 }
 
+await ensureSlugPayloadIndex();
+
 console.log("🚀 Starting incremental vector store update...");
 console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
 
@@ -182,6 +186,7 @@ for (const slug of upsertSlugs) {
     // 4. Remove any existing chunks for this word, now that new chunks are ready
     console.log(`   Deleting old chunks for "${slug}"...`);
     await deletePointsBySlug(slug);
+    
     // 5. Add to vector store
     await vectorStore.addDocuments(chunks);
     console.log(`   ✅ Upserted "${slug}" (${chunks.length} chunks)`);

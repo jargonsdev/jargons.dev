@@ -1,6 +1,6 @@
 import fetch from "node-fetch";
-import { Document } from "langchain/document";
-import { RecursiveCharacterTextSplitter } from "langchain/text_splitter";
+import { Document } from "@langchain/classic/document";
+import { RecursiveCharacterTextSplitter } from "@langchain/classic/text_splitter";
 import { vectorStore } from "../apps/jai/index.js";
 
 // Load the dictionary from the jargons.dev API

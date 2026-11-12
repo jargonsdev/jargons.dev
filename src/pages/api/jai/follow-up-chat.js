@@ -1,6 +1,6 @@
 import { RunnableSequence } from "@langchain/core/runnables";
-import { formatDocumentsAsString } from "langchain/util/document";
-import { HttpResponseOutputParser } from "langchain/output_parsers";
+import { HttpResponseOutputParser } from "@langchain/classic/output_parsers";
+import { formatDocumentsAsString } from "@langchain/classic/util/document";
 import {
   jAIPrompts,
   model,

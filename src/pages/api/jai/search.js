@@ -4,7 +4,7 @@ import {
   jAIPrompts,
   model,
 } from "../../../../apps/jai/index.js";
-import { HttpResponseOutputParser } from "langchain/output_parsers";
+import { HttpResponseOutputParser } from "@langchain/classic/output_parsers";
 
 const allowedOrigins = [
   "https://www.jargons.dev", // production

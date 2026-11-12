@@ -16,10 +16,16 @@ on:
 jobs:
   update-vector-store:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: read
 
     # Only run on successful production deployments (or manual trigger)
     if: >
-      github.event_name == 'workflow_dispatch' ||
+      (
+        github.event_name == 'workflow_dispatch' &&
+        github.ref == 'refs/heads/main'
+      ) ||
       (
         github.event.deployment_status.state == 'success' &&
         github.event.deployment.environment == 'Production'
@@ -30,7 +36,7 @@ jobs:
       - name: Check PR labels
         if: github.event_name != 'workflow_dispatch'
         id: pr-check
-        uses: actions/github-script@v7
+        uses: actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b # v7
         with:
           script: |
             const sha = context.payload.deployment.sha;
@@ -75,7 +81,7 @@ jobs:
       # ── Checkout & detect changed dictionary files ─────────────────────
       - name: Checkout repository
         if: github.event_name == 'workflow_dispatch' || steps.pr-check.outputs.should_continue == 'true'
-        uses: actions/checkout@v4
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           ref: ${{ github.event.deployment.sha || github.sha }}
           fetch-depth: 2
@@ -83,66 +89,71 @@ jobs:
       - name: Detect changed dictionary files
         if: github.event_name == 'workflow_dispatch' || steps.pr-check.outputs.should_continue == 'true'
         id: detect
+        env:
+          MANUAL_UPSERT_SLUGS: ${{ github.event.inputs.upsert_slugs }}
+          MANUAL_DELETE_SLUGS: ${{ github.event.inputs.delete_slugs }}
         run: |
-          # For manual triggers, use the provided inputs directly
-          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
-            UPSERT="${{ github.event.inputs.upsert_slugs }}"
-            DELETE="${{ github.event.inputs.delete_slugs }}"
+          validate_slug_list() {
+            local slug_list="$1"
 
-            if [ -z "$UPSERT" ] && [ -z "$DELETE" ]; then
-              echo "has_changes=false" >> "$GITHUB_OUTPUT"
-              echo "No slugs provided for manual trigger."
-            else
-              echo "upsert=$UPSERT" >> "$GITHUB_OUTPUT"
-              echo "delete=$DELETE" >> "$GITHUB_OUTPUT"
-              echo "has_changes=true" >> "$GITHUB_OUTPUT"
+            if [ -z "$slug_list" ] || [[ "$slug_list" =~ ^[a-z0-9]+(-[a-z0-9]+)*(,[a-z0-9]+(-[a-z0-9]+)*)*$ ]]; then
+              return 0
             fi
-            exit 0
-          fi
 
-          # For deployment triggers, diff against the parent commit
-          echo "Detecting dictionary file changes..."
+            echo "::error::Slugs must be lowercase letters and digits separated by single hyphens."
+            return 1
+          }
+
           UPSERT_SLUGS=""
           DELETE_SLUGS=""
 
-          while IFS=$'\t' read -r status file; do
-            if [[ "$file" == src/content/dictionary/*.mdx ]]; then
-              slug=$(basename "$file" .mdx)
+          if [ "$GITHUB_EVENT_NAME" = "workflow_dispatch" ]; then
+            UPSERT_SLUGS="$MANUAL_UPSERT_SLUGS"
+            DELETE_SLUGS="$MANUAL_DELETE_SLUGS"
+          else
+            echo "Detecting dictionary file changes..."
+            while IFS=$'\t' read -r status file; do
+              if [[ "$file" == src/content/dictionary/*.mdx ]]; then
+                slug=$(basename "$file" .mdx)
 
-              if [[ "$status" == "D" ]]; then
-                DELETE_SLUGS="${DELETE_SLUGS:+$DELETE_SLUGS,}$slug"
-              else
-                UPSERT_SLUGS="${UPSERT_SLUGS:+$UPSERT_SLUGS,}$slug"
+                if [[ "$status" == "D" ]]; then
+                  DELETE_SLUGS="${DELETE_SLUGS:+$DELETE_SLUGS,}$slug"
+                else
+                  UPSERT_SLUGS="${UPSERT_SLUGS:+$UPSERT_SLUGS,}$slug"
+                fi
               fi
-            fi
-          done < <(git diff --name-status HEAD~1 -- src/content/dictionary/)
+            done < <(git diff --name-status HEAD~1 -- src/content/dictionary/)
+          fi
+
+          if ! validate_slug_list "$UPSERT_SLUGS" || ! validate_slug_list "$DELETE_SLUGS"; then
+            exit 1
+          fi
+
+          printf 'upsert=%s\n' "$UPSERT_SLUGS" >> "$GITHUB_OUTPUT"
+          printf 'delete=%s\n' "$DELETE_SLUGS" >> "$GITHUB_OUTPUT"
 
           if [ -z "$UPSERT_SLUGS" ] && [ -z "$DELETE_SLUGS" ]; then
-            echo "has_changes=false" >> "$GITHUB_OUTPUT"
+            printf 'has_changes=false\n' >> "$GITHUB_OUTPUT"
             echo "No dictionary file changes detected. Skipping update."
           else
-            echo "upsert=$UPSERT_SLUGS" >> "$GITHUB_OUTPUT"
-            echo "delete=$DELETE_SLUGS" >> "$GITHUB_OUTPUT"
-            echo "has_changes=true" >> "$GITHUB_OUTPUT"
-            echo "Upsert slugs: $UPSERT_SLUGS"
-            echo "Delete slugs: $DELETE_SLUGS"
+            printf 'has_changes=true\n' >> "$GITHUB_OUTPUT"
+            echo "Dictionary changes detected."
           fi
 
       - name: Skip — no dictionary changes
         if: steps.detect.outputs.has_changes != 'true' && (github.event_name == 'workflow_dispatch' || steps.pr-check.outputs.should_continue == 'true')
         run: echo "⏭️ No dictionary changes to process. Skipping."
 
-      # ── Run the incremental update ─────────────────────────────────────
       - name: Setup Node.js
         if: steps.detect.outputs.has_changes == 'true'
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
         with:
           node-version: "22"
           cache: "npm"
 
       - name: Install dependencies
         if: steps.detect.outputs.has_changes == 'true'
-        run: npm ci
+        run: npx --yes npm@11.15.0 ci
 
       - name: Update vector store
         if: steps.detect.outputs.has_changes == 'true'
@@ -151,19 +162,21 @@ jobs:
           OPENAI_EMBEDDINGS_MODEL: ${{ vars.OPENAI_EMBEDDINGS_MODEL }}
           QDRANT_URL: ${{ secrets.QDRANT_URL }}
           QDRANT_API_KEY: ${{ secrets.QDRANT_API_KEY }}
+          UPSERT_SLUGS: ${{ steps.detect.outputs.upsert }}
+          DELETE_SLUGS: ${{ steps.detect.outputs.delete }}
         run: |
-          ARGS=""
+          ARGS=()
 
-          if [ -n "${{ steps.detect.outputs.upsert }}" ]; then
-            ARGS="$ARGS --upsert ${{ steps.detect.outputs.upsert }}"
+          if [ -n "$UPSERT_SLUGS" ]; then
+            ARGS+=(--upsert "$UPSERT_SLUGS")
           fi
 
-          if [ -n "${{ steps.detect.outputs.delete }}" ]; then
-            ARGS="$ARGS --delete ${{ steps.detect.outputs.delete }}"
+          if [ -n "$DELETE_SLUGS" ]; then
+            ARGS+=(--delete "$DELETE_SLUGS")
           fi
 
-          echo "Running: npm run update:jai:ci -- $ARGS"
-          npm run update:jai:ci -- $ARGS
+          echo "Running incremental vector store update."
+          npm run update:jai:ci -- "${ARGS[@]}"
 
       - name: Update successful
         if: steps.detect.outputs.has_changes == 'true'

@@ -18,11 +18,27 @@
  */
 
 import fetch from "node-fetch";
-import { Document } from "langchain/document";
-import { RecursiveCharacterTextSplitter } from "langchain/text_splitter";
-import { vectorStore } from "../apps/jai/index.js";
+import { Document } from "@langchain/classic/document";
+import { RecursiveCharacterTextSplitter } from "@langchain/classic/text_splitter";
+import vectorStore, {
+  ensureSlugPayloadIndex,
+} from "../apps/jai/lib/vector-store.js";
 
 const PRODUCTION_API_BASE = "https://jargons.dev/api/v1/browse";
+const SLUG_PATTERN = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
+
+function parseSlugList(value, option) {
+  const slugs = value.split(",").map((slug) => slug.trim());
+
+  if (slugs.some((slug) => !SLUG_PATTERN.test(slug))) {
+    console.error(
+      `❌ Error: ${option} slugs must be lowercase letters and digits separated by single hyphens.`,
+    );
+    process.exit(1);
+  }
+
+  return slugs;
+}
 
 // ---------------------------------------------------------------------------
 // CLI argument parsing
@@ -44,12 +60,7 @@ function parseArgs(argv) {
         );
         process.exit(1);
       }
-      upsertSlugs.push(
-        ...args[i + 1]
-          .split(",")
-          .map((s) => s.trim())
-          .filter(Boolean),
-      );
+      upsertSlugs.push(...parseSlugList(args[i + 1], "--upsert"));
       i++;
     } else if (args[i] === "--delete") {
       if (!args[i + 1] || args[i + 1].startsWith("--")) {
@@ -61,12 +72,7 @@ function parseArgs(argv) {
         );
         process.exit(1);
       }
-      deleteSlugs.push(
-        ...args[i + 1]
-          .split(",")
-          .map((s) => s.trim())
-          .filter(Boolean),
-      );
+      deleteSlugs.push(...parseSlugList(args[i + 1], "--delete"));
       i++;
     } else {
       console.error(`❌ Error: Unknown argument "${args[i]}".`);
@@ -130,6 +136,8 @@ if (upsertSlugs.length === 0 && deleteSlugs.length === 0) {
   process.exit(0);
 }
 
+await ensureSlugPayloadIndex();
+
 console.log("🚀 Starting incremental vector store update...");
 console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
 
@@ -178,6 +186,7 @@ for (const slug of upsertSlugs) {
     // 4. Remove any existing chunks for this word, now that new chunks are ready
     console.log(`   Deleting old chunks for "${slug}"...`);
     await deletePointsBySlug(slug);
+    
     // 5. Add to vector store
     await vectorStore.addDocuments(chunks);
     console.log(`   ✅ Upserted "${slug}" (${chunks.length} chunks)`);

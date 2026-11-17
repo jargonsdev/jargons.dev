@@ -38,7 +38,7 @@ export default function WordEditor({
         eTitle={title}
         eContent={content}
         eMetadata={metadata}
-        className={` ${!togglePreview ? "flex" : "hidden"} w-full h-full lg:!flex flex-col p-5 border-r`}
+        className={` ${!togglePreview ? "flex" : "hidden"} w-full h-full lg:!flex flex-col py-5 border-r`}
       />
       <Preview className="w-full h-full hidden lg:flex flex-col p-5" />
       <Preview
@@ -281,13 +281,13 @@ function Editor({ eTitle, eContent, eMetadata, className, action, ...props }) {
         id="title"
         name="title"
         value={title}
-        placeholder="New Word"
+        placeholder="New word here..."
         onChange={(e) => setTitle(e.target.value)}
         readOnly={action === "edit" || isDone}
-        className={`${(action === "edit" || isDone) && "cursor-not-allowed"} block w-full pb-2 text-gray-900 border-b text-lg font-bold focus:outline-none`}
+        className={`${(action === "edit" || isDone) && "cursor-not-allowed"} block w-full pb-2 px-5 text-gray-900 border-b text-lg font-bold focus:outline-none`}
       />
       <div
-        className="sticky top-0 z-10 flex items-center gap-1 border-b mb-3 bg-white py-2"
+        className="sticky top-0 z-10 flex items-center gap-1 border-b px-3 mb-3 bg-white py-2"
         role="toolbar"
         aria-label="Markdown formatting"
       >
@@ -363,10 +363,11 @@ function Editor({ eTitle, eContent, eMetadata, className, action, ...props }) {
         id="content"
         name="content"
         value={content}
+        placeholder="Write the word definition here..."
         onChange={(e) => setContent(e.target.value)}
         onKeyDown={handleTextareaKeyDown}
         readOnly={isDone}
-        className={`${isDone && "cursor-not-allowed select-none"} w-full h-1 grow resize-none font-mono appearance-none border-none focus:outline-none scrollbar`}
+        className={`${isDone && "cursor-not-allowed select-none"} w-full h-1 px-5 grow resize-none font-mono appearance-none border-none focus:outline-none scrollbar`}
       />
       <input type="hidden" id="action" name="action" value={action} />
       {action === "edit" && (

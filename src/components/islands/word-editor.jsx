@@ -155,6 +155,19 @@ function Editor({ eTitle, eContent, eMetadata, className, action, ...props }) {
     setContent(result.value);
   }
 
+  function applyMarkdownCodeBlock() {
+    const textarea = textareaRef.current;
+    if (!textarea || isDone) return;
+
+    const result = wrapSelectionInCodeBlock(
+      content,
+      textarea.selectionStart,
+      textarea.selectionEnd,
+    );
+    pendingSelection.current = result;
+    setContent(result.value);
+  }
+
   function applyMarkdownListPrefix(prefix) {
     const textarea = textareaRef.current;
     if (!textarea || isDone) return;
@@ -307,6 +320,17 @@ function Editor({ eTitle, eContent, eMetadata, className, action, ...props }) {
             d="m8 17-5-5 5-5m8 0 5 5-5 5m-2-13-4 16"
           />
         </ToolbarButton>
+        <ToolbarButton
+          label="Code block"
+          disabled={isDone}
+          onClick={applyMarkdownCodeBlock}
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M14.25 9.75 16.5 12l-2.25 2.25m-4.5 0L7.5 12l2.25-2.25M6 20.25h12A2.25 2.25 0 0 0 20.25 18V6A2.25 2.25 0 0 0 18 3.75H6A2.25 2.25 0 0 0 3.75 6v12A2.25 2.25 0 0 0 6 20.25Z"
+          />
+        </ToolbarButton>
       </div>
       <textarea
         ref={textareaRef}
@@ -316,7 +340,7 @@ function Editor({ eTitle, eContent, eMetadata, className, action, ...props }) {
         value={content}
         onChange={(e) => setContent(e.target.value)}
         readOnly={isDone}
-        className={`${isDone && "cursor-not-allowed select-none"} w-full h-1 grow resize-none appearance-none border-none focus:outline-none scrollbar`}
+        className={`${isDone && "cursor-not-allowed select-none"} w-full h-1 grow resize-none font-mono md:text-lg appearance-none border-none focus:outline-none scrollbar`}
       />
       <input type="hidden" id="action" name="action" value={action} />
       {action === "edit" && (
@@ -376,6 +400,24 @@ function wrapSelection(value, start, end, marker) {
   const selectionStart = start + marker.length;
   return {
     value: `${value.slice(0, start)}${wrappedText}${value.slice(end)}`,
+    start: selectionStart,
+    end: selectionStart + selectedText.length,
+  };
+}
+
+function wrapSelectionInCodeBlock(value, start, end) {
+  const selectedText = value.slice(start, end);
+  const leadingNewline = start > 0 && value[start - 1] !== "\n" ? "\n" : "";
+  const fence = "```";
+  const openingFence = `${leadingNewline}${fence}\n`;
+  const closingFence = `${selectedText.endsWith("\n") ? "" : "\n"}${fence}${
+    end < value.length && value[end] !== "\n" ? "\n" : ""
+  }`;
+  const insertedText = `${openingFence}${selectedText}${closingFence}`;
+  const selectionStart = start + openingFence.length;
+
+  return {
+    value: `${value.slice(0, start)}${insertedText}${value.slice(end)}`,
     start: selectionStart,
     end: selectionStart + selectedText.length,
   };

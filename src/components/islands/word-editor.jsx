@@ -182,6 +182,28 @@ function Editor({ eTitle, eContent, eMetadata, className, action, ...props }) {
     setContent(result.value);
   }
 
+  function handleTextareaKeyDown(event) {
+    if (
+      isDone ||
+      (!event.ctrlKey && !event.metaKey) ||
+      event.altKey ||
+      event.shiftKey
+    ) {
+      return;
+    }
+
+    const markerByKey = {
+      b: "**",
+      i: "_",
+    };
+    const marker = markerByKey[event.key.toLowerCase()];
+
+    if (!marker) return;
+
+    event.preventDefault();
+    applyMarkdownWrap(marker);
+  }
+
   /**
    * Word Submit Handler
    * @param {import("react").FormEvent} e
@@ -339,8 +361,9 @@ function Editor({ eTitle, eContent, eMetadata, className, action, ...props }) {
         name="content"
         value={content}
         onChange={(e) => setContent(e.target.value)}
+        onKeyDown={handleTextareaKeyDown}
         readOnly={isDone}
-        className={`${isDone && "cursor-not-allowed select-none"} w-full h-1 grow resize-none font-mono md:text-lg appearance-none border-none focus:outline-none scrollbar`}
+        className={`${isDone && "cursor-not-allowed select-none"} w-full h-1 grow resize-none font-mono appearance-none border-none focus:outline-none scrollbar`}
       />
       <input type="hidden" id="action" name="action" value={action} />
       {action === "edit" && (

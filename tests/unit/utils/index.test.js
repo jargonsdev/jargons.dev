@@ -10,6 +10,7 @@ import {
   buildStatsUrl,
   buildWordPathname,
   buildWordSlug,
+  toggleMarkdownListPrefix,
 } from "../../../src/lib/utils/index.js";
 
 describe("resolveCookieExpiryDate", () => {
@@ -169,6 +170,53 @@ describe("capitalizeText", () => {
 
   it("should handle multiple spaces", () => {
     expect(capitalizeText("hello  world")).toBe("Hello  World");
+  });
+});
+
+describe("toggleMarkdownListPrefix", () => {
+  it("adds and toggles off an unordered prefix at the cursor line", () => {
+    const added = toggleMarkdownListPrefix("item", 0, 0, "- ");
+    expect(added).toEqual({ value: "- item", start: 2, end: 2 });
+
+    expect(
+      toggleMarkdownListPrefix(added.value, added.start, added.end, "- "),
+    ).toEqual({
+      value: "item",
+      start: 0,
+      end: 0,
+    });
+  });
+
+  it("switches an existing unordered prefix to an ordered prefix", () => {
+    const switched = toggleMarkdownListPrefix("- item", 2, 6, "1. ");
+    expect(switched).toEqual({
+      value: "1. item",
+      start: 3,
+      end: 7,
+    });
+
+    expect(
+      toggleMarkdownListPrefix(
+        switched.value,
+        switched.start,
+        switched.end,
+        "1. ",
+      ),
+    ).toEqual({
+      value: "item",
+      start: 0,
+      end: 4,
+    });
+  });
+
+  it("toggles selected lines individually and preserves their selection", () => {
+    const value = "- first\n1. second\nthird";
+
+    expect(toggleMarkdownListPrefix(value, 0, value.length, "- ")).toEqual({
+      value: "first\n- second\n- third",
+      start: 0,
+      end: 22,
+    });
   });
 });
 

@@ -9,7 +9,10 @@ import { useEffect, useRef } from "react";
 import Markdown from "react-markdown";
 import { useStore } from "@nanostores/react";
 import useRouter from "../../lib/hooks/use-router.js";
-import { capitalizeText } from "../../lib/utils/index.js";
+import {
+  capitalizeText,
+  toggleMarkdownListPrefix,
+} from "../../lib/utils/index.js";
 import useWordEditor from "../../lib/hooks/use-word-editor.js";
 import {
   $isWordSubmitLoading,
@@ -172,7 +175,7 @@ function Editor({ eTitle, eContent, eMetadata, className, action, ...props }) {
     const textarea = textareaRef.current;
     if (!textarea || isDone) return;
 
-    const result = prefixSelectedLines(
+    const result = toggleMarkdownListPrefix(
       content,
       textarea.selectionStart,
       textarea.selectionEnd,
@@ -443,43 +446,6 @@ function wrapSelectionInCodeBlock(value, start, end) {
     value: `${value.slice(0, start)}${insertedText}${value.slice(end)}`,
     start: selectionStart,
     end: selectionStart + selectedText.length,
-  };
-}
-
-function prefixSelectedLines(value, start, end, prefix) {
-  const firstLineStart = value.lastIndexOf("\n", start - 1) + 1;
-
-  if (start === end) {
-    const cursor = start + prefix.length;
-    return {
-      value: `${value.slice(0, firstLineStart)}${prefix}${value.slice(firstLineStart)}`,
-      start: cursor,
-      end: cursor,
-    };
-  }
-
-  const lastLineStart = value.lastIndexOf("\n", end - 2) + 1;
-  const lineStarts = [firstLineStart];
-  let lineStart = firstLineStart;
-
-  while (lineStart < lastLineStart) {
-    const newlineIndex = value.indexOf("\n", lineStart);
-    if (newlineIndex === -1) break;
-
-    lineStart = newlineIndex + 1;
-    lineStarts.push(lineStart);
-  }
-
-  let updatedValue = value;
-  for (const index of [...lineStarts].reverse()) {
-    updatedValue = `${updatedValue.slice(0, index)}${prefix}${updatedValue.slice(index)}`;
-  }
-
-  const prefixesBeforeEnd = lineStarts.filter((index) => index < end).length;
-  return {
-    value: updatedValue,
-    start: start + prefix.length,
-    end: end + prefix.length * prefixesBeforeEnd,
   };
 }
 

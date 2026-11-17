@@ -63,6 +63,82 @@ export function capitalizeText(text) {
 }
 
 /**
+ * Toggle or switch Markdown list prefixes on the current line or selected lines
+ * @param {string} value
+ * @param {number} start
+ * @param {number} end
+ * @param {"- " | "1. "} prefix
+ * @returns {{ value: string, start: number, end: number }}
+ */
+export function toggleMarkdownListPrefix(value, start, end, prefix) {
+  const firstLineStart = value.lastIndexOf("\n", start - 1) + 1;
+  const lastLineStart =
+    start === end ? firstLineStart : value.lastIndexOf("\n", end - 2) + 1;
+  const lineStarts = [firstLineStart];
+  let lineStart = firstLineStart;
+
+  while (lineStart < lastLineStart) {
+    const newlineIndex = value.indexOf("\n", lineStart);
+    if (newlineIndex === -1) break;
+
+    lineStart = newlineIndex + 1;
+    lineStarts.push(lineStart);
+  }
+
+  const targetKind = prefix.startsWith("-") ? "unordered" : "ordered";
+  const edits = lineStarts.map((startIndex) => {
+    const lineEnd = value.indexOf("\n", startIndex);
+    const line = value.slice(
+      startIndex,
+      lineEnd === -1 ? value.length : lineEnd,
+    );
+    const indentation = line.match(/^[ \t]*/)[0];
+    const prefixStart = startIndex + indentation.length;
+    const existingPrefix = line
+      .slice(indentation.length)
+      .match(/^([-*+]|\d+[.)])[ \t]+/);
+    const existingKind = existingPrefix
+      ? /^[-*+]$/.test(existingPrefix[1])
+        ? "unordered"
+        : "ordered"
+      : null;
+
+    return {
+      start: prefixStart,
+      removeLength: existingPrefix?.[0].length ?? 0,
+      insertText: existingKind === targetKind ? "" : prefix,
+    };
+  });
+
+  let updatedValue = value;
+  for (const edit of [...edits].reverse()) {
+    updatedValue = `${updatedValue.slice(0, edit.start)}${edit.insertText}${updatedValue.slice(edit.start + edit.removeLength)}`;
+  }
+
+  return {
+    value: updatedValue,
+    start: mapListSelectionPosition(start, edits),
+    end: mapListSelectionPosition(end, edits),
+  };
+}
+
+function mapListSelectionPosition(position, edits) {
+  let offset = 0;
+
+  for (const edit of edits) {
+    if (position < edit.start) break;
+
+    if (position <= edit.start + edit.removeLength) {
+      return edit.start + offset + edit.insertText.length;
+    }
+
+    offset += edit.insertText.length - edit.removeLength;
+  }
+
+  return position + offset;
+}
+
+/**
  * Generate branch name
  * @param {string} action - The action type (e.g., "new" or "edit")
  * @param {string} wordTitle - The title of the word

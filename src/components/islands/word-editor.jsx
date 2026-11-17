@@ -12,6 +12,8 @@ import useRouter from "../../lib/hooks/use-router.js";
 import {
   capitalizeText,
   toggleMarkdownListPrefix,
+  toggleMarkdownWrap,
+  toggleMarkdownCodeBlock,
 } from "../../lib/utils/index.js";
 import useWordEditor from "../../lib/hooks/use-word-editor.js";
 import {
@@ -148,7 +150,7 @@ function Editor({ eTitle, eContent, eMetadata, className, action, ...props }) {
     const textarea = textareaRef.current;
     if (!textarea || isDone) return;
 
-    const result = wrapSelection(
+    const result = toggleMarkdownWrap(
       content,
       textarea.selectionStart,
       textarea.selectionEnd,
@@ -162,7 +164,7 @@ function Editor({ eTitle, eContent, eMetadata, className, action, ...props }) {
     const textarea = textareaRef.current;
     if (!textarea || isDone) return;
 
-    const result = wrapSelectionInCodeBlock(
+    const result = toggleMarkdownCodeBlock(
       content,
       textarea.selectionStart,
       textarea.selectionEnd,
@@ -409,45 +411,6 @@ function ToolbarButton({ label, disabled, onClick, children }) {
       </svg>
     </button>
   );
-}
-
-function wrapSelection(value, start, end, marker) {
-  const selectedText = value.slice(start, end);
-  const wrappedText = `${marker}${selectedText}${marker}`;
-
-  if (start === end) {
-    const cursor = start + marker.length;
-    return {
-      value: `${value.slice(0, start)}${wrappedText}${value.slice(end)}`,
-      start: cursor,
-      end: cursor,
-    };
-  }
-
-  const selectionStart = start + marker.length;
-  return {
-    value: `${value.slice(0, start)}${wrappedText}${value.slice(end)}`,
-    start: selectionStart,
-    end: selectionStart + selectedText.length,
-  };
-}
-
-function wrapSelectionInCodeBlock(value, start, end) {
-  const selectedText = value.slice(start, end);
-  const leadingNewline = start > 0 && value[start - 1] !== "\n" ? "\n" : "";
-  const fence = "```";
-  const openingFence = `${leadingNewline}${fence}\n`;
-  const closingFence = `${selectedText.endsWith("\n") ? "" : "\n"}${fence}${
-    end < value.length && value[end] !== "\n" ? "\n" : ""
-  }`;
-  const insertedText = `${openingFence}${selectedText}${closingFence}`;
-  const selectionStart = start + openingFence.length;
-
-  return {
-    value: `${value.slice(0, start)}${insertedText}${value.slice(end)}`,
-    start: selectionStart,
-    end: selectionStart + selectedText.length,
-  };
 }
 
 /**

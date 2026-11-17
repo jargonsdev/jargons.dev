@@ -11,6 +11,8 @@ import {
   buildWordPathname,
   buildWordSlug,
   toggleMarkdownListPrefix,
+  toggleMarkdownWrap,
+  toggleMarkdownCodeBlock,
 } from "../../../src/lib/utils/index.js";
 
 describe("resolveCookieExpiryDate", () => {
@@ -216,6 +218,98 @@ describe("toggleMarkdownListPrefix", () => {
       value: "first\n- second\n- third",
       start: 0,
       end: 22,
+    });
+  });
+});
+
+describe("Markdown wrapper toggles", () => {
+  it("removes a bold wrapper around selected text", () => {
+    expect(toggleMarkdownWrap("**bold text**", 2, 11, "**")).toEqual({
+      value: "bold text",
+      start: 0,
+      end: 9,
+    });
+  });
+
+  it("removes a wrapper when only part of its text is selected", () => {
+    expect(toggleMarkdownWrap("**bold text**", 7, 11, "**")).toEqual({
+      value: "bold text",
+      start: 5,
+      end: 9,
+    });
+  });
+
+  it("removes empty bold delimiters around a cursor", () => {
+    expect(toggleMarkdownWrap("****", 2, 2, "**")).toEqual({
+      value: "",
+      start: 0,
+      end: 0,
+    });
+  });
+
+  it("removes a wrapper when the selection includes its delimiters", () => {
+    expect(toggleMarkdownWrap("**bold**", 0, 8, "**")).toEqual({
+      value: "bold",
+      start: 0,
+      end: 4,
+    });
+  });
+
+  it("removes empty italic delimiters around the cursor", () => {
+    expect(toggleMarkdownWrap("__", 1, 1, "_")).toEqual({
+      value: "",
+      start: 0,
+      end: 0,
+    });
+  });
+
+  it("removes inline-code delimiters around selected text", () => {
+    expect(toggleMarkdownWrap("`code`", 1, 5, "`")).toEqual({
+      value: "code",
+      start: 0,
+      end: 4,
+    });
+  });
+
+  it("switches inline code to a fenced code block", () => {
+    expect(toggleMarkdownCodeBlock("`console.log()`", 1, 14)).toEqual({
+      value: "```\nconsole.log()\n```",
+      start: 4,
+      end: 17,
+    });
+  });
+
+  it("preserves a partial selection when switching inline code to a block", () => {
+    expect(toggleMarkdownCodeBlock("call `console.log()` now", 15, 18)).toEqual(
+      {
+        value: "call \n```\nconsole.log()\n```\n now",
+        start: 19,
+        end: 22,
+      },
+    );
+  });
+
+  it("switches a fenced code block to inline code", () => {
+    expect(toggleMarkdownWrap("```\nconsole.log()\n```", 4, 17, "`")).toEqual({
+      value: "`console.log()`",
+      start: 1,
+      end: 14,
+    });
+  });
+
+  it("removes a fenced code block around selected code", () => {
+    expect(toggleMarkdownCodeBlock("```\nconsole.log()\n```", 4, 17)).toEqual({
+      value: "console.log()",
+      start: 0,
+      end: 13,
+    });
+  });
+
+  it("removes an empty code block around the cursor", () => {
+    expect(toggleMarkdownCodeBlock("```\n\n```", 4, 4)).toEqual({
+      value: "",
+      start: 0,
+      end: 0,
     });
   });
 });

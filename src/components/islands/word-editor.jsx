@@ -5,7 +5,7 @@
  * @exports TogglePreview - Mobile preview toggle for responsive editor experience
  */
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import Markdown from "react-markdown";
 import { useStore } from "@nanostores/react";
 import useRouter from "../../lib/hooks/use-router.js";
@@ -128,11 +128,18 @@ function Editor({ eTitle, eContent, eMetadata, className, action, ...props }) {
   const isDone = isSubmitLoading || isSubmitted;
   const textareaRef = useRef(null);
   const pendingSelection = useRef(null);
+  const beforeInputSelection = useRef(null);
+  const history = useRef({ undo: [], redo: [] });
+  const [historyState, setHistoryState] = useState({
+    canUndo: false,
+    canRedo: false,
+  });
 
   useEffect(() => {
     setTitle(eTitle);
     setContent(eContent);
     setInitialContent(eContent);
+    history.current = { undo: [], redo: [] };
   }, []);
 
   useEffect(() => {
@@ -146,6 +153,67 @@ function Editor({ eTitle, eContent, eMetadata, className, action, ...props }) {
     pendingSelection.current = null;
   }, [content]);
 
+  function updateHistoryState() {
+    setHistoryState({
+      canUndo: history.current.undo.length > 0,
+      canRedo: history.current.redo.length > 0,
+    });
+  }
+
+  function recordCurrentContent(selection) {
+    const textarea = textareaRef.current;
+    history.current.undo.push({
+      value: content,
+      start: selection?.start ?? textarea?.selectionStart ?? 0,
+      end: selection?.end ?? textarea?.selectionEnd ?? 0,
+    });
+    if (history.current.undo.length > 100) history.current.undo.shift();
+    history.current.redo = [];
+    updateHistoryState();
+  }
+
+  function commitEdit(result) {
+    if (result.value === content) return;
+
+    recordCurrentContent();
+    pendingSelection.current = result;
+    setContent(result.value);
+  }
+
+  function handleTextareaBeforeInput(event) {
+    beforeInputSelection.current = {
+      start: event.currentTarget.selectionStart,
+      end: event.currentTarget.selectionEnd,
+    };
+  }
+
+  function handleTextareaChange(event) {
+    const nextContent = event.currentTarget.value;
+
+    if (nextContent !== content) {
+      recordCurrentContent(beforeInputSelection.current);
+    }
+
+    beforeInputSelection.current = null;
+    setContent(nextContent);
+  }
+
+  function applyHistory(direction) {
+    const source = history.current[direction];
+    if (isDone || source.length === 0) return;
+
+    const textarea = textareaRef.current;
+    const target = direction === "undo" ? "redo" : "undo";
+    history.current[target].push({
+      value: content,
+      start: textarea?.selectionStart ?? 0,
+      end: textarea?.selectionEnd ?? 0,
+    });
+    pendingSelection.current = source.pop();
+    setContent(pendingSelection.current.value);
+    updateHistoryState();
+  }
+
   function applyMarkdownWrap(marker) {
     const textarea = textareaRef.current;
     if (!textarea || isDone) return;
@@ -156,8 +224,7 @@ function Editor({ eTitle, eContent, eMetadata, className, action, ...props }) {
       textarea.selectionEnd,
       marker,
     );
-    pendingSelection.current = result;
-    setContent(result.value);
+    commitEdit(result);
   }
 
   function applyMarkdownCodeBlock() {
@@ -169,8 +236,7 @@ function Editor({ eTitle, eContent, eMetadata, className, action, ...props }) {
       textarea.selectionStart,
       textarea.selectionEnd,
     );
-    pendingSelection.current = result;
-    setContent(result.value);
+    commitEdit(result);
   }
 
   function applyMarkdownListPrefix(prefix) {
@@ -183,25 +249,28 @@ function Editor({ eTitle, eContent, eMetadata, className, action, ...props }) {
       textarea.selectionEnd,
       prefix,
     );
-    pendingSelection.current = result;
-    setContent(result.value);
+    commitEdit(result);
   }
 
   function handleTextareaKeyDown(event) {
-    if (
-      isDone ||
-      (!event.ctrlKey && !event.metaKey) ||
-      event.altKey ||
-      event.shiftKey
-    ) {
+    if (isDone || (!event.ctrlKey && !event.metaKey) || event.altKey) {
       return;
     }
+
+    const key = event.key.toLowerCase();
+    if (key === "z" || key === "y") {
+      event.preventDefault();
+      applyHistory(key === "y" || event.shiftKey ? "redo" : "undo");
+      return;
+    }
+
+    if (event.shiftKey) return;
 
     const markerByKey = {
       b: "**",
       i: "_",
     };
-    const marker = markerByKey[event.key.toLowerCase()];
+    const marker = markerByKey[key];
 
     if (!marker) return;
 
@@ -289,10 +358,33 @@ function Editor({ eTitle, eContent, eMetadata, className, action, ...props }) {
         className={`${(action === "edit" || isDone) && "cursor-not-allowed"} block w-full pb-2 px-5 text-gray-900 border-b text-lg font-bold focus:outline-none`}
       />
       <div
-        className="sticky top-0 z-10 flex items-center gap-1 border-b px-3 mb-3 bg-white py-2"
+        className="sticky top-0 z-10 flex flex-wrap items-center gap-1 border-b px-3 mb-3 bg-white py-2"
         role="toolbar"
         aria-label="Markdown formatting"
       >
+        {/* TEMPORARILY DISABLED UNDO/REDO BUTTONS */}
+        {/* <ToolbarButton
+          label="Undo"
+          disabled={isDone || !historyState.canUndo}
+          onClick={() => applyHistory("undo")}
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M9 14 4 9l5-5M4 9h10a6 6 0 0 1 0 12h-2"
+          />
+        </ToolbarButton>
+        <ToolbarButton
+          label="Redo"
+          disabled={isDone || !historyState.canRedo}
+          onClick={() => applyHistory("redo")}
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="m15 14 5-5-5-5m5 5H10a6 6 0 0 0 0 12h2"
+          />
+        </ToolbarButton> */}
         <ToolbarButton
           label="Bold"
           disabled={isDone}
@@ -366,7 +458,8 @@ function Editor({ eTitle, eContent, eMetadata, className, action, ...props }) {
         name="content"
         value={content}
         placeholder="Write the word definition here..."
-        onChange={(e) => setContent(e.target.value)}
+        onBeforeInput={handleTextareaBeforeInput}
+        onChange={handleTextareaChange}
         onKeyDown={handleTextareaKeyDown}
         readOnly={isDone}
         className={`${isDone && "cursor-not-allowed select-none"} w-full h-1 px-5 grow resize-none font-mono appearance-none border-none focus:outline-none scrollbar`}

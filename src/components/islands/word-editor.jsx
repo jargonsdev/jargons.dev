@@ -279,7 +279,7 @@ function Editor({ eTitle, eContent, eMetadata, className, action, ...props }) {
         <ToolbarButton
           label="Italic"
           disabled={isDone}
-          onClick={() => applyMarkdownWrap("*")}
+          onClick={() => applyMarkdownWrap("_")}
         >
           <path
             strokeLinecap="round"

@@ -131,18 +131,64 @@ function Editor({ eTitle, eContent, eMetadata, className, action, ...props }) {
   const textareaRef = useRef(null);
   const pendingSelection = useRef(null);
   const beforeInputSelection = useRef(null);
+  const draftReady = useRef(false);
   const history = useRef({ undo: [], redo: [] });
   const [historyState, setHistoryState] = useState({
     canUndo: false,
     canRedo: false,
   });
+  const draftKey = `jargons.dev:word-editor:${action}:${
+    action === "edit" ? encodeURIComponent(eTitle.trim().toLowerCase()) : "new"
+  }`;
 
   useEffect(() => {
-    setTitle(eTitle);
-    setContent(eContent);
+    let draft;
+    try {
+      const savedDraft = window.localStorage.getItem(draftKey);
+      draft = savedDraft ? JSON.parse(savedDraft) : null;
+    } catch {
+      draft = null;
+    }
+
+    setTitle(typeof draft?.title === "string" ? draft.title : eTitle);
+    setContent(typeof draft?.content === "string" ? draft.content : eContent);
     setInitialContent(eContent);
     history.current = { undo: [], redo: [] };
-  }, []);
+    draftReady.current = true;
+  }, [draftKey]);
+
+  useEffect(() => {
+    const backLink = document.querySelector("[data-word-editor-back]");
+    if (!backLink) return;
+
+    function handleBackClick(event) {
+      if (
+        event.button !== 0 ||
+        event.metaKey ||
+        event.ctrlKey ||
+        event.shiftKey ||
+        event.altKey ||
+        (title === eTitle && content === eContent)
+      ) {
+        return;
+      }
+
+      event.preventDefault();
+      if (
+        !window.confirm(
+          "You have unsaved changes. Going back will discard this draft. Continue?",
+        )
+      ) {
+        return;
+      }
+
+      clearDraft();
+      window.location.assign(backLink.href);
+    }
+
+    backLink.addEventListener("click", handleBackClick);
+    return () => backLink.removeEventListener("click", handleBackClick);
+  }, [content, title, eContent, eTitle, draftKey]);
 
   useEffect(() => {
     const textarea = textareaRef.current;
@@ -180,6 +226,39 @@ function Editor({ eTitle, eContent, eMetadata, className, action, ...props }) {
     recordCurrentContent();
     pendingSelection.current = result;
     setContent(result.value);
+    persistDraft(title, result.value);
+  }
+
+  function persistDraft(draftTitle, draftContent) {
+    if (!draftReady.current) return;
+
+    try {
+      if (draftTitle === eTitle && draftContent === eContent) {
+        window.localStorage.removeItem(draftKey);
+        return;
+      }
+
+      window.localStorage.setItem(
+        draftKey,
+        JSON.stringify({ title: draftTitle, content: draftContent }),
+      );
+    } catch {
+      // Draft persistence is best-effort when browser storage is unavailable.
+    }
+  }
+
+  function clearDraft() {
+    try {
+      window.localStorage.removeItem(draftKey);
+    } catch {
+      // Ignore unavailable browser storage.
+    }
+  }
+
+  function handleTitleChange(event) {
+    const nextTitle = event.target.value;
+    setTitle(nextTitle);
+    persistDraft(nextTitle, content);
   }
 
   function handleTextareaBeforeInput(event) {
@@ -194,6 +273,7 @@ function Editor({ eTitle, eContent, eMetadata, className, action, ...props }) {
 
     if (nextContent !== content) {
       recordCurrentContent(beforeInputSelection.current);
+      persistDraft(title, nextContent);
     }
 
     beforeInputSelection.current = null;
@@ -213,6 +293,7 @@ function Editor({ eTitle, eContent, eMetadata, className, action, ...props }) {
     });
     pendingSelection.current = source.pop();
     setContent(pendingSelection.current.value);
+    persistDraft(title, pendingSelection.current.value);
     updateHistoryState();
   }
 
@@ -325,6 +406,7 @@ function Editor({ eTitle, eContent, eMetadata, className, action, ...props }) {
       body: formData,
     });
     if (response && response.status === 200) {
+      clearDraft();
       $isWordSubmitted.set(true);
       $isWordSubmitLoading.set(false);
       router.push("/editor");
@@ -378,7 +460,7 @@ function Editor({ eTitle, eContent, eMetadata, className, action, ...props }) {
         name="title"
         value={title}
         placeholder="New word here..."
-        onChange={(e) => setTitle(e.target.value)}
+        onChange={handleTitleChange}
         readOnly={action === "edit" || isDone}
         className={`${(action === "edit" || isDone) && "cursor-not-allowed"} block w-full pb-2 px-5 text-gray-900 border-b text-lg font-bold focus:outline-none`}
       />
@@ -411,7 +493,7 @@ function Editor({ eTitle, eContent, eMetadata, className, action, ...props }) {
           />
         </ToolbarButton> */}
         <ToolbarButton
-          label="Bold"
+          label="Bold (Ctrl+B)"
           disabled={isDone}
           onClick={() => applyMarkdownWrap("**")}
         >
@@ -421,7 +503,7 @@ function Editor({ eTitle, eContent, eMetadata, className, action, ...props }) {
           />
         </ToolbarButton>
         <ToolbarButton
-          label="Italic"
+          label="Italic (Ctrl+I)"
           disabled={isDone}
           onClick={() => applyMarkdownWrap("_")}
         >

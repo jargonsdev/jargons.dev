@@ -10,6 +10,7 @@ const { returnNav = { label: "Back", location: "../" } } = Astro.props;
   <div class="flex items-center space-x-4 md:space-x-6">
     <a
       href={returnNav.location}
+      data-word-editor-back={returnNav.confirmDiscard ? "" : undefined}
       class="flex items-center w-6 h-6 justify-center bg-none hover:bg-black text-black hover:text-white rounded-full border border-black/60 transition-color ease-in-out duration-400"
     >
       <svg

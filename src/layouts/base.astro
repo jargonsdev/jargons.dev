@@ -2,17 +2,20 @@
 import "@fontsource/inter";
 import "@fontsource/ibm-plex-mono";
 import "../base.css";
-import { SITE_META_KEYWORDS, SITE_META_DESCRIPTION } from "../../constants.js";
+import { SITE_META_KEYWORDS, SITE_META_DESCRIPTION, SITE_META_SUBTITLE } from "../../constants.js";
 
 const MEASUREMENT_ID = import.meta.env.PUBLIC_GOOGLE_ANALYTICS_MEASUREMENT_ID;
 
 const { props, url } = Astro;
+const siteOrigin = import.meta.env.DEV ? url.origin : Astro.site;
+const canonicalUrl = new URL(url.pathname, siteOrigin);
 const {
   pageTitle,
   class: list,
-  ogImageUrl = `${url.origin}/og.png`,
+  keywords = SITE_META_KEYWORDS,
+  ogImageUrl = new URL("/og.png", siteOrigin).href,
   description = SITE_META_DESCRIPTION,
-  subtitle = "Developer Jargons",
+  subtitle = SITE_META_SUBTITLE,
 } = props;
 ---
 
@@ -23,17 +26,17 @@ const {
     <meta name="viewport" content="width=device-width" />
     <meta name="generator" content={Astro.generator} />
     <meta name="description" content={description} />
-    <meta name="keyword" content={SITE_META_KEYWORDS.join(",")} />
+    <meta name="keyword" content={keywords.join(",")} />
 
-    <meta property="og:url" content={url.href} />
+    <meta property="og:url" content={canonicalUrl.href} />
     <meta property="og:type" content="website" />
     <meta property="og:title" content={`${pageTitle} - ${subtitle}`} />
     <meta property="og:description" content={description} />
     <meta property="og:image" content={ogImageUrl} />
 
     <meta name="twitter:card" content="summary_large_image" />
-    <meta property="twitter:domain" content={url.host} />
-    <meta property="twitter:url" content={url.href} />
+    <meta property="twitter:domain" content={canonicalUrl.host} />
+    <meta property="twitter:url" content={canonicalUrl.href} />
     <meta name="twitter:title" content={`${pageTitle} - ${subtitle}`} />
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={ogImageUrl} />

@@ -12,6 +12,8 @@ export const LABELS = {
 export const SITE_META_DESCRIPTION =
   "A community-driven dictionary that simplifies software, engineering and tech terms for all levels. Curated by contributors, jargons.dev offers clear, easy-to-understand definitions.";
 
+export const SITE_META_SUBTITLE = "Jargons.dev";
+
 export const SITE_META_KEYWORDS = [
   "dev jargon",
   "dev jargons",

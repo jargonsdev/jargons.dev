@@ -101,6 +101,90 @@ export function buildWordSlug(id) {
 }
 
 /**
+ * Get a plain-text excerpt from the first non-code paragraph of Markdown
+ * @param {string} body
+ * @returns {string}
+ */
+export function getExcerpt(body = "") {
+  const firstParagraph = body
+    .split(/\r?\n\s*\r?\n/)
+    .find(
+      (paragraph) => paragraph.trim() && !paragraph.trim().startsWith("```"),
+    );
+  const normalized = (firstParagraph ?? "")
+    .replace(/\[([^\]]+)\]\([^)]+\)/g, "$1")
+    .replace(/`([^`]+)`/g, "$1")
+    .replace(/[*_>#]/g, "")
+    .replace(/\s+/g, " ")
+    .trim();
+
+  if (normalized.length <= 320) return normalized;
+
+  return `${normalized.slice(0, 317).trimEnd()}...`;
+}
+
+/**
+ * Extract a short, deduplicated keyword list from a word title and definition
+ * @todo Consider adding more sophisticated keyword extraction logic - this can help improve the relevance of extracted keywords
+ * @param {string} title
+ * @param {string} body
+ * @returns {string[]}
+ */
+export function getKeywords(title = "", body = "") {
+  const stopWords = new Set([
+    "about",
+    "after",
+    "also",
+    "and",
+    "are",
+    "as",
+    "at",
+    "be",
+    "by",
+    "for",
+    "from",
+    "has",
+    "have",
+    "into",
+    "is",
+    "it",
+    "its",
+    "of",
+    "on",
+    "or",
+    "that",
+    "the",
+    "their",
+    "this",
+    "to",
+    "using",
+    "was",
+    "were",
+    "which",
+    "with",
+  ]);
+  const normalizedTitle = title.trim().toLowerCase();
+  const keywords = normalizedTitle ? [normalizedTitle] : [];
+  const seen = new Set(keywords);
+  const words =
+    `${title} ${getExcerpt(body)}`.match(/[\p{L}\p{N}+#.-]+/gu) ?? [];
+
+  for (const word of words) {
+    const keyword = word.replace(/^[.-]+|[.-]+$/g, "").toLowerCase();
+    if (keyword.length < 3 || stopWords.has(keyword) || seen.has(keyword)) {
+      continue;
+    }
+
+    keywords.push(keyword);
+    seen.add(keyword);
+
+    if (keywords.length === 12) break;
+  }
+
+  return keywords;
+}
+
+/**
  * Get branch name from branch ref
  * @param {string} branchRef
  * @returns {string}

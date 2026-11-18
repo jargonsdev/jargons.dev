@@ -6,6 +6,7 @@ import BaseLayout from "./base.astro";
 import { getCollection } from "astro:content";
 import Navbar from "../components/navbar.astro";
 import Search from "../components/islands/search.jsx";
+import { buildWordSlug, getExcerpt, getKeywords } from "../lib/utils/index.js";
 import JAIFollowUpChatWidget, {
   JAIFollowUpChatWidgetTrigger,
 } from "../../apps/jai/components/follow-up-chat.jsx";
@@ -13,7 +14,14 @@ import JAIFollowUpChatWidget, {
 const { frontmatter } = Astro.props;
 const dictionary = await getCollection("dictionary");
 const wordSlug = Astro.url.pathname.split("/").filter(Boolean).at(-1) ?? "";
-const ogImageUrl = `${Astro.url.origin}/api/open-graph/${encodeURIComponent(String(wordSlug))}.png`;
+const word = dictionary.find((entry) => buildWordSlug(entry.id) === wordSlug);
+const excerpt = getExcerpt(word?.body);
+const keywords = getKeywords(frontmatter.title, word?.body);
+const siteOrigin = import.meta.env.DEV ? Astro.url.origin : Astro.site;
+const ogImageUrl = new URL(
+  `/api/open-graph/${encodeURIComponent(String(wordSlug))}.png`,
+  siteOrigin,
+).href;
 
 /**
  * @todo implement a better way to resolve the `slug` used in the `editUrl`
@@ -22,7 +30,12 @@ const ogImageUrl = `${Astro.url.origin}/api/open-graph/${encodeURIComponent(Stri
 const editUrl = `/editor/edit/${frontmatter.url.split("/")[3].split(".")[0]}`;
 ---
 
-<BaseLayout pageTitle={frontmatter.title} ogImageUrl={ogImageUrl}>
+<BaseLayout
+  pageTitle={frontmatter.title}
+  description={excerpt}
+  keywords={keywords}
+  ogImageUrl={ogImageUrl}
+>
   <div class="main-wrapper">
     <Navbar>
       <Search triggerSize="sm" dictionary={dictionary} client:load />

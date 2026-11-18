@@ -7,6 +7,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import Markdown from "react-markdown";
+import remarkBreaks from "remark-breaks";
 import { useStore } from "@nanostores/react";
 import useRouter from "../../lib/hooks/use-router.js";
 import {
@@ -527,7 +528,7 @@ function Preview({ className, ...props }) {
           </div>
 
           <article className="w-full max-w-screen-lg prose">
-            <Markdown>{content}</Markdown>
+            <Markdown remarkPlugins={[remarkBreaks]}>{content}</Markdown>
           </article>
         </div>
       </div>

@@ -4,6 +4,7 @@ import { Resvg } from "@resvg/resvg-js";
 import fs from "node:fs";
 import path from "node:path";
 import { getCollection } from "astro:content";
+import { getExcerpt } from "../../../lib/utils/index.js";
 
 export const prerender = true;
 
@@ -74,22 +75,6 @@ function truncate(text, limit) {
   if (normalized.length <= limit) return normalized;
 
   return `${normalized.slice(0, limit - 3).trimEnd()}...`;
-}
-
-function getExcerpt(body = "") {
-  const firstParagraph = body
-    .split(/\r?\n\s*\r?\n/)
-    .find(
-      (paragraph) => paragraph.trim() && !paragraph.trim().startsWith("```"),
-    );
-
-  return truncate(
-    (firstParagraph ?? "")
-      .replace(/\[([^\]]+)\]\([^)]+\)/g, "$1")
-      .replace(/`([^`]+)`/g, "$1")
-      .replace(/[*_>#]/g, ""),
-    320,
-  );
 }
 
 /**

@@ -10,6 +10,7 @@ import {
   buildStatsUrl,
   buildWordPathname,
   buildWordSlug,
+  getExcerpt,
   toggleMarkdownListPrefix,
   continueMarkdownListOnEnter,
   toggleMarkdownWrap,
@@ -436,5 +437,23 @@ describe("buildWordSlug", () => {
 
   it("should handle empty string", () => {
     expect(buildWordSlug("")).toBe("");
+  });
+});
+
+describe("getExcerpt", () => {
+  it("extracts and simplifies the first non-code paragraph", () => {
+    expect(
+      getExcerpt(
+        "```js\nignored()\n```\n\n**QUIC** uses [`UDP`](https://example.com) and `TLS`.\n\nA second paragraph.",
+      ),
+    ).toBe("QUIC uses UDP and TLS.");
+  });
+
+  it("truncates excerpts to 320 characters", () => {
+    expect(getExcerpt("a".repeat(321))).toBe(`${"a".repeat(317)}...`);
+  });
+
+  it("returns an empty string when no paragraph is available", () => {
+    expect(getExcerpt()).toBe("");
   });
 });

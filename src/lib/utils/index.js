@@ -101,6 +101,29 @@ export function buildWordSlug(id) {
 }
 
 /**
+ * Get a plain-text excerpt from the first non-code paragraph of Markdown
+ * @param {string} body
+ * @returns {string}
+ */
+export function getExcerpt(body = "") {
+  const firstParagraph = body
+    .split(/\r?\n\s*\r?\n/)
+    .find(
+      (paragraph) => paragraph.trim() && !paragraph.trim().startsWith("```"),
+    );
+  const normalized = (firstParagraph ?? "")
+    .replace(/\[([^\]]+)\]\([^)]+\)/g, "$1")
+    .replace(/`([^`]+)`/g, "$1")
+    .replace(/[*_>#]/g, "")
+    .replace(/\s+/g, " ")
+    .trim();
+
+  if (normalized.length <= 320) return normalized;
+
+  return `${normalized.slice(0, 317).trimEnd()}...`;
+}
+
+/**
  * Get branch name from branch ref
  * @param {string} branchRef
  * @returns {string}

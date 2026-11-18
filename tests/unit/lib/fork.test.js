@@ -1,5 +1,9 @@
 import { describe, it, expect, beforeEach, vi } from "vitest";
-import { forkRepository } from "../../../src/lib/fork.js";
+import {
+  forkRepository,
+  getForkStatus,
+  syncForkRepository,
+} from "../../../src/lib/fork.js";
 import { sampleRepoDetails } from "../../fixtures/test-data/index.js";
 
 // Mock the branch.js module
@@ -133,7 +137,7 @@ describe("fork.js", () => {
       expect(result).toBe(existingFork);
     });
 
-    it("should update existing fork when repository is already forked but outdated", async () => {
+    it("should not update an existing fork when it is outdated", async () => {
       const userData = { login: "testuser", id: 12345 };
       const existingFork = "testuser/jargons.dev";
       const outdatedSha = "old-sha-123";
@@ -173,28 +177,28 @@ describe("fork.js", () => {
           ref: "refs/heads/main",
         });
 
-      // Mock fork update using merge-upstream
-      userOctokit.request.mockResolvedValueOnce({
-        data: {
-          message: "Successfully fetched and fast-forwarded from upstream.",
-          merge_type: "fast-forward",
-          base_branch: "main",
-        },
-      });
-
       const result = await forkRepository(userOctokit, projectRepoDetails);
 
-      expect(userOctokit.request).toHaveBeenNthCalledWith(
-        2,
+      expect(userOctokit.request).not.toHaveBeenCalledWith(
         "POST /repos/{owner}/{repo}/merge-upstream",
-        {
-          owner: "testuser",
-          repo: "jargons.dev",
-          branch: "main",
-        },
+        expect.anything(),
       );
-
       expect(result).toBe(existingFork);
+    });
+
+    it("should report a missing fork without creating one", async () => {
+      userOctokit.request.mockResolvedValueOnce({
+        data: { login: "testuser" },
+      });
+      userOctokit.graphql.mockResolvedValueOnce({
+        user: { repositories: { nodes: [] } },
+      });
+
+      const result = await getForkStatus(userOctokit, projectRepoDetails);
+
+      expect(result).toEqual({ status: "missing", fork: null });
+      expect(userOctokit.request).toHaveBeenCalledTimes(1);
+      expect(userOctokit.graphql).toHaveBeenCalledTimes(1);
     });
 
     it("should handle repository details parsing correctly", async () => {
@@ -282,11 +286,18 @@ describe("fork.js", () => {
 
       const userData = { login: "testuser", id: 12345 };
 
-      userOctokit.request.mockResolvedValueOnce({
-        data: userData,
-      });
+      userOctokit.request
+        .mockResolvedValueOnce({ data: userData })
+        .mockResolvedValueOnce({
+          data: {
+            message: "Successfully fetched and fast-forwarded from upstream.",
+            merge_type: "fast-forward",
+            base_branch: "feature/main-branch",
+          },
+        })
+        .mockResolvedValueOnce({ data: userData });
 
-      userOctokit.graphql.mockResolvedValueOnce({
+      const existingForkResponse = {
         user: {
           repositories: {
             nodes: [
@@ -301,7 +312,10 @@ describe("fork.js", () => {
             ],
           },
         },
-      });
+      };
+      userOctokit.graphql
+        .mockResolvedValueOnce(existingForkResponse)
+        .mockResolvedValueOnce(existingForkResponse);
 
       getBranch
         .mockResolvedValueOnce({
@@ -309,18 +323,17 @@ describe("fork.js", () => {
         })
         .mockResolvedValueOnce({
           object: { sha: "new-sha" },
+        })
+        .mockResolvedValueOnce({
+          object: { sha: "new-sha" },
+        })
+        .mockResolvedValueOnce({
+          object: { sha: "new-sha" },
         });
 
-      userOctokit.request.mockResolvedValueOnce({
-        data: {
-          message: "Successfully fetched and fast-forwarded from upstream.",
-          merge_type: "fast-forward",
-          base_branch: "feature/main-branch",
-        },
-      });
+      const result = await syncForkRepository(userOctokit, customRepoDetails);
 
-      await forkRepository(userOctokit, customRepoDetails);
-
+      expect(result).toEqual({ status: "current", fork: "testuser/repo" });
       expect(userOctokit.request).toHaveBeenCalledWith(
         "POST /repos/{owner}/{repo}/merge-upstream",
         expect.objectContaining({
@@ -396,7 +409,7 @@ describe("fork.js", () => {
       ).rejects.toThrow("Error occurred while forking repository");
     });
 
-    it("should propagate sync update errors", async () => {
+    it("should propagate explicit sync update errors", async () => {
       userOctokit.request.mockResolvedValueOnce({
         data: { login: "testuser" },
       });
@@ -429,8 +442,8 @@ describe("fork.js", () => {
       userOctokit.request.mockRejectedValueOnce(new Error("Update failed"));
 
       await expect(
-        forkRepository(userOctokit, projectRepoDetails),
-      ).rejects.toThrow("Error occurred while forking repository");
+        syncForkRepository(userOctokit, projectRepoDetails),
+      ).rejects.toThrow("Error occurred while updating fork");
     });
   });
 

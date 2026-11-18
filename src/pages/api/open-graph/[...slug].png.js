@@ -7,10 +7,36 @@ import { getEntry } from "astro:content";
 
 const WIDTH = 1200;
 const HEIGHT = 630;
-const logoData = fs.readFileSync(
+const logoSvg = fs.readFileSync(
   path.join(process.cwd(), "public/jargons.dev.svg"),
+  "utf8",
 );
-const logoSrc = `data:image/svg+xml;base64,${logoData.toString("base64")}`;
+const whiteLogoPath = logoSvg.match(/<path class="filWhite"[^>]*\/>/)?.[0];
+const blackLogoPath = logoSvg.match(/<path class="filBlack"[^>]*\/>/)?.[0];
+const shadowPaths = [
+  { offset: 8, opacity: 0.08 },
+  { offset: 16, opacity: 0.05 },
+]
+  .map(({ offset, opacity }) =>
+    [
+      whiteLogoPath?.replace(
+        'class="filWhite"',
+        `style="fill:#000000;opacity:${opacity}" transform="translate(${offset} ${offset})"`,
+      ),
+      blackLogoPath?.replace(
+        'class="filBlack"',
+        `style="fill:#000000;opacity:${opacity}" transform="translate(${offset} ${offset})"`,
+      ),
+    ].join(""),
+  )
+  .join("");
+const logoWithShadowSvg = whiteLogoPath
+  ? logoSvg.replace(whiteLogoPath, `${shadowPaths}${whiteLogoPath}`)
+  : logoSvg;
+const logoData = new Resvg(logoWithShadowSvg, {
+  fitTo: { mode: "width", value: 344 },
+}).render().asPng();
+const logoSrc = `data:image/png;base64,${logoData.toString("base64")}`;
 const fonts = [
   {
     name: "Inter",
@@ -66,26 +92,29 @@ export async function GET({ params }) {
   const title = truncate(word.data.title, 64);
   const excerpt = getExcerpt(word.body);
   const markup = html`
-    <div tw="flex w-full h-full p-14" style="display: flex; flex-direction: column; background: #ffffff; font-family: Inter; color: #172321;">
-      <div tw="flex flex-col justify-between w-full h-full" style="display: flex; flex-direction: column; justify-content: space-between;">
+    <div tw="flex h-full pt-14 pb-20 px-20" style="display: flex; flex-direction: column; background: #ffffff; font-family: Inter; color: #000000;">
+      <div tw="flex flex-col justify-between h-full" style="display: flex; flex-direction: column; justify-content: space-between;">
         <div tw="flex flex-col" style="display: flex; flex-direction: column;">
           <div tw="flex items-center mb-12" style="display: flex; align-items: center;">
-            <div style="display: flex; position: relative; width: 344px; height: 72px;">
-              <img src="${logoSrc}" width="344" height="72" style="position: absolute; top: 4px; left: 4px; opacity: 0.3;" />
-              <img src="${logoSrc}" width="344" height="72" style="position: absolute; top: 0; left: 0;" />
-            </div>
-          </div>
-          <div tw="mb-6" style="display: flex; font-family: IBM Plex Mono; font-size: 58px; font-weight: 600; line-height: 1.12; color: #172321;">
-            ${title}
-          </div>
-          <div tw="max-w-full" style="display: flex; font-size: 25px; line-height: 1.4; color: #53615d;">
-            ${excerpt}
+            <img src="${logoSrc}" width="344" height="72" style="filter: drop-shadow(0 4px 3px rgba(0, 0, 0, 0.07)) drop-shadow(0 2px 2px rgba(0, 0, 0, 0.06));" />
           </div>
         </div>
-        <div tw="flex justify-end" style="display: flex; justify-content: flex-end;">
-          <div tw="flex items-center px-6 py-4" style="display: flex; align-items: center; background: #172321; border-radius: 999px; color: #ffffff; font-family: IBM Plex Mono; font-size: 19px; font-weight: 600;">
-            <span>Browse Words</span>
-            <span tw="ml-4" style="font-size: 24px;">→</span>
+        <div tw="flex flex-col" style="display: flex;">
+          <div tw="mb-6" style="display: flex; font-family: IBM Plex Mono; font-size: 58px; font-weight: 600; line-height: 1.12; color: #000000;">
+            What is ${title}?
+          </div>
+          <div tw="max-w-4xl" style="display: flex; font-size: 18px; line-height: 1.4; color: #53615d;">
+            ${excerpt}
+          </div>  
+          <div tw="mt-6" style="display: flex;">
+            <div tw="flex items-center px-6 py-3" style="display: flex; align-items: center; background: #000000; border-radius: 18px; color: #ffffff; font-family: IBM Plex Mono; font-size: 17px; font-weight: 600;">
+              <span>Learn More</span>
+              <span tw="ml-2" style="display: flex; align-items: center; color: #ffffff;">
+                <svg viewBox="0 0 24 24" fill="currentColor" class="size-6">
+                  <path fill-rule="evenodd" d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25Zm4.28 10.28a.75.75 0 0 0 0-1.06l-3-3a.75.75 0 1 0-1.06 1.06l1.72 1.72H8.25a.75.75 0 0 0 0 1.5h5.69l-1.72 1.72a.75.75 0 1 0 1.06 1.06l3-3Z" clip-rule="evenodd" />
+                </svg>
+              </span>
+            </div>
           </div>
         </div>
       </div>

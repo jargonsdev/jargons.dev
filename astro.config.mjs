@@ -8,6 +8,7 @@ import autoprefixer from "autoprefixer";
 
 // https://astro.build/config
 export default defineConfig({
+  site: "https://www.jargons.dev",
   integrations: [
     mdx(),
     react(),

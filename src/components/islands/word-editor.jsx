@@ -25,6 +25,14 @@ import {
   $togglePreview,
 } from "../../lib/stores/dictionary.js";
 
+function hasValidSubmissionContent(title, content, initialContent) {
+  return (
+    title.trim().length > 0 &&
+    content.trim().length > 0 &&
+    content !== initialContent
+  );
+}
+
 /**
  * Main Word Editor Component - Island
  */
@@ -59,6 +67,12 @@ export default function WordEditor({
 export function EditorActions({ children = "Submit" }) {
   const forkStatus = useStore($forkSyncStatus);
   const [forkError, setForkError] = useState("");
+  const { title, content, initialContent } = useWordEditor();
+  const isSubmissionContentValid = hasValidSubmissionContent(
+    title,
+    content,
+    initialContent,
+  );
 
   async function loadForkStatus() {
     $forkSyncStatus.set("checking");
@@ -172,8 +186,16 @@ export function EditorActions({ children = "Submit" }) {
           <span
             className="flex gap-1 items-center text-green-400"
             role="status"
-            aria-label={forkStatus === "current" ? "Fork is up to date" : "Fork created on first submission"}
-            title={forkStatus === "current" ? "Fork is up to date" : "Fork will be created on first submission"}
+            aria-label={
+              forkStatus === "current"
+                ? "Fork is up to date"
+                : "Fork created on first submission"
+            }
+            title={
+              forkStatus === "current"
+                ? "Fork is up to date"
+                : "Fork will be created on first submission"
+            }
           >
             <span>All set!</span>
             <svg
@@ -246,12 +268,14 @@ export function EditorActions({ children = "Submit" }) {
           </span>
         )}
       </div>
-      <SubmitButton>{children}</SubmitButton>
+      <SubmitButton isSubmissionValid={isSubmissionContentValid}>
+        {children}
+      </SubmitButton>
     </div>
   );
 }
 
-function SubmitButton({ children = "Submit" }) {
+function SubmitButton({ children = "Submit", isSubmissionValid }) {
   const isSubmitted = useStore($isWordSubmitted);
   const isSubmitLoading = useStore($isWordSubmitLoading);
   const forkStatus = useStore($forkSyncStatus);
@@ -261,10 +285,12 @@ function SubmitButton({ children = "Submit" }) {
 
   return (
     <button
-      className={`flex items-center justify-center no-underline text-white ${isSubmitted ? "bg-green-700" : "bg-gray-900 hover:bg-gray-700"} focus:ring-0 font-medium rounded-xl text-sm md:text-base px-3 md:px-4 py-2 text-center`}
+      className={`flex items-center justify-center no-underline text-white ${isSubmitted ? "bg-green-700" : "bg-gray-900 hover:bg-gray-700"} focus:ring-0 font-medium rounded-xl text-sm md:text-base px-3 md:px-4 py-2 text-center disabled:cursor-not-allowed disabled:opacity-50`}
       type="submit"
       form="jargons.dev:word_editor"
-      disabled={isSubmitLoading || isSubmitted || isForkNotReady}
+      disabled={
+        isSubmitLoading || isSubmitted || isForkNotReady || !isSubmissionValid
+      }
     >
       {isSubmitLoading ? (
         <div className="flex-none h-4 w-4 md:w-6 md:h-6 rounded-full border-2 border-gray-400 border-b-gray-200 border-r-gray-200 animate-spin" />
@@ -600,11 +626,12 @@ function Editor({ eTitle, eContent, eMetadata, className, action, ...props }) {
       return;
     }
 
-    const hasWordChanged = content !== initialContent;
-    if (!hasWordChanged) {
-      alert(
-        "No changes detected. Please update the content before submitting.",
-      );
+    if (!hasValidSubmissionContent(title, content, initialContent)) {
+      if (content === initialContent) {
+        alert(
+          "No changes detected. Please update the content before submitting.",
+        );
+      }
       return;
     }
 

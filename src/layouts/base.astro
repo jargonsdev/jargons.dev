@@ -2,7 +2,7 @@
 import "@fontsource/inter";
 import "@fontsource/ibm-plex-mono";
 import "../base.css";
-import { SITE_META_KEYWORDS, SITE_META_DESCRIPTION } from "../../constants.js";
+import { SITE_META_KEYWORDS, SITE_META_DESCRIPTION, SITE_META_SUBTITLE } from "../../constants.js";
 
 const MEASUREMENT_ID = import.meta.env.PUBLIC_GOOGLE_ANALYTICS_MEASUREMENT_ID;
 
@@ -14,7 +14,7 @@ const {
   class: list,
   ogImageUrl = new URL("/og.png", siteOrigin).href,
   description = SITE_META_DESCRIPTION,
-  subtitle = "Developer Jargons",
+  subtitle = SITE_META_SUBTITLE,
 } = props;
 ---
 

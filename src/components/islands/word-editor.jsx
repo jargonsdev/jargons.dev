@@ -93,6 +93,9 @@ export function SubmitButton({ children = "Submit" }) {
   );
 }
 
+/**
+ * Editor Preview Toggle Component
+ */
 export function TogglePreview() {
   const togglePreview = useStore($togglePreview);
 

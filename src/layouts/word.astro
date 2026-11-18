@@ -12,6 +12,8 @@ import JAIFollowUpChatWidget, {
 
 const { frontmatter } = Astro.props;
 const dictionary = await getCollection("dictionary");
+const wordSlug = Astro.url.pathname.split("/").filter(Boolean).at(-1) ?? "";
+const ogImageUrl = `${Astro.url.origin}/api/open-graph/${encodeURIComponent(String(wordSlug))}.png`;
 
 /**
  * @todo implement a better way to resolve the `slug` used in the `editUrl`
@@ -20,7 +22,7 @@ const dictionary = await getCollection("dictionary");
 const editUrl = `/editor/edit/${frontmatter.url.split("/")[3].split(".")[0]}`;
 ---
 
-<BaseLayout pageTitle={frontmatter.title} }>
+<BaseLayout pageTitle={frontmatter.title} ogImageUrl={ogImageUrl}>
   <div class="main-wrapper">
     <Navbar>
       <Search triggerSize="sm" dictionary={dictionary} client:load />

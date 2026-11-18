@@ -21,6 +21,7 @@ import useWordEditor from "../../lib/hooks/use-word-editor.js";
 import {
   $isWordSubmitLoading,
   $isWordSubmitted,
+  $forkSyncStatus,
   $togglePreview,
 } from "../../lib/stores/dictionary.js";
 
@@ -53,18 +54,217 @@ export default function WordEditor({
 }
 
 /**
- * Detached Editor Submit Button Component - Island
+ * Fork readiness and detached submit controls
  */
-export function SubmitButton({ children = "Submit" }) {
+export function EditorActions({ children = "Submit" }) {
+  const forkStatus = useStore($forkSyncStatus);
+  const [forkError, setForkError] = useState("");
+
+  async function loadForkStatus() {
+    $forkSyncStatus.set("checking");
+    setForkError("");
+
+    try {
+      const response = await fetch("/api/fork");
+      const data = await response.json();
+      if (!response.ok)
+        throw new Error(data.message ?? "Could not check fork status.");
+
+      $forkSyncStatus.set(data.status);
+    } catch (error) {
+      $forkSyncStatus.set("error");
+      setForkError(error.message ?? "Could not check fork status.");
+    }
+  }
+
+  useEffect(() => {
+    loadForkStatus();
+  }, []);
+
+  async function updateFork() {
+    $forkSyncStatus.set("syncing");
+    setForkError("");
+
+    try {
+      const response = await fetch("/api/fork", { method: "POST" });
+      const data = await response.json();
+      if (!response.ok)
+        throw new Error(data.message ?? "Could not update fork.");
+
+      $forkSyncStatus.set(data.status);
+      if (data.status === "out-of-date") {
+        setForkError("Fork is still out of date. Try updating again.");
+      }
+    } catch (error) {
+      $forkSyncStatus.set("out-of-date");
+      setForkError(error.message ?? "Could not update fork.");
+    }
+  }
+
+  return (
+    <div className="flex min-w-0 flex-wrap items-center justify-end gap-x-2 gap-y-1">
+      <div
+        className="min-w-0 max-w-[38vw] whitespace-nowrap text-[10px] sm:text-xs md:max-w-none"
+        aria-live="polite"
+      >
+        {(forkStatus === "checking" || forkStatus === "syncing") && (
+          <span
+            className="inline-flex items-center text-gray-600"
+            role="status"
+            aria-label={
+              forkStatus === "checking"
+                ? "Checking fork status"
+                : "Updating fork"
+            }
+            title={
+              forkStatus === "checking"
+                ? "Checking fork status"
+                : "Updating fork"
+            }
+          >
+            <span className="relative inline-flex size-6 items-center justify-center">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="none"
+                className="absolute inset-0 size-6 animate-spin"
+                aria-hidden="true"
+              >
+                <circle
+                  cx="12"
+                  cy="12"
+                  r="9"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  opacity="0.2"
+                />
+                <path
+                  d="M12 3a9 9 0 0 1 9 9"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                />
+              </svg>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.75"
+                className="size-3.5"
+                aria-hidden="true"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M12 7v5l3 2"
+                />
+              </svg>
+            </span>
+            <span className="sr-only">
+              {forkStatus === "checking"
+                ? "Checking fork status"
+                : "Updating fork"}
+            </span>
+          </span>
+        )}
+        {(forkStatus === "current" || forkStatus === "missing") && (
+          <span
+            className="flex gap-1 items-center text-green-400"
+            role="status"
+            aria-label={forkStatus === "current" ? "Fork is up to date" : "Fork created on first submission"}
+            title={forkStatus === "current" ? "Fork is up to date" : "Fork will be created on first submission"}
+          >
+            <span>All set!</span>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              fill="currentColor"
+              className="size-6"
+              aria-hidden="true"
+            >
+              <path
+                fillRule="evenodd"
+                d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12Zm13.36-1.814a.75.75 0 1 0-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 0 0-1.06 1.06l2.25 2.25a.75.75 0 0 0 1.14-.094l3.75-5.25Z"
+                clipRule="evenodd"
+              />
+            </svg>
+          </span>
+        )}
+        {forkStatus === "out-of-date" && (
+          <span className="flex items-center gap-1 text-amber-700">
+            <button
+              type="button"
+              onClick={updateFork}
+              className="font-medium underline underline-offset-2"
+            >
+              Update
+            </button>
+            <span
+              className="inline-flex items-center"
+              role="status"
+              aria-label="Fork is out of date"
+              title={forkError || "Out of date"}
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+                className="size-6"
+                aria-hidden="true"
+              >
+                <path
+                  fillRule="evenodd"
+                  d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12ZM12 8.25a.75.75 0 0 1 .75.75v3.75a.75.75 0 0 1-1.5 0V9a.75.75 0 0 1 .75-.75Zm0 8.25a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Z"
+                  clipRule="evenodd"
+                />
+              </svg>
+              <span className="sr-only">Out of date</span>
+            </span>
+            {forkError && (
+              <span className="max-w-[24vw] truncate" title={forkError}>
+                {forkError}
+              </span>
+            )}
+          </span>
+        )}
+        {forkStatus === "error" && (
+          <span className="flex items-center gap-1 text-red-700">
+            <button
+              type="button"
+              onClick={loadForkStatus}
+              className="font-medium underline underline-offset-2"
+            >
+              Retry
+            </button>
+            <span
+              className="max-w-[24vw] truncate"
+              title={forkError || "Could not check fork status"}
+            >
+              {forkError || "Check failed"}
+            </span>
+          </span>
+        )}
+      </div>
+      <SubmitButton>{children}</SubmitButton>
+    </div>
+  );
+}
+
+function SubmitButton({ children = "Submit" }) {
   const isSubmitted = useStore($isWordSubmitted);
   const isSubmitLoading = useStore($isWordSubmitLoading);
+  const forkStatus = useStore($forkSyncStatus);
+  const isForkNotReady = ["checking", "out-of-date", "syncing"].includes(
+    forkStatus,
+  );
 
   return (
     <button
-      className={`flex items-center justify-center no-underline text-white ${isSubmitted ? "bg-green-700" : "bg-gray-900 hover:bg-gray-700"} focus:ring-0 font-medium rounded-xl text-base px-5 py-2.5 text-center`}
+      className={`flex items-center justify-center no-underline text-white ${isSubmitted ? "bg-green-700" : "bg-gray-900 hover:bg-gray-700"} focus:ring-0 font-medium rounded-xl text-sm md:text-base px-3 md:px-4 py-2 text-center`}
       type="submit"
       form="jargons.dev:word_editor"
-      disabled={isSubmitLoading || isSubmitted}
+      disabled={isSubmitLoading || isSubmitted || isForkNotReady}
     >
       {isSubmitLoading ? (
         <div className="flex-none h-4 w-4 md:w-6 md:h-6 rounded-full border-2 border-gray-400 border-b-gray-200 border-r-gray-200 animate-spin" />
@@ -394,6 +594,12 @@ function Editor({ eTitle, eContent, eMetadata, className, action, ...props }) {
    * @todo handle error for when submission isn't successful
    */
   async function handleSubmit(e) {
+    if (
+      ["checking", "out-of-date", "syncing"].includes($forkSyncStatus.get())
+    ) {
+      return;
+    }
+
     const hasWordChanged = content !== initialContent;
     if (!hasWordChanged) {
       alert(
@@ -404,45 +610,62 @@ function Editor({ eTitle, eContent, eMetadata, className, action, ...props }) {
 
     $isWordSubmitLoading.set(true);
     const formData = new FormData(e.target);
-    const response = await fetch("/api/dictionary", {
-      method: "POST",
-      body: formData,
-    });
-    if (response && response.status === 200) {
-      clearDraft();
-      $isWordSubmitted.set(true);
-      $isWordSubmitLoading.set(false);
-      router.push("/editor");
-    } else {
-      /**
-       * Temporary workaround for handling deletion of existing reference/branch
-       */
-      const data = await response.json();
-      $isWordSubmitLoading.set(false);
-      if (
-        response.status === 422 &&
-        data.message.includes("Reference already exists")
-      ) {
+    try {
+      const response = await fetch("/api/dictionary", {
+        method: "POST",
+        body: formData,
+      });
+      if (response.status === 200) {
+        clearDraft();
+        $isWordSubmitted.set(true);
+        $isWordSubmitLoading.set(false);
+        router.push("/editor");
+      } else {
+        const data = await response.json();
+        if (response.status === 409 && data.status === "out-of-date") {
+          $forkSyncStatus.set("out-of-date");
+          alert(data.message);
+          $isWordSubmitLoading.set(false);
+          return;
+        }
+
+        /**
+         * Temporary workaround for handling deletion of existing reference/branch
+         */
         if (
-          confirm(
-            "It appears you have an existing reference for the current word, do you wish to clear that reference?",
-          )
+          response.status === 422 &&
+          data.message?.includes("Reference already exists")
         ) {
-          $isWordSubmitLoading.set(true);
-          const response = await fetch("/api/dictionary", {
-            method: "DELETE",
-            body: formData,
-          });
-          if (response.status === 204) {
-            $isWordSubmitLoading.set(false);
-            alert(
-              "Reference cleared successfully! Kindly publish your contribution again!",
-            );
+          if (
+            confirm(
+              "It appears you have an existing reference for the current word, do you wish to clear that reference?",
+            )
+          ) {
+            const deleteResponse = await fetch("/api/dictionary", {
+              method: "DELETE",
+              body: formData,
+            });
+            if (deleteResponse.status === 204) {
+              alert(
+                "Reference cleared successfully! Kindly publish your contribution again!",
+              );
+            } else {
+              const deleteData = await deleteResponse.json();
+              alert(
+                deleteData.message ?? "Could not clear the existing reference.",
+              );
+            }
+          } else {
+            router.push("/editor");
           }
         } else {
-          router.push("/editor");
+          alert(data.message ?? "Could not submit this contribution.");
         }
+        $isWordSubmitLoading.set(false);
       }
+    } catch (error) {
+      $isWordSubmitLoading.set(false);
+      alert(error.message ?? "Could not submit this contribution.");
     }
   }
 

@@ -6,9 +6,16 @@ import partytown from "@astrojs/partytown";
 import tailwindcss from "tailwindcss";
 import autoprefixer from "autoprefixer";
 
+const VERCEL_PREVIEW_SITE =
+  process.env.VERCEL_ENV === "preview" && process.env.VERCEL_BRANCH_URL
+    ? `https://${process.env.VERCEL_BRANCH_URL}`
+    : undefined;
+
+const site = VERCEL_PREVIEW_SITE || "https://www.jargons.dev";
+
 // https://astro.build/config
 export default defineConfig({
-  site: "https://www.jargons.dev",
+  site,
   integrations: [
     mdx(),
     react(),

@@ -648,7 +648,7 @@ function Preview({ className, ...props }) {
 const DummyPreviewNavbar = () => (
   <div className="@container mb-6">
     <nav className="flex items-center justify-between pb-4">
-      <span className="flex items-center underline cursor-not-allowed">
+      <span className="flex items-center w-6 h-6 justify-center bg-none hover:bg-black text-black hover:text-white rounded-full border border-black/60 transition-color ease-in-out duration-400 cursor-not-allowed">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
@@ -663,7 +663,6 @@ const DummyPreviewNavbar = () => (
             d="M15.75 19.5 8.25 12l7.5-7.5"
           />
         </svg>
-        <span>Back</span>
       </span>
 
       <div className="cursor-not-allowed">

@@ -221,6 +221,16 @@ describe("toggleMarkdownListPrefix", () => {
       end: 22,
     });
   });
+
+  it("numbers multiple selected lines incrementally", () => {
+    const value = "first\nsecond\nthird";
+
+    expect(toggleMarkdownListPrefix(value, 0, value.length, "1. ")).toEqual({
+      value: "1. first\n2. second\n3. third",
+      start: 3,
+      end: 27,
+    });
+  });
 });
 
 describe("continueMarkdownListOnEnter", () => {

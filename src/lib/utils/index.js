@@ -133,6 +133,8 @@ export function toggleMarkdownListPrefix(value, start, end, prefix) {
   }
 
   const targetKind = prefix.startsWith("-") ? "unordered" : "ordered";
+  let nextOrderedNumber = Number.parseInt(prefix, 10) || 1;
+  const orderedDelimiter = prefix.match(/^\d+([.)])/)?.[1] ?? ".";
   const edits = lineStarts.map((startIndex) => {
     const lineEnd = value.indexOf("\n", startIndex);
     const line = value.slice(
@@ -153,7 +155,12 @@ export function toggleMarkdownListPrefix(value, start, end, prefix) {
     return {
       start: prefixStart,
       removeLength: existingPrefix?.[0].length ?? 0,
-      insertText: existingKind === targetKind ? "" : prefix,
+      insertText:
+        existingKind === targetKind
+          ? ""
+          : targetKind === "ordered"
+            ? `${nextOrderedNumber++}${orderedDelimiter} `
+            : prefix,
     };
   });
 

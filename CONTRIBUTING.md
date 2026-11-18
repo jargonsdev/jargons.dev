@@ -3,7 +3,7 @@
 We welcome contributions of any size and skill level. Before contributing,
 please read the [Code of Conduct](./code-of-conduct.md) and follow the directions below:
 
-> [!Tip] 
+> [!Tip]
 > **New contributors:** Take a look at [https://github.com/firstcontributions/first-contributions](https://github.com/firstcontributions/first-contributions) for helpful information on contributing
 
 ## Recommended Communication Style
@@ -22,16 +22,18 @@ Contributing new or edited words to the dictionary!? there are two primary ways 
 
 2. **Using GitHub UI or Other Means:**  
    If you prefer to use the GitHub UI or other means, you can follow these steps:
-   
    - **For New Words:**
      1. Grab our predefined word template below
+
         ```md
         ---
         layout: ../../layouts/word.astro
         title: "title_here"
         ---
+
         content_here
         ```
+
      2. Fill in the word details in the template, ensuring accuracy and clarity.
      3. Create a new file for the word in the `src/content/dictionary` folder.
      4. Name the file in a slug format, e.g., `new-word.mdx`.
@@ -52,7 +54,7 @@ To create an Issue, please follow these steps:
 
 1. Search existing Issues before creating a new issue (to see if someone raised this already)
 2. If it doesn't exist create a new issue giving as much context as possible (please select the correct Issue type, for example `bug` or `feature`)
-3. If you wish to work on the Issue, Select the checkbox "I will like to work on this issue". 
+3. If you wish to work on the Issue, Select the checkbox "I will like to work on this issue".
 
 ### Working on an Issue
 
@@ -62,6 +64,19 @@ If you wish to work on an open issue, please ask for it to be assigned to you an
 > Only start working on an Issue (and open a Pull Request) when it has been assigned to you - this will prevent confusion, multiple people working on the same issue and work not being used
 
 In case you get stuck while working on an issue you've been assigned, feel free to ask question openly in the comment.
+
+#### Labels Closed to Community Pickup
+
+Some issues are intentionally not open for general contributor assignment:
+
+- `maintainers-only`: Requires core team context, elevated permissions (infra, secrets, deployment), or involves architectural refactors in progress. Do not ask to be assigned or open a PR unless a maintainer explicitly invites help.
+- `wontfix`: We are not taking action on this (currently or possibly ever) due to priority, scope, strategy, or technical constraints. Constructive discussion is welcome, but please do not submit a PR “just fixing it” while this label remains.
+
+Guidelines:
+
+1. If an issue has one of the above labels, treat it as unavailable even if it is unassigned.
+2. You may (once) ask politely for clarification if the rationale isn’t clear—keep it concise and respectful.
+3. If you think there is a smaller or alternative angle worth exploring, open a new issue or discussion rather than overriding the label.
 
 Please follow our [Code of Conduct](./code-of-conduct.md) in all your interactions with the project and its contributors.
 
@@ -78,7 +93,6 @@ We actively welcome your pull requests. However, you must ensure that **you are 
 7. Make sure you address any lint warnings.
 8. If you improve the existing code or added a new npm package, please let us know in your PR description.
 9. Completing the PR form is required. Make sure to fill in the PR title, description, [link to an issue](https://help.github.com/en/github/writing-on-github/autolinked-references-and-urls), and all the necessary areas.
-
    - The title must begin with `feat:`, `fix:`, or anything related to your changes. <br /> **TIP:** You can follow your chosen option when [committing](#commits) your changes.
 
    - Unsolicited code is welcomed, but an issue is required to announce your intentions.

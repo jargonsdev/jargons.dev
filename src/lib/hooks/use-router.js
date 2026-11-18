@@ -14,19 +14,20 @@ export default function useRouter() {
     setWindowLocationObjProps(otherWindowLocationObjProps);
   }, []);
 
-
   return {
     push: (url) => {
-      const location = isAbsoluteUrl(url) ? url : windowLocationObj.origin + url;
+      const location = isAbsoluteUrl(url)
+        ? url
+        : windowLocationObj.origin + url;
       return windowLocationObj.assign(location);
     },
-    ...windowLocationObjProps
+    ...windowLocationObjProps,
   };
 }
 
 /**
  * Test if url is absolute
- * @param {string} url 
+ * @param {string} url
  * @returns {boolean}
  */
 function isAbsoluteUrl(url) {

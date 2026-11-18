@@ -3,8 +3,8 @@ import { getEntry } from "astro:content";
 /**
  * Get a jargon (word) from the dictionary
  * @param {import("astro").APIContext} context
- * 
- * @todo Nice to have: endpoint queries the GitHub to fetch word directly from jargons.dev repo using the requester's accessToken 
+ *
+ * @todo Nice to have: endpoint queries the GitHub to fetch word directly from jargons.dev repo using the requester's accessToken
  * ...will be super useful in the context where we are consuming this endpoint on the anticipated browser extention integration
  */
 export async function GET({ params: { slug } }) {
@@ -14,21 +14,21 @@ export async function GET({ params: { slug } }) {
     return new Response(JSON.stringify({ message: "Not Found" }), {
       status: 404,
       headers: {
-        "Content-type": "application/json"
-      }
+        "Content-type": "application/json",
+      },
     });
   }
 
   const response = {
     slug: word.slug,
     title: word.data.title,
-    content: word.body
-  }
+    content: word.body,
+  };
 
   return new Response(JSON.stringify(response), {
     status: 200,
     headers: {
-      "Content-type": "application/json"
-    }
+      "Content-type": "application/json",
+    },
   });
 }

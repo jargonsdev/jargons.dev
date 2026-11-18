@@ -53,7 +53,7 @@ export async function POST({ request, cookies }) {
         repoFullname: fork,
         repoMainBranchRef: PROJECT_REPO_DETAILS.repoMainBranchRef,
       },
-      generateBranchName(action, title)
+      generateBranchName(action, title),
     );
     console.log("Branch Created: ", branch);
 
@@ -75,7 +75,7 @@ export async function POST({ request, cookies }) {
         },
         {
           env: "node",
-        }
+        },
       );
       console.log("Word updated: ", updatedWord);
     }
@@ -91,7 +91,7 @@ export async function POST({ request, cookies }) {
         },
         {
           env: "node",
-        }
+        },
       );
       console.log("New word added: ", newWord);
     }
@@ -106,7 +106,7 @@ export async function POST({ request, cookies }) {
       {
         title,
         content,
-      }
+      },
     );
     console.log("Word submitted: ", wordSubmission);
 
@@ -117,16 +117,15 @@ export async function POST({ request, cookies }) {
       },
     });
   } catch (error) {
-    console.log(error);
-    return new Response(
-      JSON.stringify({ message: error.response.data.message }),
-      {
-        status: error.response.status,
-        headers: {
-          "Content-type": "application/json",
-        },
-      }
-    );
+    console.log(error.cause);
+    const message = error.cause?.message ?? "An unexpected error occurred";
+    const status = error.cause?.status ?? 500;
+    return new Response(JSON.stringify({ message }), {
+      status,
+      headers: {
+        "Content-type": "application/json",
+      },
+    });
   }
 }
 
@@ -136,7 +135,7 @@ export async function POST({ request, cookies }) {
  */
 export async function DELETE({ request, cookies }) {
   const data = await request.formData();
-  const accessToken = cookies.get("jargons.dev:token", {
+  const accessToken = cookies.get("jargonsdevToken", {
     decode: (value) => decrypt(value),
   });
 
@@ -171,24 +170,21 @@ export async function DELETE({ request, cookies }) {
   try {
     await deleteBranch(userOctokit, fork, generateBranchName(action, title));
 
-    return new Response(
-      JSON.stringify({ message: "reference deleted successfully" }),
-      {
-        status: 204,
-        headers: {
-          "Content-type": "application/json",
-        },
-      }
-    );
+    return new Response(null, {
+      status: 204,
+      headers: {
+        "Content-type": "application/json",
+      },
+    });
   } catch (error) {
-    return new Response(
-      JSON.stringify({ message: error.response.data.message }),
-      {
-        status: error.response.status,
-        headers: {
-          "Content-type": "application/json",
-        },
-      }
-    );
+    const message =
+      error.cause?.message ?? error.message ?? "An error occurred";
+    const status = error.cause?.status ?? 500;
+    return new Response(JSON.stringify({ message }), {
+      status,
+      headers: {
+        "Content-type": "application/json",
+      },
+    });
   }
 }

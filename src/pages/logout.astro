@@ -1,7 +1,10 @@
 ---
 import doLogout from "../lib/actions/do-logout.js";
 
-const { url: { searchParams }, redirect } = Astro;
+const {
+  url: { searchParams },
+  redirect,
+} = Astro;
 
 const { isLoggedOut } = await doLogout(Astro);
 if (isLoggedOut) return redirect(searchParams.get("return_to") || "/");

@@ -1,22 +1,30 @@
 import { defineConfig } from "astro/config";
 import mdx from "@astrojs/mdx";
 import react from "@astrojs/react";
-import tailwind from "@astrojs/tailwind";
+import vercel from "@astrojs/vercel";
 import partytown from "@astrojs/partytown";
-import vercel from "@astrojs/vercel/serverless";
+import tailwindcss from "tailwindcss";
+import autoprefixer from "autoprefixer";
 
 // https://astro.build/config
 export default defineConfig({
   integrations: [
-    mdx(), 
-    react(), 
-    tailwind(), 
+    mdx(),
+    react(),
     partytown({
       config: {
         forward: ["dataLayer.push"],
       },
-    })
+    }),
   ],
+  vite: {
+    css: {
+      postcss: {
+        plugins: [tailwindcss(), autoprefixer()],
+      },
+    },
+  },
+  compressHTML: true,
   output: "server",
-  adapter: vercel()
+  adapter: vercel(),
 });

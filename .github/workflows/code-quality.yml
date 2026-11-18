@@ -1,0 +1,40 @@
+name: Code Quality
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+
+jobs:
+  format-check:
+    name: Check Code Formatting
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: Setup Node.js
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: "22.x"
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npx --yes npm@11.15.0 ci
+
+      - name: Check code formatting
+        run: npm run format:check
+
+      - name: Display formatting success
+        run: |
+          echo "✅ Code formatting is consistent"
+        if: success()
+
+      - name: Display formatting issues
+        run: |
+          echo "❌ Code formatting issues found"
+          echo "Run 'npm run format' to fix formatting issues"
+          exit 1
+        if: failure()

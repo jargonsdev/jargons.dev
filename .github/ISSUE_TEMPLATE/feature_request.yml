@@ -2,6 +2,7 @@ name: 💡 Feature Request
 description: Suggest an idea for this project
 title: "[FEATURE]: "
 labels: ["💡 idea"]
+
 body:
   - type: checkboxes
     id: duplicates
@@ -11,12 +12,14 @@ body:
       options:
         - label: I have checked "open" AND "closed" issues and this is not a duplicate
           required: true
+
   - type: textarea
     attributes:
       label: Is your feature request related to a problem/unavailable functionality? Please describe.
       description: A clear and concise description of what the problem is (for example "I'm always frustrated when [...]").
     validations:
       required: true
+
   - type: textarea
     id: description
     attributes:
@@ -24,6 +27,7 @@ body:
       description: A clear description of the enhancement you propose. Please include relevant information and resources (for example another project's implementation of this feature).
     validations:
       required: true
+
   - type: textarea
     id: screenshots
     attributes:
@@ -31,6 +35,7 @@ body:
       description: Please add screenshots of the before and/or after the proposed changes.
     validations:
       required: false
+
   - type: dropdown
     id: assignee
     attributes:
@@ -42,6 +47,7 @@ body:
       default: 0
     validations:
       required: false
+
   - type: textarea
     id: extrainfo
     attributes:

@@ -10,7 +10,9 @@ export default function useIsMacOS() {
   const [isMacOS, setIsMacOS] = useState(false);
 
   useEffect(() => {
-    const userAgentCheck = MAC_OS_USER_AGENT_PART.test(window.navigator.userAgent);
+    const userAgentCheck = MAC_OS_USER_AGENT_PART.test(
+      window.navigator.userAgent,
+    );
     setIsMacOS(userAgentCheck);
   }, []);
 

@@ -8,27 +8,24 @@ import Search from "../../components/islands/search.jsx";
 const dictionary = await getCollection("dictionary");
 ---
 
-<BaseLayout 
-  pageTitle="Browse Words"
-  class="min-h-screen"
->
+<BaseLayout pageTitle="Browse Words" class="min-h-screen">
   <Navbar>
     <Search triggerSize="sm" dictionary={dictionary} client:load />
   </Navbar>
 
   <main class="max-w-screen-lg p-5 md:mt-10 mx-auto space-y-6">
-    <h2 class="text-3xl md:text-5xl font-black">
-      Browse Alphabetically
-    </h2>
+    <h2 class="text-3xl md:text-5xl font-black">Browse Alphabetically</h2>
     <div class="flex flex-wrap gap-3">
-      {ALPHABETS.map(alpha => (
-        <a 
-          href={`/browse/${alpha}/1`} 
-          class="no-underline flex h-16 w-16 md:h-20 md:w-20 bg-gray-100 hover:bg-black hover:text-white rounded md:text-lg transition-colors ease-in-out"
-        >
-          <span class="m-auto">{ alpha.toUpperCase() }</span>
-        </a>
-      ))}
+      {
+        ALPHABETS.map((alpha) => (
+          <a
+            href={`/browse/${alpha}/1`}
+            class="no-underline flex h-16 w-16 md:h-20 md:w-20 bg-gray-100 hover:bg-black hover:text-white rounded md:text-lg transition-colors ease-in-out"
+          >
+            <span class="m-auto">{alpha.toUpperCase()}</span>
+          </a>
+        ))
+      }
     </div>
   </main>
 </BaseLayout>

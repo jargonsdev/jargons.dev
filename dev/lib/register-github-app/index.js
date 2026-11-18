@@ -1,7 +1,7 @@
 /**
  * Register a GitHub App using the manifest flow
- * @see https://github.com/gr2m/register-github-app 
- * 
+ * @see https://github.com/gr2m/register-github-app
+ *
  * @ts-check
  */
 
@@ -64,10 +64,7 @@ export default async function registerGitHubApp(
 
     // Listen to the request event
     server.on("request", async (request, response) => {
-      const url = new URL(
-        request.url,
-        `http://localhost:${port}`,
-      );
+      const url = new URL(request.url, `http://localhost:${port}`);
 
       const code = url.searchParams.get("code");
       if (code) {

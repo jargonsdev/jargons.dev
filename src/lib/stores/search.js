@@ -1,7 +1,6 @@
 import { atom, map } from "nanostores";
 import { normalizeAsUrl } from "../utils/index.js";
 
-
 export const $isSearchOpen = atom(false);
 
 /**
@@ -15,15 +14,15 @@ export const $recentSearches = map({});
 
 /**
  * Add search term to recent search history
- * @param {SearchedItem} item 
+ * @param {SearchedItem} item
  */
 export function $addToRecentSearchesFn({ word, url }) {
   // Re-initialise the state with the current localStorage value
-  const storedSearches = JSON.parse(localStorage.getItem("jargons.dev:recent_searches")) || {};
+  const storedSearches =
+    JSON.parse(localStorage.getItem("jargons.dev:recent_searches")) || {};
   $recentSearches.set({ ...storedSearches });
 
   const key = normalizeAsUrl(word);
-
 
   const recentSearchesCopy = $recentSearches.get();
 
@@ -36,7 +35,7 @@ export function $addToRecentSearchesFn({ word, url }) {
 
   // Remove one Search Entry when list reach a count of 5
   if (searchEntries.length >= 5) {
-    searchEntries.pop(); 
+    searchEntries.pop();
   }
 
   const updatedEntries = [[key, { word, url }], ...searchEntries];
@@ -44,5 +43,8 @@ export function $addToRecentSearchesFn({ word, url }) {
   const updatedSearches = Object.fromEntries(updatedEntries);
   $recentSearches.set(updatedSearches);
 
-  localStorage.setItem("jargons.dev:recent_searches", JSON.stringify(updatedSearches));
+  localStorage.setItem(
+    "jargons.dev:recent_searches",
+    JSON.stringify(updatedSearches),
+  );
 }

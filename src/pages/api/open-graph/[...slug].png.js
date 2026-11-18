@@ -54,7 +54,7 @@ const fonts = [
   {
     name: "Inter",
     data: fs.readFileSync(
-      path.join(process.cwd(), "src/fonts/Inter-Regular.ttf"),
+      path.join(process.cwd(), "public/fonts/Inter-Regular.ttf"),
     ),
     weight: 400,
     style: "normal",
@@ -62,7 +62,7 @@ const fonts = [
   {
     name: "IBM Plex Mono",
     data: fs.readFileSync(
-      path.join(process.cwd(), "src/fonts/IBMPlexMono-SemiBold.ttf"),
+      path.join(process.cwd(), "public/fonts/IBMPlexMono-SemiBold.ttf"),
     ),
     weight: 600,
     style: "normal",

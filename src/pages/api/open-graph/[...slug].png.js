@@ -131,7 +131,7 @@ export async function GET({ props }) {
           </div>
           <div
             tw="max-w-4xl"
-            style="display: flex; font-size: 18px; line-height: 1.4; color: #53615d;"
+            style="display: flex; font-size: 18px; line-height: 1.4; color: #000000;"
           >
             ${excerpt}
           </div>

@@ -170,6 +170,49 @@ export function toggleMarkdownListPrefix(value, start, end, prefix) {
 }
 
 /**
+ * Continue a Markdown list on Enter or exit an empty list item
+ * @param {string} value
+ * @param {number} start
+ * @param {number} end
+ * @returns {{ value: string, start: number, end: number } | null}
+ */
+export function continueMarkdownListOnEnter(value, start, end) {
+  if (start !== end) return null;
+
+  const lineStart = value.lastIndexOf("\n", start - 1) + 1;
+  const newlineIndex = value.indexOf("\n", start);
+  const lineEnd = newlineIndex === -1 ? value.length : newlineIndex;
+  const line = value.slice(lineStart, lineEnd).replace(/\r$/, "");
+  const listItem = line.match(/^([ \t]*)([-*+]|(\d+)([.)]))([ \t]+)/);
+
+  if (!listItem) return null;
+
+  const [listPrefix, indentation, marker, number, delimiter] = listItem;
+  const contentStart = lineStart + listPrefix.length;
+  const itemContent = value.slice(contentStart, lineEnd).trim();
+
+  if (!itemContent) {
+    return {
+      value: `${value.slice(0, lineStart)}${value.slice(lineEnd)}`,
+      start: lineStart,
+      end: lineStart,
+    };
+  }
+
+  const nextMarker = number
+    ? `${String(Number(number) + 1).padStart(number.length, "0")}${delimiter}`
+    : marker;
+  const nextPrefix = `${indentation}${nextMarker}${listItem[5]}`;
+  const insertion = `\n${nextPrefix}`;
+
+  return {
+    value: `${value.slice(0, start)}${insertion}${value.slice(end)}`,
+    start: start + insertion.length,
+    end: start + insertion.length,
+  };
+}
+
+/**
  * Toggle a Markdown wrapper or switch between inline code and a code block
  * @param {string} value
  * @param {number} start

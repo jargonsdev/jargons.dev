@@ -11,6 +11,7 @@ import {
   buildWordPathname,
   buildWordSlug,
   toggleMarkdownListPrefix,
+  continueMarkdownListOnEnter,
   toggleMarkdownWrap,
   toggleMarkdownCodeBlock,
 } from "../../../src/lib/utils/index.js";
@@ -219,6 +220,45 @@ describe("toggleMarkdownListPrefix", () => {
       start: 0,
       end: 22,
     });
+  });
+});
+
+describe("continueMarkdownListOnEnter", () => {
+  it("continues a bullet list at the cursor", () => {
+    expect(continueMarkdownListOnEnter("- first", 7, 7)).toEqual({
+      value: "- first\n- ",
+      start: 10,
+      end: 10,
+    });
+  });
+
+  it("increments an ordered list marker", () => {
+    expect(continueMarkdownListOnEnter("3. first", 8, 8)).toEqual({
+      value: "3. first\n4. ",
+      start: 12,
+      end: 12,
+    });
+  });
+
+  it("removes an empty item's prefix without changing the prior item", () => {
+    expect(continueMarkdownListOnEnter("- first\n- ", 10, 10)).toEqual({
+      value: "- first\n",
+      start: 8,
+      end: 8,
+    });
+  });
+
+  it("splits the current item at the caret", () => {
+    expect(continueMarkdownListOnEnter("- first last", 7, 7)).toEqual({
+      value: "- first\n-  last",
+      start: 10,
+      end: 10,
+    });
+  });
+
+  it("leaves Enter unchanged outside a list item or with a selection", () => {
+    expect(continueMarkdownListOnEnter("plain text", 4, 4)).toBeNull();
+    expect(continueMarkdownListOnEnter("- first", 2, 4)).toBeNull();
   });
 });
 

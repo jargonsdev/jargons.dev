@@ -13,6 +13,7 @@ import useRouter from "../../lib/hooks/use-router.js";
 import {
   capitalizeText,
   toggleMarkdownListPrefix,
+  continueMarkdownListOnEnter,
   toggleMarkdownWrap,
   toggleMarkdownCodeBlock,
 } from "../../lib/utils/index.js";
@@ -254,7 +255,30 @@ function Editor({ eTitle, eContent, eMetadata, className, action, ...props }) {
   }
 
   function handleTextareaKeyDown(event) {
-    if (isDone || (!event.ctrlKey && !event.metaKey) || event.altKey) {
+    if (isDone) return;
+
+    if (
+      event.key === "Enter" &&
+      !event.shiftKey &&
+      !event.ctrlKey &&
+      !event.metaKey &&
+      !event.altKey
+    ) {
+      const { selectionStart, selectionEnd, value } = event.currentTarget;
+      const result = continueMarkdownListOnEnter(
+        value,
+        selectionStart,
+        selectionEnd,
+      );
+
+      if (result) {
+        event.preventDefault();
+        commitEdit(result);
+        return;
+      }
+    }
+
+    if ((!event.ctrlKey && !event.metaKey) || event.altKey) {
       return;
     }
 

@@ -10,6 +10,10 @@ import {
   buildStatsUrl,
   buildWordPathname,
   buildWordSlug,
+  toggleMarkdownListPrefix,
+  continueMarkdownListOnEnter,
+  toggleMarkdownWrap,
+  toggleMarkdownCodeBlock,
 } from "../../../src/lib/utils/index.js";
 
 describe("resolveCookieExpiryDate", () => {
@@ -169,6 +173,194 @@ describe("capitalizeText", () => {
 
   it("should handle multiple spaces", () => {
     expect(capitalizeText("hello  world")).toBe("Hello  World");
+  });
+});
+
+describe("toggleMarkdownListPrefix", () => {
+  it("adds and toggles off an unordered prefix at the cursor line", () => {
+    const added = toggleMarkdownListPrefix("item", 0, 0, "- ");
+    expect(added).toEqual({ value: "- item", start: 2, end: 2 });
+
+    expect(
+      toggleMarkdownListPrefix(added.value, added.start, added.end, "- "),
+    ).toEqual({
+      value: "item",
+      start: 0,
+      end: 0,
+    });
+  });
+
+  it("switches an existing unordered prefix to an ordered prefix", () => {
+    const switched = toggleMarkdownListPrefix("- item", 2, 6, "1. ");
+    expect(switched).toEqual({
+      value: "1. item",
+      start: 3,
+      end: 7,
+    });
+
+    expect(
+      toggleMarkdownListPrefix(
+        switched.value,
+        switched.start,
+        switched.end,
+        "1. ",
+      ),
+    ).toEqual({
+      value: "item",
+      start: 0,
+      end: 4,
+    });
+  });
+
+  it("toggles selected lines individually and preserves their selection", () => {
+    const value = "- first\n1. second\nthird";
+
+    expect(toggleMarkdownListPrefix(value, 0, value.length, "- ")).toEqual({
+      value: "first\n- second\n- third",
+      start: 0,
+      end: 22,
+    });
+  });
+
+  it("numbers multiple selected lines incrementally", () => {
+    const value = "first\nsecond\nthird";
+
+    expect(toggleMarkdownListPrefix(value, 0, value.length, "1. ")).toEqual({
+      value: "1. first\n2. second\n3. third",
+      start: 3,
+      end: 27,
+    });
+  });
+});
+
+describe("continueMarkdownListOnEnter", () => {
+  it("continues a bullet list at the cursor", () => {
+    expect(continueMarkdownListOnEnter("- first", 7, 7)).toEqual({
+      value: "- first\n- ",
+      start: 10,
+      end: 10,
+    });
+  });
+
+  it("increments an ordered list marker", () => {
+    expect(continueMarkdownListOnEnter("3. first", 8, 8)).toEqual({
+      value: "3. first\n4. ",
+      start: 12,
+      end: 12,
+    });
+  });
+
+  it("removes an empty item's prefix without changing the prior item", () => {
+    expect(continueMarkdownListOnEnter("- first\n- ", 10, 10)).toEqual({
+      value: "- first\n",
+      start: 8,
+      end: 8,
+    });
+  });
+
+  it("splits the current item at the caret", () => {
+    expect(continueMarkdownListOnEnter("- first last", 7, 7)).toEqual({
+      value: "- first\n-  last",
+      start: 10,
+      end: 10,
+    });
+  });
+
+  it("leaves Enter unchanged outside a list item or with a selection", () => {
+    expect(continueMarkdownListOnEnter("plain text", 4, 4)).toBeNull();
+    expect(continueMarkdownListOnEnter("- first", 2, 4)).toBeNull();
+  });
+});
+
+describe("Markdown wrapper toggles", () => {
+  it("removes a bold wrapper around selected text", () => {
+    expect(toggleMarkdownWrap("**bold text**", 2, 11, "**")).toEqual({
+      value: "bold text",
+      start: 0,
+      end: 9,
+    });
+  });
+
+  it("removes a wrapper when only part of its text is selected", () => {
+    expect(toggleMarkdownWrap("**bold text**", 7, 11, "**")).toEqual({
+      value: "bold text",
+      start: 5,
+      end: 9,
+    });
+  });
+
+  it("removes empty bold delimiters around a cursor", () => {
+    expect(toggleMarkdownWrap("****", 2, 2, "**")).toEqual({
+      value: "",
+      start: 0,
+      end: 0,
+    });
+  });
+
+  it("removes a wrapper when the selection includes its delimiters", () => {
+    expect(toggleMarkdownWrap("**bold**", 0, 8, "**")).toEqual({
+      value: "bold",
+      start: 0,
+      end: 4,
+    });
+  });
+
+  it("removes empty italic delimiters around the cursor", () => {
+    expect(toggleMarkdownWrap("__", 1, 1, "_")).toEqual({
+      value: "",
+      start: 0,
+      end: 0,
+    });
+  });
+
+  it("removes inline-code delimiters around selected text", () => {
+    expect(toggleMarkdownWrap("`code`", 1, 5, "`")).toEqual({
+      value: "code",
+      start: 0,
+      end: 4,
+    });
+  });
+
+  it("switches inline code to a fenced code block", () => {
+    expect(toggleMarkdownCodeBlock("`console.log()`", 1, 14)).toEqual({
+      value: "```\nconsole.log()\n```",
+      start: 4,
+      end: 17,
+    });
+  });
+
+  it("preserves a partial selection when switching inline code to a block", () => {
+    expect(toggleMarkdownCodeBlock("call `console.log()` now", 15, 18)).toEqual(
+      {
+        value: "call \n```\nconsole.log()\n```\n now",
+        start: 19,
+        end: 22,
+      },
+    );
+  });
+
+  it("switches a fenced code block to inline code", () => {
+    expect(toggleMarkdownWrap("```\nconsole.log()\n```", 4, 17, "`")).toEqual({
+      value: "`console.log()`",
+      start: 1,
+      end: 14,
+    });
+  });
+
+  it("removes a fenced code block around selected code", () => {
+    expect(toggleMarkdownCodeBlock("```\nconsole.log()\n```", 4, 17)).toEqual({
+      value: "console.log()",
+      start: 0,
+      end: 13,
+    });
+  });
+
+  it("removes an empty code block around the cursor", () => {
+    expect(toggleMarkdownCodeBlock("```\n\n```", 4, 4)).toEqual({
+      value: "",
+      start: 0,
+      end: 0,
+    });
   });
 });
 

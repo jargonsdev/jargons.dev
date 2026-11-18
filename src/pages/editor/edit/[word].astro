@@ -32,6 +32,7 @@ const action = resolveEditorActionFromPathname(pathname);
     returnNav={{
       label: `Return to ${word.data.title}`,
       location: `/browse/${wordMetadata.title}`,
+      confirmDiscard: true,
     }}
   >
     <div class="flex space-x-3">

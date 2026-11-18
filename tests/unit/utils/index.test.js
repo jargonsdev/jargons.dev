@@ -11,6 +11,7 @@ import {
   buildWordPathname,
   buildWordSlug,
   getExcerpt,
+  getKeywords,
   toggleMarkdownListPrefix,
   continueMarkdownListOnEnter,
   toggleMarkdownWrap,
@@ -455,5 +456,25 @@ describe("getExcerpt", () => {
 
   it("returns an empty string when no paragraph is available", () => {
     expect(getExcerpt()).toBe("");
+  });
+});
+
+describe("getKeywords", () => {
+  it("extracts unique terms from the title and first definition paragraph", () => {
+    expect(
+      getKeywords("QUIC", "QUIC is a fast protocol using UDP and TCP."),
+    ).toEqual(["quic", "fast", "protocol", "udp", "tcp"]);
+  });
+
+  it("keeps a title keyword when the definition is empty", () => {
+    expect(getKeywords("C", "")).toEqual(["c"]);
+  });
+
+  it("limits the list to twelve keywords", () => {
+    const body = Array.from({ length: 20 }, (_, index) => `term${index}`).join(
+      " ",
+    );
+
+    expect(getKeywords("Example", body)).toHaveLength(12);
   });
 });

@@ -124,6 +124,67 @@ export function getExcerpt(body = "") {
 }
 
 /**
+ * Extract a short, deduplicated keyword list from a word title and definition
+ * @todo Consider adding more sophisticated keyword extraction logic - this can help improve the relevance of extracted keywords
+ * @param {string} title
+ * @param {string} body
+ * @returns {string[]}
+ */
+export function getKeywords(title = "", body = "") {
+  const stopWords = new Set([
+    "about",
+    "after",
+    "also",
+    "and",
+    "are",
+    "as",
+    "at",
+    "be",
+    "by",
+    "for",
+    "from",
+    "has",
+    "have",
+    "into",
+    "is",
+    "it",
+    "its",
+    "of",
+    "on",
+    "or",
+    "that",
+    "the",
+    "their",
+    "this",
+    "to",
+    "using",
+    "was",
+    "were",
+    "which",
+    "with",
+  ]);
+  const normalizedTitle = title.trim().toLowerCase();
+  const keywords = normalizedTitle ? [normalizedTitle] : [];
+  const seen = new Set(keywords);
+  const words =
+    `${title} ${getExcerpt(body)}`.match(/[\p{L}\p{N}+#.-]+/gu) ?? [];
+
+  for (const word of words) {
+    const keyword = word.replace(/^[.-]+|[.-]+$/g, "").toLowerCase();
+    if (keyword.length < 3 || stopWords.has(keyword) || seen.has(keyword)) {
+      continue;
+    }
+
+    keywords.push(keyword);
+    seen.add(keyword);
+
+    if (keywords.length === 12) break;
+  }
+
+  return keywords;
+}
+
+/**
  * Get branch name from branch ref
  * @param {string} branchRef
  * @returns {string}

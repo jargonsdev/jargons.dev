@@ -12,6 +12,7 @@ const canonicalUrl = new URL(url.pathname, siteOrigin);
 const {
   pageTitle,
   class: list,
+  keywords = SITE_META_KEYWORDS,
   ogImageUrl = new URL("/og.png", siteOrigin).href,
   description = SITE_META_DESCRIPTION,
   subtitle = SITE_META_SUBTITLE,
@@ -25,7 +26,7 @@ const {
     <meta name="viewport" content="width=device-width" />
     <meta name="generator" content={Astro.generator} />
     <meta name="description" content={description} />
-    <meta name="keyword" content={SITE_META_KEYWORDS.join(",")} />
+    <meta name="keyword" content={keywords.join(",")} />
 
     <meta property="og:url" content={canonicalUrl.href} />
     <meta property="og:type" content="website" />

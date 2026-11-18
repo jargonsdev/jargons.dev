@@ -8,37 +8,13 @@ import { getRepoParts } from "./utils/index.js";
  * @returns {Promise<string>} fullname of forked repo - [userlogin]/jargons.dev
  */
 export async function forkRepository(userOctokit, projectRepoDetails) {
-  const { repoFullname, repoMainBranchRef } = projectRepoDetails;
+  const { repoFullname } = projectRepoDetails;
   const { repoOwner, repoName } = getRepoParts(repoFullname);
 
   try {
-    const { data: user } = await userOctokit.request("GET /user");
+    const forkStatus = await getForkStatus(userOctokit, projectRepoDetails);
 
-    const fork = await isRepositoryForked(
-      userOctokit,
-      repoFullname,
-      user.login,
-    );
-
-    if (fork) {
-      // console.log("Repo is already forked!");
-
-      const { isUpdated } = await isRepositoryForkUpdated(
-        userOctokit,
-        projectRepoDetails,
-        fork,
-      );
-
-      if (!isUpdated) {
-        // console.log("Repo is outdated!");
-
-        await updateRepositoryFork(userOctokit, fork, {
-          ref: repoMainBranchRef,
-        });
-      }
-
-      return fork;
-    }
+    if (forkStatus.status !== "missing") return forkStatus.fork;
 
     const response = await userOctokit.request(
       "POST /repos/{owner}/{repo}/forks",
@@ -55,6 +31,47 @@ export async function forkRepository(userOctokit, projectRepoDetails) {
       cause: error,
     });
   }
+}
+
+/**
+ * Get the authenticated user's fork status without creating or updating a fork
+ * @param {import("octokit").Octokit} userOctokit
+ * @param {{ repoFullname: string, repoMainBranchRef: string }} projectRepoDetails
+ * @returns {Promise<{ status: "missing" | "current" | "out-of-date", fork: string | null }>}
+ */
+export async function getForkStatus(userOctokit, projectRepoDetails) {
+  const { repoFullname } = projectRepoDetails;
+
+  const { data: user } = await userOctokit.request("GET /user");
+  const fork = await isRepositoryForked(userOctokit, repoFullname, user.login);
+
+  if (!fork) return { status: "missing", fork: null };
+
+  const { isUpdated } = await isRepositoryForkUpdated(
+    userOctokit,
+    projectRepoDetails,
+    fork,
+  );
+
+  return { status: isUpdated ? "current" : "out-of-date", fork };
+}
+
+/**
+ * Update an existing fork and verify that it is now current
+ * @param {import("octokit").Octokit} userOctokit
+ * @param {{ repoFullname: string, repoMainBranchRef: string }} projectRepoDetails
+ * @returns {Promise<{ status: "missing" | "current" | "out-of-date", fork: string | null }>}
+ */
+export async function syncForkRepository(userOctokit, projectRepoDetails) {
+  const forkStatus = await getForkStatus(userOctokit, projectRepoDetails);
+
+  if (forkStatus.status !== "out-of-date") return forkStatus;
+
+  await updateRepositoryFork(userOctokit, forkStatus.fork, {
+    ref: projectRepoDetails.repoMainBranchRef,
+  });
+
+  return getForkStatus(userOctokit, projectRepoDetails);
 }
 
 /**

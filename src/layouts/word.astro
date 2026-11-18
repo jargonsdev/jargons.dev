@@ -13,9 +13,10 @@ import JAIFollowUpChatWidget, {
 const { frontmatter } = Astro.props;
 const dictionary = await getCollection("dictionary");
 const wordSlug = Astro.url.pathname.split("/").filter(Boolean).at(-1) ?? "";
+const siteOrigin = import.meta.env.DEV ? Astro.url.origin : Astro.site;
 const ogImageUrl = new URL(
   `/api/open-graph/${encodeURIComponent(String(wordSlug))}.png`,
-  Astro.site,
+  siteOrigin,
 ).href;
 
 /**

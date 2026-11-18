@@ -7,11 +7,12 @@ import { SITE_META_KEYWORDS, SITE_META_DESCRIPTION } from "../../constants.js";
 const MEASUREMENT_ID = import.meta.env.PUBLIC_GOOGLE_ANALYTICS_MEASUREMENT_ID;
 
 const { props, url } = Astro;
-const canonicalUrl = new URL(url.pathname, Astro.site);
+const siteOrigin = import.meta.env.DEV ? url.origin : Astro.site;
+const canonicalUrl = new URL(url.pathname, siteOrigin);
 const {
   pageTitle,
   class: list,
-  ogImageUrl = new URL("/og.png", Astro.site).href,
+  ogImageUrl = new URL("/og.png", siteOrigin).href,
   description = SITE_META_DESCRIPTION,
   subtitle = "Developer Jargons",
 } = props;

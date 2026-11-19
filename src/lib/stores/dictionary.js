@@ -23,4 +23,6 @@ export const $isWordSubmitLoading = atom(false);
 
 export const $isWordSubmitted = atom(false);
 
+export const $forkSyncStatus = atom("checking");
+
 export const $togglePreview = atom(false);

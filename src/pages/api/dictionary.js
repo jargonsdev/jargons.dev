@@ -1,5 +1,5 @@
 import app from "../../lib/octokit/app.js";
-import { forkRepository } from "../../lib/fork.js";
+import { forkRepository, getForkStatus } from "../../lib/fork.js";
 import { decrypt } from "../../lib/utils/crypto.js";
 import { submitWord } from "../../lib/submit-word.js";
 import { PROJECT_REPO_DETAILS } from "../../../constants.js";
@@ -41,11 +41,44 @@ export async function POST({ request, cookies }) {
   const userOctokit = app.getUserOctokit({ token: accessToken.value });
   const jargonsdevOctokit = app.octokit;
 
-  // Fork repo
-  const fork = await forkRepository(userOctokit, PROJECT_REPO_DETAILS);
-  console.log("Project Fork: ", fork);
-
   try {
+    let forkStatus = await getForkStatus(userOctokit, PROJECT_REPO_DETAILS);
+    if (forkStatus.status === "out-of-date") {
+      return new Response(
+        JSON.stringify({
+          status: "out-of-date",
+          message: "Update your fork before submitting this contribution.",
+        }),
+        {
+          status: 409,
+          headers: { "Content-type": "application/json" },
+        },
+      );
+    }
+
+    let fork = forkStatus.fork;
+    if (!fork) {
+      fork = await forkRepository(userOctokit, PROJECT_REPO_DETAILS);
+      forkStatus = await getForkStatus(userOctokit, PROJECT_REPO_DETAILS);
+
+      if (forkStatus.status === "out-of-date") {
+        return new Response(
+          JSON.stringify({
+            status: "out-of-date",
+            message: "Update your fork before submitting this contribution.",
+          }),
+          {
+            status: 409,
+            headers: { "Content-type": "application/json" },
+          },
+        );
+      }
+
+      fork = forkStatus.fork ?? fork;
+    }
+
+    console.log("Project Fork: ", fork);
+
     // Create a branch for action
     const branch = await createBranch(
       userOctokit,

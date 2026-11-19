@@ -56,6 +56,19 @@ describe("EditorActions", () => {
     );
   });
 
+  it("moves editor actions to the bottom on mobile only", async () => {
+    await renderActions(() =>
+      Promise.resolve({ ok: true, json: async () => ({ status: "current" }) }),
+    );
+
+    expect(container.firstElementChild).toHaveClass(
+      "fixed",
+      "inset-x-0",
+      "bottom-0",
+      "lg:static",
+    );
+  });
+
   it.each([
     ["blank title", { title: "" }],
     ["whitespace-only title", { title: "   " }],

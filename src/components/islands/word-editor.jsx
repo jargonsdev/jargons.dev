@@ -51,7 +51,7 @@ export default function WordEditor({
         eTitle={title}
         eContent={content}
         eMetadata={metadata}
-        className={` ${!togglePreview ? "flex" : "hidden"} w-full h-full lg:!flex flex-col py-5 border-r`}
+        className={` ${!togglePreview ? "flex" : "hidden"} w-full h-full lg:!flex flex-col py-5 lg:border-r`}
       />
       <Preview className="w-full h-full hidden lg:flex flex-col p-5" />
       <Preview
@@ -116,14 +116,14 @@ export function EditorActions({ children = "Submit" }) {
   }
 
   return (
-    <div className="flex min-w-0 flex-wrap items-center justify-end gap-x-2 gap-y-1">
+    <div className="fixed inset-x-0 bottom-0 z-30 flex min-w-0 items-center justify-between gap-2 border-t border-gray-200 bg-white px-4 py-3 shadow-[0_-6px_18px_rgba(0,0,0,0.08)] lg:static lg:justify-end lg:gap-x-2 lg:gap-y-1 lg:border-0 lg:bg-transparent lg:px-0 lg:py-0 lg:shadow-none">
       <div
-        className="min-w-0 max-w-[38vw] whitespace-nowrap text-[10px] sm:text-xs md:max-w-none"
+        className="min-w-0 max-w-[38vw] whitespace-nowrap text-xs md:max-w-none"
         aria-live="polite"
       >
         {(forkStatus === "checking" || forkStatus === "syncing") && (
           <span
-            className="inline-flex items-center text-gray-600"
+            className="inline-flex items-center flex-row-reverse lg:flex-row text-gray-600"
             role="status"
             aria-label={
               forkStatus === "checking"
@@ -184,7 +184,7 @@ export function EditorActions({ children = "Submit" }) {
         )}
         {(forkStatus === "current" || forkStatus === "missing") && (
           <span
-            className="flex gap-1 items-center text-green-400"
+            className="flex items-center flex-row-reverse lg:flex-row gap-1 text-green-400"
             role="status"
             aria-label={
               forkStatus === "current"
@@ -214,13 +214,13 @@ export function EditorActions({ children = "Submit" }) {
           </span>
         )}
         {forkStatus === "out-of-date" && (
-          <span className="flex items-center gap-1 text-amber-700">
+          <span className="flex items-center flex-row-reverse lg:flex-row gap-1 text-amber-700">
             <button
               type="button"
               onClick={updateFork}
               className="font-medium underline underline-offset-2"
             >
-              Update
+              Click to ready the fork
             </button>
             <span
               className="inline-flex items-center"
@@ -251,7 +251,7 @@ export function EditorActions({ children = "Submit" }) {
           </span>
         )}
         {forkStatus === "error" && (
-          <span className="flex items-center gap-1 text-red-700">
+          <span className="flex items-center flex-row-reverse lg:flex-row gap-1 text-red-700">
             <button
               type="button"
               onClick={loadForkStatus}
@@ -326,7 +326,7 @@ export function TogglePreview() {
   const togglePreview = useStore($togglePreview);
 
   return (
-    <label className="inline-flex lg:hidden items-center cursor-pointer border-r pr-2.5 mr-2.5">
+    <label className="inline-flex lg:hidden items-center cursor-pointer">
       <span className="me-3 text-sm font-medium text-gray-900 dark:text-gray-300">
         Preview
       </span>

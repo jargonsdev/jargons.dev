@@ -7,21 +7,21 @@ const appRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..")
 const checkoutPath = path.join(appRoot, ".content");
 
 function getContentRepositoryConfiguration() {
-  const contentRepository = process.env.PUBLIC_PROJECT_REPO;
+  const contentRepository = process.env.PUBLIC_CONTENT_REPO;
   if (
     !contentRepository ||
     !/^[\w.-]+\/[\w.-]+$/.test(contentRepository)
   ) {
     throw new Error(
-      "PUBLIC_PROJECT_REPO must be set to a GitHub owner/repository value.",
+      "PUBLIC_CONTENT_REPO must be set to a GitHub owner/repository value.",
     );
   }
 
-  const contentBranchRef = process.env.PUBLIC_PROJECT_REPO_BRANCH_REF ?? "";
+  const contentBranchRef = process.env.PUBLIC_CONTENT_REPO_BRANCH_REF ?? "";
   const contentBranchMatch = /^refs\/heads\/(.+)$/.exec(contentBranchRef);
   if (!contentBranchMatch) {
     throw new Error(
-      "PUBLIC_PROJECT_REPO_BRANCH_REF must be a refs/heads/<branch> value.",
+      "PUBLIC_CONTENT_REPO_BRANCH_REF must be a refs/heads/<branch> value.",
     );
   }
 

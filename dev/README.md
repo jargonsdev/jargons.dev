@@ -15,7 +15,7 @@ This script streamlines the process of creating a GitHub App required to run jar
 
 4. **Update the Environment Variables:**
    - Once the app is created, the script will create a `.env` file with the necessary variables.
-   - Open the `.env` file and set `PUBLIC_PROJECT_REPO` to your content fork, for example: `PUBLIC_PROJECT_REPO="your-username/content"`.
+   - Open the `.env` file and set `PUBLIC_CONTENT_REPO` to your content fork, for example: `PUBLIC_CONTENT_REPO="your-username/content"`.
 
 5. **Install the GitHub App:**
    - Follow the link provided in the script output to install the GitHub App on your content fork. In production, the jargons.dev GitHub App must also be installed on `jargonsdev/content` with Issues write permission, and the repository must have the editor labels, so submitted pull requests can be labeled.
@@ -30,8 +30,8 @@ This script fetches the content repository before Astro starts so the app can lo
 
 Set these variables in `.env` or in the process environment:
 
-- `PUBLIC_PROJECT_REPO`: GitHub repository in `owner/repository` format, such as `jargonsdev/content`.
-- `PUBLIC_PROJECT_REPO_BRANCH_REF`: branch reference in `refs/heads/<branch>` format, such as `refs/heads/main`.
+- `PUBLIC_CONTENT_REPO`: GitHub repository in `owner/repository` format, such as `jargonsdev/content`.
+- `PUBLIC_CONTENT_REPO_BRANCH_REF`: branch reference in `refs/heads/<branch>` format, such as `refs/heads/main`.
 
 The configured repository must contain a `dictionary/` directory. The repository and branch settings are also used by the editor when it creates contribution pull requests.
 

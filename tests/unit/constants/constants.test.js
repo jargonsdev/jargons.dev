@@ -18,7 +18,7 @@ describe("Constants Validation", () => {
 
     it("should have valid repo fullname format", () => {
       expect(CONTENT_REPO_DETAILS.repoFullname).toMatch(/^[\w.-]+\/[\w.-]+$/);
-      expect(CONTENT_REPO_DETAILS.repoFullname).toBe("jargonsdev/jargons.dev");
+      expect(CONTENT_REPO_DETAILS.repoFullname).toBe("jargonsdev/content");
     });
 
     it("should have valid branch reference format", () => {

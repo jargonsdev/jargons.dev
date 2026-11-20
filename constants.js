@@ -1,6 +1,6 @@
 export const CONTENT_REPO_DETAILS = {
-  repoFullname: import.meta.env.PUBLIC_PROJECT_REPO,
-  repoMainBranchRef: import.meta.env.PUBLIC_PROJECT_REPO_BRANCH_REF,
+  repoFullname: import.meta.env.PUBLIC_CONTENT_REPO,
+  repoMainBranchRef: import.meta.env.PUBLIC_CONTENT_REPO_BRANCH_REF,
 };
 
 export const LABELS = {

@@ -85,12 +85,12 @@ export default async function registerGitHubApp(
                 Fork <a target="_blank" href="https://github.com/jargonsdev/content">jargonsdev/content</a> to your account for local testing.
               </li>
               <li>
-                Copy and paste the repo name in full as value to the "PUBLIC_PROJECT_REPO" in the newly created .env; 
+                Copy and paste the repo name in full as value to the "PUBLIC_CONTENT_REPO" in the newly created .env;
                 <br>
                 Example: (assuming your GitHub username is octocat)
                 <br>
                 <code>
-                  PUBLIC_PROJECT_REPO="${appCredentials.owner.login}/content"
+                  PUBLIC_CONTENT_REPO="${appCredentials.owner.login}/content"
                 </code>
               </li>
               <li>

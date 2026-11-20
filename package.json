@@ -18,6 +18,7 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "format:staged": "node dev/format-staged.js",
+    "lint:actions": "go run github.com/rhysd/actionlint/cmd/actionlint@v1.7.12",
     "test": "vitest run",
     "test:ui": "vitest --ui",
     "test:watch": "vitest",

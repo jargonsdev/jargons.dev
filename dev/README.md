@@ -57,6 +57,8 @@ node --env-file-if-exists=.env dev/sync-content.js
 
 The `.content/` directory is generated and ignored by Git. If it contains local changes, the script stops rather than overwriting them; remove or clean that generated checkout before running the sync again. This script always fetches the configured remote repository and does not support a local content-directory override.
 
+
+
 ## Seed Vector Store Script
 
 This script prepares the knowledge base for **✨jAI** (jargons.dev AI) by populating the vector store with dictionary content. jAI uses this processed data to provide intelligent responses and semantic understanding of software engineering terms.
@@ -353,6 +355,16 @@ The script includes detailed error handling for:
 ```
 
 This script ensures your Qdrant cluster remains active and accessible for ✨jAI's vector search functionality.
+
+## GitHub Actions Workflow Linting
+
+Run actionlint to check workflow syntax, action inputs, expressions, and shell scripts:
+
+```bash
+npm run lint:actions
+```
+
+This command requires Go 1.25 or newer and runs the pinned actionlint v1.7.12 module. The code-quality workflow runs the same check in CI.
 
 ## Format-Staged Script
 

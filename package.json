@@ -7,8 +7,11 @@
     "node": ">=22.23.4"
   },
   "scripts": {
+    "predev": "node dev/sync-content.js",
     "dev": "astro dev",
+    "prestart": "node dev/sync-content.js",
     "start": "astro dev",
+    "prebuild": "node dev/sync-content.js",
     "build": "astro build",
     "preview": "astro preview",
     "astro": "astro",

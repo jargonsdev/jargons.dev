@@ -134,6 +134,9 @@ dist/
 # generated types
 .astro/
 
+#jargons.dev generated content
+.content/
+
 # dependencies
 node_modules/
 

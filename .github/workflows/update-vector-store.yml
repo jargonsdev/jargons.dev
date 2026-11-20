@@ -157,8 +157,10 @@ jobs:
                 if git -C content merge-base --is-ancestor "$CONTENT_SHA" "$LAST_INDEXED_CONTENT_SHA"; then
                   echo "This deployment contains an older content revision than the one already indexed. Skipping it without changing the marker."
                   ADVANCE_MARKER="false"
-                  printf 'has_changes=false\n' >> "$GITHUB_OUTPUT"
-                  printf 'advance_marker=%s\n' "$ADVANCE_MARKER" >> "$GITHUB_OUTPUT"
+                  {
+                    printf 'has_changes=false\n'
+                    printf 'advance_marker=%s\n' "$ADVANCE_MARKER"
+                  } >> "$GITHUB_OUTPUT"
                   exit 0
                 fi
 
@@ -192,10 +194,12 @@ jobs:
             exit 1
           fi
 
-          printf 'upsert=%s\n' "$UPSERT_SLUGS" >> "$GITHUB_OUTPUT"
-          printf 'delete=%s\n' "$DELETE_SLUGS" >> "$GITHUB_OUTPUT"
-          printf 'content_sha=%s\n' "$CONTENT_SHA" >> "$GITHUB_OUTPUT"
-          printf 'advance_marker=%s\n' "$ADVANCE_MARKER" >> "$GITHUB_OUTPUT"
+          {
+            printf 'upsert=%s\n' "$UPSERT_SLUGS"
+            printf 'delete=%s\n' "$DELETE_SLUGS"
+            printf 'content_sha=%s\n' "$CONTENT_SHA"
+            printf 'advance_marker=%s\n' "$ADVANCE_MARKER"
+          } >> "$GITHUB_OUTPUT"
 
           if [ -z "$UPSERT_SLUGS" ] && [ -z "$DELETE_SLUGS" ]; then
             printf 'has_changes=false\n' >> "$GITHUB_OUTPUT"

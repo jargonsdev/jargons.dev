@@ -124,7 +124,7 @@ export const githubHandlers = [
 
       return new Promise((resolve) => {
         request.json().then((body) => {
-          if (path === "src/content/dictionary/error-test.mdx") {
+          if (path === "dictionary/error-test.mdx") {
             resolve(
               new HttpResponse(
                 JSON.stringify({
@@ -152,7 +152,7 @@ export const githubHandlers = [
     ({ params }) => {
       const { path } = params;
 
-      if (path === "src/content/dictionary/non-existent.mdx") {
+      if (path === "dictionary/non-existent.mdx") {
         return new HttpResponse(
           JSON.stringify({
             message: "Not Found",

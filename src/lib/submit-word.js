@@ -4,11 +4,11 @@ import newWordPRTemp from "./templates/new-word-pr.md.js";
 import { getBranchNameFromRef, getRepoParts } from "./utils/index.js";
 
 /**
- * Submit word - create a Pull Request to add word to project repository
+ * Submit word - create a Pull Request in the content repository
  * @param {import("octokit").Octokit} jargonsdevOctokit
  * @param {import("octokit").Octokit} userOctokit
  * @param {"new" | "edit"} action
- * @param {{ repoFullname: string, repoMainBranchRef: string }} projectRepoDetails
+ * @param {{ repoFullname: string, repoMainBranchRef: string }} contentRepoDetails
  * @param {{ repoFullname: string, repoChangeBranchRef: string }} forkedRepoDetails
  * @param {{ title: string, content: string }} word
  *
@@ -18,11 +18,11 @@ export async function submitWord(
   jargonsdevOctokit,
   userOctokit,
   action,
-  projectRepoDetails,
+  contentRepoDetails,
   forkedRepoDetails,
   word,
 ) {
-  const { repoFullname, repoMainBranchRef } = projectRepoDetails;
+  const { repoFullname, repoMainBranchRef } = contentRepoDetails;
   const { repoName, repoOwner } = getRepoParts(repoFullname);
   const { repoOwner: forkedRepoOwner } = getRepoParts(
     forkedRepoDetails.repoFullname,

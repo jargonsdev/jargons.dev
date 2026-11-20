@@ -1,4 +1,5 @@
 ---
+import WordLayout from "../../layouts/word.astro";
 import { buildWordSlug } from "../../lib/utils";
 import { getCollection, render } from "astro:content";
 
@@ -13,7 +14,11 @@ export async function getStaticPaths() {
 }
 
 const { word } = Astro.props;
+const wordSlug = buildWordSlug(word.id);
 const { Content } = await render(word);
+const frontmatter = { title: word.data.title };
 ---
 
-<Content />
+<WordLayout frontmatter={frontmatter} slug={wordSlug}>
+  <Content />
+</WordLayout>

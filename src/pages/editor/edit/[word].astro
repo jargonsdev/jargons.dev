@@ -31,7 +31,7 @@ const action = resolveEditorActionFromPathname(pathname);
   <Navbar
     returnNav={{
       label: `Return to ${word.data.title}`,
-      location: `/browse/${wordMetadata.title}`,
+      location: `/browse/${wordMetadata.slug}`,
       confirmDiscard: true,
     }}
   >

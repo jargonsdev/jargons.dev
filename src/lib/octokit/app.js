@@ -9,7 +9,7 @@ const app = new App({
 const {
   data: { id },
 } = await app.octokit.request(
-  `GET /repos/${import.meta.env.PUBLIC_PROJECT_REPO}/installation`,
+  `GET /repos/${import.meta.env.PUBLIC_CONTENT_REPO}/installation`,
 );
 
 /**

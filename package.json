@@ -1,20 +1,24 @@
 {
   "name": "jargons.dev",
   "version": "0.0.0-development",
-  "description": "A community-driven open source dictionary that provides clear, simplified definitions of software engineering concepts, development jargon, and general technology terms",
+  "description": "An open source developer literacy and education platform with community-created resources for understanding software and technology",
   "type": "module",
   "engines": {
     "node": ">=22.23.4"
   },
   "scripts": {
+    "predev": "node --env-file-if-exists=.env dev/sync-content.js",
     "dev": "astro dev",
+    "prestart": "node --env-file-if-exists=.env dev/sync-content.js",
     "start": "astro dev",
+    "prebuild": "node --env-file-if-exists=.env dev/sync-content.js",
     "build": "astro build",
     "preview": "astro preview",
     "astro": "astro",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "format:staged": "node dev/format-staged.js",
+    "lint:actions": "go run github.com/rhysd/actionlint/cmd/actionlint@v1.7.12",
     "test": "vitest run",
     "test:ui": "vitest --ui",
     "test:watch": "vitest",

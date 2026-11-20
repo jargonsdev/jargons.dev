@@ -3,12 +3,12 @@
     <img width="700" alt="jargons.dev" src="https://github.com/jargonsdev/jargons.dev/assets/25631971/5d1db25d-18e0-4544-ac98-9aa4e1097e14">
   </a>
   <h1><tt>jargons.dev</tt></h1>
-  <h3>The Software Engineering Dictionary</h3>
+   <h3>The Developer Literacy and Education Platform</h3>
 </div>
 
 ## About
 
-<tt>jargons.dev</tt> is an open source dictionary curated by contributors providing simplified meaning and definitions to software development, engineering, and general technology terms.
+<tt>jargons.dev</tt> is an open source developer literacy and education platform. It helps people understand software development, engineering, and technology through community-created learning resources. The dictionary is its first content collection, with room to grow into additional formats.
 
 ## Tech Stack and Architecture
 
@@ -17,10 +17,12 @@
 - [Astro](https://astro.build/) - Web framework for building content-driven websites
 - [React](https://react.dev) - Library for building web interfaces
 - [Tailwind CSS](https://tailwindcss.com) - A Utility-first CSS Library
+- [Vercel AI SDK](https://ai-sdk.dev/) - Toolkit for building AI-powered features
+- [LangChain](https://www.langchain.com/) - Framework for developing applications powered by large language models (LLMs)
 
 ### System Architecture
 
-See https://excalidraw.com/#json=51IqiNvrZiY15ZtjK0WXn,jcpW9rmzMR9OVwM05Zd1LQ
+See https://excalidraw.com/#json=LNystqH62oqkWZaBLQ8l3,daK21Ngah4Vo1LRMcGipCg
 
 ## Run Project Locally
 
@@ -52,7 +54,7 @@ To get set-up follow these steps:
    npm ci
    ```
 
-4. Run the `dev/setup` script and create test repo
+4. Run the `dev/setup` script and configure a content repository
 
    This script streamlines the process of creating a GitHub App required to run jargons.dev locally and sets up the environment file (.env) for you; Learn more at [dev/setup](/dev/README.md)
 
@@ -101,11 +103,11 @@ npm run test:coverage # Generate coverage report
 
 We welcome contributions to jargons.dev! There are two main ways you can contribute to:
 
-1. **Dictionary Word Contribution:**
-   This includes adding new words to the dictionary or editing existing word entries. We highly recommend using our Jargons Editor at [jargons.dev/editor](https://jargons.dev/editor) for this purpose. This user-friendly interface streamlines your contribution allowing it end up as a pull request.
+1. **Content Contribution:**
+   Use the Jargons Editor at [jargons.dev/editor](https://jargons.dev/editor) to suggest dictionary changes. Content is maintained in the separate [jargonsdev/content](https://github.com/jargonsdev/content) repository; see its README for direct contribution guidance.
 
-2. **Other Contributions:**
-   These are contributions other than adding or editing words in the dictionary, feel free to contribute in other ways such as issue reporting/triaging, code/documentation improvements, bug fixes, or feature enhancements.
+2. **Core Contributions:**
+   For issue reporting, code and documentation improvements, bug fixes, or feature enhancements to the website, contribute to this repository.
 
 To get started with contributing, please refer to our [Contribution Guide](./CONTRIBUTING.md). Thank you for contributing to the jargons.dev project!
 

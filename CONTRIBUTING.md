@@ -13,36 +13,15 @@ please read the [Code of Conduct](./code-of-conduct.md) and follow the direction
 3. Always review your code first. Run the project locally and test it before requesting a review.
 4. Always communicate in the GitHub repository. Whether in the issue or the pull request, keeping the lines of communication open and visible to everyone on the team helps everyone around you.
 
-## Contributing (New/Edit) Words to the Dictionary
+## Contributing Content
 
-Contributing new or edited words to the dictionary!? there are two primary ways you can contribute new words or edit existing ones:
+jargons.dev is a developer literacy and education platform. Its content is maintained separately from the website application in the [jargonsdev/content](https://github.com/jargonsdev/content) repository.
 
-1. **Using the Jargons Editor (Highly Recommended):**  
-   The Jargons Editor is a user-friendly interface built to simplify the contribution process. You can add new words or edit existing ones directly through the visual editor. Visit [jargons.dev/editor](https://jargons.dev/editor) to get started.
+1 **Using the Jargons Editor (Recommended):** Suggest a dictionary entry or edit at [jargons.dev/editor](https://jargons.dev/editor). The editor opens a pull request against the content repository.
 
-2. **Using GitHub UI or Other Means:**  
-   If you prefer to use the GitHub UI or other means, you can follow these steps:
-   - **For New Words:**
-     1. Grab our predefined word template below
+2 **Contributing directly:** Follow the content repository's [README](https://github.com/jargonsdev/content#readme) for its current formats, file structure, and pull request process. Do not add content files to this application repository.
 
-        ```md
-        ---
-        layout: ../../layouts/word.astro
-        title: "title_here"
-        ---
-
-        content_here
-        ```
-
-     2. Fill in the word details in the template, ensuring accuracy and clarity.
-     3. Create a new file for the word in the `src/content/dictionary` folder.
-     4. Name the file in a slug format, e.g., `new-word.mdx`.
-     5. Submit your file as a pull request to the `main` branch of our repository.
-
-   - **For Editing Existing Words:**
-     1. Locate the existing file for the word you wish to edit in the `src/content/dictionary` folder.
-     2. Make your edits directly to the file.
-     3. Submit your changes as a pull request to the `main` branch of our repository.
+For changes to the website, continue using the application contribution and pull request guidelines below.
 
 ## Contributing Issues & Pull Requests (PR)
 

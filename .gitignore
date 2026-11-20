@@ -134,6 +134,10 @@ dist/
 # generated types
 .astro/
 
+#jargons.dev generated content
+.content/
+/public/content-revision.json
+
 # dependencies
 node_modules/
 

@@ -2,7 +2,7 @@ import app from "../../lib/octokit/app.js";
 import { forkRepository, getForkStatus } from "../../lib/fork.js";
 import { decrypt } from "../../lib/utils/crypto.js";
 import { submitWord } from "../../lib/submit-word.js";
-import { PROJECT_REPO_DETAILS } from "../../../constants.js";
+import { CONTENT_REPO_DETAILS } from "../../../constants.js";
 import { createBranch, deleteBranch } from "../../lib/branch.js";
 import { updateExistingWord, writeNewWord } from "../../lib/word-editor.js";
 import { capitalizeText, generateBranchName } from "../../lib/utils/index.js";
@@ -42,7 +42,7 @@ export async function POST({ request, cookies }) {
   const jargonsdevOctokit = app.octokit;
 
   try {
-    let forkStatus = await getForkStatus(userOctokit, PROJECT_REPO_DETAILS);
+    let forkStatus = await getForkStatus(userOctokit, CONTENT_REPO_DETAILS);
     if (forkStatus.status === "out-of-date") {
       return new Response(
         JSON.stringify({
@@ -58,8 +58,8 @@ export async function POST({ request, cookies }) {
 
     let fork = forkStatus.fork;
     if (!fork) {
-      fork = await forkRepository(userOctokit, PROJECT_REPO_DETAILS);
-      forkStatus = await getForkStatus(userOctokit, PROJECT_REPO_DETAILS);
+      fork = await forkRepository(userOctokit, CONTENT_REPO_DETAILS);
+      forkStatus = await getForkStatus(userOctokit, CONTENT_REPO_DETAILS);
 
       if (forkStatus.status === "out-of-date") {
         return new Response(
@@ -77,14 +77,14 @@ export async function POST({ request, cookies }) {
       fork = forkStatus.fork ?? fork;
     }
 
-    console.log("Project Fork: ", fork);
+    console.log("Content Fork: ", fork);
 
     // Create a branch for action
     const branch = await createBranch(
       userOctokit,
       {
         repoFullname: fork,
-        repoMainBranchRef: PROJECT_REPO_DETAILS.repoMainBranchRef,
+        repoMainBranchRef: CONTENT_REPO_DETAILS.repoMainBranchRef,
       },
       generateBranchName(action, title),
     );
@@ -134,7 +134,7 @@ export async function POST({ request, cookies }) {
       jargonsdevOctokit,
       userOctokit,
       action,
-      PROJECT_REPO_DETAILS,
+      CONTENT_REPO_DETAILS,
       forkedRepoDetails,
       {
         title,
@@ -197,7 +197,7 @@ export async function DELETE({ request, cookies }) {
   // const jargonsdevOctokit = app.octokit;
 
   // Fork repo
-  const fork = await forkRepository(userOctokit, PROJECT_REPO_DETAILS);
+  const fork = await forkRepository(userOctokit, CONTENT_REPO_DETAILS);
   console.log(fork, generateBranchName(action, title));
 
   try {

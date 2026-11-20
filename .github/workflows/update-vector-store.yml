@@ -13,12 +13,16 @@ on:
         description: "Comma-separated slugs to delete (e.g. old-term)"
         required: false
 
+concurrency:
+  group: vector-store-production
+  cancel-in-progress: false
+
 jobs:
   update-vector-store:
     runs-on: ubuntu-latest
     permissions:
+      actions: write
       contents: read
-      pull-requests: read
 
     # Only run on successful production deployments (or manual trigger)
     if: >
@@ -32,66 +36,84 @@ jobs:
       )
 
     steps:
-      # ── Gate: Check that the merged PR has a dictionary label ──────────
-      - name: Check PR labels
-        if: github.event_name != 'workflow_dispatch'
-        id: pr-check
+      - name: Read deployed content revision
+        if: github.event_name == 'deployment_status'
+        id: revision
         uses: actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b # v7
         with:
           script: |
-            const sha = context.payload.deployment.sha;
+            const status = context.payload.deployment_status;
+            const urls = [status.environment_url, status.target_url].filter(Boolean);
+            let manifest;
+            let lastError;
 
-            // Find PRs associated with this deployment commit
-            const { data: prs } = await github.rest.repos.listPullRequestsAssociatedWithCommit({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              commit_sha: sha,
-            });
-
-            // Find the merged PR targeting main
-            const mergedPR = prs.find(pr => pr.merged_at && pr.base.ref === 'main');
-
-            if (!mergedPR) {
-              core.info('No merged PR found for this deployment. Skipping.');
-              core.setOutput('should_continue', 'false');
-              return;
+            for (const baseUrl of urls) {
+              try {
+                const manifestUrl = new URL('/content-revision.json', baseUrl);
+                const response = await fetch(manifestUrl);
+                if (!response.ok) {
+                  throw new Error(`Manifest request failed: ${response.status} ${response.statusText}`);
+                }
+                manifest = await response.json();
+                break;
+              } catch (error) {
+                lastError = error;
+              }
             }
 
-            const labels = mergedPR.labels.map(l => l.name);
-            core.info(`PR #${mergedPR.number}: ${mergedPR.title}`);
-            core.info(`Labels: ${labels.join(', ')}`);
-
-            const requiredLabels = ['📖edit-word', '📖new-word'];
-            const hasRequiredLabel = labels.some(l => requiredLabels.includes(l));
-
-            if (!hasRequiredLabel) {
-              core.info(`PR does not have required labels (${requiredLabels.join(', ')}). Skipping.`);
-              core.setOutput('should_continue', 'false');
-              return;
+            if (!manifest) {
+              throw new Error(`Unable to read content revision manifest: ${lastError?.message ?? 'deployment URL missing'}`);
+            }
+            if (manifest.repository !== 'jargonsdev/content' || manifest.branch !== 'main') {
+              throw new Error(`Unexpected content source ${manifest.repository}@${manifest.branch}`);
+            }
+            if (!/^[0-9a-f]{40}$/i.test(manifest.sha)) {
+              throw new Error(`Invalid content commit SHA: ${manifest.sha}`);
             }
 
-            core.info('✅ PR has required label. Proceeding with update.');
-            core.setOutput('should_continue', 'true');
+            core.setOutput('content_sha', manifest.sha);
 
-      - name: Skip — PR lacks required labels
-        if: github.event_name != 'workflow_dispatch' && steps.pr-check.outputs.should_continue != 'true'
-        run: |
-          echo "⏭️ Skipping: deployment is not from a 📖new-word or 📖edit-word PR."
-
-      # ── Checkout & detect changed dictionary files ─────────────────────
+      # ── Checkout app and content repositories ───────────────────────────
       - name: Checkout repository
-        if: github.event_name == 'workflow_dispatch' || steps.pr-check.outputs.should_continue == 'true'
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           ref: ${{ github.event.deployment.sha || github.sha }}
           fetch-depth: 2
 
+      - name: Checkout content repository
+        if: github.event_name == 'deployment_status'
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          repository: jargonsdev/content
+          ref: ${{ steps.revision.outputs.content_sha }}
+          path: content
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Read last indexed content revision
+        if: github.event_name == 'deployment_status'
+        id: marker
+        uses: actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b # v7
+        with:
+          script: |
+            try {
+              const { value } = await github.rest.actions.getRepoVariable({
+                ...context.repo,
+                name: 'LAST_INDEXED_CONTENT_SHA',
+              });
+              core.setOutput('sha', value);
+            } catch (error) {
+              if (error.status !== 404) throw error;
+              core.setOutput('sha', '');
+            }
+
       - name: Detect changed dictionary files
-        if: github.event_name == 'workflow_dispatch' || steps.pr-check.outputs.should_continue == 'true'
         id: detect
         env:
           MANUAL_UPSERT_SLUGS: ${{ github.event.inputs.upsert_slugs }}
           MANUAL_DELETE_SLUGS: ${{ github.event.inputs.delete_slugs }}
+          LAST_INDEXED_CONTENT_SHA: ${{ steps.marker.outputs.sha }}
+          CONTENT_SHA: ${{ steps.revision.outputs.content_sha }}
         run: |
           validate_slug_list() {
             local slug_list="$1"
@@ -106,31 +128,78 @@ jobs:
 
           UPSERT_SLUGS=""
           DELETE_SLUGS=""
+          ADVANCE_MARKER="false"
 
           if [ "$GITHUB_EVENT_NAME" = "workflow_dispatch" ]; then
             UPSERT_SLUGS="$MANUAL_UPSERT_SLUGS"
             DELETE_SLUGS="$MANUAL_DELETE_SLUGS"
           else
-            echo "Detecting dictionary file changes..."
-            while IFS=$'\t' read -r status file; do
-              if [[ "$file" == src/content/dictionary/*.mdx ]]; then
-                slug=$(basename "$file" .mdx)
+            if [ -z "$CONTENT_SHA" ]; then
+              echo "::error::Content revision is missing from the deployment manifest."
+              exit 1
+            fi
 
-                if [[ "$status" == "D" ]]; then
-                  DELETE_SLUGS="${DELETE_SLUGS:+$DELETE_SLUGS,}$slug"
-                else
-                  UPSERT_SLUGS="${UPSERT_SLUGS:+$UPSERT_SLUGS,}$slug"
-                fi
+            ADVANCE_MARKER="true"
+
+            if [ -z "$LAST_INDEXED_CONTENT_SHA" ]; then
+              echo "No previously indexed content SHA. Indexing the full dictionary."
+              while IFS= read -r file; do
+                slug=$(basename "$file" .mdx)
+                UPSERT_SLUGS="${UPSERT_SLUGS:+$UPSERT_SLUGS,}$slug"
+              done < <(find content/dictionary -type f -name '*.mdx' | sort)
+            else
+              if ! [[ "$LAST_INDEXED_CONTENT_SHA" =~ ^[0-9a-f]{40}$ ]] || ! git -C content cat-file -e "${LAST_INDEXED_CONTENT_SHA}^{commit}"; then
+                echo "::error::LAST_INDEXED_CONTENT_SHA is invalid or missing from content history. Clear the variable to trigger a full dictionary index."
+                exit 1
               fi
-            done < <(git diff --name-status HEAD~1 -- src/content/dictionary/)
+
+              if ! git -C content merge-base --is-ancestor "$LAST_INDEXED_CONTENT_SHA" "$CONTENT_SHA"; then
+                if git -C content merge-base --is-ancestor "$CONTENT_SHA" "$LAST_INDEXED_CONTENT_SHA"; then
+                  echo "This deployment contains an older content revision than the one already indexed. Skipping it without changing the marker."
+                  ADVANCE_MARKER="false"
+                  {
+                    printf 'has_changes=false\n'
+                    printf 'advance_marker=%s\n' "$ADVANCE_MARKER"
+                  } >> "$GITHUB_OUTPUT"
+                  exit 0
+                fi
+
+                echo "::error::Deployed content and LAST_INDEXED_CONTENT_SHA have diverged. Inspect the content history and marker."
+                exit 1
+              fi
+
+              echo "Detecting dictionary changes from $LAST_INDEXED_CONTENT_SHA to $CONTENT_SHA..."
+              while IFS=$'\t' read -r status old_path new_path; do
+                case "$status" in
+                  A|M|T|U)
+                    slug=$(basename "$old_path" .mdx)
+                    UPSERT_SLUGS="${UPSERT_SLUGS:+$UPSERT_SLUGS,}$slug"
+                    ;;
+                  D)
+                    slug=$(basename "$old_path" .mdx)
+                    DELETE_SLUGS="${DELETE_SLUGS:+$DELETE_SLUGS,}$slug"
+                    ;;
+                  R*|C*)
+                    old_slug=$(basename "$old_path" .mdx)
+                    new_slug=$(basename "$new_path" .mdx)
+                    DELETE_SLUGS="${DELETE_SLUGS:+$DELETE_SLUGS,}$old_slug"
+                    UPSERT_SLUGS="${UPSERT_SLUGS:+$UPSERT_SLUGS,}$new_slug"
+                    ;;
+                esac
+              done < <(git -C content diff --name-status "$LAST_INDEXED_CONTENT_SHA" "$CONTENT_SHA" -- dictionary/)
           fi
+              fi
 
           if ! validate_slug_list "$UPSERT_SLUGS" || ! validate_slug_list "$DELETE_SLUGS"; then
             exit 1
           fi
 
-          printf 'upsert=%s\n' "$UPSERT_SLUGS" >> "$GITHUB_OUTPUT"
-          printf 'delete=%s\n' "$DELETE_SLUGS" >> "$GITHUB_OUTPUT"
+          {
+            printf 'upsert=%s\n' "$UPSERT_SLUGS"
+            printf 'delete=%s\n' "$DELETE_SLUGS"
+            printf 'content_sha=%s\n' "$CONTENT_SHA"
+            printf 'advance_marker=%s\n' "$ADVANCE_MARKER"
+          } >> "$GITHUB_OUTPUT"
 
           if [ -z "$UPSERT_SLUGS" ] && [ -z "$DELETE_SLUGS" ]; then
             printf 'has_changes=false\n' >> "$GITHUB_OUTPUT"
@@ -141,8 +210,8 @@ jobs:
           fi
 
       - name: Skip — no dictionary changes
-        if: steps.detect.outputs.has_changes != 'true' && (github.event_name == 'workflow_dispatch' || steps.pr-check.outputs.should_continue == 'true')
-        run: echo "⏭️ No dictionary changes to process. Skipping."
+        if: steps.detect.outputs.has_changes != 'true'
+        run: echo "No dictionary changes to process. Skipping vector update."
 
       - name: Setup Node.js
         if: steps.detect.outputs.has_changes == 'true'
@@ -179,5 +248,29 @@ jobs:
           npm run update:jai:ci -- "${ARGS[@]}"
 
       - name: Update successful
-        if: steps.detect.outputs.has_changes == 'true'
-        run: echo "✅ Vector store update completed successfully"
+        if: success() && github.event_name == 'deployment_status' && steps.detect.outputs.advance_marker == 'true'
+        uses: actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b # v7
+        env:
+          CONTENT_SHA: ${{ steps.detect.outputs.content_sha }}
+        with:
+          script: |
+            const { owner, repo } = context.repo;
+            const variable = {
+              owner,
+              repo,
+              name: 'LAST_INDEXED_CONTENT_SHA',
+              value: process.env.CONTENT_SHA,
+            };
+
+            if (!variable.value) {
+              throw new Error('Content SHA is missing; refusing to advance the index marker.');
+            }
+
+            try {
+              await github.rest.actions.updateRepoVariable(variable);
+              core.info(`Updated LAST_INDEXED_CONTENT_SHA to ${variable.value}`);
+            } catch (error) {
+              if (error.status !== 404) throw error;
+              await github.rest.actions.createRepoVariable(variable);
+              core.info(`Created LAST_INDEXED_CONTENT_SHA at ${variable.value}`);
+            }

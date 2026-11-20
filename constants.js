@@ -1,6 +1,6 @@
-export const PROJECT_REPO_DETAILS = {
-  repoFullname: import.meta.env.PUBLIC_PROJECT_REPO,
-  repoMainBranchRef: import.meta.env.PUBLIC_PROJECT_REPO_BRANCH_REF,
+export const CONTENT_REPO_DETAILS = {
+  repoFullname: import.meta.env.PUBLIC_CONTENT_REPO,
+  repoMainBranchRef: import.meta.env.PUBLIC_CONTENT_REPO_BRANCH_REF,
 };
 
 export const LABELS = {
@@ -10,25 +10,24 @@ export const LABELS = {
 };
 
 export const SITE_META_DESCRIPTION =
-  "A community-driven dictionary that simplifies software, engineering and tech terms for all levels. Curated by contributors, jargons.dev offers clear, easy-to-understand definitions.";
+  "Developer education platform with a community-built dictionary and learning resources that make software and technology terms clear for all.";
 
 export const SITE_META_SUBTITLE = "Jargons.dev";
 
 export const SITE_META_KEYWORDS = [
-  "dev jargon",
-  "dev jargons",
+  "developer literacy",
+  "developer education",
+  "technology education",
+  "learning resources for developers",
+  "developer resources",
   "software engineering terms",
-  "web dev terms",
-  "software jargons",
-  "software terms",
-  "developer jargons",
-  "web jargons",
-  "web development terms",
-  "software development jargons",
-  "software engineering dictionary",
-  "dev dictionary",
+  "technical terms",
+  "programming concepts",
+  "software development",
+  "web development",
+  "developer jargon",
+  "software dictionary",
   "developer dictionary",
-  "software development dictionary",
 ];
 
 export const ALPHABETS = [

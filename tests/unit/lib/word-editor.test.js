@@ -37,7 +37,7 @@ describe("word-editor.js", () => {
       expect(userOctokit.request).toHaveBeenCalledWith(
         "PUT /repos/{owner}/{repo}/contents/{path}",
         expect.objectContaining({
-          path: "src/content/dictionary/api.mdx",
+          path: "dictionary/api.mdx",
         }),
       );
     });
@@ -54,7 +54,7 @@ describe("word-editor.js", () => {
       expect(userOctokit.request).toHaveBeenCalledWith(
         "PUT /repos/{owner}/{repo}/contents/{path}",
         expect.objectContaining({
-          path: "src/content/dictionary/c++.mdx",
+          path: "dictionary/c++.mdx",
         }),
       );
     });
@@ -178,7 +178,7 @@ describe("word-editor.js", () => {
 
   describe("updateExistingWord", () => {
     const existingWordData = {
-      path: "src/content/dictionary/api.mdx",
+      path: "dictionary/api.mdx",
       sha: "existing-sha-123",
       title: "API",
       content: "Updated content for API",
@@ -217,7 +217,7 @@ describe("word-editor.js", () => {
       expect(userOctokit.request).toHaveBeenCalledWith(
         "PUT /repos/{owner}/{repo}/contents/{path}",
         expect.objectContaining({
-          path: "src/content/dictionary/api.mdx",
+          path: "dictionary/api.mdx",
         }),
       );
     });
@@ -319,14 +319,14 @@ describe("word-editor.js", () => {
         data: {
           content: sampleBase64Content,
           sha: "file-sha-123",
-          path: "src/content/dictionary/api.mdx",
+          path: "dictionary/api.mdx",
           name: "api.mdx",
         },
       };
 
       userOctokit.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await getExistingWord(userOctokit, repoDetails, "API");
+      const result = await getExistingWord(userOctokit, repoDetails, "api");
 
       expect(userOctokit.request).toHaveBeenCalledWith(
         "GET /repos/{owner}/{repo}/contents/{path}",
@@ -334,7 +334,7 @@ describe("word-editor.js", () => {
           owner: "testuser",
           repo: "jargons.dev",
           ref: "refs/heads/main",
-          path: "src/content/dictionary/api.mdx",
+          path: "dictionary/api.mdx",
         }),
       );
     });
@@ -344,16 +344,16 @@ describe("word-editor.js", () => {
         data: {
           content: sampleBase64Content,
           sha: "file-sha-123",
-          path: "src/content/dictionary/api.mdx",
+          path: "dictionary/api.mdx",
           name: "api.mdx",
         },
       };
 
       userOctokit.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await getExistingWord(userOctokit, repoDetails, "API");
+      const result = await getExistingWord(userOctokit, repoDetails, "api");
 
-      expect(result.title).toBe("API");
+      expect(result.slug).toBe("api");
       expect(result.content).toBe(sampleBase64Content);
       expect(result.content_decoded).toContain(
         "Application Programming Interface",
@@ -366,19 +366,19 @@ describe("word-editor.js", () => {
         data: {
           content: sampleBase64Content,
           sha: "file-sha-123",
-          path: "src/content/dictionary/c++.mdx",
+          path: "dictionary/c++.mdx",
           name: "c++.mdx",
         },
       };
 
       userOctokit.request.mockResolvedValueOnce(mockResponse);
 
-      await getExistingWord(userOctokit, repoDetails, "C++");
+      await getExistingWord(userOctokit, repoDetails, "c");
 
       expect(userOctokit.request).toHaveBeenCalledWith(
         "GET /repos/{owner}/{repo}/contents/{path}",
         expect.objectContaining({
-          path: "src/content/dictionary/c++.mdx",
+          path: "dictionary/c.mdx",
         }),
       );
     });
@@ -389,8 +389,8 @@ describe("word-editor.js", () => {
       userOctokit.request.mockRejectedValueOnce(apiError);
 
       await expect(
-        getExistingWord(userOctokit, repoDetails, "API"),
-      ).rejects.toThrow('Error getting "API" from dictionary');
+        getExistingWord(userOctokit, repoDetails, "api"),
+      ).rejects.toThrow('Error getting "api" from dictionary');
     });
 
     it("should include all response data", async () => {
@@ -398,19 +398,19 @@ describe("word-editor.js", () => {
         data: {
           content: sampleBase64Content,
           sha: "file-sha-123",
-          path: "src/content/dictionary/api.mdx",
+          path: "dictionary/api.mdx",
           name: "api.mdx",
           size: 1234,
-          url: "https://api.github.com/repos/testuser/jargons.dev/contents/src/content/dictionary/api.mdx",
+          url: "https://api.github.com/repos/testuser/jargons.dev/contents/dictionary/api.mdx",
         },
       };
 
       userOctokit.request.mockResolvedValueOnce(mockResponse);
 
-      const result = await getExistingWord(userOctokit, repoDetails, "API");
+      const result = await getExistingWord(userOctokit, repoDetails, "api");
 
       expect(result.sha).toBe("file-sha-123");
-      expect(result.path).toBe("src/content/dictionary/api.mdx");
+      expect(result.path).toBe("dictionary/api.mdx");
       expect(result.name).toBe("api.mdx");
       expect(result.size).toBe(1234);
       expect(result.url).toContain("api.github.com");
@@ -435,6 +435,8 @@ describe("word-editor.js", () => {
 
       // Should contain the title and content in the template format
       expect(decodedContent).toContain("API");
+      expect(decodedContent).toContain('title: "API"');
+      expect(decodedContent).not.toContain("layout:");
       expect(decodedContent).toContain("Application Programming Interface");
     });
 
@@ -469,7 +471,7 @@ describe("word-editor.js", () => {
 
     it("should handle permission errors in updateExistingWord", async () => {
       const existingWordData = {
-        path: "src/content/dictionary/api.mdx",
+        path: "dictionary/api.mdx",
         sha: "existing-sha-123",
         title: "API",
         content: "Updated content",

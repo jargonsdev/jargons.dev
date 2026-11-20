@@ -95,7 +95,7 @@ tests/
 
 - **20 test cases** ensuring proper structure and values
 - **98.5% coverage** with configuration validation
-- Tests: PROJECT_REPO_DETAILS validation, LABELS consistency, SEO compliance
+- Tests: CONTENT_REPO_DETAILS validation, LABELS consistency, SEO compliance
 
 ### Phase 2 Implementation
 

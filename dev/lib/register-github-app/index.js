@@ -82,15 +82,15 @@ export default async function registerGitHubApp(
             Now follow this steps below..
             <ul>
               <li>
-                Create a new github repository with name "jargons.dev-test" at <a target="_blank" href="https://github.com/new">https://github.com/new</a>
+                Fork <a target="_blank" href="https://github.com/jargonsdev/content">jargonsdev/content</a> to your account for local testing.
               </li>
               <li>
-                Copy and paste the repo name in full as value to the "PUBLIC_PROJECT_REPO" in the newly created .env; 
+                Copy and paste the repo name in full as value to the "PUBLIC_CONTENT_REPO" in the newly created .env;
                 <br>
-                Example: (assuming you chose the suggested name)
+                Example: (assuming your GitHub username is octocat)
                 <br>
                 <code>
-                  PUBLIC_PROJECT_REPO="${appCredentials.owner.login}/jargons.dev-test"
+                  PUBLIC_CONTENT_REPO="${appCredentials.owner.login}/content"
                 </code>
               </li>
               <li>

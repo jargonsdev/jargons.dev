@@ -10,17 +10,54 @@ This script streamlines the process of creating a GitHub App required to run jar
 2. **Enter App Name:**
    - You will be prompted to enter an app name. The default app name is `jargons.dev-app-for-`, which you should append with your GitHub username to make it unique, example: `jargons.dev-app-for-babblebey`.
 
-3. **Create a New GitHub Repository:**
-   - Manually create a new GitHub repository with the name "jargons.dev-test" at [https://github.com/new](https://github.com/new).
+3. **Prepare a Content Repository:**
+   - Fork [jargonsdev/content](https://github.com/jargonsdev/content) to your account for local testing. The configured repository must contain a `dictionary/` directory.
 
 4. **Update the Environment Variables:**
    - Once the app is created, the script will create a `.env` file with the necessary variables.
-   - Open the `.env` file and replace the value of `PUBLIC_PROJECT_REPO` with your newly created repository's name. Example: `PUBLIC_PROJECT_REPO="your-username/jargons.dev-test"`
+   - Open the `.env` file and set `PUBLIC_CONTENT_REPO` to your content fork, for example: `PUBLIC_CONTENT_REPO="your-username/content"`.
 
 5. **Install the GitHub App:**
-   - Follow the link provided in the script output to install the GitHub App on your repository.
+   - Follow the link provided in the script output to install the GitHub App on your content fork. In production, the jargons.dev GitHub App must also be installed on `jargonsdev/content` with Issues write permission, and the repository must have the editor labels, so submitted pull requests can be labeled.
 
 This script simplifies the setup process for running <tt>jargons.dev</tt> locally and ensures that your GitHub App is configured correctly. If you encounter any issues during setup, please reach out or craeting an issue.
+
+## Sync Content Script
+
+This script fetches the content repository before Astro starts so the app can load dictionary entries through its content collection.
+
+### Configuration
+
+Set these variables in `.env` or in the process environment:
+
+- `PUBLIC_CONTENT_REPO`: GitHub repository in `owner/repository` format, such as `jargonsdev/content`.
+- `PUBLIC_CONTENT_REPO_BRANCH_REF`: branch reference in `refs/heads/<branch>` format, such as `refs/heads/main`.
+
+The configured repository must contain a `dictionary/` directory. The repository and branch settings are also used by the editor when it creates contribution pull requests.
+
+### When It Runs
+
+The sync runs automatically before:
+
+- `npm run dev`
+- `npm run start`
+- `npm run build`
+
+To run it manually:
+
+```bash
+node --env-file-if-exists=.env dev/sync-content.js
+```
+
+### How It Works
+
+1. On the first run, it shallow-clones the configured branch into `.content/` in the app repository.
+2. On subsequent runs, it verifies the checkout and that it has no local changes, fetches the configured branch, then checks out the fetched revision.
+3. It verifies that `dictionary/` exists and logs the content repository, branch, and commit SHA used.
+
+The `.content/` directory is generated and ignored by Git. If it contains local changes, the script stops rather than overwriting them; remove or clean that generated checkout before running the sync again. This script always fetches the configured remote repository and does not support a local content-directory override.
+
+
 
 ## Seed Vector Store Script
 
@@ -176,10 +213,11 @@ Required environment variables:
 The **Update Vector Store** workflow (`.github/workflows/update-vector-store.yml`) runs this script automatically:
 
 - **Trigger**: Fires on `deployment_status` events — specifically when Vercel reports a successful **Production** deployment
-- **PR Label Gate**: Uses the GitHub API to find the merged PR associated with the deployment commit and checks for the `📖new-word` or `📖edit-word` labels. Deployments from PRs without these labels are skipped early (before any Node.js setup or dependency installation)
-- **Change Detection**: Diffs `HEAD~1` to identify added, modified, or deleted `.mdx` files in `src/content/dictionary/`
-- **Skip Logic**: Exits early if no dictionary files were changed in the commit
-- **Manual Trigger**: Can also be run manually from the GitHub Actions tab with custom `upsert_slugs` and `delete_slugs` inputs (bypasses the label check)
+- **Content Revision**: Each app build publishes `content-revision.json`, containing the content repository, branch, and full commit SHA used for that deployment
+- **Change Detection**: Compares `dictionary/` in `jargonsdev/content` against the `LAST_INDEXED_CONTENT_SHA` repository variable, then upserts changed files and deletes vectors for removed files. The first automatic run indexes the full dictionary.
+- **Progress Tracking**: Advances `LAST_INDEXED_CONTENT_SHA` only after a successful vector update. The workflow creates this repository variable on its first successful automatic run; grant the workflow `actions: write` permission.
+- **Out-of-order Deployments**: Ignores delayed deployment events whose content revision is already behind the indexed SHA, and stops on diverged history rather than moving the marker backward.
+- **Manual Trigger**: Can also be run from the GitHub Actions tab with custom `upsert_slugs` and `delete_slugs` inputs. Manual runs do not change the stored content SHA.
 - **Required Secrets**: `OPENAI_API_KEY`, `QDRANT_URL`, `QDRANT_API_KEY`
 - **Required Variables**: `OPENAI_EMBEDDINGS_MODEL`
 
@@ -317,6 +355,16 @@ The script includes detailed error handling for:
 ```
 
 This script ensures your Qdrant cluster remains active and accessible for ✨jAI's vector search functionality.
+
+## GitHub Actions Workflow Linting
+
+Run actionlint to check workflow syntax, action inputs, expressions, and shell scripts:
+
+```bash
+npm run lint:actions
+```
+
+This command requires Go 1.25 or newer and runs the pinned actionlint v1.7.12 module. The code-quality workflow runs the same check in CI.
 
 ## Format-Staged Script
 

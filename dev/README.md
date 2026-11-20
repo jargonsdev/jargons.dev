@@ -211,10 +211,10 @@ Required environment variables:
 The **Update Vector Store** workflow (`.github/workflows/update-vector-store.yml`) runs this script automatically:
 
 - **Trigger**: Fires on `deployment_status` events — specifically when Vercel reports a successful **Production** deployment
-- **PR Label Gate**: Uses the GitHub API to find the merged PR associated with the deployment commit and checks for the `📖new-word` or `📖edit-word` labels. Deployments from PRs without these labels are skipped early (before any Node.js setup or dependency installation)
-- **Change Detection**: Diffs `HEAD~1` to identify added, modified, or deleted `.mdx` files in `src/content/dictionary/`
-- **Skip Logic**: Exits early if no dictionary files were changed in the commit
-- **Manual Trigger**: Can also be run manually from the GitHub Actions tab with custom `upsert_slugs` and `delete_slugs` inputs (bypasses the label check)
+- **Content Revision**: Each app build publishes `content-revision.json`, containing the content repository, branch, and full commit SHA used for that deployment
+- **Change Detection**: Compares `dictionary/` in `jargonsdev/content` against the `LAST_INDEXED_CONTENT_SHA` repository variable, then upserts changed files and deletes vectors for removed files. The first automatic run indexes the full dictionary.
+- **Progress Tracking**: Advances `LAST_INDEXED_CONTENT_SHA` only after a successful vector update. The workflow creates this repository variable on its first successful automatic run; grant the workflow `actions: write` permission.
+- **Manual Trigger**: Can also be run from the GitHub Actions tab with custom `upsert_slugs` and `delete_slugs` inputs. Manual runs do not change the stored content SHA.
 - **Required Secrets**: `OPENAI_API_KEY`, `QDRANT_URL`, `QDRANT_API_KEY`
 - **Required Variables**: `OPENAI_EMBEDDINGS_MODEL`
 

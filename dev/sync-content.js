@@ -26,6 +26,7 @@ function getContentRepositoryConfiguration() {
   }
 
   return {
+    contentRepository,
     contentRepositoryUrl: `https://github.com/${contentRepository}.git`,
     contentBranch: contentBranchMatch[1],
   };
@@ -58,7 +59,7 @@ async function verifyContentDirectory(contentRepositoryPath) {
 }
 
 async function syncContentRepository() {
-  const { contentRepositoryUrl, contentBranch } =
+  const { contentRepository, contentRepositoryUrl, contentBranch } =
     getContentRepositoryConfiguration();
 
   if (!(await directoryExists(checkoutPath))) {
@@ -118,9 +119,19 @@ async function syncContentRepository() {
   }
 
   await verifyContentDirectory(checkoutPath);
-  const revision = runGit(checkoutPath, ["rev-parse", "--short", "HEAD"]);
+  const revision = runGit(checkoutPath, ["rev-parse", "HEAD"]);
+  const revisionManifest = {
+    repository: contentRepository,
+    branch: contentBranch,
+    sha: revision,
+  };
+  await fs.writeFile(
+    path.join(appRoot, "public", "content-revision.json"),
+    `${JSON.stringify(revisionManifest, null, 2)}\n`,
+  );
+
   console.log(
-    `[content] Synced ${contentRepositoryUrl} (${contentBranch}) at ${revision}`,
+    `[content] Synced ${contentRepositoryUrl} (${contentBranch}) at ${revision.slice(0, 7)}`,
   );
 }
 

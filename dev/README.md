@@ -22,6 +22,41 @@ This script streamlines the process of creating a GitHub App required to run jar
 
 This script simplifies the setup process for running <tt>jargons.dev</tt> locally and ensures that your GitHub App is configured correctly. If you encounter any issues during setup, please reach out or craeting an issue.
 
+## Sync Content Script
+
+This script fetches the content repository before Astro starts so the app can load dictionary entries through its content collection.
+
+### Configuration
+
+Set these variables in `.env` or in the process environment:
+
+- `PUBLIC_PROJECT_REPO`: GitHub repository in `owner/repository` format, such as `jargonsdev/content`.
+- `PUBLIC_PROJECT_REPO_BRANCH_REF`: branch reference in `refs/heads/<branch>` format, such as `refs/heads/main`.
+
+The configured repository must contain a `dictionary/` directory. The repository and branch settings are also used by the editor when it creates contribution pull requests.
+
+### When It Runs
+
+The sync runs automatically before:
+
+- `npm run dev`
+- `npm run start`
+- `npm run build`
+
+To run it manually:
+
+```bash
+node --env-file-if-exists=.env dev/sync-content.js
+```
+
+### How It Works
+
+1. On the first run, it shallow-clones the configured branch into `.content/` in the app repository.
+2. On subsequent runs, it verifies the checkout and that it has no local changes, fetches the configured branch, then checks out the fetched revision.
+3. It verifies that `dictionary/` exists and logs the content repository, branch, and commit SHA used.
+
+The `.content/` directory is generated and ignored by Git. If it contains local changes, the script stops rather than overwriting them; remove or clean that generated checkout before running the sync again. This script always fetches the configured remote repository and does not support a local content-directory override.
+
 ## Seed Vector Store Script
 
 This script prepares the knowledge base for **✨jAI** (jargons.dev AI) by populating the vector store with dictionary content. jAI uses this processed data to provide intelligent responses and semantic understanding of software engineering terms.

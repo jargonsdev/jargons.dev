@@ -728,87 +728,76 @@ function Editor({ eTitle, eContent, eMetadata, className, action, ...props }) {
           disabled={isDone || !historyState.canUndo}
           onClick={() => applyHistory("undo")}
         >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            d="M9 14 4 9l5-5M4 9h10a6 6 0 0 1 0 12h-2"
-          />
+          <path d="M9 14 4 9l5-5"/>
+          <path d="M4 9h10.5a5.5 5.5 0 0 1 5.5 5.5a5.5 5.5 0 0 1-5.5 5.5H11"/>
         </ToolbarButton>
         <ToolbarButton
           label="Redo"
           disabled={isDone || !historyState.canRedo}
           onClick={() => applyHistory("redo")}
         >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            d="m15 14 5-5-5-5m5 5H10a6 6 0 0 0 0 12h2"
-          />
+          <path d="m15 14 5-5-5-5"/>
+          <path d="M20 9H9.5A5.5 5.5 0 0 0 4 14.5A5.5 5.5 0 0 0 9.5 20H13"/>
         </ToolbarButton> */}
         <ToolbarButton
           label="Bold (Ctrl+B)"
           disabled={isDone}
           onClick={() => applyMarkdownWrap("**")}
         >
-          <path
-            strokeLinejoin="round"
-            d="M6.75 3.744h-.753v8.25h7.125a4.125 4.125 0 0 0 0-8.25H6.75Zm0 0v.38m0 16.122h6.747a4.5 4.5 0 0 0 0-9.001h-7.5v9h.753Zm0 0v-.37m0-15.751h6a3.75 3.75 0 1 1 0 7.5h-6m0-7.5v7.5m0 0v8.25m0-8.25h6.375a4.125 4.125 0 0 1 0 8.25H6.75m.747-15.38h4.875a3.375 3.375 0 0 1 0 6.75H7.497v-6.75Zm0 7.5h5.25a3.75 3.75 0 0 1 0 7.5h-5.25v-7.5Z"
-          />
+          <path d="M6 12h9a4 4 0 010 8H7a1 1 0 01-1-1V5a1 1 0 011-1h7a4 4 0 010 8"/>
         </ToolbarButton>
         <ToolbarButton
           label="Italic (Ctrl+I)"
           disabled={isDone}
           onClick={() => applyMarkdownWrap("_")}
         >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            d="M5.248 20.246H9.05m0 0h3.696m-3.696 0 5.893-16.502m0 0h-3.697m3.697 0h3.803"
-          />
+          <line x1="19" x2="10" y1="4" y2="4"/>
+          <line x1="14" x2="5" y1="20" y2="20"/>
+          <line x1="15" x2="9" y1="4" y2="20"/>
         </ToolbarButton>
         <ToolbarButton
           label="Bulleted list"
           disabled={isDone}
           onClick={() => applyMarkdownListPrefix("- ")}
         >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            d="M8.25 6.75h12M8.25 12h12m-12 5.25h12M3.75 6.75h.007v.008H3.75V6.75Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0ZM3.75 12h.007v.008H3.75V12Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm-.375 5.25h.007v.008H3.75v-.008Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z"
-          />
+          <g stroke="currentColor" stroke-linecap="round">
+            <path d="M3 5h.01"/>
+            <path d="M3 12h.01"/>
+            <path d="M3 19h.01"/>
+            <path d="M8 5h13"/>
+            <path d="M8 12h13"/>
+            <path d="M8 19h13"/>
+          </g>
         </ToolbarButton>
         <ToolbarButton
           label="Numbered list"
           disabled={isDone}
           onClick={() => applyMarkdownListPrefix("1. ")}
         >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            d="M8.242 5.992h12m-12 6.003H20.24m-12 5.999h12M4.117 7.495v-3.75H2.99m1.125 3.75H2.99m1.125 0H5.24m-1.92 2.577a1.125 1.125 0 1 1 1.591 1.59l-1.83 1.83h2.16M2.99 15.745h1.125a1.125 1.125 0 0 1 0 2.25H3.74m0-.002h.375a1.125 1.125 0 0 1 0 2.25H2.99"
-          />
+          <path d="M11 5h10"/>
+          <path d="M11 12h10"/>
+          <path d="M11 19h10"/>
+          <path d="M4 4h1v5"/>
+          <path d="M4 9h2"/>
+          <path d="M6.5 20H3.4c0-1 2.6-1.925 2.6-3.5a1.5 1.5 0 0 0-2.6-1.02"/>
         </ToolbarButton>
         <ToolbarButton
           label="Inline code"
           disabled={isDone}
           onClick={() => applyMarkdownWrap("`")}
         >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            d="m8 17-5-5 5-5m8 0 5 5-5 5m-2-13-4 16"
-          />
+          <path d="m18 16 4-4-4-4"/>
+          <path d="m6 8-4 4 4 4"/>
+          <path d="m14.5 4-5 16"/>
         </ToolbarButton>
         <ToolbarButton
           label="Code block"
           disabled={isDone}
           onClick={applyMarkdownCodeBlock}
         >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            d="M14.25 9.75 16.5 12l-2.25 2.25m-4.5 0L7.5 12l2.25-2.25M6 20.25h12A2.25 2.25 0 0 0 20.25 18V6A2.25 2.25 0 0 0 18 3.75H6A2.25 2.25 0 0 0 3.75 6v12A2.25 2.25 0 0 0 6 20.25Z"
-          />
+          <path d="m10 9-3 3 3 3"/>
+          <path d="m14 15 3-3-3-3"/>
+          <rect x="3" y="3" width="18" height="18" rx="2"/>
         </ToolbarButton>
       </div>
       <textarea

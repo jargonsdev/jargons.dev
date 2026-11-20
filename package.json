@@ -1,7 +1,7 @@
 {
   "name": "jargons.dev",
   "version": "0.0.0-development",
-  "description": "A community-driven open source dictionary that provides clear, simplified definitions of software engineering concepts, development jargon, and general technology terms",
+  "description": "An open source developer literacy and education platform with community-created resources for understanding software and technology",
   "type": "module",
   "engines": {
     "node": ">=22.23.4"

@@ -1,7 +1,7 @@
 import app from "../octokit/app.js";
 import { decrypt } from "../utils/crypto.js";
 import { getExistingWord } from "../word-editor.js";
-import { PROJECT_REPO_DETAILS } from "../../../constants.js";
+import { CONTENT_REPO_DETAILS } from "../../../constants.js";
 
 /**
  * Edit Word action - meant to be executed on `editor/edit/[word]` route
@@ -20,7 +20,7 @@ export default async function doEditWord(astroGlobal) {
 
   const response = await getExistingWord(
     userOctokit,
-    PROJECT_REPO_DETAILS,
+    CONTENT_REPO_DETAILS,
     word,
   );
 

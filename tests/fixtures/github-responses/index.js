@@ -79,16 +79,16 @@ export const branchGetResponse = {
 export const contentCreationResponse = {
   content: {
     name: "api.mdx",
-    path: "src/content/dictionary/api.mdx",
+    path: "dictionary/api.mdx",
     sha: "jkl012mno345",
     size: 1234,
-    url: "https://api.github.com/repos/testuser/jargons.dev/contents/src/content/dictionary/api.mdx",
+    url: "https://api.github.com/repos/testuser/jargons.dev/contents/dictionary/api.mdx",
     html_url:
-      "https://github.com/testuser/jargons.dev/blob/add-word-api/src/content/dictionary/api.mdx",
+      "https://github.com/testuser/jargons.dev/blob/add-word-api/dictionary/api.mdx",
     git_url:
       "https://api.github.com/repos/testuser/jargons.dev/git/blobs/jkl012mno345",
     download_url:
-      "https://raw.githubusercontent.com/testuser/jargons.dev/add-word-api/src/content/dictionary/api.mdx",
+      "https://raw.githubusercontent.com/testuser/jargons.dev/add-word-api/dictionary/api.mdx",
     type: "file",
   },
   commit: {
@@ -100,16 +100,16 @@ export const contentCreationResponse = {
 export const contentUpdateResponse = {
   content: {
     name: "api.mdx",
-    path: "src/content/dictionary/api.mdx",
+    path: "dictionary/api.mdx",
     sha: "pqr678stu901",
     size: 1456,
-    url: "https://api.github.com/repos/testuser/jargons.dev/contents/src/content/dictionary/api.mdx",
+    url: "https://api.github.com/repos/testuser/jargons.dev/contents/dictionary/api.mdx",
     html_url:
-      "https://github.com/testuser/jargons.dev/blob/edit-word-api/src/content/dictionary/api.mdx",
+      "https://github.com/testuser/jargons.dev/blob/edit-word-api/dictionary/api.mdx",
     git_url:
       "https://api.github.com/repos/testuser/jargons.dev/git/blobs/pqr678stu901",
     download_url:
-      "https://raw.githubusercontent.com/testuser/jargons.dev/edit-word-api/src/content/dictionary/api.mdx",
+      "https://raw.githubusercontent.com/testuser/jargons.dev/edit-word-api/dictionary/api.mdx",
     type: "file",
   },
   commit: {
@@ -120,16 +120,16 @@ export const contentUpdateResponse = {
 
 export const contentGetResponse = {
   name: "api.mdx",
-  path: "src/content/dictionary/api.mdx",
+  path: "dictionary/api.mdx",
   sha: "vwx234yza567",
   size: 1234,
-  url: "https://api.github.com/repos/testuser/jargons.dev/contents/src/content/dictionary/api.mdx",
+  url: "https://api.github.com/repos/testuser/jargons.dev/contents/dictionary/api.mdx",
   html_url:
-    "https://github.com/testuser/jargons.dev/blob/main/src/content/dictionary/api.mdx",
+    "https://github.com/testuser/jargons.dev/blob/main/dictionary/api.mdx",
   git_url:
     "https://api.github.com/repos/testuser/jargons.dev/git/blobs/vwx234yza567",
   download_url:
-    "https://raw.githubusercontent.com/testuser/jargons.dev/main/src/content/dictionary/api.mdx",
+    "https://raw.githubusercontent.com/testuser/jargons.dev/main/dictionary/api.mdx",
   type: "file",
   content:
     "LS0tCnRpdGxlOiAiQVBJIgotLS0KCkFwcGxpY2F0aW9uIFByb2dyYW1taW5nIEludGVyZmFjZSAoQVBJKSBpcyBhIHNldCBvZiBwcm90b2NvbHMsIHJvdXRpbmVzLCBhbmQgdG9vbHMgZm9yIGJ1aWxkaW5nIHNvZnR3YXJlIGFwcGxpY2F0aW9ucy4=",

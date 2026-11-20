@@ -82,11 +82,11 @@ export const sampleShas = {
 };
 
 export const sampleFilePaths = {
-  api: "src/content/dictionary/api.mdx",
-  algorithm: "src/content/dictionary/algorithm.mdx",
-  specialChars: "src/content/dictionary/c.mdx",
+  api: "dictionary/api.mdx",
+  algorithm: "dictionary/algorithm.mdx",
+  specialChars: "dictionary/c.mdx",
   longTitle:
-    "src/content/dictionary/very-long-title-that-might-cause-issues-with-url-generation-and-file-naming.mdx",
+    "dictionary/very-long-title-that-might-cause-issues-with-url-generation-and-file-naming.mdx",
 };
 
 export const sampleCommitMessages = {

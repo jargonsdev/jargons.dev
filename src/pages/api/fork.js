@@ -1,6 +1,6 @@
 import app from "../../lib/octokit/app.js";
 import { getForkStatus, syncForkRepository } from "../../lib/fork.js";
-import { PROJECT_REPO_DETAILS } from "../../../constants.js";
+import { CONTENT_REPO_DETAILS } from "../../../constants.js";
 import { decrypt } from "../../lib/utils/crypto.js";
 
 async function getUserOctokit(cookies) {
@@ -43,7 +43,7 @@ export async function GET({ cookies }) {
     const userOctokit = await getUserOctokit(cookies);
     if (!userOctokit) return jsonResponse({ message: "Not Authorised" }, 401);
 
-    return jsonResponse(await getForkStatus(userOctokit, PROJECT_REPO_DETAILS));
+    return jsonResponse(await getForkStatus(userOctokit, CONTENT_REPO_DETAILS));
   } catch (error) {
     return errorResponse(error);
   }
@@ -56,7 +56,7 @@ export async function POST({ cookies }) {
     if (!userOctokit) return jsonResponse({ message: "Not Authorised" }, 401);
 
     return jsonResponse(
-      await syncForkRepository(userOctokit, PROJECT_REPO_DETAILS),
+      await syncForkRepository(userOctokit, CONTENT_REPO_DETAILS),
     );
   } catch (error) {
     return errorResponse(error);

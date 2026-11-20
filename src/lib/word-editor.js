@@ -28,7 +28,7 @@ export async function writeNewWord(
         owner: repoOwner,
         repo: repoName,
         branch,
-        path: `src/content/dictionary/${normalizeAsUrl(title)}.mdx`,
+        path: `dictionary/${normalizeAsUrl(title)}.mdx`,
         content: Buffer.from(wordFileContent).toString("base64"),
         message: `word: commit to "${title}"`,
       },
@@ -85,9 +85,9 @@ export async function updateExistingWord(
  * Retrieve data for already existing word
  * @param {import("octokit").Octokit} userOctokit
  * @param {{ repoFullname: string, repoBranchRef: string }} repoDetails
- * @param {string} wordTitle
+ * @param {string} wordSlug
  */
-export async function getExistingWord(userOctokit, repoDetails, wordTitle) {
+export async function getExistingWord(userOctokit, repoDetails, wordSlug) {
   const { repoFullname, repoBranchRef } = repoDetails;
   const { repoOwner, repoName } = getRepoParts(repoFullname);
 
@@ -98,20 +98,20 @@ export async function getExistingWord(userOctokit, repoDetails, wordTitle) {
         owner: repoOwner,
         repo: repoName,
         ref: repoBranchRef,
-        path: `src/content/dictionary/${normalizeAsUrl(wordTitle)}.mdx`,
+        path: `dictionary/${wordSlug}.mdx`,
       },
     );
 
     const { content, ...responseData } = response.data;
 
     return {
-      title: wordTitle,
+      slug: wordSlug,
       content,
       content_decoded: Buffer.from(content, "base64").toString("utf-8"),
       ...responseData,
     };
   } catch (error) {
-    throw new Error(`Error getting "${wordTitle}" from dictionary`, {
+    throw new Error(`Error getting "${wordSlug}" from dictionary`, {
       cause: error,
     });
   }

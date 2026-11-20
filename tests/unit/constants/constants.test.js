@@ -1,6 +1,6 @@
 import { describe, it, expect } from "vitest";
 import {
-  PROJECT_REPO_DETAILS,
+  CONTENT_REPO_DETAILS,
   LABELS,
   SITE_META_DESCRIPTION,
   SITE_META_KEYWORDS,
@@ -8,24 +8,24 @@ import {
 } from "../../../constants.js";
 
 describe("Constants Validation", () => {
-  describe("PROJECT_REPO_DETAILS", () => {
+  describe("CONTENT_REPO_DETAILS", () => {
     it("should have valid structure", () => {
-      expect(PROJECT_REPO_DETAILS).toHaveProperty("repoFullname");
-      expect(PROJECT_REPO_DETAILS).toHaveProperty("repoMainBranchRef");
-      expect(typeof PROJECT_REPO_DETAILS.repoFullname).toBe("string");
-      expect(typeof PROJECT_REPO_DETAILS.repoMainBranchRef).toBe("string");
+      expect(CONTENT_REPO_DETAILS).toHaveProperty("repoFullname");
+      expect(CONTENT_REPO_DETAILS).toHaveProperty("repoMainBranchRef");
+      expect(typeof CONTENT_REPO_DETAILS.repoFullname).toBe("string");
+      expect(typeof CONTENT_REPO_DETAILS.repoMainBranchRef).toBe("string");
     });
 
     it("should have valid repo fullname format", () => {
-      expect(PROJECT_REPO_DETAILS.repoFullname).toMatch(/^[\w.-]+\/[\w.-]+$/);
-      expect(PROJECT_REPO_DETAILS.repoFullname).toBe("jargonsdev/jargons.dev");
+      expect(CONTENT_REPO_DETAILS.repoFullname).toMatch(/^[\w.-]+\/[\w.-]+$/);
+      expect(CONTENT_REPO_DETAILS.repoFullname).toBe("jargonsdev/jargons.dev");
     });
 
     it("should have valid branch reference format", () => {
-      expect(PROJECT_REPO_DETAILS.repoMainBranchRef).toMatch(
+      expect(CONTENT_REPO_DETAILS.repoMainBranchRef).toMatch(
         /^refs\/heads\/.+/,
       );
-      expect(PROJECT_REPO_DETAILS.repoMainBranchRef).toBe("refs/heads/main");
+      expect(CONTENT_REPO_DETAILS.repoMainBranchRef).toBe("refs/heads/main");
     });
   });
 
@@ -138,9 +138,9 @@ describe("Constants Validation", () => {
 
   describe("constants integrity", () => {
     it("should not have undefined or null values", () => {
-      expect(PROJECT_REPO_DETAILS).toBeDefined();
-      expect(PROJECT_REPO_DETAILS.repoFullname).toBeDefined();
-      expect(PROJECT_REPO_DETAILS.repoMainBranchRef).toBeDefined();
+      expect(CONTENT_REPO_DETAILS).toBeDefined();
+      expect(CONTENT_REPO_DETAILS.repoFullname).toBeDefined();
+      expect(CONTENT_REPO_DETAILS.repoMainBranchRef).toBeDefined();
 
       expect(LABELS).toBeDefined();
       Object.values(LABELS).forEach((label) => {
@@ -156,7 +156,7 @@ describe("Constants Validation", () => {
     it("should have consistent export structure", () => {
       // Ensure all expected constants are exported
       const requiredConstants = [
-        "PROJECT_REPO_DETAILS",
+        "CONTENT_REPO_DETAILS",
         "LABELS",
         "SITE_META_DESCRIPTION",
         "SITE_META_KEYWORDS",
@@ -164,7 +164,7 @@ describe("Constants Validation", () => {
       ];
 
       // This test ensures no constants are accidentally undefined
-      expect(PROJECT_REPO_DETAILS).toBeTruthy();
+      expect(CONTENT_REPO_DETAILS).toBeTruthy();
       expect(LABELS).toBeTruthy();
       expect(SITE_META_DESCRIPTION).toBeTruthy();
       expect(SITE_META_KEYWORDS).toBeTruthy();

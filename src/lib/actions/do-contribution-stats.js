@@ -1,4 +1,4 @@
-import { LABELS, PROJECT_REPO_DETAILS } from "../../../constants.js";
+import { CONTENT_REPO_DETAILS, LABELS } from "../../../constants.js";
 import app from "../octokit/app.js";
 import { decrypt } from "../utils/crypto.js";
 import { buildStatsUrl, getBranchNameFromRef } from "../utils/index.js";
@@ -9,7 +9,7 @@ import { buildStatsUrl, getBranchNameFromRef } from "../utils/index.js";
  */
 export default async function doContributionStats(astroGlobal) {
   const { cookies } = astroGlobal;
-  const { repoFullname, repoMainBranchRef } = PROJECT_REPO_DETAILS;
+  const { repoFullname, repoMainBranchRef } = CONTENT_REPO_DETAILS;
 
   const accessToken = cookies.get("jargonsdevToken", {
     decode: (value) => decrypt(value),

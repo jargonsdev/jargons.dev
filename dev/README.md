@@ -10,15 +10,15 @@ This script streamlines the process of creating a GitHub App required to run jar
 2. **Enter App Name:**
    - You will be prompted to enter an app name. The default app name is `jargons.dev-app-for-`, which you should append with your GitHub username to make it unique, example: `jargons.dev-app-for-babblebey`.
 
-3. **Create a New GitHub Repository:**
-   - Manually create a new GitHub repository with the name "jargons.dev-test" at [https://github.com/new](https://github.com/new).
+3. **Prepare a Content Repository:**
+   - Fork [jargonsdev/content](https://github.com/jargonsdev/content) to your account for local testing. The configured repository must contain a `dictionary/` directory.
 
 4. **Update the Environment Variables:**
    - Once the app is created, the script will create a `.env` file with the necessary variables.
-   - Open the `.env` file and replace the value of `PUBLIC_PROJECT_REPO` with your newly created repository's name. Example: `PUBLIC_PROJECT_REPO="your-username/jargons.dev-test"`
+   - Open the `.env` file and set `PUBLIC_PROJECT_REPO` to your content fork, for example: `PUBLIC_PROJECT_REPO="your-username/content"`.
 
 5. **Install the GitHub App:**
-   - Follow the link provided in the script output to install the GitHub App on your repository.
+   - Follow the link provided in the script output to install the GitHub App on your content fork. In production, the jargons.dev GitHub App must also be installed on `jargonsdev/content` with Issues write permission, and the repository must have the editor labels, so submitted pull requests can be labeled.
 
 This script simplifies the setup process for running <tt>jargons.dev</tt> locally and ensures that your GitHub App is configured correctly. If you encounter any issues during setup, please reach out or craeting an issue.
 

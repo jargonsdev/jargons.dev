@@ -17,6 +17,8 @@
 - [Astro](https://astro.build/) - Web framework for building content-driven websites
 - [React](https://react.dev) - Library for building web interfaces
 - [Tailwind CSS](https://tailwindcss.com) - A Utility-first CSS Library
+- [Vercel AI SDK](https://ai-sdk.dev/) - Toolkit for building AI-powered features
+- [LangChain](https://www.langchain.com/) - Framework for developing applications powered by large language models (LLMs)
 
 ### System Architecture
 

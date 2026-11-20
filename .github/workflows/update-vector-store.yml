@@ -90,12 +90,29 @@ jobs:
           fetch-depth: 0
           persist-credentials: false
 
+      - name: Read last indexed content revision
+        if: github.event_name == 'deployment_status'
+        id: marker
+        uses: actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b # v7
+        with:
+          script: |
+            try {
+              const { value } = await github.rest.actions.getRepoVariable({
+                ...context.repo,
+                name: 'LAST_INDEXED_CONTENT_SHA',
+              });
+              core.setOutput('sha', value);
+            } catch (error) {
+              if (error.status !== 404) throw error;
+              core.setOutput('sha', '');
+            }
+
       - name: Detect changed dictionary files
         id: detect
         env:
           MANUAL_UPSERT_SLUGS: ${{ github.event.inputs.upsert_slugs }}
           MANUAL_DELETE_SLUGS: ${{ github.event.inputs.delete_slugs }}
-          LAST_INDEXED_CONTENT_SHA: ${{ vars.LAST_INDEXED_CONTENT_SHA }}
+          LAST_INDEXED_CONTENT_SHA: ${{ steps.marker.outputs.sha }}
           CONTENT_SHA: ${{ steps.revision.outputs.content_sha }}
         run: |
           validate_slug_list() {
@@ -111,6 +128,7 @@ jobs:
 
           UPSERT_SLUGS=""
           DELETE_SLUGS=""
+          ADVANCE_MARKER="false"
 
           if [ "$GITHUB_EVENT_NAME" = "workflow_dispatch" ]; then
             UPSERT_SLUGS="$MANUAL_UPSERT_SLUGS"
@@ -121,6 +139,8 @@ jobs:
               exit 1
             fi
 
+            ADVANCE_MARKER="true"
+
             if [ -z "$LAST_INDEXED_CONTENT_SHA" ]; then
               echo "No previously indexed content SHA. Indexing the full dictionary."
               while IFS= read -r file; do
@@ -130,6 +150,19 @@ jobs:
             else
               if ! [[ "$LAST_INDEXED_CONTENT_SHA" =~ ^[0-9a-f]{40}$ ]] || ! git -C content cat-file -e "${LAST_INDEXED_CONTENT_SHA}^{commit}"; then
                 echo "::error::LAST_INDEXED_CONTENT_SHA is invalid or missing from content history. Clear the variable to trigger a full dictionary index."
+                exit 1
+              fi
+
+              if ! git -C content merge-base --is-ancestor "$LAST_INDEXED_CONTENT_SHA" "$CONTENT_SHA"; then
+                if git -C content merge-base --is-ancestor "$CONTENT_SHA" "$LAST_INDEXED_CONTENT_SHA"; then
+                  echo "This deployment contains an older content revision than the one already indexed. Skipping it without changing the marker."
+                  ADVANCE_MARKER="false"
+                  printf 'has_changes=false\n' >> "$GITHUB_OUTPUT"
+                  printf 'advance_marker=%s\n' "$ADVANCE_MARKER" >> "$GITHUB_OUTPUT"
+                  exit 0
+                fi
+
+                echo "::error::Deployed content and LAST_INDEXED_CONTENT_SHA have diverged. Inspect the content history and marker."
                 exit 1
               fi
 
@@ -161,6 +194,7 @@ jobs:
           printf 'upsert=%s\n' "$UPSERT_SLUGS" >> "$GITHUB_OUTPUT"
           printf 'delete=%s\n' "$DELETE_SLUGS" >> "$GITHUB_OUTPUT"
           printf 'content_sha=%s\n' "$CONTENT_SHA" >> "$GITHUB_OUTPUT"
+          printf 'advance_marker=%s\n' "$ADVANCE_MARKER" >> "$GITHUB_OUTPUT"
 
           if [ -z "$UPSERT_SLUGS" ] && [ -z "$DELETE_SLUGS" ]; then
             printf 'has_changes=false\n' >> "$GITHUB_OUTPUT"
@@ -209,7 +243,7 @@ jobs:
           npm run update:jai:ci -- "${ARGS[@]}"
 
       - name: Update successful
-        if: success() && github.event_name == 'deployment_status'
+        if: success() && github.event_name == 'deployment_status' && steps.detect.outputs.advance_marker == 'true'
         uses: actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b # v7
         env:
           CONTENT_SHA: ${{ steps.detect.outputs.content_sha }}

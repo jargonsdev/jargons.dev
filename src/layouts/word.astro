@@ -11,7 +11,7 @@ import JAIFollowUpChatWidget, {
   JAIFollowUpChatWidgetTrigger,
 } from "../../apps/jai/components/follow-up-chat.jsx";
 
-const { frontmatter } = Astro.props;
+const { frontmatter, slug } = Astro.props;
 const dictionary = await getCollection("dictionary");
 const wordSlug = Astro.url.pathname.split("/").filter(Boolean).at(-1) ?? "";
 const word = dictionary.find((entry) => buildWordSlug(entry.id) === wordSlug);
@@ -27,7 +27,7 @@ const ogImageUrl = new URL(
  * @todo implement a better way to resolve the `slug` used in the `editUrl`
  * `frontmatter.url.split("/")*****` will not scale when we bring in internationalization
  */
-const editUrl = `/editor/edit/${frontmatter.url.split("/")[3].split(".")[0]}`;
+const editUrl = `/editor/edit/${slug}`;
 ---
 
 <BaseLayout

@@ -186,6 +186,7 @@ jobs:
                 esac
               done < <(git -C content diff --name-status "$LAST_INDEXED_CONTENT_SHA" "$CONTENT_SHA" -- dictionary/)
           fi
+              fi
 
           if ! validate_slug_list "$UPSERT_SLUGS" || ! validate_slug_list "$DELETE_SLUGS"; then
             exit 1

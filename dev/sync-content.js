@@ -4,10 +4,32 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 
 const appRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
-const contentRepositoryUrl = "https://github.com/jargonsdev/content.git";
-const contentBranch = "main";
 const checkoutPath = path.join(appRoot, ".content");
-const localRepositoryPath = process.env.CONTENT_REPO_PATH;
+
+function getContentRepositoryConfiguration() {
+  const contentRepository = process.env.PUBLIC_PROJECT_REPO;
+  if (
+    !contentRepository ||
+    !/^[\w.-]+\/[\w.-]+$/.test(contentRepository)
+  ) {
+    throw new Error(
+      "PUBLIC_PROJECT_REPO must be set to a GitHub owner/repository value.",
+    );
+  }
+
+  const contentBranchRef = process.env.PUBLIC_PROJECT_REPO_BRANCH_REF ?? "";
+  const contentBranchMatch = /^refs\/heads\/(.+)$/.exec(contentBranchRef);
+  if (!contentBranchMatch) {
+    throw new Error(
+      "PUBLIC_PROJECT_REPO_BRANCH_REF must be a refs/heads/<branch> value.",
+    );
+  }
+
+  return {
+    contentRepositoryUrl: `https://github.com/${contentRepository}.git`,
+    contentBranch: contentBranchMatch[1],
+  };
+}
 
 function runGit(repositoryPath, args) {
   return execFileSync("git", args, {
@@ -25,25 +47,20 @@ async function directoryExists(directoryPath) {
   }
 }
 
-async function verifyContentDirectory(repositoryPath) {
-  if (!(await directoryExists(path.join(repositoryPath, "dictionary")))) {
+async function verifyContentDirectory(contentRepositoryPath) {
+  if (
+    !(await directoryExists(path.join(contentRepositoryPath, "dictionary")))
+  ) {
     throw new Error(
-      `Expected a dictionary/ directory in content repository: ${repositoryPath}`,
+      `Expected a dictionary/ directory in content repository: ${contentRepositoryPath}`,
     );
   }
 }
 
-async function useLocalRepository() {
-  const repositoryPath = path.resolve(appRoot, localRepositoryPath);
-  await verifyContentDirectory(repositoryPath);
+async function syncContentRepository() {
+  const { contentRepositoryUrl, contentBranch } =
+    getContentRepositoryConfiguration();
 
-  const revision = runGit(repositoryPath, ["rev-parse", "--short", "HEAD"]);
-  console.log(
-    `[content] Using local repository ${repositoryPath} at ${revision}`,
-  );
-}
-
-async function syncRemoteRepository() {
   if (!(await directoryExists(checkoutPath))) {
     execFileSync(
       "git",
@@ -60,30 +77,43 @@ async function syncRemoteRepository() {
       { cwd: appRoot, stdio: "inherit" },
     );
   } else {
-    const repositoryRoot = path.resolve(
+    const contentRepositoryRoot = path.resolve(
       runGit(checkoutPath, ["rev-parse", "--show-toplevel"]),
     );
-    if (repositoryRoot !== checkoutPath) {
+    if (contentRepositoryRoot !== checkoutPath) {
       throw new Error(
         `${checkoutPath} exists but is not the content repository checkout.`,
-      );
-    }
-
-    const remoteUrl = runGit(checkoutPath, ["remote", "get-url", "origin"]);
-    if (remoteUrl !== contentRepositoryUrl) {
-      throw new Error(
-        `${checkoutPath} has unexpected origin ${remoteUrl}; expected ${contentRepositoryUrl}.`,
       );
     }
 
     const changes = runGit(checkoutPath, ["status", "--porcelain"]);
     if (changes) {
       throw new Error(
-        `${checkoutPath} has local changes. Use CONTENT_REPO_PATH to read a local content clone instead.`,
+        `${checkoutPath} has local changes. Refusing to update the remote content checkout.`,
       );
     }
 
-    runGit(checkoutPath, ["fetch", "--depth", "1", "origin", contentBranch]);
+    const remoteContentRepositoryUrl = runGit(checkoutPath, [
+      "remote",
+      "get-url",
+      "origin",
+    ]);
+    if (remoteContentRepositoryUrl !== contentRepositoryUrl) {
+      runGit(checkoutPath, [
+        "remote",
+        "set-url",
+        "origin",
+        contentRepositoryUrl,
+      ]);
+    }
+
+    runGit(checkoutPath, [
+      "fetch",
+      "--depth",
+      "1",
+      "origin",
+      contentBranch,
+    ]);
     runGit(checkoutPath, ["checkout", "--detach", "FETCH_HEAD"]);
   }
 
@@ -95,11 +125,7 @@ async function syncRemoteRepository() {
 }
 
 try {
-  if (localRepositoryPath) {
-    await useLocalRepository();
-  } else {
-    await syncRemoteRepository();
-  }
+  await syncContentRepository();
 } catch (error) {
   console.error(`[content] ${error.message}`);
   process.exitCode = 1;

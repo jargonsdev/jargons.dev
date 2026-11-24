@@ -21,8 +21,7 @@ jobs:
   update-vector-store:
     runs-on: ubuntu-latest
     permissions:
-      actions: write
-      contents: read
+      contents: write
 
     # Only run on successful production deployments (or manual trigger)
     if: >
@@ -97,11 +96,15 @@ jobs:
         with:
           script: |
             try {
-              const { value } = await github.rest.actions.getRepoVariable({
+              const { data } = await github.rest.repos.getContent({
                 ...context.repo,
-                name: 'LAST_INDEXED_CONTENT_SHA',
+                path: 'last-indexed-content-sha.txt',
+                ref: 'vector-store-state',
               });
-              core.setOutput('sha', value);
+              if (data.type !== 'file' || data.encoding !== 'base64') {
+                throw new Error('Invalid vector store state marker.');
+              }
+              core.setOutput('sha', Buffer.from(data.content, 'base64').toString('utf8').trim());
             } catch (error) {
               if (error.status !== 404) throw error;
               core.setOutput('sha', '');
@@ -149,7 +152,7 @@ jobs:
               done < <(find content/dictionary -type f -name '*.mdx' | sort)
             else
               if ! [[ "$LAST_INDEXED_CONTENT_SHA" =~ ^[0-9a-f]{40}$ ]] || ! git -C content cat-file -e "${LAST_INDEXED_CONTENT_SHA}^{commit}"; then
-                echo "::error::LAST_INDEXED_CONTENT_SHA is invalid or missing from content history. Clear the variable to trigger a full dictionary index."
+                echo "::error::The indexed content SHA is invalid or missing from content history. Inspect the vector store state marker."
                 exit 1
               fi
 
@@ -187,7 +190,7 @@ jobs:
                     ;;
                 esac
               done < <(git -C content diff --name-status "$LAST_INDEXED_CONTENT_SHA" "$CONTENT_SHA" -- dictionary/)
-          fi
+              fi
               fi
 
           if ! validate_slug_list "$UPSERT_SLUGS" || ! validate_slug_list "$DELETE_SLUGS"; then
@@ -255,22 +258,41 @@ jobs:
         with:
           script: |
             const { owner, repo } = context.repo;
-            const variable = {
-              owner,
-              repo,
-              name: 'LAST_INDEXED_CONTENT_SHA',
-              value: process.env.CONTENT_SHA,
-            };
-
-            if (!variable.value) {
+            const branch = 'vector-store-state';
+            const path = 'last-indexed-content-sha.txt';
+            const contentSha = process.env.CONTENT_SHA;
+            if (!contentSha) {
               throw new Error('Content SHA is missing; refusing to advance the index marker.');
             }
 
             try {
-              await github.rest.actions.updateRepoVariable(variable);
-              core.info(`Updated LAST_INDEXED_CONTENT_SHA to ${variable.value}`);
+              await github.rest.git.getRef({ owner, repo, ref: `heads/${branch}` });
             } catch (error) {
               if (error.status !== 404) throw error;
-              await github.rest.actions.createRepoVariable(variable);
-              core.info(`Created LAST_INDEXED_CONTENT_SHA at ${variable.value}`);
+              await github.rest.git.createRef({
+                owner,
+                repo,
+                ref: `refs/heads/${branch}`,
+                sha: context.payload.deployment.sha,
+              });
             }
+
+            let sha;
+            try {
+              const { data } = await github.rest.repos.getContent({ owner, repo, path, ref: branch });
+              if (data.type !== 'file') throw new Error('Invalid vector store state marker.');
+              sha = data.sha;
+            } catch (error) {
+              if (error.status !== 404) throw error;
+            }
+
+            await github.rest.repos.createOrUpdateFileContents({
+              owner,
+              repo,
+              path,
+              branch,
+              sha,
+              message: 'Update indexed content revision',
+              content: Buffer.from(`${contentSha}\n`).toString('base64'),
+            });
+            core.info(`Updated indexed content revision to ${contentSha}`);

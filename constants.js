@@ -3,6 +3,8 @@ export const CONTENT_REPO_DETAILS = {
   repoMainBranchRef: import.meta.env.PUBLIC_CONTENT_REPO_BRANCH_REF,
 };
 
+export const LEGACY_CONTRIBUTION_REPO = "jargonsdev/jargons.dev";
+
 export const LABELS = {
   NEW_WORD: "📖new-word",
   EDIT_WORD: "📖edit-word",

@@ -3,9 +3,7 @@ import { Image } from "astro:assets";
 import BaseLayout from "../../layouts/base.astro";
 import doAuth from "../../lib/actions/do-auth.js";
 import Navbar from "../../components/navbar.astro";
-import { buildStatsUrl } from "../../lib/utils/index.js";
 import Profile from "../../components/islands/profile.jsx";
-import { CONTENT_REPO_DETAILS, LABELS } from "../../../constants.js";
 import doContributionStats from "../../lib/actions/do-contribution-stats.js";
 import ContributionCTA from "../../components/contribution-cta.astro";
 
@@ -18,15 +16,8 @@ const { isAuthed, authedData: userData, getAuthUrl } = await doAuth(Astro);
 if (!isAuthed)
   return redirect(`/login?return_to=${encodeURIComponent(pathname)}`);
 
-const { newWords, editedWords, pendingWords } =
+const { totalWords, newWords, editedWords, pendingWords } =
   await doContributionStats(Astro);
-const totalWords = {
-  count: newWords.count + editedWords.count,
-  url: buildStatsUrl(
-    CONTENT_REPO_DETAILS.repoFullname,
-    `label:"${LABELS.VIA_EDITOR}" is:pr is:closed is:merged author:@me`,
-  ),
-};
 ---
 
 <BaseLayout

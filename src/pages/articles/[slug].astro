@@ -45,40 +45,37 @@ const authorUrl =
 
   <main class="max-w-screen-lg p-5 md:mt-10 mx-auto space-y-6">
     <header class="mx-auto">
-      <!-- <a
-        href="/articles"
-        class="font-mono text-xs font-semibold uppercase text-gray-500 hover:text-black"
-      >
-        Articles
-      </a> -->
-      <h1 class="mt-5 text-3xl font-black leading-tight md:text-6xl">
+      <h1 class="text-3xl font-black leading-tight md:text-6xl">
         {article.data.title}
       </h1>
-      <p class="mt-5 text-base leading-relaxed text-gray-600 md:text-lg">
+      <p class="md:w-10/12 mt-2 leading-relaxed text-gray-600">
         {article.data.description}
       </p>
-      <div
-        class="mt-7 flex flex-wrap items-center gap-x-3 gap-y-1 border-t border-gray-200 pt-5 text-sm text-gray-600"
-      >
-        <span>
-          By {
-            authorUrl ? (
-              <a
-                href={authorUrl}
-                rel="noopener noreferrer"
-                class="font-semibold text-black"
-              >
-                {authorName}
-              </a>
-            ) : (
-              <strong class="text-black">{authorName}</strong>
-            )
-          }
-        </span>
-        <span aria-hidden="true">/</span>
-        <time datetime={article.data.publishedAt.toISOString()}>
-          {formatArticleDate(article.data.publishedAt)}
-        </time>
+
+      <div>
+        <div
+          class="mt-4 flex flex-wrap items-center gap-x-3 gap-y-1 pt-2 text-sm text-gray-600"
+        >
+          <span>
+            By {
+              authorUrl ? (
+                <a
+                  href={authorUrl}
+                  rel="noopener noreferrer"
+                  class="font-semibold text-black"
+                >
+                  {authorName}
+                </a>
+              ) : (
+                <strong class="text-black">{authorName}</strong>
+              )
+            }
+          </span>
+          <span aria-hidden="true">/</span>
+          <time datetime={article.data.publishedAt.toISOString()}>
+            {formatArticleDate(article.data.publishedAt)}
+          </time>
+        </div>
       </div>
     </header>
 
@@ -91,13 +88,11 @@ const authorUrl =
       />
     </figure>
 
-    <article
-      class="prose mx-auto mt-10 w-full max-w-3xl prose-pre:overflow-x-auto md:mt-14"
-    >
+    <article class="prose w-full max-w-screen-lg prose-pre:overflow-x-auto">
       <Content />
     </article>
 
-    <div class="mx-auto mt-12 max-w-3xl border-t border-gray-200 pt-7">
+    <div class="mx-auto mt-12 border-t border-gray-200 pt-7">
       {
         article.data.tags.length > 0 && (
           <p class="font-mono text-xs text-gray-500">

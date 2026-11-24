@@ -214,8 +214,8 @@ The **Update Vector Store** workflow (`.github/workflows/update-vector-store.yml
 
 - **Trigger**: Fires on `deployment_status` events — specifically when Vercel reports a successful **Production** deployment
 - **Content Revision**: Each app build publishes `content-revision.json`, containing the content repository, branch, and full commit SHA used for that deployment
-- **Change Detection**: Compares `dictionary/` in `jargonsdev/content` against the `LAST_INDEXED_CONTENT_SHA` repository variable, then upserts changed files and deletes vectors for removed files. The first automatic run indexes the full dictionary.
-- **Progress Tracking**: Advances `LAST_INDEXED_CONTENT_SHA` only after a successful vector update. The workflow creates this repository variable on its first successful automatic run; grant the workflow `actions: write` permission.
+- **Change Detection**: Compares `dictionary/` in `jargonsdev/content` against the last indexed revision, then upserts changed files and deletes vectors for removed files. If no marker exists, the workflow indexes the full dictionary.
+- **Progress Tracking**: Stores the indexed revision in `last-indexed-content-sha.txt` on the `vector-store-state` branch only after a successful vector update. The workflow creates the branch on its first successful automatic run and requires `contents: write` permission. Allow this branch to be created and updated in any repository rulesets.
 - **Out-of-order Deployments**: Ignores delayed deployment events whose content revision is already behind the indexed SHA, and stops on diverged history rather than moving the marker backward.
 - **Manual Trigger**: Can also be run from the GitHub Actions tab with custom `upsert_slugs` and `delete_slugs` inputs. Manual runs do not change the stored content SHA.
 - **Required Secrets**: `OPENAI_API_KEY`, `QDRANT_URL`, `QDRANT_API_KEY`

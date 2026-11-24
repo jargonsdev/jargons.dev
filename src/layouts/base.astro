@@ -16,6 +16,7 @@ const {
   ogImageUrl = new URL("/og.png", siteOrigin).href,
   description = SITE_META_DESCRIPTION,
   subtitle = SITE_META_SUBTITLE,
+  ogType = "website",
 } = props;
 ---
 
@@ -25,11 +26,12 @@ const {
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width" />
     <meta name="generator" content={Astro.generator} />
+    <link rel="canonical" href={canonicalUrl.href} />
     <meta name="description" content={description} />
     <meta name="keyword" content={keywords.join(",")} />
 
     <meta property="og:url" content={canonicalUrl.href} />
-    <meta property="og:type" content="website" />
+    <meta property="og:type" content={ogType} />
     <meta property="og:title" content={`${pageTitle} - ${subtitle}`} />
     <meta property="og:description" content={description} />
     <meta property="og:image" content={ogImageUrl} />

@@ -1,0 +1,128 @@
+---
+import { getCollection, render } from "astro:content";
+import BaseLayout from "../../layouts/base.astro";
+import Navbar from "../../components/navbar.astro";
+import Search from "../../components/islands/search.jsx";
+import { formatArticleDate } from "../../lib/articles.js";
+import { buildWordSlug } from "../../lib/utils/index.js";
+
+export const prerender = true;
+
+export async function getStaticPaths() {
+  const articles = await getCollection("articles");
+  return articles.map((article) => ({
+    params: { slug: article.id },
+    props: { article },
+  }));
+}
+
+const { article } = Astro.props;
+const { Content } = await render(article);
+const dictionary = await getCollection("dictionary");
+const relatedWords = article.data.relatedWords.flatMap((slug) => {
+  const word = dictionary.find((entry) => buildWordSlug(entry.id) === slug);
+  return word ? [{ slug, title: word.data.title }] : [];
+});
+const authorName = article.data.author.name || article.data.author.github;
+const authorUrl =
+  article.data.author.url ||
+  (article.data.author.github
+    ? `https://github.com/${article.data.author.github}`
+    : undefined);
+---
+
+<BaseLayout
+  pageTitle={article.data.title}
+  description={article.data.description}
+  keywords={article.data.tags}
+  ogImageUrl={article.data.cover.url}
+  ogType="article"
+  class="min-h-screen"
+>
+  <Navbar returnNav={{ label: "Back to Articles", location: "/articles" }}>
+    <Search triggerSize="sm" dictionary={dictionary} client:load />
+  </Navbar>
+
+  <main class="max-w-screen-lg p-5 md:mt-10 mx-auto space-y-6">
+    <header class="mx-auto">
+      <!-- <a
+        href="/articles"
+        class="font-mono text-xs font-semibold uppercase text-gray-500 hover:text-black"
+      >
+        Articles
+      </a> -->
+      <h1 class="mt-5 text-3xl font-black leading-tight md:text-6xl">
+        {article.data.title}
+      </h1>
+      <p class="mt-5 text-base leading-relaxed text-gray-600 md:text-lg">
+        {article.data.description}
+      </p>
+      <div
+        class="mt-7 flex flex-wrap items-center gap-x-3 gap-y-1 border-t border-gray-200 pt-5 text-sm text-gray-600"
+      >
+        <span>
+          By {
+            authorUrl ? (
+              <a
+                href={authorUrl}
+                rel="noopener noreferrer"
+                class="font-semibold text-black"
+              >
+                {authorName}
+              </a>
+            ) : (
+              <strong class="text-black">{authorName}</strong>
+            )
+          }
+        </span>
+        <span aria-hidden="true">/</span>
+        <time datetime={article.data.publishedAt.toISOString()}>
+          {formatArticleDate(article.data.publishedAt)}
+        </time>
+      </div>
+    </header>
+
+    <figure class="mt-8 md:mt-10">
+      <img
+        src={article.data.cover.url}
+        alt={article.data.cover.alt}
+        decoding="async"
+        class="aspect-[2/1] w-full rounded object-cover bg-gray-100"
+      />
+    </figure>
+
+    <article
+      class="prose mx-auto mt-10 w-full max-w-3xl prose-pre:overflow-x-auto md:mt-14"
+    >
+      <Content />
+    </article>
+
+    <div class="mx-auto mt-12 max-w-3xl border-t border-gray-200 pt-7">
+      {
+        article.data.tags.length > 0 && (
+          <p class="font-mono text-xs text-gray-500">
+            {article.data.tags.join(" / ")}
+          </p>
+        )
+      }
+      {
+        relatedWords.length > 0 && (
+          <section class="mt-8" aria-labelledby="related-words-title">
+            <h2 id="related-words-title" class="text-lg font-bold">
+              Related words
+            </h2>
+            <ul class="mt-4 flex flex-wrap gap-x-6 gap-y-2">
+              {relatedWords.map((word) => (
+                <li>
+                  <a href={`/browse/${encodeURIComponent(word.slug)}`}>
+                    {word.title}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </section>
+        )
+      }
+    </div>
+  </main>
+</BaseLayout>

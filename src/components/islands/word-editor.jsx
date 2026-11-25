@@ -18,6 +18,7 @@ import {
   toggleMarkdownCodeBlock,
 } from "../../lib/utils/index.js";
 import useWordEditor from "../../lib/hooks/use-word-editor.js";
+import MarkdownToolbar from "./markdown-toolbar.jsx";
 import {
   $isWordSubmitLoading,
   $isWordSubmitted,
@@ -564,6 +565,29 @@ function Editor({ eTitle, eContent, eMetadata, className, action, ...props }) {
     commitEdit(result);
   }
 
+  function handleMarkdownAction(action) {
+    switch (action) {
+      case "bold":
+        applyMarkdownWrap("**");
+        break;
+      case "italic":
+        applyMarkdownWrap("_");
+        break;
+      case "unordered-list":
+        applyMarkdownListPrefix("- ");
+        break;
+      case "ordered-list":
+        applyMarkdownListPrefix("1. ");
+        break;
+      case "inline-code":
+        applyMarkdownWrap("`");
+        break;
+      case "code-block":
+        applyMarkdownCodeBlock();
+        break;
+    }
+  }
+
   function handleTextareaKeyDown(event) {
     if (isDone) return;
 
@@ -717,89 +741,7 @@ function Editor({ eTitle, eContent, eMetadata, className, action, ...props }) {
         readOnly={action === "edit" || isDone}
         className={`${(action === "edit" || isDone) && "cursor-not-allowed"} block w-full pb-2 px-5 text-gray-900 border-b text-lg font-bold focus:outline-none`}
       />
-      <div
-        className="sticky top-0 z-10 flex flex-wrap items-center gap-1 border-b px-3 mb-3 bg-white py-2"
-        role="toolbar"
-        aria-label="Markdown formatting"
-      >
-        {/* TEMPORARILY DISABLED UNDO/REDO BUTTONS */}
-        {/* <ToolbarButton
-          label="Undo"
-          disabled={isDone || !historyState.canUndo}
-          onClick={() => applyHistory("undo")}
-        >
-          <path d="M9 14 4 9l5-5"/>
-          <path d="M4 9h10.5a5.5 5.5 0 0 1 5.5 5.5a5.5 5.5 0 0 1-5.5 5.5H11"/>
-        </ToolbarButton>
-        <ToolbarButton
-          label="Redo"
-          disabled={isDone || !historyState.canRedo}
-          onClick={() => applyHistory("redo")}
-        >
-          <path d="m15 14 5-5-5-5"/>
-          <path d="M20 9H9.5A5.5 5.5 0 0 0 4 14.5A5.5 5.5 0 0 0 9.5 20H13"/>
-        </ToolbarButton> */}
-        <ToolbarButton
-          label="Bold (Ctrl+B)"
-          disabled={isDone}
-          onClick={() => applyMarkdownWrap("**")}
-        >
-          <path d="M6 12h9a4 4 0 010 8H7a1 1 0 01-1-1V5a1 1 0 011-1h7a4 4 0 010 8" />
-        </ToolbarButton>
-        <ToolbarButton
-          label="Italic (Ctrl+I)"
-          disabled={isDone}
-          onClick={() => applyMarkdownWrap("_")}
-        >
-          <line x1="19" x2="10" y1="4" y2="4" />
-          <line x1="14" x2="5" y1="20" y2="20" />
-          <line x1="15" x2="9" y1="4" y2="20" />
-        </ToolbarButton>
-        <ToolbarButton
-          label="Bulleted list"
-          disabled={isDone}
-          onClick={() => applyMarkdownListPrefix("- ")}
-        >
-          <g stroke="currentColor" stroke-linecap="round">
-            <path d="M3 5h.01" />
-            <path d="M3 12h.01" />
-            <path d="M3 19h.01" />
-            <path d="M8 5h13" />
-            <path d="M8 12h13" />
-            <path d="M8 19h13" />
-          </g>
-        </ToolbarButton>
-        <ToolbarButton
-          label="Numbered list"
-          disabled={isDone}
-          onClick={() => applyMarkdownListPrefix("1. ")}
-        >
-          <path d="M11 5h10" />
-          <path d="M11 12h10" />
-          <path d="M11 19h10" />
-          <path d="M4 4h1v5" />
-          <path d="M4 9h2" />
-          <path d="M6.5 20H3.4c0-1 2.6-1.925 2.6-3.5a1.5 1.5 0 0 0-2.6-1.02" />
-        </ToolbarButton>
-        <ToolbarButton
-          label="Inline code"
-          disabled={isDone}
-          onClick={() => applyMarkdownWrap("`")}
-        >
-          <path d="m18 16 4-4-4-4" />
-          <path d="m6 8-4 4 4 4" />
-          <path d="m14.5 4-5 16" />
-        </ToolbarButton>
-        <ToolbarButton
-          label="Code block"
-          disabled={isDone}
-          onClick={applyMarkdownCodeBlock}
-        >
-          <path d="m10 9-3 3 3 3" />
-          <path d="m14 15 3-3-3-3" />
-          <rect x="3" y="3" width="18" height="18" rx="2" />
-        </ToolbarButton>
-      </div>
+      <MarkdownToolbar disabled={isDone} onAction={handleMarkdownAction} />
       <textarea
         ref={textareaRef}
         required
@@ -823,35 +765,6 @@ function Editor({ eTitle, eContent, eMetadata, className, action, ...props }) {
         />
       )}
     </form>
-  );
-}
-
-/**
- * Editor Markdown Input Toolbar Button Component
- */
-function ToolbarButton({ label, disabled, onClick, children }) {
-  return (
-    <button
-      type="button"
-      aria-label={label}
-      title={label}
-      disabled={disabled}
-      onMouseDown={(event) => event.preventDefault()}
-      onClick={onClick}
-      className="inline-flex size-8 items-center justify-center rounded text-gray-700 hover:bg-gray-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-500 disabled:cursor-not-allowed disabled:opacity-50"
-    >
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        fill="none"
-        viewBox="0 0 24 24"
-        strokeWidth="1.5"
-        stroke="currentColor"
-        className="size-5"
-        aria-hidden="true"
-      >
-        {children}
-      </svg>
-    </button>
   );
 }
 

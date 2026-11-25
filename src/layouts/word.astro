@@ -6,6 +6,7 @@ import BaseLayout from "./base.astro";
 import { getCollection } from "astro:content";
 import Navbar from "../components/navbar.astro";
 import Search from "../components/islands/search.jsx";
+import { sortArticlesByDate } from "../lib/articles.js";
 import { buildWordSlug, getExcerpt, getKeywords } from "../lib/utils/index.js";
 import JAIFollowUpChatWidget, {
   JAIFollowUpChatWidgetTrigger,
@@ -14,6 +15,11 @@ import JAIFollowUpChatWidget, {
 const { frontmatter, slug } = Astro.props;
 const dictionary = await getCollection("dictionary");
 const wordSlug = Astro.url.pathname.split("/").filter(Boolean).at(-1) ?? "";
+const relatedArticles = sortArticlesByDate(
+  (await getCollection("articles")).filter((article) =>
+    article.data.relatedWords.includes(wordSlug),
+  ),
+);
 const word = dictionary.find((entry) => buildWordSlug(entry.id) === wordSlug);
 const excerpt = getExcerpt(word?.body);
 const keywords = getKeywords(frontmatter.title, word?.body);
@@ -42,8 +48,8 @@ const editUrl = `/editor/edit/${slug}`;
     </Navbar>
 
     <main class="max-w-screen-lg p-5 md:mt-10 mx-auto min-h-screen space-y-6">
-      <div class="w-full">
-        <h1 class="text-3xl md:text-7xl font-black">
+      <header class="w-full">
+        <h1 class="text-3xl font-black leading-tight md:text-6xl">
           {frontmatter.title}
         </h1>
         <!-- Metatab -->
@@ -88,11 +94,51 @@ const editUrl = `/editor/edit/${slug}`;
             <span>Suggest Improvement</span>
           </a>
         </div>
-      </div>
+      </header>
       <!-- Meaning -->
       <article class="w-full max-w-screen-lg prose">
         <slot />
       </article>
+      {
+        relatedArticles.length > 0 && (
+          <section
+            class="border-t border-gray-100 pt-8"
+            aria-labelledby="related-articles-title"
+          >
+            <h2 id="related-articles-title" class="text-xl font-bold">
+              Related articles
+            </h2>
+            <ul class="mt-4 grid gap-4 md:grid-cols-2">
+              {relatedArticles.map((article) => (
+                <li>
+                  <a
+                    class="group p-2 flex min-h-28 overflow-hidden rounded-xl shadow bg-black/90 text-white no-underline hover:bg-black focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black"
+                    href={`/articles/${encodeURIComponent(article.id)}`}
+                  >
+                    <span class="relative w-24 shrink-0 bg-neutral-900 rounded-xl overflow-hidden sm:w-32">
+                      <img
+                        src={article.data.cover.url}
+                        alt=""
+                        loading="lazy"
+                        decoding="async"
+                        class="absolute inset-0 h-full w-full object-cover"
+                      />
+                    </span>
+                    <span class="min-w-0 self-center px-4 py-2 sm:px-5 my-auto">
+                      <span class="line-clamp-2 break-words font-semibold leading-snug group-hover:underline">
+                        {article.data.title}
+                      </span>
+                      <span class="mt-2 line-clamp-2 text-xs font-normal leading-relaxed text-white/70">
+                        {article.data.description}
+                      </span>
+                    </span>
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </section>
+        )
+      }
     </main>
   </div>
 

@@ -49,3 +49,11 @@ body.jai-active .main-wrapper {
 body.jai-active .jai-wrapper {
   @apply overflow-hidden py-1 lg:py-0.5 ps-1 pe-1 lg:pe-0 fixed top-0 right-0 w-full lg:w-5/12 h-full transition-all ease-in-out duration-1000 animate-slide-in-from-right;
 }
+
+.prose h1,
+.prose h2,
+.prose h3,
+.prose h4,
+.prose h5 {
+  @apply mt-1;
+}

@@ -1,0 +1,144 @@
+---
+import { getCollection, render } from "astro:content";
+import BaseLayout from "../../layouts/base.astro";
+import Navbar from "../../components/navbar.astro";
+import Search from "../../components/islands/search.jsx";
+import { formatArticleDate } from "../../lib/articles.js";
+import { buildWordSlug } from "../../lib/utils/index.js";
+
+export const prerender = true;
+
+export async function getStaticPaths() {
+  const articles = await getCollection("articles");
+  return articles.map((article) => ({
+    params: { slug: article.id },
+    props: { article },
+  }));
+}
+
+const { article } = Astro.props;
+const { Content } = await render(article);
+const dictionary = await getCollection("dictionary");
+const relatedWords = article.data.relatedWords.flatMap((slug) => {
+  const word = dictionary.find((entry) => buildWordSlug(entry.id) === slug);
+  return word ? [{ slug, title: word.data.title }] : [];
+});
+const authorName = article.data.author.name || article.data.author.github;
+const authorUrl =
+  article.data.author.url ||
+  (article.data.author.github
+    ? `https://github.com/${article.data.author.github}`
+    : undefined);
+---
+
+<BaseLayout
+  pageTitle={article.data.title}
+  description={article.data.description}
+  keywords={article.data.tags}
+  ogImageUrl={article.data.cover.url}
+  ogType="article"
+  class="min-h-screen"
+>
+  <Navbar returnNav={{ label: "Back to Articles", location: "/articles" }}>
+    <Search triggerSize="sm" dictionary={dictionary} client:load />
+  </Navbar>
+
+  <main class="max-w-screen-lg p-5 md:mt-10 mx-auto space-y-6 mb-20">
+    <header class="mx-auto">
+      <h1 class="text-3xl font-black leading-tight md:text-6xl">
+        {article.data.title}
+      </h1>
+      <p class="md:w-10/12 mt-2 leading-relaxed text-gray-600">
+        {article.data.description}
+      </p>
+
+      <div>
+        <div
+          class="mt-4 flex flex-wrap items-center gap-x-3 gap-y-1 pt-2 text-sm text-gray-600"
+        >
+          <span>
+            By {
+              authorUrl ? (
+                <a
+                  href={authorUrl}
+                  rel="noopener noreferrer"
+                  class="font-semibold text-black"
+                >
+                  {authorName}
+                </a>
+              ) : (
+                <strong class="text-black">{authorName}</strong>
+              )
+            }
+          </span>
+          <span aria-hidden="true">/</span>
+          <time datetime={article.data.publishedAt.toISOString()}>
+            {formatArticleDate(article.data.publishedAt)}
+          </time>
+        </div>
+      </div>
+    </header>
+
+    <figure class="mt-8 md:mt-10">
+      <img
+        src={article.data.cover.url}
+        alt={article.data.cover.alt}
+        decoding="async"
+        class="aspect-[2/1] w-full rounded object-cover bg-gray-100"
+      />
+    </figure>
+
+    <article class="prose w-full max-w-screen-lg prose-pre:overflow-x-auto">
+      <Content />
+    </article>
+
+    <section class="mx-auto mt-12 border-t border-gray-100 pt-7">
+      {
+        article.data.tags.length > 0 && (
+          <p class="font-mono text-xs text-gray-500">
+            {article.data.tags.join(" / ")}
+          </p>
+        )
+      }
+      {
+        relatedWords.length > 0 && (
+          <div class="mt-8" aria-labelledby="related-words-title">
+            <h2 id="related-words-title" class="text-lg font-bold">
+              Related words
+            </h2>
+            <ul class="mt-4 flex flex-wrap gap-3">
+              {relatedWords.map((word) => (
+                <li>
+                  <a
+                    href={`/browse/${encodeURIComponent(word.slug)}`}
+                    class="group px-4 py-2 gap-2 bg-black/90 inline-flex max-w-full items-stretch overflow-hidden rounded-xl shadow hover:bg-black text-white no-underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 transition-transform"
+                  >
+                    <span class="rounded-lg self-center truncate font-medium">
+                      {word.title}
+                    </span>
+                    <span
+                      aria-hidden="true"
+                      class="hidden items-center group-hover:flex"
+                    >
+                      <svg
+                        viewBox="0 0 24 24"
+                        fill="currentColor"
+                        class="size-5"
+                      >
+                        <path
+                          fill-rule="evenodd"
+                          d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25Zm4.28 10.28a.75.75 0 0 0 0-1.06l-3-3a.75.75 0 1 0-1.06 1.06l1.72 1.72H8.25a.75.75 0 0 0 0 1.5h5.69l-1.72 1.72a.75.75 0 1 0 1.06 1.06l3-3Z"
+                          clip-rule="evenodd"
+                        ></path>
+                      </svg>
+                    </span>
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )
+      }
+    </section>
+  </main>
+</BaseLayout>

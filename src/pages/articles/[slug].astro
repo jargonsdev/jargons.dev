@@ -43,7 +43,7 @@ const authorUrl =
     <Search triggerSize="sm" dictionary={dictionary} client:load />
   </Navbar>
 
-  <main class="max-w-screen-lg p-5 md:mt-10 mx-auto space-y-6">
+  <main class="max-w-screen-lg p-5 md:mt-10 mx-auto space-y-6 mb-20">
     <header class="mx-auto">
       <h1 class="text-3xl font-black leading-tight md:text-6xl">
         {article.data.title}
@@ -92,7 +92,7 @@ const authorUrl =
       <Content />
     </article>
 
-    <div class="mx-auto mt-12 border-t border-gray-200 pt-7">
+    <div class="mx-auto mt-12 border-t border-gray-100 pt-7">
       {
         article.data.tags.length > 0 && (
           <p class="font-mono text-xs text-gray-500">

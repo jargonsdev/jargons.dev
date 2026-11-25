@@ -92,7 +92,7 @@ const authorUrl =
       <Content />
     </article>
 
-    <div class="mx-auto mt-12 border-t border-gray-100 pt-7">
+    <section class="mx-auto mt-12 border-t border-gray-100 pt-7">
       {
         article.data.tags.length > 0 && (
           <p class="font-mono text-xs text-gray-500">
@@ -102,7 +102,7 @@ const authorUrl =
       }
       {
         relatedWords.length > 0 && (
-          <section class="mt-8" aria-labelledby="related-words-title">
+          <div class="mt-8" aria-labelledby="related-words-title">
             <h2 id="related-words-title" class="text-lg font-bold">
               Related words
             </h2>
@@ -115,9 +115,9 @@ const authorUrl =
                 </li>
               ))}
             </ul>
-          </section>
+          </div>
         )
       }
-    </div>
+    </section>
   </main>
 </BaseLayout>

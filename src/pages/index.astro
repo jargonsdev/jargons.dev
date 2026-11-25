@@ -103,8 +103,9 @@ if (now - cache.timestamp > CACHE_TTL || cache.count === 0) {
     <Search triggerSize="md" dictionary={dictionary} client:load />
 
     <!-- Browse words -->
-    <div class="ml-2 mt-4 md:mt-6">
+    <div class="ml-2 mt-4 flex flex-wrap gap-x-6 gap-y-2 md:mt-6">
       <a href="/browse">Browse Words</a>
+      <a href="/articles">Explore Articles</a>
     </div>
 
     <!-- Recent Word Look Up -->

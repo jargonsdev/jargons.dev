@@ -106,11 +106,32 @@ const authorUrl =
             <h2 id="related-words-title" class="text-lg font-bold">
               Related words
             </h2>
-            <ul class="mt-4 flex flex-wrap gap-x-6 gap-y-2">
+            <ul class="mt-4 flex flex-wrap gap-3">
               {relatedWords.map((word) => (
                 <li>
-                  <a href={`/browse/${encodeURIComponent(word.slug)}`}>
-                    {word.title}
+                  <a
+                    href={`/browse/${encodeURIComponent(word.slug)}`}
+                    class="group px-4 py-2 gap-2 bg-black/90 inline-flex max-w-full items-stretch overflow-hidden rounded-xl shadow hover:bg-black text-white no-underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 transition-transform"
+                  >
+                    <span class="rounded-lg self-center truncate font-medium">
+                      {word.title}
+                    </span>
+                    <span
+                      aria-hidden="true"
+                      class="hidden items-center group-hover:flex"
+                    >
+                      <svg
+                        viewBox="0 0 24 24"
+                        fill="currentColor"
+                        class="size-5"
+                      >
+                        <path
+                          fill-rule="evenodd"
+                          d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25Zm4.28 10.28a.75.75 0 0 0 0-1.06l-3-3a.75.75 0 1 0-1.06 1.06l1.72 1.72H8.25a.75.75 0 0 0 0 1.5h5.69l-1.72 1.72a.75.75 0 1 0 1.06 1.06l3-3Z"
+                          clip-rule="evenodd"
+                        ></path>
+                      </svg>
+                    </span>
                   </a>
                 </li>
               ))}

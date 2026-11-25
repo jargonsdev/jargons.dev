@@ -112,7 +112,7 @@ const editUrl = `/editor/edit/${slug}`;
               {relatedArticles.map((article) => (
                 <li>
                   <a
-                    class="group p-2 flex min-h-28 overflow-hidden rounded-xl bg-black/95 text-white no-underline hover:bg-black focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black"
+                    class="group p-2 flex min-h-28 overflow-hidden rounded-xl shadow bg-black/90 text-white no-underline hover:bg-black focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black"
                     href={`/articles/${encodeURIComponent(article.id)}`}
                   >
                     <span class="relative w-24 shrink-0 bg-neutral-900 rounded-xl overflow-hidden sm:w-32">
@@ -124,7 +124,7 @@ const editUrl = `/editor/edit/${slug}`;
                         class="absolute inset-0 h-full w-full object-cover"
                       />
                     </span>
-                    <span class="min-w-0 self-center px-4 py-2 sm:px-5">
+                    <span class="min-w-0 self-center px-4 py-2 sm:px-5 my-auto">
                       <span class="line-clamp-2 break-words font-semibold leading-snug group-hover:underline">
                         {article.data.title}
                       </span>
